@@ -1,85 +1,142 @@
 import React from "react";
-import { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core';
+import { useState } from "react";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+import {
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+} from "@mui/material";
+
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     padding: theme.spacing(2),
 
-    '& .MuiTextField-root': {
+    "& .MuiTextField-root": {
       margin: theme.spacing(1),
-      width: '100%',
+      width: "100%",
     },
-    '& .MuiButtonBase-root': {
+    "& .MuiButtonBase-root": {
       margin: theme.spacing(2),
     },
   },
 }));
-
-
-
-
-
 const RegistrationBasicCompanyData = () => {
   const classes = useStyles();
   // create state variables for each input
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [compName, setCompName] = useState("");
+  const [compNit, setCompNit] = useState("");
+  const [compAddress, setCompAddress] = useState("");
+  const [compCity, setCompCity] = useState("");
+  const [compEcoActiv, setCompEcoActiv] = useState("");
+  const [compType, setCompType] = useState("");
+  const [compUrlAddress, setCompUrlAddress] = useState("");
+  const [compIcesiStud, setCompIcesiStud] = useState("F");
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(firstName, lastName, email, password);
+    console.log(
+      compName,
+      compNit,
+      compAddress,
+      compCity,
+      compEcoActiv,
+      compUrlAddress,
+      compType,
+      compIcesiStud
+    );
   };
-
-
   return (
     <>
       <form className={classes.root} onSubmit={handleSubmit}>
-      <TextField
-        label="Nombre de la Empresa "
-        variant="outlined"
-        required
-        value={firstName}
-        onChange={e => setFirstName(e.target.value)}
-      />
+        <TextField
+          label="Nombre de la Empresa"
+          variant="outlined"
+          required
+          value={compName}
+          onChange={(e) => setCompName(e.target.value)}
+        />
+        <TextField
+          label="NIT"
+          variant="outlined"
+          required
+          value={compNit}
+          onChange={(e) => setCompNit(e.target.value)}
+        />
+        <TextField
+          label="Dirección de la Empresa"
+          variant="outlined"
+          required
+          value={compAddress}
+          onChange={(e) => setCompAddress(e.target.value)}
+        />
+        <TextField
+          label="Ciudad"
+          variant="outlined"
+          required
+          value={compCity}
+          onChange={(e) => setCompCity(e.target.value)}
+        />
+        <TextField
+          label="Actividad Económica"
+          variant="outlined"
+          required
+          value={compEcoActiv}
+          onChange={(e) => setCompEcoActiv(e.target.value)}
+        />
 
-      <TextField
-        label="NIT"
-        variant="outlined"
-        required
-        value={lastName}
-        onChange={e => setLastName(e.target.value)}
-      />
-      <TextField
-        label="Email"
-        variant="outlined"
-        type="email"
-        required
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-      />
-      <TextField
-        label="Password"
-        variant="outlined"
-        type="password"
-        required
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-      />
-      <div>
-        <Button type="submit" variant="contained" color="primary">
-          Signup
-        </Button>
-      </div>
-    </form>
+        <TextField
+          label="Tipo de Empresa"
+          variant="outlined"
+          required
+          value={compType}
+          onChange={(e) => setCompType(e.target.value)}
+        />
+        <TextField
+          label="Dirección URL de pagina Web"
+          variant="outlined"
+          required
+          value={compUrlAddress}
+          onChange={(e) => setCompUrlAddress(e.target.value)}
+        />
+        <FormControl required="true">
+          <FormLabel id="demo-row-radio-buttons-group-label">
+            {" "}
+            ¿La empresa ha vinculado estudiantes en práctica de Icesi?
+          </FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="demo-row-radio-buttons-group-label"
+            name="row-radio-buttons-group"
+          >
+            <FormControlLabel
+              value="T"
+              control={<Radio required = "true"/>}
+              label="Si"
+              onChange={(e) => setCompIcesiStud(e.target.value)}
+            />
+            <FormControlLabel
+              value="F"
+              control={<Radio />}
+              label="No"
+              onChange={(e) => setCompIcesiStud(e.target.value)}
+            />
+          </RadioGroup>
+        </FormControl>
+        <div>
+          <Button type="submit" variant="contained" color="primary">
+            Guardar información.
+          </Button>
+        </div>
+      </form>
     </>
   );
 };
