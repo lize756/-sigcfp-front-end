@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import RequestList from "../../components/module-request/company/RequestList";
 import Home from "../../components/module-request/company/HomeRequest";
-import StepperRegistration from "../../components/module-request/company/StepperRegistration";
+import StepperRegistration from "../../components/module-request/company/registration/AccordionRegistration";
 
 const MainCompany = () => {
   return (

@@ -12,3 +12,9 @@ h2 {
   width: auto;
   color: white;
 }
+
+.accordion-padding{
+  padding-top: 2%;
+  padding-right: 2%;
+  padding-left: 2%;
+}
