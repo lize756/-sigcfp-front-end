@@ -3,6 +3,8 @@ import { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core";
+import { InputLabel, Select, MenuItem } from "@mui/material";
+import { Autocomplete, top100Films } from "@mui/material";
 
 import {
   Radio,
@@ -78,6 +80,7 @@ const RegistrationBasicCompanyData = () => {
           value={compAddress}
           onChange={(e) => setCompAddress(e.target.value)}
         />
+
         <TextField
           label="Ciudad"
           variant="outlined"
@@ -85,6 +88,7 @@ const RegistrationBasicCompanyData = () => {
           value={compCity}
           onChange={(e) => setCompCity(e.target.value)}
         />
+
         <TextField
           label="Actividad Económica"
           variant="outlined"
@@ -119,7 +123,7 @@ const RegistrationBasicCompanyData = () => {
           >
             <FormControlLabel
               value="T"
-              control={<Radio required = "true"/>}
+              control={<Radio required="true" />}
               label="Si"
               onChange={(e) => setCompIcesiStud(e.target.value)}
             />
