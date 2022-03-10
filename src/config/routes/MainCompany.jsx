@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import RequestList from "../../components/module-request/company/RequestList";
 import Home from "../../components/module-request/company/HomeRequest";
 import StepperRegistration from "../../components/module-request/company/StepperRegistration";
 
@@ -8,8 +9,16 @@ const MainCompany = () => {
     <>
       <Router>
         <Routes>
-          <Route path="/company" element={<Home name ="PORTAL DE SOLICITUDES PRACTICANTES DE LA UNIVERSIDAD ICESI"/>}></Route>
-          <Route path="/register" element={<StepperRegistration/>}></Route>
+          //Request route
+          <Route path="/company" element={<Home name ="PORTAL DE SOLICITUDES PRACTICANTES DE LA UNIVERSIDAD ICESI"/>}>
+            <Route path="request" element={<RequestList/>}/>
+          </Route>
+          //Registration route
+          <Route path="/company" element={<Home name ="REGISTRO"/>}>
+            <Route path="register" element={<StepperRegistration/>}/>
+          </Route>
+
+
         </Routes>
       </Router>
     </>
