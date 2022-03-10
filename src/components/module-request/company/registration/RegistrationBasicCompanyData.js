@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core";
 import { InputLabel, Select, MenuItem } from "@mui/material";
-import { Autocomplete, top100Films } from "@mui/material";
+import axios from "../../../../config/axios";
 
 import {
   Radio,
@@ -43,10 +43,22 @@ const RegistrationBasicCompanyData = () => {
   const [compUrlAddress, setCompUrlAddress] = useState("");
   const [compIcesiStud, setCompIcesiStud] = useState("F");
 
+  function Company(compName, compNit, compAddress, compCity,compEcoActiv,compUrlAddress,compType,compIcesiStud) { 
+    this.compAddress = compAddress;
+    this.compName = compName;
+    this.compNit = compNit;
+    this.compCity = compCity;
+    this.compEcoActiv = compEcoActiv;
+    this.compUrlAddress = compUrlAddress;
+    this.compType = compType;
+    this.compIcesiStud = compIcesiStud;
+    this.compIcesiStud = compIcesiStud;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      compName,
+    /*
+     console.log(compName,
       compNit,
       compAddress,
       compCity,
@@ -55,6 +67,15 @@ const RegistrationBasicCompanyData = () => {
       compType,
       compIcesiStud
     );
+    */
+    let company = new Company(compName, compNit, compAddress, compCity,compEcoActiv,compUrlAddress,compType,compIcesiStud);
+      
+    axios.post("http://localhost:8484/companies/add/",company).then(response =>{
+      if(response.data != null){
+        this.setState(this.initialState)
+      }
+    })
+
   };
   return (
     <>

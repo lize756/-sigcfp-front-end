@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 import {
   Radio,
@@ -40,6 +41,7 @@ const RegistrationContactCompany = () => {
   const [contEmail, setContEmail] = useState("");
   const [contPhone, setContPhone] = useState("");
 
+  
   /**
    * This method allow print to console the result of the form
    * @param {*} e
@@ -48,6 +50,7 @@ const RegistrationContactCompany = () => {
     e.preventDefault();
     console.log(contName,contPosition,contEmail,contPhone);
   };
+
 
   return (
     <>
