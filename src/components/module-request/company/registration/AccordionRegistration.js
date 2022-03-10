@@ -5,7 +5,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "../StylesCompany.css";
-import RequestList from "../RequestList";
+import RegistrationBasicCompanyData from "./RegistrationBasicCompanyData";
 
 //Component
 const AccordionRegistration = () => {
@@ -32,7 +32,8 @@ const AccordionRegistration = () => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <RequestList />
+          {/*Plane 1: Form for registration of basic company data*/}
+          <RegistrationBasicCompanyData />
         </AccordionDetails>
       </Accordion>
       <Accordion
