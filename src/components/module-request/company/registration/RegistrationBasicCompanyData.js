@@ -43,13 +43,13 @@ const RegistrationBasicCompanyData = () => {
   const [compUrlAddress, setCompUrlAddress] = useState("");
   const [compIcesiStud, setCompIcesiStud] = useState("F");
 
-  function Company(compName, compNit, compAddress, compCity,compEcoActiv,compUrlAddress,compType,compIcesiStud) { 
+  function Company(compName, compNit, compCity, compAddress,compEcoActiv,compUrlAddress,compType,compIcesiStud) { 
     this.compAddress = compAddress;
     this.compName = compName;
     this.compNit = compNit;
-    this.compCity = compCity;
     this.compEcoActiv = compEcoActiv;
     this.compUrlAddress = compUrlAddress;
+    this.compCity = compCity; 
     this.compType = compType;
     this.compIcesiStud = compIcesiStud;
     this.compIcesiStud = compIcesiStud;
@@ -68,11 +68,12 @@ const RegistrationBasicCompanyData = () => {
       compIcesiStud
     );
     */
-    let company = new Company(compName, compNit, compAddress, compCity,compEcoActiv,compUrlAddress,compType,compIcesiStud);
+    let company = new Company(compName, compNit, compCity, compAddress,compEcoActiv,compUrlAddress,compType,compIcesiStud);
       
-    axios.post("http://localhost:8484/companies/add/",company).then(response =>{
+    axios.post("companies/add/",company).then(response =>{
       if(response.data != null){
         this.setState(this.initialState)
+        console.log(company)
       }
     })
 
