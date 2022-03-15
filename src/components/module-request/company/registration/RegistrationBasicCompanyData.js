@@ -1,9 +1,10 @@
 import React from "react";
 import { useState } from "react";
+import { useEffect } from 'react';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core";
-import { InputLabel, Select, MenuItem } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
 import axios from "../../../../config/axios";
 
 import {
@@ -19,9 +20,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "left",
     padding: theme.spacing(2),
 
+    "& .MuiAutocomplete-root": {
+      width: "100%",
+    },
     "& .MuiTextField-root": {
       margin: theme.spacing(1),
       width: "100%",
@@ -31,7 +35,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const RegistrationBasicCompanyData = () => {
+/**
+ *
+ * @param {*} propsWithAccordion Represent the property that the component called accordion has.
+ * @returns
+ */
+const RegistrationBasicCompanyData = (propsWithAccordion) => {
   const classes = useStyles();
   // create state variables for each input
   const [compName, setCompName] = useState("");
@@ -43,13 +52,25 @@ const RegistrationBasicCompanyData = () => {
   const [compUrlAddress, setCompUrlAddress] = useState("");
   const [compIcesiStud, setCompIcesiStud] = useState("F");
 
-  function Company(compName, compNit, compCity, compAddress,compEcoActiv,compUrlAddress,compType,compIcesiStud) { 
+  //Create data
+  const options = ["Option 1", "Option 2"];
+  const [value, setValue] = React.useState();
+  function Company(
+    compName,
+    compNit,
+    compCity,
+    compAddress,
+    compEcoActiv,
+    compUrlAddress,
+    compType,
+    compIcesiStud
+  ) {
     this.compAddress = compAddress;
     this.compName = compName;
     this.compNit = compNit;
     this.compEcoActiv = compEcoActiv;
     this.compUrlAddress = compUrlAddress;
-    this.compCity = compCity; 
+    this.compCity = compCity;
     this.compType = compType;
     this.compIcesiStud = compIcesiStud;
     this.compIcesiStud = compIcesiStud;
@@ -57,28 +78,35 @@ const RegistrationBasicCompanyData = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    /*
-     console.log(compName,
+    let company = new Company(
+      compName,
       compNit,
-      compAddress,
       compCity,
+      compAddress,
       compEcoActiv,
       compUrlAddress,
       compType,
       compIcesiStud
     );
-    */
-    let company = new Company(compName, compNit, compCity, compAddress,compEcoActiv,compUrlAddress,compType,compIcesiStud);
-      
-    axios.post("companies/add/",company).then(response =>{
-      if(response.data != null){
-        this.setState(this.initialState)
-        console.log(company)
-      }
-    })
+    useEffect(() => {
+      // GET request using axios inside useEffect React hook
+      axios.get("cities").then(response => this.setState({ totalReactPackages: response.data.total }));
+      console.log("HOla oscar");
+  
+  // empty dependency array means this effect will only run once (like componentDidMount in classes)
+  }, []);
 
+    
+    // Post request.
+    axios.post("companies/add/", company).then((response) => {
+      if (response.data != null) {
+        this.setState(this.initialState);
+        console.log(company);
+      }
+    });
   };
   return (
+    
     <>
       <form className={classes.root} onSubmit={handleSubmit}>
         <TextField
@@ -133,6 +161,23 @@ const RegistrationBasicCompanyData = () => {
           value={compUrlAddress}
           onChange={(e) => setCompUrlAddress(e.target.value)}
         />
+        <Autocomplete
+          freeSolo
+          id="free-solo-2-demo"
+          disableClearable
+          options={options}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search input"
+              variant="outlined"
+              InputProps={{
+                ...params.InputProps,
+                type: "search",
+              }}
+            />
+          )}
+        />
         <FormControl required="true">
           <FormLabel id="demo-row-radio-buttons-group-label">
             {" "}
@@ -164,7 +209,9 @@ const RegistrationBasicCompanyData = () => {
         </div>
       </form>
     </>
-  );
+     // Get request.
+     );
+    
 };
 
 export default RegistrationBasicCompanyData;

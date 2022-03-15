@@ -10,6 +10,7 @@ import RegistrationContactCompany from "./RegistrationContactCompany";
 
 //Component
 const AccordionRegistration = () => {
+
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -34,7 +35,7 @@ const AccordionRegistration = () => {
         </AccordionSummary>
         <AccordionDetails>
           {/*Plane 1: Form for registration of basic company data*/}
-          <RegistrationBasicCompanyData />
+          <RegistrationBasicCompanyData value = "" />
         </AccordionDetails>
       </Accordion>
       <Accordion
