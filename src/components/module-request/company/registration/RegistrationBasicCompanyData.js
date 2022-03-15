@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core";
@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiButtonBase-root": {
       margin: theme.spacing(2),
     },
+    "&  .MuiFormLabel-root": {
+      alignItems: "left",
+    },
   },
 }));
 /**
@@ -53,8 +56,7 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
   const [compIcesiStud, setCompIcesiStud] = useState("F");
 
   //Create data
-  const options = ["Option 1", "Option 2"];
-  const [value, setValue] = React.useState();
+  const [values, setValues] = React.useState([]);
   function Company(
     compName,
     compNit,
@@ -75,6 +77,12 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
     this.compIcesiStud = compIcesiStud;
     this.compIcesiStud = compIcesiStud;
   }
+  // GET request using axios inside useEffect React hook
+  useEffect(() => {
+    axios.get("cities").then((res) => {
+      setValues(res.data);
+    });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,15 +96,8 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
       compType,
       compIcesiStud
     );
-    useEffect(() => {
-      // GET request using axios inside useEffect React hook
-      axios.get("cities").then(response => this.setState({ totalReactPackages: response.data.total }));
-      console.log("HOla oscar");
-  
-  // empty dependency array means this effect will only run once (like componentDidMount in classes)
-  }, []);
+    console.log("Entre", compCity);
 
-    
     // Post request.
     axios.post("companies/add/", company).then((response) => {
       if (response.data != null) {
@@ -105,8 +106,15 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
       }
     });
   };
+
+
+
+  const handleChange = (suggestion, index, dataLabel) =>{
+    let completeObject  = values.find((item)=>(item.name==dataLabel))
+  }
+
+
   return (
-    
     <>
       <form className={classes.root} onSubmit={handleSubmit}>
         <TextField
@@ -129,14 +137,6 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
           required
           value={compAddress}
           onChange={(e) => setCompAddress(e.target.value)}
-        />
-
-        <TextField
-          label="Ciudad"
-          variant="outlined"
-          required
-          value={compCity}
-          onChange={(e) => setCompCity(e.target.value)}
         />
 
         <TextField
@@ -165,16 +165,18 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
           freeSolo
           id="free-solo-2-demo"
           disableClearable
-          options={options}
+          options={values.map((option) => option.cityName)}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Search input"
+              label="Search country"
               variant="outlined"
               InputProps={{
                 ...params.InputProps,
                 type: "search",
               }}
+              value={params}
+              onChange={(e) => setCompCity(e.target.value)}
             />
           )}
         />
@@ -209,9 +211,8 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
         </div>
       </form>
     </>
-     // Get request.
-     );
-    
+    // Get request.
+  );
 };
 
 export default RegistrationBasicCompanyData;
