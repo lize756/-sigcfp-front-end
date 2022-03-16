@@ -44,39 +44,52 @@ const useStyles = makeStyles((theme) => ({
  * @returns
  */
 const RegistrationBasicCompanyData = (propsWithAccordion) => {
+
+
+  /**
+   * ---------------------------------------------------------
+   * -------------------------CONSTANTS-----------------------
+   * ---------------------------------------------------------
+   */
   const classes = useStyles();
   // create state variables for each input
-  const [compName, setCompName] = useState("");
-  const [compNit, setCompNit] = useState("");
-  const [compAddress, setCompAddress] = useState("");
-  const [compCity, setCompCity] = useState("");
-  const [compEcoActiv, setCompEcoActiv] = useState("");
-  const [compType, setCompType] = useState("");
-  const [compUrlAddress, setCompUrlAddress] = useState("");
-  const [compIcesiStud, setCompIcesiStud] = useState("F");
+  const [getCompName, setCompName] = useState("");
+  const [getCompNit, setCompNit] = useState("");
+  const [getCompAddress, setCompAddress] = useState("");
+  const [getCompCity, setCompCity] = useState({});
+  const [getCompEcoActiv, setCompEcoActiv] = useState("");
+  const [getCompType, setCompType] = useState("");
+  const [getCompUrlAddress, setCompUrlAddress] = useState("");
+  const [getCompIcesiStud, setCompIcesiStud] = useState("F");
+  const [getCompEmail,setCompEmail] = useState("");
+  const [getCompTelephone, setCompTelephone] = useState("");
 
   //Create data
   const [values, setValues] = React.useState([]);
-  function Company(
-    compName,
-    compNit,
-    compCity,
-    compAddress,
-    compEcoActiv,
-    compUrlAddress,
-    compType,
-    compIcesiStud
-  ) {
-    this.compAddress = compAddress;
-    this.compName = compName;
-    this.compNit = compNit;
-    this.compEcoActiv = compEcoActiv;
-    this.compUrlAddress = compUrlAddress;
-    this.compCity = compCity;
-    this.compType = compType;
-    this.compIcesiStud = compIcesiStud;
-    this.compIcesiStud = compIcesiStud;
-  }
+
+
+
+
+
+  /**
+   * ----------------------------------------------------------
+   * --------------------------Functions-----------------------
+   * ----------------------------------------------------------
+   */
+
+  /**
+   * Constructor of the company
+   * @param {*} compName  Name of the company
+   * @param {*} compNit Nit of the company
+   * @param {*} compCity  City where the company is
+   * @param {*} compAddress Address where the company is
+   * @param {*} compEcoActiv  Economy activity where the company is
+   * @param {*} compUrlAddress Url Address of the company
+   * @param {*} compType Type of company
+   * @param {*} compIcesiStud Verify if the company recuitred colleged students
+   */
+  
+
   // GET request using axios inside useEffect React hook
   useEffect(() => {
     axios.get("cities").then((res) => {
@@ -84,36 +97,57 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
     });
   }, []);
 
+  /**
+   * Send information of the front-end until back-end
+   * @param {*} e event of the button
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
-    let company = new Company(
-      compName,
-      compNit,
-      compCity,
-      compAddress,
-      compEcoActiv,
-      compUrlAddress,
-      compType,
-      compIcesiStud
-    );
-    console.log("Entre", compCity);
+    
+    const company = {
+      compAddress: getCompAddress,
+      compEcoActiv: getCompEcoActiv,
+      compIcesiStud: getCompIcesiStud,
+      compEmail: getCompEmail,
+      compName: getCompName,
+      compNit: getCompNit,
+      compTelephone: getCompTelephone,
+      compType: getCompType,
+      compUrlAddress: getCompUrlAddress,
+      compCity: getCompCity
+    }
+    console.log(company)
 
-    // Post request.
-    axios.post("companies/add/", company).then((response) => {
-      if (response.data != null) {
-        this.setState(this.initialState);
-        console.log(company);
-      }
-    });
+    axios.post('companies/add', { company })
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+
+    /*
+    axios({
+        method: "POST",
+        URL: "companies/add",
+        data: {
+          compAddress: getCompAddress,
+          compEcoActiv: getCompEcoActiv,
+          compIcesiStud: getCompIcesiStud,
+          compName: getCompName,
+          compNit: getCompNit,
+          compType: getCompType,
+          compUrlAddress: getCompUrlAddress,
+          compCity: getCompCity
+        }
+      }).then(res => console.log(res.data)).catch(error => console.log(error))
+    */
   };
 
-
-
-  const handleChange = (suggestion, index, dataLabel) =>{
-    let completeObject  = values.find((item)=>(item.name==dataLabel))
-  }
-
-
+ 
+  /**
+   * -----------------------------------------------------
+   * ---------------Return of the component --------------
+   * -----------------------------------------------------
+   */
   return (
     <>
       <form className={classes.root} onSubmit={handleSubmit}>
@@ -121,21 +155,21 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
           label="Nombre de la Empresa"
           variant="outlined"
           required
-          value={compName}
+          value={getCompName}
           onChange={(e) => setCompName(e.target.value)}
         />
         <TextField
           label="NIT"
           variant="outlined"
           required
-          value={compNit}
+          value={getCompNit}
           onChange={(e) => setCompNit(e.target.value)}
         />
         <TextField
           label="Dirección de la Empresa"
           variant="outlined"
           required
-          value={compAddress}
+          value={getCompAddress}
           onChange={(e) => setCompAddress(e.target.value)}
         />
 
@@ -143,29 +177,57 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
           label="Actividad Económica"
           variant="outlined"
           required
-          value={compEcoActiv}
+          value={getCompEcoActiv}
           onChange={(e) => setCompEcoActiv(e.target.value)}
+        />
+
+        <TextField
+          label="Email"
+          variant="outlined"
+          required
+          value={getCompEmail}
+          onChange={(e) => setCompEmail(e.target.value)}
         />
 
         <TextField
           label="Tipo de Empresa"
           variant="outlined"
           required
-          value={compType}
+          value={getCompType}
           onChange={(e) => setCompType(e.target.value)}
+        />
+        
+        <TextField
+          label="Número telefonico"
+          variant="outlined"
+          required
+          value={getCompTelephone}
+          onChange={(e) => setCompTelephone(e.target.value)}
         />
         <TextField
           label="Dirección URL de pagina Web"
           variant="outlined"
           required
-          value={compUrlAddress}
+          value={getCompUrlAddress}
           onChange={(e) => setCompUrlAddress(e.target.value)}
         />
         <Autocomplete
           freeSolo
           id="free-solo-2-demo"
           disableClearable
-          options={values.map((option) => option.cityName)}
+          /**
+           * List of cities 
+           */
+          options={values}
+          /**
+           * This property allows to show in the user's view the property that we want to take from the object.
+           * Such as: If we need show the name of the city then we ask the property of the object that correspond the name
+           */
+          getOptionLabel={(option) => option.cityName}
+          /**
+           * Allows send the select object to variable CompCity that correspond the element select
+           */
+          onChange={(event, value) => setCompCity(value)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -175,8 +237,7 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
                 ...params.InputProps,
                 type: "search",
               }}
-              value={params}
-              onChange={(e) => setCompCity(e.target.value)}
+              //={(e,value) => setCompCity()}
             />
           )}
         />
