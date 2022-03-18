@@ -105,7 +105,7 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
     e.preventDefault();
     
     const company = {
-      compAddress: getCompAddress,
+      compAddress : getCompAddress,
       compEcoActiv: getCompEcoActiv,
       compIcesiStud: getCompIcesiStud,
       compEmail: getCompEmail,
@@ -114,11 +114,11 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
       compTelephone: getCompTelephone,
       compType: getCompType,
       compUrlAddress: getCompUrlAddress,
-      compCity: getCompCity
+      city: getCompCity
     }
     console.log(company)
 
-    axios.post('companies/add', { company })
+    axios.post('companies/add', company)
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -157,6 +157,7 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
           required
           value={getCompName}
           onChange={(e) => setCompName(e.target.value)}
+       
         />
         <TextField
           label="NIT"
@@ -164,6 +165,7 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
           required
           value={getCompNit}
           onChange={(e) => setCompNit(e.target.value)}
+          
         />
         <TextField
           label="Dirección de la Empresa"
