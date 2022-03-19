@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Autocomplete, TextField, Button } from "@mui/material";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
 import axios from "../../../config/axios";
@@ -22,33 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const listCareers = [
-  {
-    careId: 1,
-    careName: "Diseño Industrial",
-    faculty: { facuId: 1, facuName: "Ingeniería" },
-  },
-  {
-    careId: 2,
-    careName: "Ingeniería de Sistemas",
-    faculty: { facuId: 1, facuName: "Ingeniería" },
-  },
-  {
-    careId: 3,
-    careName: "Medicina",
-    faculty: { facuId: 2, facuName: "Ciencias de la Salud" },
-  },
-  {
-    careId: 4,
-    careName: "Derecho",
-    faculty: { facuId: 3, facuName: "Derecho y ciencias sociales" },
-  },
-  {
-    careId: 5,
-    careName: "Psicología",
-    faculty: { facuId: 3, facuName: "Derecho y ciencias sociales" },
-  },
-];
+
 
 const RequestCreate = () => {
   const classes = useStyles();
@@ -68,6 +43,15 @@ const RequestCreate = () => {
   });
 
   const [careers, setCareers] = useState([]);
+  const [listCareers, setlistCareers] = useState([]);
+
+
+  // GET request using axios inside useEffect React hook
+  useEffect(() => {
+    axios.get("careers").then((res) => {
+      setlistCareers(res.data);
+    });
+  }, []);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
