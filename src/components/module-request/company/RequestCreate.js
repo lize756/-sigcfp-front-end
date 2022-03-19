@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Autocomplete, TextField, Button } from "@mui/material";
+import { Autocomplete, TextField, Button, Chip } from "@mui/material";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
 import axios from "../../../config/axios";
 
+/**
+ * Styles of the visual part of the component
+ */
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -23,19 +26,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
+/**
+ * This component is responsible for the creation of a new request for interns by a company
+ * @returns
+ */
 const RequestCreate = () => {
   const classes = useStyles();
   let navigate = useNavigate();
 
+  /**-------------------------------------------------------------
+   * Handling the states of the attributes that make up a request
+   * -------------------------------------------------------------
+   */
   const [data, setData] = useState({
     inteRequName: " ",
     inteRequDepartment: "",
     inteRequNumber: 0,
     inteRequStDate: "",
-    inteRequFunctions: "",
-    inteRequCompetencies: "",
     inteRequBondingType: "",
     inteRequDuration: "",
     inteRequSalary: "",
@@ -44,7 +51,8 @@ const RequestCreate = () => {
 
   const [careers, setCareers] = useState([]);
   const [listCareers, setlistCareers] = useState([]);
-
+  const [inteRequFunctions, setInteRequFunctions] = useState([]);
+  const [inteRequCompetencies, setInteRequCompetencies] = useState();
 
   // GET request using axios inside useEffect React hook
   useEffect(() => {
@@ -53,24 +61,58 @@ const RequestCreate = () => {
     });
   }, []);
 
+  //------------Handlechange functions-------------------------------
+
+  /**
+   * This function assigns the information completed by the user with its respective attribute.
+   * attributes like: inteRequName, inteRequDepartment, inteRequNumber, inteRequStDate, inteRequBondingType. inteRequDuration,
+   * inteRequSalary, inteRequOtherBenefits
+   * @param {*} e
+   */
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  /**
+   * This function is responsible for storing the careers selected by the user in the careers list
+   * @param {*} value
+   */
   const handleSelect = (value) => {
     let arrayCareers = careers;
     arrayCareers[arrayCareers.length] = value;
     setCareers(arrayCareers);
-    const car1 = careers[0];
-    console.log("car" + car1.careName);
   };
 
-  //Metodo add
+  /**
+   * This function is responsible for saving the functionalities entered by the user in the attribute inteRequFunctions
+   * @param {*} value
+   */
+  const handleFunctions = (value) => {
+    const functions = value + ",";
+    setInteRequFunctions({ ...inteRequFunctions, functions });
+  };
+
+  /**
+   * This function is responsible for saving the Competencies entered by the user in the attribute inteRequCompetencies
+   * @param {*} value
+   */
+  const handleCompetencies = (value) => {
+    const competencies = value + ",";
+    setInteRequCompetencies({ ...inteRequCompetencies, competencies });
+  };
+
+  /**
+   * This function is responsible for relaying the information of the new intern request with the
+   * model through the use of axios
+   * @param {*} e represents an event
+   */
   const addRequest = (e) => {
     e.preventDefault();
 
     const today = new Date().toLocaleDateString();
-    console.log(today);
+
+    console.log(inteRequFunctions.functions);
+    console.log(inteRequCompetencies.competencies);
 
     const request = {
       id: Math.floor(Math.random() * 10000),
@@ -81,15 +123,15 @@ const RequestCreate = () => {
       inteRequSalary: data.inteRequSalary,
       inteRequDepartament: data.inteRequDepartment,
       inteRequStDate: data.inteRequStDate,
-      inteRequFunctions: data.inteRequFunctions,
-      inteRequCompetencies: data.inteRequCompetencies,
+      inteRequFunctions: inteRequFunctions.functions,
+      inteRequCompetencies: inteRequCompetencies.competencies,
       inteRequBondingType: data.inteRequBondingType,
       inteRequOtherBenefits: data.inteRequOtherBenefits,
 
       //faculty: careers.faculty.facuName,
       //careers: careers,
-      faculty: "Facultad",
-      careers: careers[0].careName,
+      //faculty: "Facultad",
+      //careers: careers[0].careName,
     };
 
     axios
@@ -150,19 +192,12 @@ const RequestCreate = () => {
             type="date"
             onChange={handleChange}
           />
-          <TextField
-            name="inteRequFunctions"
-            multiline
-            label="Funciones Principales"
-            rows={8}
-            onChange={handleChange}
-          />
 
           <Autocomplete
             multiple
-            id="tags-filled"
-            options={top100Films.map((option) => option.title)}
-            defaultValue={[top100Films[13].title]}
+            fullWidth
+            options={[]}
+            rows={4}
             freeSolo
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
@@ -173,23 +208,41 @@ const RequestCreate = () => {
                 />
               ))
             }
+            onChange={(e, value) => handleFunctions(value)}
             renderInput={(params) => (
               <TextField
                 {...params}
-                variant="filled"
-                label="freeSolo"
-                placeholder="Favorites"
+                variant="outlined"
+                label="Funciones Principales"
               />
             )}
           />
 
-          <TextField
-            name="inteRequCompetencies"
-            multiline
-            label="Competencias Claves del Éxito"
-            rows={8}
-            onChange={handleChange}
+          <Autocomplete
+            multiple
+            fullWidth
+            options={[]}
+            rows={4}
+            freeSolo
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip
+                  variant="outlined"
+                  label={option}
+                  {...getTagProps({ index })}
+                />
+              ))
+            }
+            onChange={(e, value) => handleCompetencies(value)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Competencias Claves del Éxito"
+              />
+            )}
           />
+
           <TextField
             name="inteRequBondingType"
             multiline
