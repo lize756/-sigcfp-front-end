@@ -2,87 +2,30 @@
   "requests": [
     {
       "id": 1,
-      "faculty": "faculty-1",
-      "career": "career-1",
-      "fechaInicio": "acadperiod-1",
-      "studnumber": 2
+      "faculty": "Ingenieria",
+      "Careers": "Industrial",
+      "inteRequNumber": 4,
+      "inteRequDateStart": "2020-02-13",
+      "inteRequDepartment": "Recursos Humanos ",
+      "inteRequFunctions": "Conocimiento de capacidades",
+      "inteRequcompetence": "Competenecia 1 ",
+      "inteRequBondingType": "Contracto de aprendizaje",
+      "inteRequDuration": "6 Meses",
+      "inteRequSalary": "1.200.000",
+      "inteRequBenefitss": "Ninguno"
     },
     {
-      "id": 2,
-      "faculty": "faculty-2",
-      "career": "career-2",
-      "fechaInicio": "acadperiod-2",
-      "studnumber": 6
-    },
-    {
-      "id": 3,
-      "faculty": "faculty-3",
-      "career": "career-3",
-      "fechaInicio": "acadperiod-3",
-      "studnumber": 2
-    },
-    {
-      "id": 4,
-      "faculty": "faculty-4",
-      "career": "career-4",
-      "fechaInicio": "acadperiod-4",
-      "studnumber": 7
-    },
-    {
-      "id": 5,
-      "faculty": "Ingenieria de Sistema",
-      "career": "Sistemas",
-      "studnumber": 7,
-      "fechaInicio": "2022-12-12",
-      "area": "Departamento 1 ",
-      "funciones": "Funcion 1 ",
-      "competencias": "Competencia 5",
-      "tipoVinculacion": "Normal",
-      "duracion": "12 Meses",
-      "bonificacion": "$850.000",
-      "beneficios": "Beneficio 1"
-    },
-    {
-      "id": 6,
-      "faculty": "faculty-6",
-      "career": "career-6",
-      "fechaInicio": "acadperiod-5",
-      "studnumber": 7
-    },
-    {
-      "id": 7,
-      "faculty": "faculty-7",
-      "career": "career-7",
-      "fechaInicio": "acadperiod-5",
-      "studnumber": 7
-    },
-    {
-      "id": 8,
-      "faculty": "faculty-8",
-      "career": "career-8",
-      "fechaInicio": "acadperiod-8",
-      "studnumber": 4
-    },
-    {
-      "id": 9,
-      "faculty": "faculty-9",
-      "career": "career-9",
-      "fechaInicio": "acadperiod-9",
-      "studnumber": 1
-    },
-    {
-      "id": 1234,
-      "faculty": "Ingenieria de Sistema",
-      "career": "Sistemas",
-      "studnumber": "5",
-      "fechaInicio": "2022-05-10",
-      "area": "Departamento 1290",
-      "funciones": "Funciones 890",
-      "competencias": "Competencias claves 123",
-      "tipoVinculacion": "Mixto",
-      "duracion": "7 Meses",
-      "bonificacion": "$1.000.000",
-      "beneficios": "Ninguno"
+      "id": 6800,
+      "faculty": "Facultad",
+      "inteRequDepartment": "",
+      "inteRequNumber": 0,
+      "inteRequDateStart": "",
+      "inteRequFunctions": "",
+      "inteRequcompetence": "",
+      "inteRequBondingType": "",
+      "inteRequDuration": "",
+      "inteRequSalary": "",
+      "inteRequBenefits": ""
     }
   ]
 }

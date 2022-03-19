@@ -10,7 +10,6 @@ const MainCompany = () => {
 
   const edit = (request) => {
     setRequestEdit(request);
-    console.log("Estoy en edit");
   };
 
   return (

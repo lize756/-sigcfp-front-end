@@ -52,13 +52,11 @@ const RequestUpdate = ({ request }) => {
     setEditRequest(request);
   }, [request]);
 
-  console.log(request);
-
   const handleChange = (e) => {
     setEditRequest({ ...editRequest, [e.target.name]: e.target.value });
   };
 
-  //Metodo put
+  //Metodo put aacomodar toda esta clase
   const putRequest = (e) => {
     e.preventDefault();
     const request = {

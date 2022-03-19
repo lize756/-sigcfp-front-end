@@ -22,13 +22,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const careers = [
-  { title: "Diseño Industrial", label: "Diseño Industrial" },
-  { title: "Ingeniería de Sistemas", label: "Ingeniería de Sistemas" },
-  { title: "Derecho", label: "Derecho" },
-  { title: "Psicología", label: "Psicología" },
-  { title: "Química Farmacéutica", label: "Química Farmacéutica" },
-  { title: "Medicina", label: "Medicina" },
+const listCareers = [
+  {
+    careId: 1,
+    careName: "Diseño Industrial",
+    faculty: { facuId: 1, facuName: "Ingeniería" },
+  },
+  {
+    careId: 2,
+    careName: "Ingeniería de Sistemas",
+    faculty: { facuId: 1, facuName: "Ingeniería" },
+  },
+  {
+    careId: 3,
+    careName: "Medicina",
+    faculty: { facuId: 2, facuName: "Ciencias de la Salud" },
+  },
+  {
+    careId: 4,
+    careName: "Derecho",
+    faculty: { facuId: 3, facuName: "Derecho y ciencias sociales" },
+  },
+  {
+    careId: 5,
+    careName: "Psicología",
+    faculty: { facuId: 3, facuName: "Derecho y ciencias sociales" },
+  },
 ];
 
 const RequestCreate = () => {
@@ -36,44 +55,50 @@ const RequestCreate = () => {
   let navigate = useNavigate();
 
   const [data, setData] = useState({
-    area: "",
-    studnumber: 0,
-    fechaInicio: "",
-    funciones: "",
-    competencias: "",
-    tipoVinculacion: "",
-    duracion: "",
-    bonificacion: "",
-    beneficios: "",
+    inteRequDepartment: "",
+    inteRequNumber: 0,
+    inteRequDateStart: "",
+    inteRequFunctions: "",
+    inteRequcompetence: "",
+    inteRequBondingType: "",
+    inteRequDuration: "",
+    inteRequSalary: "",
+    inteRequBenefits: "",
   });
 
-  const [carrera, setCarrera] = useState(" ");
+  const [careers, setCareers] = useState([]);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const handleSelect = (e) => {
-    setCarrera(e.target.value);
+  const handleSelect = (value) => {
+    let arrayCareers = careers;
+    arrayCareers[arrayCareers.length] = value;
+    setCareers(arrayCareers);
+    const car1 = careers[0];
+    console.log(car1);
   };
+
   //Metodo add
   const addRequest = (e) => {
     e.preventDefault();
-    console.log("competenciass " + data.competencias);
 
     const request = {
       id: Math.floor(Math.random() * 10000),
-      faculty: "Ingenieria de Sistema",
-      career: "Sistemas",
-      studnumber: data.studnumber,
-      fechaInicio: data.fechaInicio,
-      area: data.area,
-      funciones: data.funciones,
-      competencias: data.competencias,
-      tipoVinculacion: data.tipoVinculacion,
-      duracion: data.duracion,
-      bonificacion: data.bonificacion,
-      beneficios: data.beneficios,
+      //faculty: careers.faculty.facuName,
+      //careers: careers,
+      faculty: "Facultad",
+      careers: careers[0].careName,
+      inteRequDepartment: data.inteRequDepartment,
+      inteRequNumber: data.inteRequNumber,
+      inteRequDateStart: data.inteRequDateStart,
+      inteRequFunctions: data.inteRequFunctions,
+      inteRequcompetence: data.inteRequcompetence,
+      inteRequBondingType: data.inteRequBondingType,
+      inteRequDuration: data.inteRequDuration,
+      inteRequSalary: data.inteRequSalary,
+      inteRequBenefits: data.inteRequBenefits,
     };
 
     axios
@@ -81,7 +106,7 @@ const RequestCreate = () => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
-    navigate("/company/request");
+    //navigate("/company/request");
   };
 
   return (
@@ -91,11 +116,10 @@ const RequestCreate = () => {
           <Autocomplete
             multiple
             fullWidth
-            options={careers}
-            getOptionLabel={(option) => option.title}
-            name="carreras"
-            value={undefined}
-            onChange={handleSelect}
+            options={listCareers}
+            getOptionLabel={(option) => option.careName}
+            name="careers"
+            onChange={(e, value) => handleSelect(value)}
             filterSelectedOptions
             renderInput={(params) => (
               <TextField
@@ -108,60 +132,58 @@ const RequestCreate = () => {
 
           <TextField
             id="outlined-textarea"
-            name="area"
+            name="inteRequDepartment"
             label="Area o Departamento"
-            multiline
             onChange={handleChange}
           />
 
           <TextField
-            name="studnumber"
-            placeholder="12"
+            name="inteRequNumber"
+            placeholder="5"
             label="Número de Estudiantes"
-            multiline
+            type="number"
             onChange={handleChange}
           />
           <TextField
-            name="fechaInicio"
+            name="inteRequDateStart"
             placeholder="yyyy-mm-dd"
             label="Fecha de Inicio"
-            multiline
             onChange={handleChange}
           />
           <TextField
-            name="funciones"
+            name="inteRequFunctions"
             multiline
             label="Funciones Principales"
             rows={8}
             onChange={handleChange}
           />
           <TextField
-            name="competencias"
+            name="inteRequcompetence"
             multiline
             label="Competencias Claves del Éxito"
             rows={8}
             onChange={handleChange}
           />
           <TextField
-            name="tipoVinculacion"
+            name="inteRequBondingType"
             multiline
             label="Tipo de Vinculación"
             onChange={handleChange}
           />
           <TextField
-            name="duracion"
+            name="inteRequBenefits"
             label="Duración de la Practica"
             multiline
             onChange={handleChange}
           />
           <TextField
-            name="bonificacion"
+            name="inteRequSalary"
             label="Valor de Bonificación"
-            multiline
+            type="number"
             onChange={handleChange}
           />
           <TextField
-            name="beneficios"
+            name="inteRequBenefits"
             label="Otros Beneficios"
             multiline
             onChange={handleChange}
