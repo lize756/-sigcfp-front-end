@@ -26,6 +26,76 @@
       "inteRequDuration": "",
       "inteRequSalary": "",
       "inteRequBenefits": ""
+    },
+    {
+      "id": 928,
+      "faculty": "Facultad",
+      "careers": "carrera",
+      "inteRequDepartment": "",
+      "inteRequNumber": 0,
+      "inteRequDateStart": "",
+      "inteRequFunctions": "",
+      "inteRequcompetence": "",
+      "inteRequBondingType": "",
+      "inteRequDuration": "",
+      "inteRequSalary": "",
+      "inteRequBenefits": ""
+    },
+    {
+      "id": 1501,
+      "faculty": "Facultad",
+      "inteRequDepartment": "",
+      "inteRequNumber": 0,
+      "inteRequDateStart": "",
+      "inteRequFunctions": "",
+      "inteRequcompetence": "",
+      "inteRequBondingType": "",
+      "inteRequDuration": "",
+      "inteRequSalary": "",
+      "inteRequBenefits": ""
+    },
+    {
+      "id": 3182,
+      "faculty": "Facultad",
+      "inteRequDepartment": "",
+      "inteRequNumber": 0,
+      "inteRequDateStart": "",
+      "inteRequFunctions": "",
+      "inteRequcompetence": "",
+      "inteRequBondingType": "",
+      "inteRequDuration": "",
+      "inteRequSalary": "",
+      "inteRequBenefits": ""
+    },
+    {
+      "id": 3971,
+      "inteRequCreate": "18-03-2022",
+      "inteRequDuration": "",
+      "inteRequName": "",
+      "inteRequNumber": 0,
+      "inteRequSalary": "",
+      "inteRequDepartament": "",
+      "inteRequStDate": "2022-03-11",
+      "inteRequFunctions": "",
+      "inteRequCompetencies": "",
+      "inteRequBondingType": "",
+      "inteRequOtherBenefits": "",
+      "faculty": "Facultad"
+    },
+    {
+      "id": 1053,
+      "inteRequCreate": "18-03-2022",
+      "inteRequDuration": "",
+      "inteRequName": "",
+      "inteRequNumber": 0,
+      "inteRequSalary": "",
+      "inteRequDepartament": "",
+      "inteRequStDate": "2022-03-11",
+      "inteRequFunctions": "",
+      "inteRequCompetencies": "",
+      "inteRequBondingType": "",
+      "inteRequOtherBenefits": "",
+      "faculty": "Facultad"
     }
   ]
 }

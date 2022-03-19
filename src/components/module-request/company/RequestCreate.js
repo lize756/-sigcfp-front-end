@@ -55,15 +55,16 @@ const RequestCreate = () => {
   let navigate = useNavigate();
 
   const [data, setData] = useState({
+    inteRequName: " ",
     inteRequDepartment: "",
     inteRequNumber: 0,
-    inteRequDateStart: "",
+    inteRequStDate: "",
     inteRequFunctions: "",
-    inteRequcompetence: "",
+    inteRequCompetencies: "",
     inteRequBondingType: "",
     inteRequDuration: "",
     inteRequSalary: "",
-    inteRequBenefits: "",
+    inteRequOtherBenefits: "",
   });
 
   const [careers, setCareers] = useState([]);
@@ -77,28 +78,34 @@ const RequestCreate = () => {
     arrayCareers[arrayCareers.length] = value;
     setCareers(arrayCareers);
     const car1 = careers[0];
-    console.log(car1);
+    console.log("car" + car1.careName);
   };
 
   //Metodo add
   const addRequest = (e) => {
     e.preventDefault();
 
+    const today = new Date().toLocaleDateString();
+    console.log(today);
+
     const request = {
       id: Math.floor(Math.random() * 10000),
+      inteRequCreate: today,
+      inteRequDuration: data.inteRequDuration,
+      inteRequName: "",
+      inteRequNumber: data.inteRequNumber,
+      inteRequSalary: data.inteRequSalary,
+      inteRequDepartament: data.inteRequDepartment,
+      inteRequStDate: data.inteRequStDate,
+      inteRequFunctions: data.inteRequFunctions,
+      inteRequCompetencies: data.inteRequCompetencies,
+      inteRequBondingType: data.inteRequBondingType,
+      inteRequOtherBenefits: data.inteRequOtherBenefits,
+
       //faculty: careers.faculty.facuName,
       //careers: careers,
       faculty: "Facultad",
       careers: careers[0].careName,
-      inteRequDepartment: data.inteRequDepartment,
-      inteRequNumber: data.inteRequNumber,
-      inteRequDateStart: data.inteRequDateStart,
-      inteRequFunctions: data.inteRequFunctions,
-      inteRequcompetence: data.inteRequcompetence,
-      inteRequBondingType: data.inteRequBondingType,
-      inteRequDuration: data.inteRequDuration,
-      inteRequSalary: data.inteRequSalary,
-      inteRequBenefits: data.inteRequBenefits,
     };
 
     axios
@@ -113,6 +120,13 @@ const RequestCreate = () => {
     <Container maxWidth="lg">
       <Box sx={{ bgcolor: "#F2F6FE" }}>
         <form className={classes.root} onSubmit={addRequest}>
+          <TextField
+            name="inteRequName"
+            placeholder="Smith-Lynch"
+            label="Nombre de la solicitud"
+            onChange={handleChange}
+          />
+
           <Autocomplete
             multiple
             fullWidth
@@ -133,6 +147,7 @@ const RequestCreate = () => {
           <TextField
             id="outlined-textarea"
             name="inteRequDepartment"
+            placeholder="Recursos humanos\n"
             label="Area o Departamento"
             onChange={handleChange}
           />
@@ -145,9 +160,10 @@ const RequestCreate = () => {
             onChange={handleChange}
           />
           <TextField
-            name="inteRequDateStart"
-            placeholder="yyyy-mm-dd"
+            name="inteRequStDate"
             label="Fecha de Inicio"
+            InputLabelProps={{ shrink: true, required: true }}
+            type="date"
             onChange={handleChange}
           />
           <TextField
@@ -157,8 +173,34 @@ const RequestCreate = () => {
             rows={8}
             onChange={handleChange}
           />
+
+          <Autocomplete
+            multiple
+            id="tags-filled"
+            options={top100Films.map((option) => option.title)}
+            defaultValue={[top100Films[13].title]}
+            freeSolo
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip
+                  variant="outlined"
+                  label={option}
+                  {...getTagProps({ index })}
+                />
+              ))
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="filled"
+                label="freeSolo"
+                placeholder="Favorites"
+              />
+            )}
+          />
+
           <TextField
-            name="inteRequcompetence"
+            name="inteRequCompetencies"
             multiline
             label="Competencias Claves del Éxito"
             rows={8}
@@ -171,7 +213,7 @@ const RequestCreate = () => {
             onChange={handleChange}
           />
           <TextField
-            name="inteRequBenefits"
+            name="inteRequDuration"
             label="Duración de la Practica"
             multiline
             onChange={handleChange}
@@ -183,7 +225,7 @@ const RequestCreate = () => {
             onChange={handleChange}
           />
           <TextField
-            name="inteRequBenefits"
+            name="inteRequOtherBenefits"
             label="Otros Beneficios"
             multiline
             onChange={handleChange}
