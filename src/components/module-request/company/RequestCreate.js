@@ -113,7 +113,7 @@ const RequestCreate = () => {
 
     console.log(inteRequFunctions.functions);
     console.log(inteRequCompetencies.competencies);
-
+    const stDate = new Date(data.inteRequStDate).toLocaleDateString();
     const request = {
       inteRequCreate: today,
       inteRequDuration: data.inteRequDuration,
@@ -121,13 +121,14 @@ const RequestCreate = () => {
       inteRequNumber: data.inteRequNumber,
       inteRequSalary: data.inteRequSalary,
       inteRequDepartament: data.inteRequDepartment,
-      inteRequStDate: data.inteRequStDate,
+      inteRequStDate: stDate,
       inteRequFunctions: inteRequFunctions.functions,
       inteRequCompetencies: inteRequCompetencies.competencies,
       inteRequBondingType: data.inteRequBondingType,
       inteRequOtherBenefits: data.inteRequOtherBenefits,
       careers: careers,
     };
+    console.log(request);
 
     axios
       .post("internRequests/add", request)
