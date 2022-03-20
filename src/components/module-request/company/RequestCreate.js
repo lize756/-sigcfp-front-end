@@ -51,8 +51,8 @@ const RequestCreate = () => {
 
   const [careers, setCareers] = useState([]);
   const [listCareers, setlistCareers] = useState([]);
-  const [inteRequFunctions, setInteRequFunctions] = useState("");
-  const [inteRequCompetencies, setInteRequCompetencies] = useState("");
+  const [inteRequFunctions, setInteRequFunctions] = useState();
+  const [inteRequCompetencies, setInteRequCompetencies] = useState();
 
   // GET request using axios inside useEffect React hook
   useEffect(() => {
@@ -89,7 +89,7 @@ const RequestCreate = () => {
    */
   const handleFunctions = (value) => {
     const functions = value + ",";
-    setInteRequFunctions(inteRequFunctions + functions);
+    setInteRequFunctions({ ...inteRequFunctions, functions });
   };
 
   /**
@@ -98,7 +98,7 @@ const RequestCreate = () => {
    */
   const handleCompetencies = (value) => {
     const competencies = value + ",";
-    setInteRequCompetencies(inteRequCompetencies + competencies);
+    setInteRequCompetencies({ ...inteRequCompetencies, competencies });
   };
 
   /**
@@ -126,15 +126,10 @@ const RequestCreate = () => {
       inteRequCompetencies: inteRequCompetencies.competencies,
       inteRequBondingType: data.inteRequBondingType,
       inteRequOtherBenefits: data.inteRequOtherBenefits,
-
-      //faculty: careers.faculty.facuName,
-      //careers: careers,
-      //faculty: "Facultad",
-      //careers: careers[0].careName,
     };
 
     axios
-      .post("requests/", request)
+      .post("requestList/", request)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
