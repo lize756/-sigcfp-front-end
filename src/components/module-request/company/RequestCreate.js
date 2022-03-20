@@ -127,15 +127,11 @@ const RequestCreate = () => {
       inteRequCompetencies: inteRequCompetencies.competencies,
       inteRequBondingType: data.inteRequBondingType,
       inteRequOtherBenefits: data.inteRequOtherBenefits,
-
-      //faculty: careers.faculty.facuName,
-      //careers: careers,
-      //faculty: "Facultad",
-      //careers: careers[0].careName,
+      careers: careers
     };
 
     axios
-      .post("requests/", request)
+      .post("internRequests/add", request)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
