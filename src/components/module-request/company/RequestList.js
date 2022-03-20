@@ -31,7 +31,8 @@ const RequestList = ({ edit }) => {
   //se guarda en requestlist la informacion de las solicitudes
   //Axios
   useEffect(() => {
-    axios.get("requests").then((res) => setRequestList(res.data));
+   axios.get("internRequests").then((res) => setRequestList(res.data));
+  // axios.get("internRequests").then((res) => console.log(res.data));
   }, []);
 
   //Metodo delete
