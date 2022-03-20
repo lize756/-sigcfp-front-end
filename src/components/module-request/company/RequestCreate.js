@@ -49,7 +49,7 @@ const RequestCreate = () => {
     inteRequOtherBenefits: "",
   });
 
-  const [careers, setCareers] = useState([]);
+  const [careers, setCareers] = useState();
   const [listCareers, setlistCareers] = useState([]);
   const [inteRequFunctions, setInteRequFunctions] = useState();
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
@@ -78,9 +78,7 @@ const RequestCreate = () => {
    * @param {*} value
    */
   const handleSelect = (value) => {
-    let arrayCareers = careers;
-    arrayCareers[arrayCareers.length] = value;
-    setCareers(arrayCareers);
+    setCareers(value);
   };
 
   /**
@@ -109,11 +107,12 @@ const RequestCreate = () => {
   const addRequest = (e) => {
     e.preventDefault();
 
-    const today = new Date().toLocaleDateString();
+    const today =  new Date().toLocaleDateString('en-GB', { year: '2-digit', month: '2-digit', day: '2-digit' })
 
     console.log(inteRequFunctions.functions);
     console.log(inteRequCompetencies.competencies);
-    const stDate = new Date(data.inteRequStDate).toLocaleDateString();
+    const stDate = new Date(data.inteRequStDate).toLocaleDateString('en-GB', { year: '2-digit', month: '2-digit', day: '2-digit' });
+
     const request = {
       inteRequCreate: today,
       inteRequDuration: data.inteRequDuration,
@@ -126,7 +125,7 @@ const RequestCreate = () => {
       inteRequCompetencies: inteRequCompetencies.competencies,
       inteRequBondingType: data.inteRequBondingType,
       inteRequOtherBenefits: data.inteRequOtherBenefits,
-      careers: careers,
+      careers:  Object.assign(careers),
     };
     console.log(request);
 
