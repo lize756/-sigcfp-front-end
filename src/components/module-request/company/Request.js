@@ -8,7 +8,7 @@ const Request = ({ request, delRequest, editRequest }) => {
     <TableRow hover role="checkbox" tabIndex={-1} key={request.id}>
       <TableCell align="right">{request.faculty}</TableCell>
       <TableCell align="right">{request.careers}</TableCell>
-      <TableCell align="right">{request.inteRequDateStart}</TableCell>
+      <TableCell align="right">{request.inteRequStDate}</TableCell>
       <TableCell align="right">{request.inteRequNumber}</TableCell>
       <TableCell align="center">
         <DeleteIcon

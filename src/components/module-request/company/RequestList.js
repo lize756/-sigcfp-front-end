@@ -31,13 +31,13 @@ const RequestList = ({ edit }) => {
   //se guarda en requestlist la informacion de las solicitudes
   //Axios
   useEffect(() => {
-    axios.get("requests").then((res) => setRequestList(res.data));
+    axios.get("/internRequests").then((res) => setRequestList(res.data));
   }, []);
 
   //Metodo delete
   const delRequest = (request) => {
-    axios.delete("requests/" + request.id).then(() => {
-      axios.get("requests").then((res) => {
+    axios.delete("internRequests/" + request.id).then(() => {
+      axios.get("internRequests").then((res) => {
         setRequestList(res.data);
       });
     });
@@ -89,7 +89,7 @@ const RequestList = ({ edit }) => {
               <TableRow>
                 <TableCell align="right">Facultad</TableCell>
                 <TableCell align="right">Carrera</TableCell>
-                <TableCell align="right">Fecha de Creación </TableCell>
+                <TableCell align="right">Fecha de Inicio </TableCell>
                 <TableCell align="right">Número de Estudiantes </TableCell>
                 <TableCell align="center">Acciones</TableCell>
               </TableRow>
