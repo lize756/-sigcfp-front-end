@@ -115,8 +115,6 @@ const RequestCreate = () => {
     console.log(inteRequCompetencies.competencies);
 
     const request = {
-      id: Math.floor(Math.random() * 10000),
-
       inteRequCreate: today,
       inteRequDuration: data.inteRequDuration,
       inteRequName: data.inteRequName,
