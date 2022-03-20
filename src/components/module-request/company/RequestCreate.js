@@ -65,8 +65,8 @@ const RequestCreate = () => {
 
   /**
    * This function assigns the information completed by the user with its respective attribute.
-   * attributes like: inteRequName, inteRequDepartment, inteRequNumber, inteRequStDate, inteRequBondingType. inteRequDuration,
-   * inteRequSalary, inteRequOtherBenefits
+   * attributes like: inteRequName, inteRequDepartment, inteRequNumber, inteRequStDate,
+   * inteRequBondingType. inteRequDuration, inteRequSalary, inteRequOtherBenefits.
    * @param {*} e
    */
   const handleChange = (e) => {
@@ -118,7 +118,7 @@ const RequestCreate = () => {
       id: Math.floor(Math.random() * 10000),
       inteRequCreate: today,
       inteRequDuration: data.inteRequDuration,
-      inteRequName: "",
+      inteRequName: data.inteRequName,
       inteRequNumber: data.inteRequNumber,
       inteRequSalary: data.inteRequSalary,
       inteRequDepartament: data.inteRequDepartment,
@@ -139,7 +139,7 @@ const RequestCreate = () => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
-    //navigate("/company/request");
+    navigate("/company/request");
   };
 
   return (
