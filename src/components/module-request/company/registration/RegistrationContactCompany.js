@@ -6,15 +6,8 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
+import RegistrationBasicCompanyData from "./RegistrationBasicCompanyData";
 
-import {
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-} from "@mui/material";
 
 const RegistrationContactCompany = () => {
   const useStyles = makeStyles((theme) => ({
@@ -34,8 +27,10 @@ const RegistrationContactCompany = () => {
       },
     },
   }));
-
+ 
+  // Use to styles of the view
   const classes = useStyles();
+  const [getListContact, setListContact] = useState([]);
   const [contName, setContName] = useState("");
   const [contPosition, setContPosition] = useState("");
   const [contEmail, setContEmail] = useState("");
@@ -48,7 +43,14 @@ const RegistrationContactCompany = () => {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(contName,contPosition,contEmail,contPhone);
+
+    const contact = {
+      contEmail : contEmail,
+      contName: contName,
+      contPhone: contPhone,
+      contPosition: contPosition
+    }
+    console.log(contact);
   };
 
 
@@ -97,6 +99,10 @@ const RegistrationContactCompany = () => {
           </form>
         </Container>
       </React.Fragment>
+      //Render list contact
+      <div> 
+        <RegistrationBasicCompanyData isRendered = {false}  contacts = {getListContact} />
+      </div>
     </>
   );
 };

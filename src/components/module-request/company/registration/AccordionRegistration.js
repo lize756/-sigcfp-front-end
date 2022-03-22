@@ -35,7 +35,7 @@ const AccordionRegistration = () => {
         </AccordionSummary>
         <AccordionDetails>
           {/*Plane 1: Form for registration of basic company data*/}
-          <RegistrationBasicCompanyData value = "" />
+          <RegistrationBasicCompanyData isRendered = {true} />
         </AccordionDetails>
       </Accordion>
       <Accordion

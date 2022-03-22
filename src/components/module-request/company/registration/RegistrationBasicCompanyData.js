@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "../../../../config/axios";
-
 import {
   Radio,
   RadioGroup,
@@ -41,9 +40,10 @@ const useStyles = makeStyles((theme) => ({
 /**
  *
  * @param {*} propsWithAccordion Represent the property that the component called accordion has.
+ * @param {*} isRendered Represente
  * @returns
  */
-const RegistrationBasicCompanyData = (propsWithAccordion) => {
+const RegistrationBasicCompanyData = (props) => {
 
 
   /**
@@ -63,11 +63,10 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
   const [getCompIcesiStud, setCompIcesiStud] = useState("F");
   const [getCompEmail,setCompEmail] = useState("");
   const [getCompTelephone, setCompTelephone] = useState("");
-
   //Create data
   const [values, setValues] = React.useState([]);
 
-
+  console.log("line 71", props.contacts)
 
 
 
@@ -103,7 +102,7 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+    console.log(getCompCity)
     const company = {
       compAddress : getCompAddress,
       compEcoActiv: getCompEcoActiv,
@@ -148,6 +147,7 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
    * ---------------Return of the component --------------
    * -----------------------------------------------------
    */
+  if(props.isRendered){
   return (
     <>
       <form className={classes.root} onSubmit={handleSubmit}>
@@ -276,6 +276,12 @@ const RegistrationBasicCompanyData = (propsWithAccordion) => {
     </>
     // Get request.
   );
+      
+}else{
+  return null;
+}
+
+
 };
 
 export default RegistrationBasicCompanyData;
