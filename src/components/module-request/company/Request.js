@@ -3,7 +3,7 @@ import { TableCell, TableRow } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-const Request = ({ request, delRequest, editRequest }) => {
+const Request = ({ request, delRequest, editRequest, viewRequest }) => {
   //lista de solicitudes de practica
   const [getStrCareers, setStrCareers] = useState("");
   const [getStrFaculty, setStrFaculty] = useState("");
@@ -27,7 +27,15 @@ const Request = ({ request, delRequest, editRequest }) => {
   }, []);
 
   return (
-    <TableRow hover role="checkbox" tabIndex={-1} key={request.id}>
+    <TableRow
+      hover
+      role="checkbox"
+      tabIndex={-1}
+      key={request.id}
+      onClick={() => {
+        viewRequest(request);
+      }}
+    >
       <TableCell align="right">{getStrFaculty}</TableCell>
       <TableCell align="right">{getStrCareers}</TableCell>
       <TableCell align="right">{request.inteRequStDate}</TableCell>
