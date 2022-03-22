@@ -11,20 +11,21 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
 
   useEffect(() => {
     // Allow concat the elements in the list of careers with its faculty
-    let concatCareers = "";
-    let concatFaculty = "";
-    const array = request.careers;
-    for (let i = 0; i < array.length; i++) {
-      if (i == array.length - 1) {
-        concatCareers += array[i].careName;
-        concatFaculty += array[i].faculty.facuName;
-      } else {
-        concatCareers += array[i].careName + ",";
-        concatFaculty += array[i].faculty.facuName + ",";
+
+     let concatCareers = "";
+     let concatFaculty = "";
+     const array = request.careers;
+     for (let i = 0; i < array.length; i++) {
+       if (i == array.length - 1) {
+         concatCareers += array[i].careName;
+         concatFaculty += array[i].faculty.facuName;
+        } else {
+          concatCareers += array[i].careName + ",";
+          concatFaculty += array[i].faculty.facuName + ",";
+        }
       }
-    }
-    setStrCareers(concatCareers);
-    setStrFaculty(concatFaculty);
+      setStrCareers(concatCareers);
+      setStrFaculty(concatFaculty);
   }, []);
 
   return (

@@ -49,7 +49,7 @@ const RequestCreate = () => {
     inteRequOtherBenefits: "",
   });
 
-  const [careers, setCareers] = useState([]);
+  const [careers, setCareers] = useState("");
   const [listCareers, setlistCareers] = useState([]);
   const [inteRequFunctions, setInteRequFunctions] = useState();
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
@@ -78,6 +78,9 @@ const RequestCreate = () => {
    * @param {*} value
    */
   const handleSelect = (value) => {
+    const myJSON = JSON.stringify(value);
+    console.log(myJSON)
+    setCareers(value);
     const listCrs = [];
     for (let i = 0; i < value.length; i++) {
       listCrs.push(value[i]);
@@ -137,7 +140,7 @@ const RequestCreate = () => {
       inteRequCompetencies: inteRequCompetencies.competencies,
       inteRequBondingType: data.inteRequBondingType,
       inteRequOtherBenefits: data.inteRequOtherBenefits,
-      careers: careers,
+      careers:careers,
     };
     console.log(request);
 
