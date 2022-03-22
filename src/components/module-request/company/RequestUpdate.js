@@ -49,6 +49,7 @@ const RequestUpdate = ({ request }) => {
   const [careers, setCareers] = useState([]);
   const [defaultCareers, setDefaultCareers] = useState([]);
   const [inteRequFunctions, setInteRequFunctions] = useState();
+  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState();
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
   const [editRequest, setEditRequest] = useState({
     inteRequName: " ",
@@ -64,6 +65,7 @@ const RequestUpdate = ({ request }) => {
   useEffect(() => {
     setEditRequest(request);
     setDefaultCareers(request.careers);
+    setDefaultInteRequFunctions(request.inteRequFunctions.split(","));
   }, [request]);
 
   // GET request using axios inside useEffect React hook
@@ -123,6 +125,11 @@ const RequestUpdate = ({ request }) => {
     );
   };
 
+  const handleDeleteFunctions = (chipToDelete) => () => {
+    setDefaultInteRequFunctions((chipCrs) =>
+      chipCrs.filter((chip) => chip !== chipToDelete)
+    );
+  };
   //Metodo put aacomodar toda esta clase
   const putRequest = (e) => {
     e.preventDefault();
@@ -159,8 +166,9 @@ const RequestUpdate = ({ request }) => {
             onChange={handleChange}
           />
 
-          <Paper
+          <Box
             sx={{
+              bgcolor: "#F2F6FE",
               display: "flex",
               justifyContent: "center",
               flexWrap: "wrap",
@@ -180,7 +188,7 @@ const RequestUpdate = ({ request }) => {
                 </ListItem>
               );
             })}
-          </Paper>
+          </Box>
 
           <Autocomplete
             multiple

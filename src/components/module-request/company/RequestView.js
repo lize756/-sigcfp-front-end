@@ -27,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const ListItem = styled("li")(({ theme }) => ({
+  margin: theme.spacing(0.5),
+}));
+
 /**
  * This Component is responsible for displaying the request information
  * @param {*} param0 request to display and the edit function that sends the component to update the entire request
@@ -64,6 +68,7 @@ const RequestView = ({ request, edit }) => {
     edit(request);
     navigate("/company/update");
   };
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ bgcolor: "#F2F6FE" }}>
@@ -75,7 +80,26 @@ const RequestView = ({ request, edit }) => {
             disabled
           />
 
-          <TextField name="careers" label="Carreras de Interés" disabled />
+          <Box
+            sx={{
+              bgcolor: "#F2F6FE",
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              listStyle: "none",
+              p: 0.5,
+              m: 0,
+            }}
+            component="ul"
+          >
+            {careers.map((career) => {
+              return (
+                <ListItem key={career.careId}>
+                  <Chip label={career.careName} />
+                </ListItem>
+              );
+            })}
+          </Box>
 
           <TextField
             id="outlined-textarea"

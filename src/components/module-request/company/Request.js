@@ -48,12 +48,12 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
           }}
         />
         &nbsp;
-        <EyeIcon>
-          color="primary" onClick=
-          {() => {
+        <EyeIcon
+          color="primary"
+          onClick={() => {
             viewRequest(request);
           }}
-        </EyeIcon>
+        />
       </TableCell>
     </TableRow>
   );
