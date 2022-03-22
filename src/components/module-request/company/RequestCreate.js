@@ -81,6 +81,13 @@ const RequestCreate = () => {
     const myJSON = JSON.stringify(value);
     console.log(myJSON)
     setCareers(value);
+    const listCrs = [];
+    for (let i = 0; i < value.length; i++) {
+      listCrs.push(value[i]);
+      setCareers(listCrs);
+    }
+    console.log(listCrs);
+    console.log(careers);
   };
 
   /**
@@ -109,12 +116,18 @@ const RequestCreate = () => {
   const addRequest = (e) => {
     e.preventDefault();
 
-    const today =  new Date().toLocaleDateString('en-GB', { year: '2-digit', month: '2-digit', day: '2-digit' })
-
+    const today = new Date().toLocaleDateString("en-GB", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+    });
     console.log(inteRequFunctions.functions);
     console.log(inteRequCompetencies.competencies);
-    const stDate = new Date(data.inteRequStDate).toLocaleDateString('en-GB', { year: '2-digit', month: '2-digit', day: '2-digit' });
-    console.log(careers)
+    const stDate = new Date(data.inteRequStDate).toLocaleDateString("en-GB", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+    });
     const request = {
       inteRequCreate: today,
       inteRequDuration: data.inteRequDuration,
@@ -132,7 +145,11 @@ const RequestCreate = () => {
     console.log(request);
 
     axios
-      .post("internRequests/add", request)
+      .post(
+        "internRequests/add",
+
+        request
+      )
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 

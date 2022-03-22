@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Autocomplete, TextField, Button, Chip } from "@mui/material";
+import { Autocomplete, TextField, Button, Chip, Paper } from "@mui/material";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
 import axios from "../../../config/axios";
+import moment from "moment";
 
 /**
  * Styles of the visual part of the component
@@ -25,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const ListItem = styled("li")(({ theme }) => ({
+  margin: theme.spacing(0.5),
+}));
+
 //forma de enviar: 1. el nombre del objeto que se recibe = {el nombre que se envia}
 /**
  * This component is responsible for the update of a request for interns by a company
@@ -41,6 +47,7 @@ const RequestUpdate = ({ request }) => {
    */
   const [listCareers, setlistCareers] = useState([]);
   const [careers, setCareers] = useState([]);
+  const [defaultCareers, setDefaultCareers] = useState([]);
   const [inteRequFunctions, setInteRequFunctions] = useState();
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
   const [editRequest, setEditRequest] = useState({
@@ -56,6 +63,7 @@ const RequestUpdate = ({ request }) => {
 
   useEffect(() => {
     setEditRequest(request);
+    setDefaultCareers(request.careers);
   }, [request]);
 
   // GET request using axios inside useEffect React hook
@@ -64,6 +72,17 @@ const RequestUpdate = ({ request }) => {
       setlistCareers(res.data);
     });
   }, []);
+
+  /**
+   * This function is responsible for converting the
+   * date loaded from the database to the format needed by textfield date
+   * @returns  date in correct format
+   */
+  const getDate = () => {
+    const requDate = editRequest.inteRequStDate;
+    const datest = moment(requDate, "DD/MM/YY").format("YYYY-MM-DD");
+    return datest;
+  };
 
   //------------Handlechange functions-----------------------------------
   const handleChange = (e) => {
@@ -98,6 +117,12 @@ const RequestUpdate = ({ request }) => {
     setInteRequCompetencies({ ...inteRequCompetencies, competencies });
   };
 
+  const handleDelete = (chipToDelete) => () => {
+    setDefaultCareers((chipCrs) =>
+      chipCrs.filter((chip) => chip.careId !== chipToDelete.careId)
+    );
+  };
+
   //Metodo put aacomodar toda esta clase
   const putRequest = (e) => {
     e.preventDefault();
@@ -116,7 +141,7 @@ const RequestUpdate = ({ request }) => {
     };
 
     axios
-      .put("requests/" + request.id, request)
+      .put("internRequests/update/" + request.id, request)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
@@ -133,6 +158,29 @@ const RequestUpdate = ({ request }) => {
             label="Nombre de la solicitud"
             onChange={handleChange}
           />
+
+          <Paper
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              listStyle: "none",
+              p: 0.5,
+              m: 0,
+            }}
+            component="ul"
+          >
+            {defaultCareers.map((career) => {
+              return (
+                <ListItem key={career.careId}>
+                  <Chip
+                    label={career.careName}
+                    onDelete={handleDelete(career)}
+                  />
+                </ListItem>
+              );
+            })}
+          </Paper>
 
           <Autocomplete
             multiple
@@ -171,7 +219,7 @@ const RequestUpdate = ({ request }) => {
             label="Fecha de Inicio"
             InputLabelProps={{ shrink: true, required: true }}
             type="date"
-            value={editRequest.inteRequStDate}
+            value={getDate()}
             onChange={handleChange}
           />
 

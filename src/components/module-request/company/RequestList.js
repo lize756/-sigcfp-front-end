@@ -36,7 +36,8 @@ const RequestList = ({ edit }) => {
 
   //Metodo delete
   const delRequest = (request) => {
-    axios.delete("internRequests/" + request.id).then(() => {
+    console.log(request.inteRequId);
+    axios.delete("internRequests/" + request.inteRequId).then(() => {
       axios.get("internRequests").then((res) => {
         setRequestList(res.data);
       });
@@ -47,6 +48,12 @@ const RequestList = ({ edit }) => {
   const editRequest = (request) => {
     edit(request);
     navigate("/company/update");
+  };
+
+  //Metodo
+  const viewRequest = (request) => {
+    edit(request);
+    navigate("/company/View");
   };
 
   //Metodos handleChange
@@ -74,6 +81,7 @@ const RequestList = ({ edit }) => {
           key={request.id}
           delRequest={delRequest}
           editRequest={editRequest}
+          viewRequest={viewRequest}
         />
       ));
   };
