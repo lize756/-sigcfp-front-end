@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TableCell, TableRow } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import EyeIcon from "@mui/icons-material/Visibility";
 
 const Request = ({ request, delRequest, editRequest, viewRequest }) => {
   //lista de solicitudes de practica
@@ -27,15 +28,7 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
   }, []);
 
   return (
-    <TableRow
-      hover
-      role="checkbox"
-      tabIndex={-1}
-      key={request.id}
-      onClick={() => {
-        viewRequest(request);
-      }}
-    >
+    <TableRow hover role="checkbox" tabIndex={-1} key={request.id}>
       <TableCell align="right">{getStrFaculty}</TableCell>
       <TableCell align="right">{getStrCareers}</TableCell>
       <TableCell align="right">{request.inteRequStDate}</TableCell>
@@ -54,6 +47,13 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
             editRequest(request);
           }}
         />
+        &nbsp;
+        <EyeIcon>
+          color="primary" onClick=
+          {() => {
+            viewRequest(request);
+          }}
+        </EyeIcon>
       </TableCell>
     </TableRow>
   );
