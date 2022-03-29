@@ -278,7 +278,7 @@ const RegistrationBasicCompanyData = (props) => {
   );
       
 }else{
-  return null;
+  return <></>;
 }
 
 
