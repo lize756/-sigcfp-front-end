@@ -49,7 +49,7 @@ const RequestUpdate = ({ request }) => {
   const [careers, setCareers] = useState([]);
   const [defaultCareers, setDefaultCareers] = useState([]);
   const [inteRequFunctions, setInteRequFunctions] = useState([]);
-  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState();
+  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState([]);
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
   const [editRequest, setEditRequest] = useState({
     inteRequName: " ",
@@ -68,7 +68,12 @@ const RequestUpdate = ({ request }) => {
 
     if (request.inteRequFunctions !== "") {
       const arrayDefaults = request.inteRequFunctions.split(",");
-      setDefaultInteRequFunctions(arrayDefaults);
+      let requFunctions = [];
+      for (let i = 0; i < arrayDefaults.length; i++) {
+        requFunctions[i] = { key: i, value: arrayDefaults[i] };
+      }
+
+      setDefaultInteRequFunctions(requFunctions);
     }
   }, [request]);
 
@@ -134,11 +139,35 @@ const RequestUpdate = ({ request }) => {
       chipCrs.filter((chip) => chip !== chipToDelete)
     );
   };
-  //Metodo put aacomodar toda esta clase
+
+  /**
+   * This function is responsible for concatenating the default functions of the
+   * request and the new functions of the request
+   * @returns str with all functions
+   */
+  const formatInteRequFunctions = () => {
+    let intefunctions = "";
+    if (defaultInteRequFunctions !== null) {
+      for (let i = 0; i < defaultInteRequFunctions.length; i++) {
+        intefunctions += defaultInteRequFunctions[i].value + ",";
+      }
+    }
+
+    if (!inteRequFunctions.functions === "") {
+      intefunctions = intefunctions + inteRequFunctions.functions;
+    }
+    intefunctions = intefunctions.substring(0, intefunctions.length - 1);
+
+    return intefunctions;
+  };
+
+  //update request function
   const putRequest = (e) => {
     e.preventDefault();
 
     setCareers(careers.concat(defaultCareers));
+
+    const functions = formatInteRequFunctions();
 
     const stDate = new Date(editRequest.inteRequStDate).toLocaleDateString(
       "en-GB",
@@ -155,7 +184,7 @@ const RequestUpdate = ({ request }) => {
       inteRequSalary: editRequest.inteRequSalary,
       inteRequDepartament: editRequest.inteRequDepartment,
       inteRequStDate: stDate,
-      inteRequFunctions: inteRequFunctions,
+      inteRequFunctions: functions,
       inteRequCompetencies: inteRequCompetencies,
       inteRequBondingType: editRequest.inteRequBondingType,
       inteRequOtherBenefits: editRequest.inteRequOtherBenefits,
@@ -246,7 +275,29 @@ const RequestUpdate = ({ request }) => {
             value={getDate()}
             onChange={handleChange}
           />
-
+          <Box
+            sx={{
+              bgcolor: "#F2F6FE",
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              listStyle: "none",
+              p: 0.5,
+              m: 0,
+            }}
+            component="ul"
+          >
+            {defaultInteRequFunctions.map((inteFunc) => {
+              return (
+                <ListItem key={inteFunc.key}>
+                  <Chip
+                    label={inteFunc.value}
+                    onDelete={handleDeleteFunctions(inteFunc)}
+                  />
+                </ListItem>
+              );
+            })}
+          </Box>
           <Autocomplete
             multiple
             fullWidth
