@@ -1,0 +1,135 @@
+import React, { useState } from "react";
+import { TextField, Button } from "@mui/material";
+import { makeStyles} from "@material-ui/core";
+import axios from "../../../../../src/config/axios";
+/**
+   * Styles of the visual part of the component
+   */
+ const useStyles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: theme.spacing(2),
+
+      "& .MuiTextField-root": {
+        margin: theme.spacing(2),
+        width: "90%",
+      },
+      "& .MuiButtonBase-root": {
+        margin: theme.spacing(2),
+      },
+    },
+  }));
+
+const coordinatorRegister = () => {
+
+  const classes = useStyles();
+  
+  /**
+   * This function assigns the information completed by the user with its respective attribute.
+   * attributes like: persName, persDocument, persEmail, persPhone,persPassword and persRPassword
+   * @param {*} e
+   */
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+  /**-------------------------------------------------------------
+   * Handling the states of the attributes that make up a register
+   * -------------------------------------------------------------
+   */
+  const [data, setData] = useState({
+    persFirstName: " ",
+    persLastName:"",
+    persDocument: "",
+    persEmail: "",
+    persPhone: "",
+    persPassword: "",
+    persRPassword: "",
+  });
+  /**
+   * This function is responsible for relaying the information of the promotion coordinator with the
+   * model through the use of axios
+   * @param {*} e represents an event
+   */
+  const addRequest = (e) => {
+    e.preventDefault();
+    //Correspond to information of the promotion coodinator
+    const promotionCoordinator = {
+        persFirstName: data.persFirstName,
+        persLastName: data.persLastName,
+        persDocument: data.persDocument,
+        persEmail: data.persEmail,
+        persGenre: data.persGenre,
+    };
+    console.log(promotionCoordinator.persFirstName,promotionCoordinator.persLastName,promotionCoordinator.persDocument,promotionCoordinator.persEmail,promotionCoordinator.persGenre)
+    axios
+    .post("persons/add", promotionCoordinator)
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
+  }
+  return (
+    <form className={classes.root} onSubmit={addRequest}>
+      <TextField
+        label="Nombres"
+        name ="persFirstName"
+        variant="outlined"
+        required
+        onChange={handleChange}
+      />
+       <TextField
+        label="Apellidos"
+        name ="persLastName"
+        variant="outlined"
+        required
+        onChange={handleChange}
+      />
+      <TextField
+        label="Cédula"
+        name ="persDocument"
+        variant="outlined"
+        required
+        onChange={handleChange}
+      />
+      <TextField
+        label="Correo electrónico"
+        variant="outlined"
+        name ="persEmail"
+        required
+        onChange={handleChange}
+      />
+
+      <TextField
+        label="Telefono"
+        variant="outlined"
+        name ="persGenre"        
+        required
+        onChange={handleChange}
+      />
+
+      <TextField
+        label="Constraseña"
+        variant="outlined"
+        type="password"
+        required
+        onChange={handleChange}
+      />
+
+      <TextField
+        label="Corfimación de contraseña"
+        variant="outlined"
+        type="password"
+        required
+        onChange={handleChange}
+      />
+      <div>
+        <Button type="submit" variant="contained" color="primary">
+          Guardar información.
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+export default coordinatorRegister;
