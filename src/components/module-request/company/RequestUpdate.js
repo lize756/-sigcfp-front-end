@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Autocomplete, TextField, Button, Chip, Paper } from "@mui/material";
+import { Autocomplete, TextField, Button, Chip } from "@mui/material";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
@@ -48,7 +48,7 @@ const RequestUpdate = ({ request }) => {
   const [listCareers, setlistCareers] = useState([]);
   const [careers, setCareers] = useState([]);
   const [defaultCareers, setDefaultCareers] = useState([]);
-  const [inteRequFunctions, setInteRequFunctions] = useState();
+  const [inteRequFunctions, setInteRequFunctions] = useState([]);
   const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState();
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
   const [editRequest, setEditRequest] = useState({
@@ -65,7 +65,11 @@ const RequestUpdate = ({ request }) => {
   useEffect(() => {
     setEditRequest(request);
     setDefaultCareers(request.careers);
-    setDefaultInteRequFunctions(request.inteRequFunctions.split(","));
+
+    if (request.inteRequFunctions !== "") {
+      const arrayDefaults = request.inteRequFunctions.split(",");
+      setDefaultInteRequFunctions(arrayDefaults);
+    }
   }, [request]);
 
   // GET request using axios inside useEffect React hook
@@ -82,7 +86,7 @@ const RequestUpdate = ({ request }) => {
    */
   const getDate = () => {
     const requDate = editRequest.inteRequStDate;
-    const datest = moment(requDate, "DD/MM/YY").format("YYYY-MM-DD");
+    const datest = moment(requDate, "DD/MM/YYYY").format("yyyy-MM-DD");
     return datest;
   };
 
@@ -133,20 +137,31 @@ const RequestUpdate = ({ request }) => {
   //Metodo put aacomodar toda esta clase
   const putRequest = (e) => {
     e.preventDefault();
+
+    setCareers(careers.concat(defaultCareers));
+
+    const stDate = new Date(editRequest.inteRequStDate).toLocaleDateString(
+      "en-GB",
+      {
+        year: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
+      }
+    );
     const request = {
-      id: editRequest.id,
       inteRequDuration: editRequest.inteRequDuration,
       inteRequName: editRequest.inteRequName,
       inteRequNumber: editRequest.inteRequNumber,
       inteRequSalary: editRequest.inteRequSalary,
       inteRequDepartament: editRequest.inteRequDepartment,
-      inteRequStDate: editRequest.inteRequStDate,
-      inteRequFunctions: inteRequFunctions.functions,
-      inteRequCompetencies: inteRequCompetencies.competencies,
+      inteRequStDate: stDate,
+      inteRequFunctions: inteRequFunctions,
+      inteRequCompetencies: inteRequCompetencies,
       inteRequBondingType: editRequest.inteRequBondingType,
       inteRequOtherBenefits: editRequest.inteRequOtherBenefits,
+      careers: careers,
     };
-
+    console.log(request);
     axios
       .put("internRequests/update/" + request.id, request)
       .then((res) => console.log(res))
@@ -222,6 +237,7 @@ const RequestUpdate = ({ request }) => {
             type="number"
             onChange={handleChange}
           />
+
           <TextField
             name="inteRequStDate"
             label="Fecha de Inicio"

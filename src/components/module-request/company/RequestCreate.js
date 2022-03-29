@@ -79,7 +79,7 @@ const RequestCreate = () => {
    */
   const handleSelect = (value) => {
     const myJSON = JSON.stringify(value);
-    console.log(myJSON)
+    console.log(myJSON);
     setCareers(value);
     const listCrs = [];
     for (let i = 0; i < value.length; i++) {
@@ -121,35 +121,44 @@ const RequestCreate = () => {
       month: "2-digit",
       day: "2-digit",
     });
-    console.log(inteRequFunctions.functions);
-    console.log(inteRequCompetencies.competencies);
+
+    const functions = inteRequFunctions.functions.substring(
+      0,
+      inteRequFunctions.functions.length - 1
+    );
+
+    const competencies = inteRequCompetencies.competencies.substring(
+      0,
+      inteRequCompetencies.competencies.length - 1
+    );
+
+    console.log(data.inteRequDepartment);
+
     const stDate = new Date(data.inteRequStDate).toLocaleDateString("en-GB", {
       year: "2-digit",
       month: "2-digit",
       day: "2-digit",
     });
+
     const request = {
       inteRequCreate: today,
       inteRequDuration: data.inteRequDuration,
       inteRequName: data.inteRequName,
       inteRequNumber: data.inteRequNumber,
       inteRequSalary: data.inteRequSalary,
-      inteRequDepartament: data.inteRequDepartment,
+      inteRequDepartment: data.inteRequDepartment,
       inteRequStDate: stDate,
-      inteRequFunctions: inteRequFunctions.functions,
-      inteRequCompetencies: inteRequCompetencies.competencies,
+      inteRequFunctions: functions,
+      inteRequCompetencies: competencies,
       inteRequBondingType: data.inteRequBondingType,
       inteRequOtherBenefits: data.inteRequOtherBenefits,
-      careers:careers,
+      careers: careers,
     };
+
     console.log(request);
 
     axios
-      .post(
-        "internRequests/add",
-
-        request
-      )
+      .post("internRequests/add", request)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
