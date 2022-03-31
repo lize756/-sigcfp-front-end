@@ -1,32 +1,31 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
-import { makeStyles} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import axios from "../../../../../src/config/axios";
 /**
-   * Styles of the visual part of the component
-   */
- const useStyles = makeStyles((theme) => ({
-    root: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: theme.spacing(2),
+ * Styles of the visual part of the component
+ */
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: theme.spacing(2),
 
-      "& .MuiTextField-root": {
-        margin: theme.spacing(2),
-        width: "90%",
-      },
-      "& .MuiButtonBase-root": {
-        margin: theme.spacing(2),
-      },
+    "& .MuiTextField-root": {
+      margin: theme.spacing(2),
+      width: "90%",
     },
-  }));
+    "& .MuiButtonBase-root": {
+      margin: theme.spacing(2),
+    },
+  },
+}));
 
 const coordinatorRegister = () => {
-
   const classes = useStyles();
-  
+
   /**
    * This function assigns the information completed by the user with its respective attribute.
    * attributes like: persName, persDocument, persEmail, persPhone,persPassword and persRPassword
@@ -41,10 +40,9 @@ const coordinatorRegister = () => {
    */
   const [data, setData] = useState({
     persFirstName: " ",
-    persLastName:"",
+    persLastName: "",
     persDocument: "",
     persEmail: "",
-    persPhone: "",
     persPassword: "",
     persRPassword: "",
   });
@@ -57,37 +55,42 @@ const coordinatorRegister = () => {
     e.preventDefault();
     //Correspond to information of the promotion coodinator
     const promotionCoordinator = {
-        persFirstName: data.persFirstName,
-        persLastName: data.persLastName,
-        persDocument: data.persDocument,
-        persEmail: data.persEmail,
-        persGenre: data.persGenre,
+      persFirstName: data.persFirstName,
+      persLastName: data.persLastName,
+      persDocument: data.persDocument,
+      persEmail: data.persEmail,
     };
-    console.log(promotionCoordinator.persFirstName,promotionCoordinator.persLastName,promotionCoordinator.persDocument,promotionCoordinator.persEmail,promotionCoordinator.persGenre)
+    console.log(
+      promotionCoordinator.persFirstName,
+      promotionCoordinator.persLastName,
+      promotionCoordinator.persDocument,
+      promotionCoordinator.persEmail,
+      promotionCoordinator.persGenre
+    );
     axios
-    .post("persons/add", promotionCoordinator)
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err));
-  }
+      .post("persons/add", promotionCoordinator)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
   return (
     <form className={classes.root} onSubmit={addRequest}>
       <TextField
         label="Nombres"
-        name ="persFirstName"
+        name="persFirstName"
         variant="outlined"
         required
         onChange={handleChange}
       />
-       <TextField
+      <TextField
         label="Apellidos"
-        name ="persLastName"
+        name="persLastName"
         variant="outlined"
         required
         onChange={handleChange}
       />
       <TextField
         label="Cédula"
-        name ="persDocument"
+        name="persDocument"
         variant="outlined"
         required
         onChange={handleChange}
@@ -95,31 +98,28 @@ const coordinatorRegister = () => {
       <TextField
         label="Correo electrónico"
         variant="outlined"
-        name ="persEmail"
+        name="persEmail"
         required
         onChange={handleChange}
       />
-
       <TextField
-        label="Telefono"
+        label="Nombre de usuario"
         variant="outlined"
-        name ="persGenre"        
+        name="userUserName"
         required
         onChange={handleChange}
       />
-
       <TextField
         label="Constraseña"
         variant="outlined"
-        type="password"
+        type="user_password"
         required
         onChange={handleChange}
       />
-
       <TextField
-        label="Corfimación de contraseña"
+        label="Confirmar Contraseña"
         variant="outlined"
-        type="password"
+        type="user_password"
         required
         onChange={handleChange}
       />
