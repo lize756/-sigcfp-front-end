@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
-import axios from "../../../../../src/config/axios";
+import axios from "../../../../config/axios";
 /**
  * Styles of the visual part of the component
  */
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const coordinatorRegister = () => {
+const CoordinatorRegister = () => {
   const classes = useStyles();
 
   /**
@@ -132,4 +132,4 @@ const coordinatorRegister = () => {
   );
 };
 
-export default coordinatorRegister;
+export default CoordinatorRegister;

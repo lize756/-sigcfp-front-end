@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import RequestList from "../../components/module-request/company/RequestList";
 import Home from "../../components/module-request/company/HomeRequest";
 //import Coordinator_register from "../../components/module-request/coordinator/register/coordinatorRegister"
-import Coordinator_register from "../../components/module-request/coordinator/register/coordinatorRegisterRedux";
+import Coordinator_register from "../../components/module-request/coordinator/register/CoordinatorRegisterRedux";
 import StepperRegistration from "../../components/module-request/company/registration/AccordionRegistration";
-//import SignUp from "../../components/module-request/coordinator/register/SignUp";
+import CoordBasicRegister from "../../components/module-request/coordinator/register/CoordBasicRegister";
+import CoordUserRegister from "../../components/module-request/coordinator/register/CoordUserRegister";
 const MainCompany = () => {
-  //            <Route path="singup" element={<SignUp/>}/>
+  //           
 
   return (
     <>
@@ -24,6 +25,8 @@ const MainCompany = () => {
           </Route>
           <Route path="/coordinator" element={<Home name="REGISTRO" />}>
             <Route path="register" element={<Coordinator_register />} />
+            <Route path="singup" element={<CoordBasicRegister/>}/>
+            <Route path="singup/register" element={<CoordUserRegister/>}/>
           </Route>
           //Registration route
           <Route path="/company" element={<Home name="REGISTRO" />}>

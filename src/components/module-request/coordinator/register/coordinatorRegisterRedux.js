@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const coordinatorRegisterRedux = () => {
+const CoordinatorRegisterRedux = () => {
   const classes = useStyles();
   //const person = useSelector((state) => state.personRegister).person;
   const dispatch = useDispatch();
@@ -152,4 +152,4 @@ return (
   );
 };
 
-export default coordinatorRegisterRedux;
+export default CoordinatorRegisterRedux;

@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = () => {
+const CoordUserRegister = () => {
   const classes = useStyles();
   /**
    * This function assigns the information completed by the user with its respective attribute.
@@ -58,6 +58,12 @@ const SignUp = () => {
    const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
+
+  const nextPage = (e) =>{
+    console.log("entre")
+  }
+
+
   /**-------------------------------------------------------------
    * Handling the states of the attributes that make up a register
    * -------------------------------------------------------------
@@ -72,6 +78,7 @@ const SignUp = () => {
   });
 
   
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -82,7 +89,7 @@ const SignUp = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={nextPage}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -109,6 +116,15 @@ const SignUp = () => {
                 required
                 fullWidth
                 label="Correo electrónico"
+                name="persEmail"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                label="Confirmar correo electrónico"
                 name="persEmail"
               />
             </Grid>
@@ -145,7 +161,6 @@ const SignUp = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            //onSubmit={addRequest}
           >
             Siguiente
           </Button>
@@ -165,4 +180,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default CoordUserRegister;
