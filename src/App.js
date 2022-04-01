@@ -2,12 +2,12 @@ import "./App.css";
 import React from "react";
 import MainCompany from "./config/routes/MainCompany";
 //Redu
-import { Provider } from "react-redux";
-import { Store } from "../src/components/store/slices";
+import { Provider} from "react-redux"
+import store from "../src/components/store/index"
 
 function App() {
   return (
-    <Provider store={Store}> // All app store
+    <Provider store={store}> {/**" All app store"*/}
       <div>
         <MainCompany />
       </div>
