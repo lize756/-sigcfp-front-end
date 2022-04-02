@@ -6,9 +6,20 @@ export const personRegisterSlice = createSlice({
   name: "personRegister",
   initialState: {
     person: {
-
+      persAddress: "",
+      persDocument: "",
+      persEmail: "",
+      persFirstName: "",
+      persGenre: "",
+      persLastName: "",
+      curriculums: [],
+      ethnicgroups: [],
+      city: null,
+      languages: [],
+      userr: null,
     },
-    listPerson: []
+    userr: {},
+    listPerson: [],
   },
   reducers: {
     setPerson: (state, action) => {
@@ -20,32 +31,43 @@ export const personRegisterSlice = createSlice({
         persFirstName: action.payload.persFirstName,
         persGenre: action.payload.persGenre,
         persLastName: action.payload.persLastName,
-        curriculums: action.payload.curriculums,
-        ethnicgroups: action.payload.ethnicgroups,
-        city: action.payload.city,
-        languages: action.payload.languages,
-        userr: action.payload.userr,
-      }
+      };
     },
-    setPersonList: (state, action) =>{
-      state.listPerson = action.payload
-    }
+
+    setUserr: (state, action) => {
+      state.userr = action.payload;
+    },
+
+    setPersonList: (state, action) => {
+      state.listPerson = action.payload;
+    },
   },
 });
 
-
 //Function
-export const fetchAllPerson = () => (dispatch)=>{
+export const fetchAllPerson = () => (dispatch) => {
   axios.get("persons").then((res) => {
     dispatch(setPersonList(res.data));
   });
-}
+};
 
-export const postPerson = () => ()=>{
-  const personToAdd = setPerson
-  console.log(personToAdd)
-}
+export const postPerson = () => () => {
+  const personToAdd = setPerson;
+  console.log(personToAdd);
+};
+
+export const addUserr = (data) => async (dispatch) => {
+  try {
+    // console.log(data);
+    const response = await axios.post("add", data);
+    // console.log(response);
+    dispatch(setUserr(response.data));
+  } catch (err) {
+    throw new Error(err);
+  }
+};
 
 //Export the action to reducer of personRegisterSlice
-export const { setPerson,setPersonList } = personRegisterSlice.actions;
+export const { setPerson, setPersonList, setUserr} =
+  personRegisterSlice.actions;
 export default personRegisterSlice.reducer;

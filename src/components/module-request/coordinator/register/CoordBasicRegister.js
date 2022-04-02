@@ -12,7 +12,12 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import CoordUserRegister from "./CoordUserRegister";
+import { useNavigate } from "react-router";
+/**
+ * Import to redux
+ */
+import { useDispatch, useSelector } from "react-redux";
+import { setPerson } from "../../../store/slices/coordinator/PersonSlice";
 
 function Copyright() {
   return (
@@ -51,6 +56,26 @@ const useStyles = makeStyles((theme) => ({
 
 const CoordBasicRegister = () => {
   const classes = useStyles();
+  // Allow navigate between roots
+  let navigate = useNavigate();
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+ /**-------------------------------------------------------------
+   * Handling the states of the attributes that make up a register
+   * -------------------------------------------------------------
+   */
+  const [data, setData] = useState({
+    persFirstName: " ",
+    persLastName: "",
+    persEmail: "",
+    persEmailR:"",
+    persDocument: "",
+  });
+
+  /*
+   * ***************************************************
+   * **********************Function*********************
+   * ***************************************************
   /**
    * This function assigns the information completed by the user with its respective attribute.
    * attributes like: persName, persDocument, persEmail, persPhone,persPassword and persRPassword
@@ -60,23 +85,28 @@ const CoordBasicRegister = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const nextPage = (e) => {
+  //On Action of the button
+  const submit = (e) => {
     e.preventDefault();
-    <CoordUserRegister/>
+    //Correspond to information of the promotion coodinator
+    const promotionCoordinator = {
+      persFirstName: data.persFirstName,
+      persLastName: data.persLastName,
+      persDocument: data.persDocument,
+      persEmail: data.persEmail,
+    };
+    console.log("entre",
+      promotionCoordinator.persFirstName,
+      promotionCoordinator.persLastName,
+      promotionCoordinator.persDocument,
+      promotionCoordinator.persEmail
+    );
+
+    dispatch(setPerson(promotionCoordinator));
+    navigate("/coordinator/register/user_register");
   };
 
-  /**-------------------------------------------------------------
-   * Handling the states of the attributes that make up a register
-   * -------------------------------------------------------------
-   */
-  const [data, setData] = useState({
-    persFirstName: " ",
-    persLastName: "",
-    persDocument: "",
-    persEmail: "",
-    persPassword: "",
-    persRPassword: "",
-  });
+ 
 
   return (
     <Container component="main" maxWidth="xs">
@@ -88,7 +118,7 @@ const CoordBasicRegister = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate >
+        <form className={classes.form} noValidate onSubmit={submit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -98,7 +128,8 @@ const CoordBasicRegister = () => {
                 fullWidth
                 label="Nombres"
                 autoFocus
-              />
+                onChange={handleChange}
+                />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -107,6 +138,7 @@ const CoordBasicRegister = () => {
                 fullWidth
                 label="Apellidos"
                 name="persLastName"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -116,6 +148,7 @@ const CoordBasicRegister = () => {
                 fullWidth
                 label="Correo electrónico"
                 name="persEmail"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -124,16 +157,18 @@ const CoordBasicRegister = () => {
                 required
                 fullWidth
                 label="Confirmar correo electrónico"
-                name="persEmail"
+                name="persEmailR"
+                onChange={handleChange}
               />
             </Grid>
-             <Grid item xs={12}>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
                 label="Cédula"
                 name="persDocument"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -149,7 +184,6 @@ const CoordBasicRegister = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={nextPage}
           >
             Siguiente
           </Button>

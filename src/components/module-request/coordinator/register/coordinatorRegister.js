@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import axios from "../../../../config/axios";
+
 /**
  * Styles of the visual part of the component
  */
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 const CoordinatorRegister = () => {
   const classes = useStyles();
+  //Dispatch for send elements of the store
+  const dispatch = useDispatch();
 
   /**
    * This function assigns the information completed by the user with its respective attribute.
@@ -60,18 +63,27 @@ const CoordinatorRegister = () => {
       persDocument: data.persDocument,
       persEmail: data.persEmail,
     };
+
+    dispatch(setPerson(promotionCoordinator));
+
     console.log(
       promotionCoordinator.persFirstName,
       promotionCoordinator.persLastName,
       promotionCoordinator.persDocument,
-      promotionCoordinator.persEmail,
-      promotionCoordinator.persGenre
+      promotionCoordinator.persEmail
     );
-    axios
-      .post("persons/add", promotionCoordinator)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    /**
+     * 
+     axios
+     .post("persons/add", promotionCoordinator)
+     .then((res) => console.log(res))
+     .catch((err) => console.log(err));
+     */
   };
+
+  /**
+   * RETURN
+   */
   return (
     <form className={classes.root} onSubmit={addRequest}>
       <TextField

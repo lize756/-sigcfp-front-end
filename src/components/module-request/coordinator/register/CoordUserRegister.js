@@ -12,6 +12,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setUserr,
+  addUserr,
+} from "../../../store/slices/coordinator/PersonSlice";
 
 function Copyright() {
   return (
@@ -50,34 +55,48 @@ const useStyles = makeStyles((theme) => ({
 
 const CoordUserRegister = () => {
   const classes = useStyles();
-  /**
-   * This function assigns the information completed by the user with its respective attribute.
-   * attributes like: persName, persDocument, persEmail, persPhone,persPassword and persRPassword
-   * @param {*} e
-   */
-   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
-
-  const nextPage = (e) =>{
-    console.log("entre")
-  }
-
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  // Allow to bring the email to one person
+  const email = useSelector((state) => state.personRegister).person.persEmail;
 
   /**-------------------------------------------------------------
    * Handling the states of the attributes that make up a register
    * -------------------------------------------------------------
    */
   const [data, setData] = useState({
-    persFirstName: " ",
-    persLastName: "",
-    persDocument: "",
-    persEmail: "",
-    persPassword: "",
-    persRPassword: "",
+    userEmail: " ",
+    userName: "",
+    userPassword: "",
+    userPasswordR: "",
   });
 
-  
+  /*
+   * ***************************************************
+   * **********************Function*********************
+   * ***************************************************
+  /**
+   * This function assigns the information completed by the user with its respective attribute.
+   * attributes like: persName, persDocument, persEmail, persPhone,persPassword and persRPassword
+   * @param {*} e
+   */
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    console.log("entre");
+    //Correspond to information of the one userr
+    const userr = {
+      userEmail: email,
+      userName: data.userName,
+      userPassword: data.userPassword,
+    };
+    // dispatch(setUserr(userr));
+    dispatch(addUserr(userr));
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -89,25 +108,16 @@ const CoordUserRegister = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={nextPage}>
+        <form className={classes.form} noValidate onSubmit={submit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                name="persFirstName"
-                variant="outlined"
-                required
-                fullWidth
-                label="Nombres"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                label="Apellidos"
-                name="persLastName"
+                label="Nombre de usuario"
+                name="userName"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -115,27 +125,10 @@ const CoordUserRegister = () => {
                 variant="outlined"
                 required
                 fullWidth
-                label="Correo electrónico"
-                name="persEmail"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Confirmar correo electrónico"
-                name="persEmail"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="user_password"
+                name="userPassword"
                 label="Constraseña"
                 type="password"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -143,9 +136,10 @@ const CoordUserRegister = () => {
                 variant="outlined"
                 required
                 fullWidth
-                name="user_password_v"
+                name="userPasswordR"
                 label="Confirmar contraseña"
                 type="password"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
