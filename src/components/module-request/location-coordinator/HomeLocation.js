@@ -29,7 +29,7 @@ const HomeLocation = (props) => {
         <nav>
           <RouterLink to="/location/request">Home</RouterLink>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <RouterLink to="/location/contact">
+          <RouterLink to="/location/companies">
             Contactos Empresariales
           </RouterLink>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
