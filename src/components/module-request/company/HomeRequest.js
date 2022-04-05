@@ -33,7 +33,7 @@ const HomeRequest = (props) => {
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Link href="#"> Contacto </Link>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Link href="#"> Bolsa de Empleo </Link>
-        </nav>
+          </nav>
 
         <h2>{props.name}</h2>
 
