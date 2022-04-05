@@ -68,6 +68,6 @@ export const addUserr = (data) => async (dispatch) => {
 };
 
 //Export the action to reducer of personRegisterSlice
-export const { setPerson, setPersonList, setUserr} =
+export const { setPerson, setPersonList, setUserr } =
   personRegisterSlice.actions;
 export default personRegisterSlice.reducer;

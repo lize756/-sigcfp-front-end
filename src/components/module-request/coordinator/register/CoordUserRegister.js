@@ -13,10 +13,13 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useDispatch, useSelector } from "react-redux";
+import Alert from "@mui/material/Alert";
+
 import {
   setUserr,
   addUserr,
 } from "../../../store/slices/coordinator/PersonSlice";
+import { Collapse, Dialog } from "@mui/material";
 
 function Copyright() {
   return (
@@ -59,6 +62,7 @@ const CoordUserRegister = () => {
   const dispatch = useDispatch();
   // Allow to bring the email to one person
   const email = useSelector((state) => state.personRegister).person.persEmail;
+  const  [openAlert, setOpenAlert] = useState(false);
 
   /**-------------------------------------------------------------
    * Handling the states of the attributes that make up a register
@@ -86,16 +90,19 @@ const CoordUserRegister = () => {
 
   const submit = (e) => {
     e.preventDefault();
-
-    console.log("entre");
-    //Correspond to information of the one userr
-    const userr = {
-      userEmail: email,
-      userName: data.userName,
-      userPassword: data.userPassword,
-    };
-    // dispatch(setUserr(userr));
-    dispatch(addUserr(userr));
+    let userr = {};
+    if (data.userPassword === data.userPasswordR) {
+      //Correspond to information of the one userr
+      userr = {
+        userEmail: email,
+        userName: data.userName,
+        userPassword: data.userPassword,
+      };
+      dispatch(setUserr(userr));
+    } else {
+        setOpenAlert(true);
+    }
+    //dispatch(addUserr(userr));
   };
 
   return (
@@ -147,6 +154,13 @@ const CoordUserRegister = () => {
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="Aquí va una frase"
               />
+            </Grid>
+            <Grid item xs={12}>
+              <Collapse in={openAlert}>
+              <Alert severity="error">
+                This is an error alert — check it out!
+              </Alert>
+              </Collapse>
             </Grid>
           </Grid>
           <Button
