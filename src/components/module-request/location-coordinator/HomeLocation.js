@@ -5,7 +5,7 @@ import { Link as RouterLink, Outlet } from "react-router-dom";
 import Link from "@mui/material/Link";
 import "../StylesCompany.css";
 
-const HomeRequest = (props) => {
+const HomeLocation = (props) => {
   return (
     <>
       <div className="home-container">
@@ -27,13 +27,14 @@ const HomeRequest = (props) => {
         </div>
 
         <nav>
-          <RouterLink to="/company">Home</RouterLink>
+          <RouterLink to="/location/request">Home</RouterLink>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <RouterLink to="/location/contact">
+            Contactos Empresariales
+          </RouterLink>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Link href="#"> Preguntas Frecuentes </Link>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Link href="#"> Contacto </Link>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Link href="#"> Bolsa de Empleo </Link>
-          </nav>
+        </nav>
 
         <h2>{props.name}</h2>
 
@@ -43,4 +44,4 @@ const HomeRequest = (props) => {
   );
 };
 
-export default HomeRequest;
+export default HomeLocation;
