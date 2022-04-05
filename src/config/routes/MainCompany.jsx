@@ -62,7 +62,6 @@ const MainCompany = () => {
             <Route path="register" element={<Coordinator_register/>} />
             <Route path="singup" element={<SignUp/>}/>
           </Route>
-          //Registration route
           <Route path="/company" element={<Home name ="REGISTRO"/>}>
             <Route path="register" element={<StepperRegistration/>}/>
           </Route>
