@@ -6,7 +6,7 @@ import Create from "../../components/module-request/company/RequestCreate";
 import Update from "../../components/module-request/company/RequestUpdate";
 import RequestView from "../../components/module-request/company/RequestView";
 
-import Coordinator_register from "../../components/module-request/coordinator/register/coordinatorRegister"
+import Coordinator_register from "../../components/module-request/coordinator/register/CoordinatorRegister"
 import StepperRegistration from "../../components/module-request/company/registration/AccordionRegistration";
 import SignUp from "../../components/module-request/coordinator/register/SignUp";
 const MainCompany = () => {
