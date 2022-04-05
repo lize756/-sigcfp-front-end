@@ -4,12 +4,18 @@ import RequestLocation from "../../components/module-request/location-coordinato
 import Home from "../../components/module-request/location-coordinator/HomeLocation";
 import View from "../../components/module-request/location-coordinator/RequestLocView";
 import ContactList from "../../components/module-request/location-coordinator/ContactList";
+import CompaniesList from "../../components/module-request/location-coordinator/CompaniesList";
 
 const MainLocation = () => {
   const [request, setRequest] = useState({});
+  const [contact, setContact] = useState({});
 
   const requestView = (request) => {
     setRequest(request);
+  };
+
+  const listContacts = (contacts) => {
+    setContact(contacts);
   };
 
   return (
@@ -41,7 +47,20 @@ const MainLocation = () => {
             path="/location"
             element={<Home name="INFORMACIÓN DE CONTACTO DE LAS EMPRESAS" />}
           >
-            <Route path="contact" element={<ContactList />} />
+            <Route
+              path="contact"
+              element={<ContactList contacts={contact} />}
+            />
+          </Route>
+
+          <Route
+            path="/location"
+            element={<Home name="INFORMACIÓN DE LAS EMPRESAS" />}
+          >
+            <Route
+              path="companies"
+              element={<CompaniesList listContacts={listContacts} />}
+            />
           </Route>
         </Routes>
       </Router>

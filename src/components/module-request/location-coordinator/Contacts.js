@@ -3,13 +3,10 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Avatar,
   Grid,
   Divider,
   Typography,
 } from "@mui/material";
-
-import { indigo } from "@material-ui/core/colors";
 
 const Contacts = ({ contact }) => {
   return (

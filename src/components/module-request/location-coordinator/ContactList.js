@@ -3,16 +3,13 @@ import Contacts from "./Contacts";
 import axios from "../../../config/axios";
 import { Grid } from "@mui/material";
 
-const ContactList = () => {
+const ContactList = ({ contacts }) => {
   const [contactList, setContactList] = useState();
 
   useEffect(() => {
-    axios.get("/contacts").then((res) => setContactList(res.data));
+    //axios.get("/contacts").then((res) => setContactList(res.data));
+    setContactList(contacts);
   }, []);
-
-  const renderContact = () => {
-    return contactList.map((contact) => <Contacts contact={contact} />);
-  };
 
   return (
     <>

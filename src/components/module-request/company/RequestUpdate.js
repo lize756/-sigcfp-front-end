@@ -49,8 +49,9 @@ const RequestUpdate = ({ request }) => {
   const [careers, setCareers] = useState([]);
   const [defaultCareers, setDefaultCareers] = useState([]);
   const [inteRequFunctions, setInteRequFunctions] = useState([]);
-  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState();
+  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState([]);
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
+  const [defaultCompetencies, setDefaultCompetencies] = useState([]);
   const [editRequest, setEditRequest] = useState({
     inteRequName: " ",
     inteRequDepartment: "",
@@ -62,14 +63,12 @@ const RequestUpdate = ({ request }) => {
     inteRequOtherBenefits: "",
   });
 
+  // GET request using axios inside useEffect React hook
   useEffect(() => {
     setEditRequest(request);
     setDefaultCareers(request.careers);
-
-    if (request.inteRequFunctions !== "") {
-      const arrayDefaults = request.inteRequFunctions.split(",");
-      setDefaultInteRequFunctions(arrayDefaults);
-    }
+    requestAttributes(request.inteRequFunctions, 1);
+    requestAttributes(request.inteRequCompetencies, 2);
   }, [request]);
 
   // GET request using axios inside useEffect React hook
@@ -78,6 +77,41 @@ const RequestUpdate = ({ request }) => {
       setlistCareers(res.data);
     });
   }, []);
+
+  /**
+   * This function is responsible for converting the list of functions and competencies to an object
+   * @param {*} strRequest is a list of functions request
+   * @param {*} typeStr It is the type of list, if it is 1 it refers to the object related to the request functions,
+   * if it is 2 it refers to the request competencies
+   */
+  const requestAttributes = (strRequest, typeStr) => {
+    switch (typeStr) {
+      case 1:
+        if (strRequest !== "") {
+          const arrayDefaults = strRequest.split(",");
+          let requFunctions = [];
+          for (let i = 0; i < arrayDefaults.length; i++) {
+            requFunctions[i] = { key: i, value: arrayDefaults[i] };
+          }
+          setDefaultInteRequFunctions(requFunctions);
+        }
+        break;
+
+      case 2:
+        if (strRequest !== "") {
+          const arrayDefaults = strRequest.split(",");
+          let requCompetencies = [];
+          for (let i = 0; i < arrayDefaults.length; i++) {
+            requCompetencies[i] = { key: i, value: arrayDefaults[i] };
+          }
+          setDefaultCompetencies(requCompetencies);
+        }
+        break;
+
+      default:
+        console.log("None of the options selected");
+    }
+  };
 
   /**
    * This function is responsible for converting the
@@ -123,22 +157,114 @@ const RequestUpdate = ({ request }) => {
     setInteRequCompetencies({ ...inteRequCompetencies, competencies });
   };
 
-  const handleDelete = (chipToDelete) => () => {
-    setDefaultCareers((chipCrs) =>
-      chipCrs.filter((chip) => chip.careId !== chipToDelete.careId)
-    );
+  /**
+   * This function removes items from the list of objects (Careers, Competencies and functions)
+   * @param {*} chipToDelete item to deleted
+   * @param {*} typeDeleteIdentifies the list to which the item to be removed belongs,
+   * case 1 career list, case 2 function list and case 3 competencies list
+   */
+  const handleDelete = (chipToDelete, typeDelete) => () => {
+    switch (typeDelete) {
+      case 1:
+        setDefaultCareers((chipCrs) =>
+          chipCrs.filter((chip) => chip.careId !== chipToDelete.careId)
+        );
+        break;
+
+      case 2:
+        setDefaultInteRequFunctions((chipCrs) =>
+          chipCrs.filter((chip) => chip !== chipToDelete)
+        );
+        break;
+
+      case 3:
+        setDefaultCompetencies((chipCrs) =>
+          chipCrs.filter((chip) => chip !== chipToDelete)
+        );
+        break;
+
+      default:
+        console.log("None of the options selected");
+    }
   };
 
-  const handleDeleteFunctions = (chipToDelete) => () => {
-    setDefaultInteRequFunctions((chipCrs) =>
-      chipCrs.filter((chip) => chip !== chipToDelete)
-    );
+  /**
+   * This function is responsible for concatenating the default functions of the
+   * request and the new functions of the request
+   * @returns str with all functions
+   */
+  const formatInteRequFunctions = () => {
+    let intefunctions = "";
+
+    if (defaultInteRequFunctions !== null) {
+      for (let i = 0; i < defaultInteRequFunctions.length; i++) {
+        intefunctions += defaultInteRequFunctions[i].value + ",";
+      }
+    }
+    if (!!inteRequFunctions.functions) {
+      intefunctions = intefunctions + inteRequFunctions.functions;
+    }
+
+    intefunctions = intefunctions.substring(0, intefunctions.length - 1);
+    console.log(intefunctions);
+
+    return intefunctions;
   };
-  //Metodo put aacomodar toda esta clase
+
+  /**
+   * This function is responsible for concatenating the default competencies of the
+   * request and the new competencies of the request
+   * @returns str with all competencies
+   */
+  const formatInteRequCompetencies = () => {
+    let inteCompetencies = "";
+
+    if (defaultCompetencies !== null) {
+      for (let i = 0; i < defaultCompetencies.length; i++) {
+        inteCompetencies += defaultCompetencies[i].value + ",";
+      }
+    }
+    if (typeof inteRequCompetencies !== "undefined") {
+      inteCompetencies = inteCompetencies + inteRequCompetencies.competencies;
+    }
+
+    inteCompetencies = inteCompetencies.substring(
+      0,
+      inteCompetencies.length - 1
+    );
+    console.log(inteCompetencies);
+
+    return inteCompetencies;
+  };
+
+  /**
+   * This function is responsible for concatenating the default careers of the
+   * request and the new careers of the request
+   * @returns array with all career seleted for the user
+   */
+  const formatCareers = () => {
+    let inteCareers = [];
+    if (defaultCareers !== null) {
+      inteCareers = defaultCareers;
+    }
+    if (careers !== null) {
+      for (let i = 0; i < careers.length; i++) {
+        const elemt = careers[i];
+        inteCareers.push(elemt[i]);
+      }
+    }
+
+    console.log(inteCareers);
+    return inteCareers;
+  };
+
+  //update request function
   const putRequest = (e) => {
     e.preventDefault();
 
-    setCareers(careers.concat(defaultCareers));
+    const careersList = formatCareers();
+    const functions = formatInteRequFunctions();
+    const competencies = formatInteRequCompetencies();
 
     const stDate = new Date(editRequest.inteRequStDate).toLocaleDateString(
       "en-GB",
@@ -148,22 +274,23 @@ const RequestUpdate = ({ request }) => {
         day: "2-digit",
       }
     );
-    const request = {
+
+    const requestEdit = {
       inteRequDuration: editRequest.inteRequDuration,
       inteRequName: editRequest.inteRequName,
       inteRequNumber: editRequest.inteRequNumber,
       inteRequSalary: editRequest.inteRequSalary,
       inteRequDepartament: editRequest.inteRequDepartment,
       inteRequStDate: stDate,
-      inteRequFunctions: inteRequFunctions,
-      inteRequCompetencies: inteRequCompetencies,
+      inteRequFunctions: functions,
+      inteRequCompetencies: competencies,
       inteRequBondingType: editRequest.inteRequBondingType,
       inteRequOtherBenefits: editRequest.inteRequOtherBenefits,
-      careers: careers,
+      careers: careersList,
     };
-    console.log(request);
+    console.log(requestEdit);
     axios
-      .put("internRequests/update/" + request.id, request)
+      .put("internRequests/update/" + editRequest.inteRequId, requestEdit)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
@@ -198,7 +325,7 @@ const RequestUpdate = ({ request }) => {
                 <ListItem key={career.careId}>
                   <Chip
                     label={career.careName}
-                    onDelete={handleDelete(career)}
+                    onDelete={handleDelete(career, 1)}
                   />
                 </ListItem>
               );
@@ -225,7 +352,6 @@ const RequestUpdate = ({ request }) => {
           <TextField
             id="outlined-textarea"
             name="inteRequDepartment"
-            value={editRequest.inteRequDepartment}
             label="Area o Departamento"
             onChange={handleChange}
           />
@@ -246,7 +372,29 @@ const RequestUpdate = ({ request }) => {
             value={getDate()}
             onChange={handleChange}
           />
-
+          <Box
+            sx={{
+              bgcolor: "#F2F6FE",
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              listStyle: "none",
+              p: 0.5,
+              m: 0,
+            }}
+            component="ul"
+          >
+            {defaultInteRequFunctions.map((inteFunc) => {
+              return (
+                <ListItem key={inteFunc.key}>
+                  <Chip
+                    label={inteFunc.value}
+                    onDelete={handleDelete(inteFunc, 2)}
+                  />
+                </ListItem>
+              );
+            })}
+          </Box>
           <Autocomplete
             multiple
             fullWidth
@@ -271,6 +419,29 @@ const RequestUpdate = ({ request }) => {
             )}
           />
 
+          <Box
+            sx={{
+              bgcolor: "#F2F6FE",
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              listStyle: "none",
+              p: 0.5,
+              m: 0,
+            }}
+            component="ul"
+          >
+            {defaultCompetencies.map((inteComp) => {
+              return (
+                <ListItem key={inteComp.key}>
+                  <Chip
+                    label={inteComp.value}
+                    onDelete={handleDelete(inteComp, 3)}
+                  />
+                </ListItem>
+              );
+            })}
+          </Box>
           <Autocomplete
             multiple
             fullWidth

@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Autocomplete, TextField, Button, Chip, Paper } from "@mui/material";
-import { useNavigate } from "react-router";
+import { TextField, Chip } from "@mui/material";
 import { makeStyles, Box, Container } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
-import axios from "../../../config/axios";
-import moment from "moment";
 
 /**
  * Styles of the visual part of the component
@@ -38,7 +35,6 @@ const ListItem = styled("li")(({ theme }) => ({
  */
 const RequestLocView = ({ request }) => {
   const classes = useStyles();
-  let navigate = useNavigate();
 
   const [currentRequest, setCurrentRequest] = useState({
     inteRequName: " ",
