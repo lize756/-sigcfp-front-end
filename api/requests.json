@@ -2,66 +2,100 @@
   "requests": [
     {
       "id": 1,
-      "faculty": "faculty-1",
-      "career": "career-1",
-      "acadperiod": "acadperiod-1",
-      "studnumber": 2
+      "faculty": "Ingenieria",
+      "Careers": "Industrial",
+      "inteRequNumber": 4,
+      "inteRequDateStart": "2020-02-13",
+      "inteRequDepartment": "Recursos Humanos ",
+      "inteRequFunctions": "Conocimiento de capacidades",
+      "inteRequcompetence": "Competenecia 1 ",
+      "inteRequBondingType": "Contracto de aprendizaje",
+      "inteRequDuration": "6 Meses",
+      "inteRequSalary": "1.200.000",
+      "inteRequBenefitss": "Ninguno"
     },
     {
-      "id": 2,
-      "faculty": "faculty-2",
-      "career": "career-2",
-      "acadperiod": "acadperiod-2",
-      "studnumber": 6
+      "id": 6800,
+      "faculty": "Facultad",
+      "inteRequDepartment": "",
+      "inteRequNumber": 0,
+      "inteRequDateStart": "",
+      "inteRequFunctions": "",
+      "inteRequcompetence": "",
+      "inteRequBondingType": "",
+      "inteRequDuration": "",
+      "inteRequSalary": "",
+      "inteRequBenefits": ""
     },
     {
-      "id": 3,
-      "faculty": "faculty-3",
-      "career": "career-3",
-      "acadperiod": "acadperiod-3",
-      "studnumber": 2
+      "id": 928,
+      "faculty": "Facultad",
+      "careers": "carrera",
+      "inteRequDepartment": "",
+      "inteRequNumber": 0,
+      "inteRequDateStart": "",
+      "inteRequFunctions": "",
+      "inteRequcompetence": "",
+      "inteRequBondingType": "",
+      "inteRequDuration": "",
+      "inteRequSalary": "",
+      "inteRequBenefits": ""
     },
     {
-      "id": 4,
-      "faculty": "faculty-4",
-      "career": "career-4",
-      "acadperiod": "acadperiod-4",
-      "studnumber": 7
+      "id": 1501,
+      "faculty": "Facultad",
+      "inteRequDepartment": "",
+      "inteRequNumber": 0,
+      "inteRequDateStart": "",
+      "inteRequFunctions": "",
+      "inteRequcompetence": "",
+      "inteRequBondingType": "",
+      "inteRequDuration": "",
+      "inteRequSalary": "",
+      "inteRequBenefits": ""
     },
     {
-      "id": 5,
-      "faculty": "faculty-5",
-      "career": "career-5",
-      "acadperiod": "acadperiod-5",
-      "studnumber": 7
+      "id": 3182,
+      "faculty": "Facultad",
+      "inteRequDepartment": "",
+      "inteRequNumber": 0,
+      "inteRequDateStart": "",
+      "inteRequFunctions": "",
+      "inteRequcompetence": "",
+      "inteRequBondingType": "",
+      "inteRequDuration": "",
+      "inteRequSalary": "",
+      "inteRequBenefits": ""
     },
     {
-      "id": 6,
-      "faculty": "faculty-6",
-      "career": "career-6",
-      "acadperiod": "acadperiod-5",
-      "studnumber": 7
+      "id": 3971,
+      "inteRequCreate": "18-03-2022",
+      "inteRequDuration": "",
+      "inteRequName": "",
+      "inteRequNumber": 0,
+      "inteRequSalary": "",
+      "inteRequDepartament": "",
+      "inteRequStDate": "2022-03-11",
+      "inteRequFunctions": "",
+      "inteRequCompetencies": "",
+      "inteRequBondingType": "",
+      "inteRequOtherBenefits": "",
+      "faculty": "Facultad"
     },
     {
-      "id": 7,
-      "faculty": "faculty-7",
-      "career": "career-7",
-      "acadperiod": "acadperiod-5",
-      "studnumber": 7
-    },
-    {
-      "id": 8,
-      "faculty": "faculty-8",
-      "career": "career-8",
-      "acadperiod": "acadperiod-8",
-      "studnumber": 4
-    },
-    {
-      "id": 9,
-      "faculty": "faculty-9",
-      "career": "career-9",
-      "acadperiod": "acadperiod-9",
-      "studnumber": 1
+      "id": 1053,
+      "inteRequCreate": "18-03-2022",
+      "inteRequDuration": "",
+      "inteRequName": "",
+      "inteRequNumber": 0,
+      "inteRequSalary": "",
+      "inteRequDepartament": "",
+      "inteRequStDate": "2022-03-11",
+      "inteRequFunctions": "",
+      "inteRequCompetencies": "",
+      "inteRequBondingType": "",
+      "inteRequOtherBenefits": "",
+      "faculty": "Facultad"
     }
   ]
 }
