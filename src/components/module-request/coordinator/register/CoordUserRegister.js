@@ -14,12 +14,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useDispatch, useSelector } from "react-redux";
 import Alert from "@mui/material/Alert";
-
 import {
-  setUserr,
   addUserr,
+  addPerson,
+  setPerson,
 } from "../../../store/slices/coordinator/PersonSlice";
-import { Collapse, Dialog } from "@mui/material";
+import { Collapse } from "@mui/material";
 
 function Copyright() {
   return (
@@ -61,8 +61,11 @@ const CoordUserRegister = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
   // Allow to bring the email to one person
-  const email = useSelector((state) => state.personRegister).person.persEmail;
-  const  [openAlert, setOpenAlert] = useState(false);
+  const persontoAdd = useSelector((state) => state.personRegister).person;
+  const [openAlert, setOpenAlert] = useState({
+    isOpen: false,
+    alertMessages: [],
+  });
 
   /**-------------------------------------------------------------
    * Handling the states of the attributes that make up a register
@@ -88,21 +91,61 @@ const CoordUserRegister = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  let listALerts = openAlert.alertMessages.map((item, index) => {
+    return (
+      <Alert severity="error" key={index} align="justify">
+        {item}
+      </Alert>
+    );
+  });
+
   const submit = (e) => {
     e.preventDefault();
     let userr = {};
-    if (data.userPassword === data.userPasswordR) {
+    // Check if there is another person with the same username
+    if (data.userName === "Oscar") {
+      openAlert.isOpen = true;
+      openAlert.alertMessages.push(
+        "Ya hay otra persona que tiene esta dirección de correo electrónico. Prueba de nuevo con otro nombre de usuario"
+      );
+    } else {
+      openAlert.isOpen = false;
+    }
+    //Check if the passwords were writed correctly
+    if (data.userPassword !== data.userPasswordR) {
+      openAlert.isOpen = true;
+      data.userPassword = "";
+      openAlert.alertMessages.push(
+        "Las contraseñas no son las mismas. Prueba de nuevo"
+      );
+    } else {
+      openAlert.isOpen = false;
+    }
+
+    openAlert.alertMessages.map((text) => console.log(text));
+    if (!openAlert.isOpen) {
+      console.log(!openAlert.isOpen);
+      //setOpenAlert({ isOpen: false });
+      openAlert.isOpen = false;
       //Correspond to information of the one userr
       userr = {
-        userEmail: email,
+        userEmail: persontoAdd.persEmail,
         userName: data.userName,
         userPassword: data.userPassword,
       };
-      dispatch(setUserr(userr));
-    } else {
-        setOpenAlert(true);
+      const promotionCoordinatorUpdate = {
+        persFirstName: persontoAdd.persFirstName,
+        persLastName: persontoAdd.persLastName,
+        persDocument: persontoAdd.persDocument,
+        persEmail: persontoAdd.persEmail,
+        userr: userr,
+      };
+
+      //dispatch(setPerson(promotionCoordinatorUpdate));
+      //dispatch(setUserr(userr));
+      dispatch(addUserr(userr));
+      dispatch(addPerson(promotionCoordinatorUpdate))
     }
-    //dispatch(addUserr(userr));
   };
 
   return (
@@ -133,7 +176,7 @@ const CoordUserRegister = () => {
                 required
                 fullWidth
                 name="userPassword"
-                label="Constraseña"
+                label="Contraseña"
                 type="password"
                 onChange={handleChange}
               />
@@ -156,11 +199,7 @@ const CoordUserRegister = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Collapse in={openAlert}>
-              <Alert severity="error">
-                This is an error alert — check it out!
-              </Alert>
-              </Collapse>
+              <Collapse in={openAlert.isOpen}>{listALerts}</Collapse>
             </Grid>
           </Grid>
           <Button

@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../../config/axios";
-import { useSelector } from "react-redux";
 // This slice allow realice to relation with the person.
 export const personRegisterSlice = createSlice({
   name: "personRegister",
@@ -42,25 +41,37 @@ export const personRegisterSlice = createSlice({
       state.listPerson = action.payload;
     },
   },
+  extraReducers: {
+    // async reducers here
+    // eslint-disable-next-line no-use-before-define
+  },
 });
 
 //Function
+
+/**
+ * Async functions
+ */
 export const fetchAllPerson = () => (dispatch) => {
   axios.get("persons").then((res) => {
     dispatch(setPersonList(res.data));
   });
 };
 
-export const postPerson = () => () => {
-  const personToAdd = setPerson;
-  console.log(personToAdd);
+export const addPerson = (data) => async (dispatch) => {
+  try {
+    // console.log(data);
+    const response = await axios.post("persons/add", data);
+    dispatch(setPerson(response.data));
+  } catch (err) {
+    throw new Error(err);
+  }
 };
 
 export const addUserr = (data) => async (dispatch) => {
   try {
     // console.log(data);
-    const response = await axios.post("add", data);
-    // console.log(response);
+    const response = await axios.post("userrs/add", data);
     dispatch(setUserr(response.data));
   } catch (err) {
     throw new Error(err);

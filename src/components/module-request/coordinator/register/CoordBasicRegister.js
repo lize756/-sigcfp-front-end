@@ -3,8 +3,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -16,8 +14,8 @@ import { useNavigate } from "react-router";
 /**
  * Import to redux
  */
-import { useDispatch, useSelector } from "react-redux";
-import { setPerson } from "../../../store/slices/coordinator/PersonSlice";
+import { useDispatch } from "react-redux";
+import { setPerson, addPerson} from "../../../store/slices/coordinator/PersonSlice";
 
 function Copyright() {
   return (
@@ -95,13 +93,7 @@ const CoordBasicRegister = () => {
       persDocument: data.persDocument,
       persEmail: data.persEmail,
     };
-    console.log("entre",
-      promotionCoordinator.persFirstName,
-      promotionCoordinator.persLastName,
-      promotionCoordinator.persDocument,
-      promotionCoordinator.persEmail
-    );
-
+    
     dispatch(setPerson(promotionCoordinator));
     navigate("/coordinator/register/user_register");
   };
@@ -169,12 +161,6 @@ const CoordBasicRegister = () => {
                 label="Cédula"
                 name="persDocument"
                 onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="Aquí va una frase"
               />
             </Grid>
           </Grid>
