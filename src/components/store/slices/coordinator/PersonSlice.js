@@ -70,10 +70,12 @@ export const addPerson = (data) => async (dispatch) => {
 
 export const addUserr = (data) => async (dispatch) => {
   try {
-    // console.log(data);
+    //console.log(data);
     const response = await axios.post("userrs/add", data);
+
     dispatch(setUserr(response.data));
   } catch (err) {
+    console.log(err)
     throw new Error(err);
   }
 };

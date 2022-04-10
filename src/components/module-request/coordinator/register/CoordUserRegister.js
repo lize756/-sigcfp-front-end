@@ -17,7 +17,7 @@ import Alert from "@mui/material/Alert";
 import {
   addUserr,
   addPerson,
-  setPerson,
+  setUserr,
 } from "../../../store/slices/coordinator/PersonSlice";
 import { Collapse } from "@mui/material";
 
@@ -142,7 +142,6 @@ const CoordUserRegister = () => {
       };
 
       //dispatch(setPerson(promotionCoordinatorUpdate));
-      //dispatch(setUserr(userr));
       dispatch(addUserr(userr));
       dispatch(addPerson(promotionCoordinatorUpdate))
     }
