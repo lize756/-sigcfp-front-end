@@ -13,28 +13,28 @@ import {
 import axios from "../../../config/axios";
 import Request from "./Request";
 import Search from "./RequestSearch";
-import Update from "./RequestUpdate";
 import { useNavigate } from "react-router";
 import "../StylesCompany.css";
 
 const RequestList = ({ edit }) => {
-  //lista de solicitudes de practica
   const [requestList, setRequestList] = useState([]);
 
-  //lista de paginacion de la tabla
+  //table paging
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   //navigate
   let navigate = useNavigate();
 
-  //se guarda en requestlist la informacion de las solicitudes
   //Axios
   useEffect(() => {
     axios.get("/internRequests").then((res) => setRequestList(res.data));
   }, []);
 
-  //Metodo delete
+  /**
+   * This is a function that allows deleting a request
+   * @param {*} request to deleted
+   */
   const delRequest = (request) => {
     console.log(request.inteRequId);
     axios.delete("internRequests/" + request.inteRequId).then(() => {
@@ -44,19 +44,25 @@ const RequestList = ({ edit }) => {
     });
   };
 
-  //Metodo edit
+  /**
+   * This is a function that allows you to obtain the request to update
+   * @param {*} request to update
+   */
   const editRequest = (request) => {
     edit(request);
     navigate("/company/update");
   };
 
-  //Metodo
+  /**
+   * This is a function that allows you to obtain the request to visualize
+   * @param {*} request to view
+   */
   const viewRequest = (request) => {
     edit(request);
     navigate("/company/View");
   };
 
-  //Metodos handleChange
+  //------------------------------------------ Functions handleChange -------------------------------------------------
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(event.target.value);
     setPage(0);
@@ -64,14 +70,16 @@ const RequestList = ({ edit }) => {
 
   const handleClick = () => {
     navigate("/company/create");
-    //<Create addRequest={addRequest} />;
   };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  //El Render
+  /**
+   * This function handles the rendering of the requests in the table
+   * @returns
+   */
   const renderList = () => {
     return requestList
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -91,14 +99,14 @@ const RequestList = ({ edit }) => {
       <Search />
 
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: 400 }}>
+        <TableContainer sx={{ maxHeight: 300 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell align="right">Facultad</TableCell>
-                <TableCell align="right">Carrera</TableCell>
-                <TableCell align="right">Fecha de Inicio </TableCell>
-                <TableCell align="right">Número de Estudiantes </TableCell>
+                <TableCell align="center">Facultad</TableCell>
+                <TableCell align="center">Carrera</TableCell>
+                <TableCell align="center">Fecha de Inicio </TableCell>
+                <TableCell align="center">Número de Estudiantes </TableCell>
                 <TableCell align="center">Acciones</TableCell>
               </TableRow>
             </TableHead>
