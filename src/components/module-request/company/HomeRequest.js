@@ -32,16 +32,11 @@ const HomeRequest = (props) => {
           <Link href="#"> Preguntas Frecuentes </Link>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Link href="#"> Contacto </Link>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<<<<<<< HEAD
           <Link href="https://www.elempleo.com/co/sitio-empresarial/universidad-icesi?v2=true">
             {" "}
             Bolsa de Empleo{" "}
           </Link>
         </nav>
-=======
-          <Link href="#"> Bolsa de Empleo </Link>
-          </nav>
->>>>>>> feature/feature/1.0
 
         <h2>{props.name}</h2>
 
