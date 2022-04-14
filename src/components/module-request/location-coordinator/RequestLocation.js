@@ -13,6 +13,12 @@ import axios from "../../../config/axios";
 import Request from "./Request";
 import Search from "../company/RequestSearch";
 import { useNavigate } from "react-router";
+//Redux
+import { useDispatch, useSelector } from "react-redux";
+import {
+  sendToken,
+  setUserr,
+} from "../../../components/store/slices/SignIn/LoginSlice";
 
 const RequestLocation = ({ requestView }) => {
   //lista de solicitudes de practica
@@ -25,10 +31,18 @@ const RequestLocation = ({ requestView }) => {
   //navigate
   let navigate = useNavigate();
 
+  // Allow to bring the email to one person
+  let sufijo =  useSelector((state) => state.userLogin).responseUserLogin;
+  console.log(sufijo)
+  //let access_token = "Bearer "+ sufijo
+  //console.log(access_token);
   //se guarda en requestlist la informacion de las solicitudes
   //Axios
   useEffect(() => {
-    axios.get("/internRequests").then((res) => setRequestList(res.data));
+    //axios.defaults.headers.common = { Authorization: `${access_token}` };
+    axios
+      .get("api/internRequests",)
+      .then((res) => setRequestList(res.data));
   }, []);
 
   /**

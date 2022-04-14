@@ -10,8 +10,15 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import banner_cedep from "../../../assets/img_login.png";
+import { useNavigate } from "react-router";
+
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import {
+  sendToken,
+  setUserr,
+} from "../../../components/store/slices/SignIn/LoginSlice";
 
 function Copyright() {
   return (
@@ -29,6 +36,11 @@ function Copyright() {
 const theme = createTheme();
 
 export default function SignInSide() {
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+
+  // Allow navigate between roots
+  let navigate = useNavigate();
 
   /***
    * Handle Submit
@@ -37,10 +49,15 @@ export default function SignInSide() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    const user = {
+      userName: data.get("userName"),
+      userPassword: data.get("userPassword"),
+    };
+    //dispatch(setUserr(user))
+    dispatch(sendToken(user));
+
+    navigate("/location/request");
   };
 
   return (
@@ -84,7 +101,7 @@ export default function SignInSide() {
             <Avatar sx={{ bgcolor: "Blue" }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" sx={{m:2}}>
+            <Typography component="h1" variant="h5" sx={{ m: 2 }}>
               Iniciar sesión
             </Typography>
             <Box
@@ -97,9 +114,9 @@ export default function SignInSide() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
+                id="userName"
                 label="Dirección de correo electrónico"
-                name="email"
+                name="userName"
                 autoComplete="email"
                 autoFocus
               />
@@ -107,10 +124,10 @@ export default function SignInSide() {
                 margin="normal"
                 required
                 fullWidth
-                name="password"
+                name="userPassword"
                 label="Contraseña"
                 type="password"
-                id="password"
+                id="userPassword"
                 autoComplete="current-password"
               />
               <Button
@@ -133,7 +150,7 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5}} />
+              <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>
