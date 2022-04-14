@@ -5,7 +5,6 @@ import Home from "../../components/module-request/location-coordinator/HomeLocat
 import View from "../../components/module-request/location-coordinator/RequestLocView";
 import ContactList from "../../components/module-request/location-coordinator/ContactList";
 import CompaniesList from "../../components/module-request/location-coordinator/CompaniesList";
-import SignInSide from "../../components/module-request/login/SignInSide";
 
 const MainLocation = () => {
   const [request, setRequest] = useState({});
@@ -58,15 +57,12 @@ const MainLocation = () => {
             path="/location"
             element={<Home name="INFORMACIÓN DE LAS EMPRESAS" />}
           >
-            <Route
+          <Route
               path="companies"
               element={<CompaniesList listContacts={listContacts} />}
-            />
+          />
+          
           </Route>
-            <Route
-              path="signIn"
-              element={<SignInSide/>}
-            />
         </Routes>
       </Router>
     </>

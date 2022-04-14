@@ -128,7 +128,7 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="/signIn/typeRegister" variant="body2">
                     {"¿No tienes una cuenta?  Cree una."}
                   </Link>
                 </Grid>
