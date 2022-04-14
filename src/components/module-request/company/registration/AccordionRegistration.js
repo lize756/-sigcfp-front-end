@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Button from "@mui/material/Button";
+
 import "../StylesCompany.css";
 import RegistrationBasicCompanyData from "./RegistrationBasicCompanyData";
 import RegistrationContactCompany from "./RegistrationContactCompany";
 
 //Component
 const AccordionRegistration = () => {
-
   const [expanded, setExpanded] = React.useState(false);
+
+  const [listContact, setListContact] = useState([
+    <RegistrationContactCompany />,
+  ]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -35,7 +40,7 @@ const AccordionRegistration = () => {
         </AccordionSummary>
         <AccordionDetails>
           {/*Plane 1: Form for registration of basic company data*/}
-          <RegistrationBasicCompanyData isRendered = {true} />
+          <RegistrationBasicCompanyData isRendered={true} />
         </AccordionDetails>
       </Accordion>
       <Accordion
