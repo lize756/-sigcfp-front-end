@@ -30,9 +30,10 @@ const RequestLocation = ({ requestView }) => {
 
   //navigate
   let navigate = useNavigate();
-
+  // console.log("entre")
   // Allow to bring the email to one person
-  let sufijo =  useSelector((state) => state.userLogin).responseUserLogin;
+  //const persontoAdd = useSelector((state) => state.personRegister);
+  const sufijo =  useSelector((state) => state.userLogin).responseUserLogin;
   console.log(sufijo)
   //let access_token = "Bearer "+ sufijo
   //console.log(access_token);
@@ -40,9 +41,7 @@ const RequestLocation = ({ requestView }) => {
   //Axios
   useEffect(() => {
     //axios.defaults.headers.common = { Authorization: `${access_token}` };
-    axios
-      .get("api/internRequests",)
-      .then((res) => setRequestList(res.data));
+    axios.get("api/internRequests").then((res) => setRequestList(res.data));
   }, []);
 
   /**

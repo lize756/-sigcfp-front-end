@@ -9,7 +9,7 @@ export const LoginSlice = createSlice({
       userEmail: "",
       userName:"",
     },
-    responseUserLogin:""
+    responseUserLogin:"Entre"
   },
   reducers:{
       setUserr: (state,action) =>{
