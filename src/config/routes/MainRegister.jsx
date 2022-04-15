@@ -4,7 +4,6 @@
 
 import React from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
@@ -22,7 +21,6 @@ import { NoPageFound } from "./NoPageFound";
 const MainRegister = () => {
   return (
     <>
-      <Router>
         <Routes>
             {/*Main registration route*/}
             <Route path="/signIn" element={<SignInSide />} />
@@ -50,9 +48,7 @@ const MainRegister = () => {
             <Route path="/company" element={<Home name="REGISTRO" />}>
               <Route path="register" element={<StepperRegistration />} />
             </Route>
-            <Route path="*" element={<NoPageFound />}></Route>
         </Routes>
-      </Router>
     </>
   );
 };

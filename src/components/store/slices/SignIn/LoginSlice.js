@@ -1,4 +1,3 @@
-import React from "react";
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../../config/axios";
 
@@ -9,7 +8,8 @@ export const LoginSlice = createSlice({
       userEmail: "",
       userName:"",
     },
-    responseUserLogin:"Entre"
+    responseUserLogin:{},
+    isLogin: false
   },
   reducers:{
       setUserr: (state,action) =>{
@@ -19,7 +19,10 @@ export const LoginSlice = createSlice({
           }
       },
       setResponseUserLogin:(state,action) => {
-          state.token = action.payload
+          state.responseUserLogin = action.payload
+      },
+      setIsLogin:(state,action) =>{
+        state.isLogin = action.payload
       }
 
   },
@@ -34,14 +37,18 @@ export const LoginSlice = createSlice({
  export const sendToken = (data) => async (dispatch) => {
     try {
       const response = await axios.post("api/auth/login", data);
-      dispatch(setResponseUserLogin(response.data.token));
-      //console.log(response.data.token);
+      dispatch(setResponseUserLogin(response.data));
+      dispatch(setIsLogin(true));
+
+      //console.log(response.data);
     } catch (err) {
+      dispatch(setResponseUserLogin({}));
+      dispatch(setIsLogin(false));
       throw new Error(err);
     }
   };
 
 //Export the action to reducer of userLogin
-export const {setUserr,setResponseUserLogin} = LoginSlice.actions;
+export const {setUserr,setResponseUserLogin,setIsLogin} = LoginSlice.actions;
 export default LoginSlice.reducer;
 

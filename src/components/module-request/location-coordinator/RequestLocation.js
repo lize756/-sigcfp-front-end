@@ -14,11 +14,7 @@ import Request from "./Request";
 import Search from "../company/RequestSearch";
 import { useNavigate } from "react-router";
 //Redux
-import { useDispatch, useSelector } from "react-redux";
-import {
-  sendToken,
-  setUserr,
-} from "../../../components/store/slices/SignIn/LoginSlice";
+import {useSelector } from "react-redux";
 
 const RequestLocation = ({ requestView }) => {
   //lista de solicitudes de practica
@@ -31,17 +27,17 @@ const RequestLocation = ({ requestView }) => {
   //navigate
   let navigate = useNavigate();
   // console.log("entre")
-  // Allow to bring the email to one person
-  //const persontoAdd = useSelector((state) => state.personRegister);
-  const sufijo =  useSelector((state) => state.userLogin).responseUserLogin;
-  console.log(sufijo)
-  //let access_token = "Bearer "+ sufijo
-  //console.log(access_token);
-  //se guarda en requestlist la informacion de las solicitudes
-  //Axios
+  // Allow to bring the token to login acces
+  
+  const ACCESS_TOKEN = "Bearer "+ useSelector((state) => state.userLogin).responseUserLogin.token;
+  console.log(ACCESS_TOKEN)
+
+  const header ={
+    'Authorization': `${ACCESS_TOKEN}` 
+  }
   useEffect(() => {
-    //axios.defaults.headers.common = { Authorization: `${access_token}` };
-    axios.get("api/internRequests").then((res) => setRequestList(res.data));
+    //axios.defaults.headers.common = { Authorization: `${ACCESS_TOKEN}` };
+    axios.get("api/internRequests",{header}).then((res) => setRequestList(res.data));
   }, []);
 
   /**

@@ -15,11 +15,13 @@ function App() {
     <Provider store={store}>
       {" "}
       {/**" All app store"*/}
+      <Router> {/**This tag allow keep the global state of all aplication */}
         <div>
           <MainRegister />
           <MainCompany />
           <MainLocation />
         </div>
+      </Router>
     </Provider>
   );
 }

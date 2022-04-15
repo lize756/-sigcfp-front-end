@@ -41,6 +41,8 @@ export default function SignInSide() {
 
   // Allow navigate between roots
   let navigate = useNavigate();
+  //Allows to get the token from the store
+  const isLogin= useSelector((state) => state.userLogin).responseUserLogin.token;
 
   /***
    * Handle Submit
