@@ -24,7 +24,6 @@ const RequestLocation = ({ requestView }) => {
   //lista de paginacion de la tabla
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [render, setRender] = useState(false);
   //navigate
   let navigate = useNavigate();
   // console.log("entre")

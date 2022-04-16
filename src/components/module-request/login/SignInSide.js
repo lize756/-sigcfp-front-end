@@ -12,9 +12,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import banner_cedep from "../../../assets/img_login.png";
 import { useNavigate } from "react-router";
-import { Alert } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useEffect } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -48,17 +46,44 @@ export default function SignInSide() {
 
   // Allow navigate between roots
   let navigate = useNavigate();
-  //Allows to get the token from the store
 
-  const isLogin = useSelector((state) => state.userLogin).isLogin;
+  const [getUserRolee, setUserRolee] = React.useState("");
+  // Allows select the rol that to display the corresponding windows
 
+  /**
+   * This function is responsible for choosing the route that corresponds to the person logged in
+   * @param {*} ROLEE Role of the person who logged in to the application
+   */
+  const selectPath = (ROLEE) => {
+    switch (ROLEE) {
+      case "ROLEE_PROMOTION_COORDINATOR":
+        navigate("/location/request");
+        break;
+      case "ROLEE_LOCATION_COORDINATOR":
+        break;
 
+      case "ROLEE_COMPANY":
+        break;
+
+      case "ROLEE_DIRECTOR":
+        break;
+      case "ROLEE_GRADUATE":
+        break;
+    }
+  };
+  
+  const userRole = useSelector((state) => state.userLogin).rolee;
+  let rolee = userRole
+  console.log("The role on line 76 is: "+ userRole)
   /***
    * Handle Submit
    * Get the form data.
    */
   const handleSubmit = (event) => {
     event.preventDefault();
+    setTimeout(() => {
+      console.log("The role on line 84 is "+ userRole)
+    }, 2000);
 
     setIsChangeViewLoading(true);
     const data = new FormData(event.currentTarget);
@@ -66,12 +91,11 @@ export default function SignInSide() {
       userName: data.get("userName"),
       userPassword: data.get("userPassword"),
     };
-    //dispatch(setUserr(user))
     dispatch(sendToken(user));
-
+    console.log(getUserRolee);
     setTimeout(() => {
-      navigate("/location/request");
-    }, 5000);
+      selectPath();
+    }, 2000);
   };
 
   function viewLogin() {
@@ -122,76 +146,74 @@ export default function SignInSide() {
 
   return (
     <>
-    
-    <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: "url(" + banner_cedep + ")",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundPosition: "center",
-          }}
-        />
-        <Grid
-          item
-          xs={12}
-          sm={8}
-          md={5}
-          component={Paper}
-          elevation={6}
-          square
-          sx={{ borderRadius: "0%" }}
-        >
-          <Box
+      <ThemeProvider theme={theme}>
+        <Grid container component="main" sx={{ height: "100vh" }}>
+          <CssBaseline />
+          <Grid
+            item
+            xs={false}
+            sm={4}
+            md={7}
             sx={{
-              my: 20,
-              mx: 10,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              backgroundImage: "url(" + banner_cedep + ")",
+              backgroundRepeat: "no-repeat",
+              backgroundColor: (t) =>
+                t.palette.mode === "light"
+                  ? t.palette.grey[50]
+                  : t.palette.grey[900],
+              backgroundPosition: "center",
             }}
+          />
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={5}
+            component={Paper}
+            elevation={6}
+            square
+            sx={{ borderRadius: "0%" }}
           >
-            <Avatar sx={{ bgcolor: "Blue" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5" sx={{ m: 2 }}>
-              Iniciar sesión
-            </Typography>
             <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
+              sx={{
+                my: 20,
+                mx: 10,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              {isChangeViewLoading ? viewLoading() : viewLogin()}
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    {"¿Olvidó su contraseña?"}
-                  </Link>
+              <Avatar sx={{ bgcolor: "Blue" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5" sx={{ m: 2 }}>
+                Iniciar sesión
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 1 }}
+              >
+                {isChangeViewLoading ? viewLoading() : viewLogin()}
+                <Grid container>
+                  <Grid item xs>
+                    <Link href="#" variant="body2">
+                      {"¿Olvidó su contraseña?"}
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link href="/signIn/typeRegister" variant="body2">
+                      {"¿No tienes una cuenta?  Cree una."}
+                    </Link>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Link href="/signIn/typeRegister" variant="body2">
-                    {"¿No tienes una cuenta?  Cree una."}
-                  </Link>
-                </Grid>
-              </Grid>
-              <Copyright sx={{ mt: 5 }} />
+                <Copyright sx={{ mt: 5 }} />
+              </Box>
             </Box>
-          </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </ThemeProvider>
+      </ThemeProvider>
     </>
-
   );
 }
