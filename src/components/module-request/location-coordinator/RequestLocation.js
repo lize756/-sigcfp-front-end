@@ -23,7 +23,7 @@ const RequestLocation = ({ requestView }) => {
   //lista de paginacion de la tabla
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const [render, setRender] = useState(false)
   //navigate
   let navigate = useNavigate();
   // console.log("entre")
@@ -37,7 +37,9 @@ const RequestLocation = ({ requestView }) => {
   }
   useEffect(() => {
     //axios.defaults.headers.common = { Authorization: `${ACCESS_TOKEN}` };
-    axios.get("api/internRequests",{header}).then((res) => setRequestList(res.data));
+     
+    axios.get("api/internRequests",{header}).then((res) => setRequestList(res.data), setRender(true));
+   
   }, []);
 
   /**
@@ -66,6 +68,7 @@ const RequestLocation = ({ requestView }) => {
       ));
   };
 
+  if(render){
   return (
     <div>
       <Search />
@@ -94,8 +97,12 @@ const RequestLocation = ({ requestView }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+    
     </div>
   );
+}else{
+  return <></>
+}
 };
 
 export default RequestLocation;

@@ -12,13 +12,16 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import banner_cedep from "../../../assets/img_login.png";
 import { useNavigate } from "react-router";
+import { Alert } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import {
   sendToken,
-  setUserr,
+  setIsLogin,
 } from "../../../components/store/slices/SignIn/LoginSlice";
+import { display } from "@mui/system";
 
 function Copyright() {
   return (
@@ -39,10 +42,13 @@ export default function SignInSide() {
   // Allow to send the elements of store
   const dispatch = useDispatch();
 
+  // This element allow change between the original component of login to the circular progress
+  const [isChangeViewLoading,setIsChangeViewLoading] = React.useState(false);
+
   // Allow navigate between roots
   let navigate = useNavigate();
   //Allows to get the token from the store
-  const isLogin= useSelector((state) => state.userLogin).responseUserLogin.token;
+  const isLogin = useSelector((state) => state.userLogin).isLogin;
 
   /***
    * Handle Submit
@@ -50,8 +56,9 @@ export default function SignInSide() {
    */
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    setIsChangeViewLoading(true)
 
+    const data = new FormData(event.currentTarget);
     const user = {
       userName: data.get("userName"),
       userPassword: data.get("userPassword"),
@@ -59,8 +66,56 @@ export default function SignInSide() {
     //dispatch(setUserr(user))
     dispatch(sendToken(user));
 
-    navigate("/location/request");
+    setTimeout(() => {
+      console.log(isLogin);
+      navigate("/location/request");
+    }, 5000);
   };
+
+  function viewLogin() {
+    return (
+      <>
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="userName"
+          label="Dirección de correo electrónico"
+          name="userName"
+          autoComplete="email"
+          autoFocus
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="userPassword"
+          label="Contraseña"
+          type="password"
+          id="userPassword"
+          autoComplete="current-password"
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Entrar
+        </Button>
+      </>
+    );
+  }
+
+  function viewLoading(){
+    return (
+      <Box sx={{display:'flex'}} alignItems="center" justifyContent="center">
+        <CircularProgress size={'100px'} sx={{marginTop: "10%", marginBottom:"10%"}} />
+      </Box>
+    );
+  }
+
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -112,34 +167,7 @@ export default function SignInSide() {
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="userName"
-                label="Dirección de correo electrónico"
-                name="userName"
-                autoComplete="email"
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="userPassword"
-                label="Contraseña"
-                type="password"
-                id="userPassword"
-                autoComplete="current-password"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Entrar
-              </Button>
+             {isChangeViewLoading? viewLoading(): viewLogin()} 
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
