@@ -13,7 +13,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import banner_cedep from "../../../assets/img_login.png";
 import { useNavigate } from "react-router";
 import { Alert } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
+import { useEffect } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -43,12 +44,14 @@ export default function SignInSide() {
   const dispatch = useDispatch();
 
   // This element allow change between the original component of login to the circular progress
-  const [isChangeViewLoading,setIsChangeViewLoading] = React.useState(false);
+  const [isChangeViewLoading, setIsChangeViewLoading] = React.useState(false);
 
   // Allow navigate between roots
   let navigate = useNavigate();
   //Allows to get the token from the store
+
   const isLogin = useSelector((state) => state.userLogin).isLogin;
+
 
   /***
    * Handle Submit
@@ -56,8 +59,8 @@ export default function SignInSide() {
    */
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsChangeViewLoading(true)
 
+    setIsChangeViewLoading(true);
     const data = new FormData(event.currentTarget);
     const user = {
       userName: data.get("userName"),
@@ -67,7 +70,6 @@ export default function SignInSide() {
     dispatch(sendToken(user));
 
     setTimeout(() => {
-      console.log(isLogin);
       navigate("/location/request");
     }, 5000);
   };
@@ -107,17 +109,20 @@ export default function SignInSide() {
     );
   }
 
-  function viewLoading(){
+  function viewLoading() {
     return (
-      <Box sx={{display:'flex'}} alignItems="center" justifyContent="center">
-        <CircularProgress size={'100px'} sx={{marginTop: "10%", marginBottom:"10%"}} />
+      <Box sx={{ display: "flex" }} alignItems="center" justifyContent="center">
+        <CircularProgress
+          size={"100px"}
+          sx={{ marginTop: "10%", marginBottom: "10%" }}
+        />
       </Box>
     );
   }
 
-
-
   return (
+    <>
+    
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
@@ -167,7 +172,7 @@ export default function SignInSide() {
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
-             {isChangeViewLoading? viewLoading(): viewLogin()} 
+              {isChangeViewLoading ? viewLoading() : viewLogin()}
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
@@ -186,5 +191,7 @@ export default function SignInSide() {
         </Grid>
       </Grid>
     </ThemeProvider>
+    </>
+
   );
 }
