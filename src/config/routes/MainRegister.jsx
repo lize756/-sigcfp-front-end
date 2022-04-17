@@ -16,8 +16,6 @@ import DashboardCreateAccount from "../../components/module-request/login/Dashbo
 import StepperRegistration from "../../components/module-request/company/registration/AccordionRegistration";
 import CoordBasicRegister from "../../components/module-request/coordinator/register/CoordBasicRegister";
 import CoordUserRegister from "../../components/module-request/coordinator/register/CoordUserRegister";
-import { NoPageFound } from "./NoPageFound";
-
 const MainRegister = () => {
   return (
     <>

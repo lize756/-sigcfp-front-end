@@ -16,11 +16,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import {
-  sendToken,
-  setIsLogin,
-} from "../../../components/store/slices/SignIn/LoginSlice";
-import { display } from "@mui/system";
+import { sendToken } from "../../../components/store/slices/SignIn/LoginSlice";
+import { LoadingLogin} from "./LoadingLogin";
 
 function Copyright() {
   return (
@@ -47,55 +44,20 @@ export default function SignInSide() {
   // Allow navigate between roots
   let navigate = useNavigate();
 
-  const [getUserRolee, setUserRolee] = React.useState("");
-  // Allows select the rol that to display the corresponding windows
-
-  /**
-   * This function is responsible for choosing the route that corresponds to the person logged in
-   * @param {*} ROLEE Role of the person who logged in to the application
-   */
-  const selectPath = (ROLEE) => {
-    switch (ROLEE) {
-      case "ROLEE_PROMOTION_COORDINATOR":
-        navigate("/location/request");
-        break;
-      case "ROLEE_LOCATION_COORDINATOR":
-        break;
-
-      case "ROLEE_COMPANY":
-        break;
-
-      case "ROLEE_DIRECTOR":
-        break;
-      case "ROLEE_GRADUATE":
-        break;
-    }
-  };
-  
-  const userRole = useSelector((state) => state.userLogin).rolee;
-  let rolee = userRole
-  console.log("The role on line 76 is: "+ userRole)
   /***
    * Handle Submit
    * Get the form data.
    */
-  const handleSubmit = (event) => {
+  const handleSubmit = (event, rolee) => {
     event.preventDefault();
-    setTimeout(() => {
-      console.log("The role on line 84 is "+ userRole)
-    }, 2000);
-
     setIsChangeViewLoading(true);
     const data = new FormData(event.currentTarget);
+    //UserToLogin
     const user = {
       userName: data.get("userName"),
       userPassword: data.get("userPassword"),
     };
     dispatch(sendToken(user));
-    console.log(getUserRolee);
-    setTimeout(() => {
-      selectPath();
-    }, 2000);
   };
 
   function viewLogin() {
@@ -192,10 +154,11 @@ export default function SignInSide() {
               <Box
                 component="form"
                 noValidate
-                onSubmit={handleSubmit}
+                onSubmit={(event) => handleSubmit(event)}
                 sx={{ mt: 1 }}
               >
-                {isChangeViewLoading ? viewLoading() : viewLogin()}
+                {/**isChangeViewLoading ? viewLoading() : viewLogin()*/}
+                {isChangeViewLoading ? <LoadingLogin /> : viewLogin()}
                 <Grid container>
                   <Grid item xs>
                     <Link href="#" variant="body2">
