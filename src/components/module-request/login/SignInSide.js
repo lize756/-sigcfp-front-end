@@ -48,7 +48,7 @@ export default function SignInSide() {
    * Handle Submit
    * Get the form data.
    */
-  const handleSubmit = (event, rolee) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     setIsChangeViewLoading(true);
     const data = new FormData(event.currentTarget);
@@ -154,7 +154,7 @@ export default function SignInSide() {
               <Box
                 component="form"
                 noValidate
-                onSubmit={(event) => handleSubmit(event)}
+                onSubmit={handleSubmit}
                 sx={{ mt: 1 }}
               >
                 {/**isChangeViewLoading ? viewLoading() : viewLogin()*/}
