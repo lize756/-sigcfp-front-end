@@ -13,25 +13,36 @@ import axios from "../../../config/axios";
 import Request from "./Request";
 import Search from "../company/RequestSearch";
 import { useNavigate } from "react-router";
+//Redux
+import { useSelector, useDispatch } from "react-redux";
+import { fetchtInternsRequests, setListInternsRequests } from "../../store/slices/coordinator/CoordinatorSlice";
 
 const RequestLocation = ({ requestView }) => {
   //lista de solicitudes de practica
-  const [requestList, setRequestList] = useState([]);
+  //const [requestList, setRequestList] = useState([]);
 
   //lista de paginacion de la tabla
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
   //navigate
   let navigate = useNavigate();
+  // console.log("entre")
+  // Allow to bring the token to login acces
 
-  //se guarda en requestlist la informacion de las solicitudes
-  //Axios
-  useEffect(() => {
-    axios.get("/internRequests").then((res) => setRequestList(res.data));
-  }, []);
+  //Redux
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
 
-  /**
+    
+    
+    useEffect(() => {
+      dispatch(fetchtInternsRequests(ACCESS_TOKEN))
+    }, []);
+    
+    const requestList = useSelector((state) => state.coordinatorSlice).list_interns_requests
+    /**
    * This function allows the visualization of a request
    */
   const viewRequest = (request) => {
@@ -57,36 +68,36 @@ const RequestLocation = ({ requestView }) => {
       ));
   };
 
-  return (
-    <div>
-      <Search />
+    return (
+      <div>
+        <Search />
 
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: 400 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead sx={{ bgcolor: "#072079" }}>
-              <TableRow>
-                <TableCell align="center">Facultad</TableCell>
-                <TableCell align="center">Carrera</TableCell>
-                <TableCell align="center">Fecha de Inicio </TableCell>
-                <TableCell align="center">Número de Estudiantes </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>{renderList()}</TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={requestList.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
-  );
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <TableContainer sx={{ maxHeight: 400 }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead sx={{ bgcolor: "#072079" }}>
+                <TableRow>
+                  <TableCell align="center">Facultad</TableCell>
+                  <TableCell align="center">Carrera</TableCell>
+                  <TableCell align="center">Fecha de Inicio </TableCell>
+                  <TableCell align="center">Número de Estudiantes </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>{renderList()}</TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 15]}
+            component="div"
+            count={requestList.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+      </div>
+    );
 };
 
 export default RequestLocation;

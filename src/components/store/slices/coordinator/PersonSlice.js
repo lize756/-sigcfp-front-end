@@ -58,6 +58,11 @@ export const fetchAllPerson = () => (dispatch) => {
   });
 };
 
+/**
+ * Allow us add new person to the database
+ * @param {*} data 
+ * @returns 
+ */
 export const addPerson = (data) => async (dispatch) => {
   try {
     // console.log(data);
@@ -68,6 +73,11 @@ export const addPerson = (data) => async (dispatch) => {
   }
 };
 
+/**
+ * Allow us add new userr to the database
+ * @param {*} data 
+ * @returns 
+ */
 export const addUserr = (data) => async (dispatch) => {
   try {
     //console.log(data);
@@ -79,6 +89,9 @@ export const addUserr = (data) => async (dispatch) => {
     throw new Error(err);
   }
 };
+
+
+
 
 //Export the action to reducer of personRegisterSlice
 export const { setPerson, setPersonList, setUserr } =

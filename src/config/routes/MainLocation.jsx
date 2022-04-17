@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import RequestLocation from "../../components/module-request/location-coordinator/RequestLocation";
 import Home from "../../components/module-request/location-coordinator/HomeLocation";
 import View from "../../components/module-request/location-coordinator/RequestLocView";
@@ -20,7 +20,6 @@ const MainLocation = () => {
 
   return (
     <>
-      <Router>
         <Routes>
           <Route
             path="/location"
@@ -57,13 +56,13 @@ const MainLocation = () => {
             path="/location"
             element={<Home name="INFORMACIÓN DE LAS EMPRESAS" />}
           >
-            <Route
+          <Route
               path="companies"
               element={<CompaniesList listContacts={listContacts} />}
-            />
+          />
+          
           </Route>
         </Routes>
-      </Router>
     </>
   );
 };

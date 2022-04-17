@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {Routes, Route } from "react-router-dom";
 import RequestList from "../../components/module-request/company/RequestList";
 import Home from "../../components/module-request/company/HomeRequest";
 import Create from "../../components/module-request/company/RequestCreate";
 import Update from "../../components/module-request/company/RequestUpdate";
 import RequestView from "../../components/module-request/company/RequestView";
 
-import StepperRegistration from "../../components/module-request/company/registration/AccordionRegistration";
-import CoordBasicRegister from "../../components/module-request/coordinator/register/CoordBasicRegister";
-import CoordUserRegister from "../../components/module-request/coordinator/register/CoordUserRegister";
+
 const MainCompany = () => {
   const [requestEdit, setRequestEdit] = useState({});
 
@@ -18,9 +16,8 @@ const MainCompany = () => {
 
   return (
     <>
-      <Router>
         <Routes>
-         {/*Request route*/} 
+          {/*Request route*/}
           <Route
             path="/company"
             element={
@@ -60,16 +57,7 @@ const MainCompany = () => {
             />
             <Route path="request" element={<RequestList />} />
           </Route>
-          <Route path="/coordinator" element={<Home name="REGISTRO" />}>
-            <Route path="register" element={<CoordBasicRegister />} />
-            <Route path="register/user_register" element={<CoordUserRegister />} />
-          </Route>
-          {/*Registration route*/}
-          <Route path="/company" element={<Home name="REGISTRO" />}>
-            <Route path="register" element={<StepperRegistration />} />
-          </Route>
         </Routes>
-      </Router>
     </>
   );
 };
