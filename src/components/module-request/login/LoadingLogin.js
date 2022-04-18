@@ -4,6 +4,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router";
 
+/**
+ * This components allow show us a circular progress while checking the user credentials
+ * @returns
+ */
 export const LoadingLogin = () => {
   const userRole = useSelector((state) => state.userLogin).rolee;
   // Allow navigate between roots
@@ -11,20 +15,20 @@ export const LoadingLogin = () => {
 
   useEffect(() => {
     setTimeout(() => {
-        selectPath(userRole);
+      selectPath(userRole);
     }, 3000);
   }, [userRole]); // <- add the count variable here
+
   /**
    * This function is responsible for choosing the route that corresponds to the person logged in
    * @param {*} ROLEE Role of the person who logged in to the application
    */
   const selectPath = (ROLEE) => {
-
     switch (ROLEE) {
-        case "ROLEE_PROMOTION_COORDINATOR":
-            break;
-            case "ROLEE_LOCATION_COORDINATOR":
-          navigate("/location/request");
+      case "ROLEE_PROMOTION_COORDINATOR":
+        break;
+      case "ROLEE_LOCATION_COORDINATOR":
+        navigate("/location/request");
         break;
 
       case "ROLEE_COMPANY":

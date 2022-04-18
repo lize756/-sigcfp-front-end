@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   root: {
     maxWidth: 300,
     height: 400,
-    margin: "50px 0 50px 0"
+    margin: "50px 0 50px 0",
   },
   cardMedia: {
     padding: "10px",
@@ -31,17 +31,30 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * Allows you to select what type of record I want to make: 
+ * Student, Company and people of the CEDEP.
+ * @returns the component that allow select what type of register to make.
+ */
 export default function DashboardCreateAccount() {
   const classes = useStyles();
-  const urlToCompanyRegister = "/company/register"
-  const urlToGraduatedRegister = "#"
-  const urlToCEDEPRegister = "/coordinator/register"
+  const urlToCompanyRegister = "/company/register";
+  const urlToGraduatedRegister = "#";
+  const urlToCEDEPRegister = "/coordinator/register";
 
   return (
-    <Grid container spacing={3} justifyContent="center" style={{ minHeight: "" }}>
+    <Grid
+      container
+      spacing={3}
+      justifyContent="center"
+      style={{ minHeight: "" }}
+    >
       <Grid item>
         <Card className={classes.root}>
-          <CardActionArea className={classes.cardMedia} href={urlToCompanyRegister}>
+          <CardActionArea
+            className={classes.cardMedia}
+            href={urlToCompanyRegister}
+          >
             <CardMedia
               className={classes.media}
               component="img"
@@ -58,7 +71,10 @@ export default function DashboardCreateAccount() {
       </Grid>
       <Grid item>
         <Card className={classes.root}>
-          <CardActionArea className={classes.cardMedia} href={urlToGraduatedRegister}>
+          <CardActionArea
+            className={classes.cardMedia}
+            href={urlToGraduatedRegister}
+          >
             <CardMedia
               className={classes.media}
               component="img"
@@ -75,7 +91,10 @@ export default function DashboardCreateAccount() {
       </Grid>
       <Grid item>
         <Card className={classes.root}>
-          <CardActionArea className={classes.cardMedia}  href={urlToCEDEPRegister}>
+          <CardActionArea
+            className={classes.cardMedia}
+            href={urlToCEDEPRegister}
+          >
             <CardMedia
               className={classes.media}
               component="img"
