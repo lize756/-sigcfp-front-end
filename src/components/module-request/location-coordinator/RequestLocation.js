@@ -9,9 +9,8 @@ import {
   TableBody,
   TablePagination,
 } from "@mui/material";
-import axios from "../../../config/axios";
 import Request from "./Request";
-import Search from "../company/RequestSearch";
+import Search from "../company/request/RequestSearch";
 import { useNavigate } from "react-router";
 //Redux
 import { useSelector, useDispatch } from "react-redux";

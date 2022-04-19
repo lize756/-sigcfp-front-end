@@ -27,16 +27,13 @@ const HomeRequest = (props) => {
         </div>
 
         <nav>
-          <RouterLink to="/company/request">Home</RouterLink>
+          <RouterLink to="/company">Home</RouterLink>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Link href="#"> Preguntas Frecuentes </Link>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Link href="#"> Contacto </Link>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Link href="https://www.elempleo.com/co/sitio-empresarial/universidad-icesi?v2=true">
-            {" "}
-            Bolsa de Empleo{" "}
-          </Link>
-        </nav>
+          <Link href="#"> Bolsa de Empleo </Link>
+          </nav>
 
         <h2>{props.name}</h2>
 
