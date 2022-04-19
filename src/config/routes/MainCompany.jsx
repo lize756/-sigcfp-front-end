@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {Routes, Route } from "react-router-dom";
 import HomeCompany from "../../pages/CompanyApp";
 import ContentCompany from "../../layout/company/ContentsCompany";
 import HomeDirector from "../../pages/DirectorApp";
 import ContentDirector from "../../layout/director/ContentsDir";
 import UserList from "../../components/module-request/company/user/ListUser";
 import RequestList from "../../components/module-request/company/request/RequestList";
-import Home from "../../components/module-request/company/HomeRequest";
 import Create from "../../components/module-request/company/request/RequestCreate";
 import Update from "../../components/module-request/company/request/RequestUpdate";
 import RequestView from "../../components/module-request/company/request/RequestView";
