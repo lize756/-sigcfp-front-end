@@ -3,7 +3,7 @@ import { Autocomplete, TextField, Button, Chip } from "@mui/material";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
-import axios from "../../../config/axios";
+import axios from "../../../../config/axios";
 
 /**
  * Styles of the visual part of the component
@@ -18,6 +18,13 @@ const useStyles = makeStyles((theme) => ({
 
     "& .MuiTextField-root": {
       margin: theme.spacing(2),
+      width: "90%",
+    },
+
+    "& .MuiAutocomplete-root": {
+      margin: theme.spacing(2),
+      justifyContent: "center",
+      alignItems: "center",
       width: "90%",
     },
     "& .MuiButtonBase-root": {
@@ -167,7 +174,7 @@ const RequestCreate = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ bgcolor: "#F2F6FE" }}>
+      <Box sx={{ bgcolor: "#FFFFFF" }}>
         <form className={classes.root} onSubmit={addRequest}>
           <TextField
             name="inteRequName"
@@ -178,7 +185,6 @@ const RequestCreate = () => {
 
           <Autocomplete
             multiple
-            fullWidth
             options={listCareers}
             getOptionLabel={(option) => option.careName}
             name="careers"

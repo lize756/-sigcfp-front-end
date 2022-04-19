@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
+
 import {
   Paper,
+  Container,
+  Stack,
+  Card,
   Table,
   TableContainer,
   TableCell,
@@ -9,32 +13,35 @@ import {
   TableBody,
   TablePagination,
   Button,
+  Typography,
 } from "@mui/material";
-import axios from "../../../config/axios";
+
+import { Link as RouterLink } from "react-router-dom";
+import axios from "../../../../config/axios";
 import Request from "./Request";
+import AddIcon from "@mui/icons-material/Add";
 import Search from "./RequestSearch";
 import { useNavigate } from "react-router";
 import "../StylesCompany.css";
 
 const RequestList = ({ edit }) => {
+  //lista de solicitudes de practica
   const [requestList, setRequestList] = useState([]);
 
-  //table paging
+  //lista de paginacion de la tabla
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   //navigate
   let navigate = useNavigate();
 
+  //se guarda en requestlist la informacion de las solicitudes
   //Axios
   useEffect(() => {
     axios.get("/internRequests").then((res) => setRequestList(res.data));
   }, []);
 
-  /**
-   * This is a function that allows deleting a request
-   * @param {*} request to deleted
-   */
+  //Metodo delete
   const delRequest = (request) => {
     console.log(request.inteRequId);
     axios.delete("internRequests/" + request.inteRequId).then(() => {
@@ -44,49 +51,36 @@ const RequestList = ({ edit }) => {
     });
   };
 
-  /**
-   * This is a function that allows you to obtain the request to update
-   * @param {*} request to update
-   */
+  //Metodo edit
   const editRequest = (request) => {
     edit(request);
     navigate("/company/update");
   };
 
-  /**
-   * This is a function that allows you to obtain the request to visualize
-   * @param {*} request to view
-   */
+  //Metodo
   const viewRequest = (request) => {
     edit(request);
     navigate("/company/View");
   };
 
-  //------------------------------------------ Functions handleChange -------------------------------------------------
+  //Metodos handleChange
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(event.target.value);
     setPage(0);
-  };
-
-  const handleClick = () => {
-    navigate("/company/create");
   };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  /**
-   * This function handles the rendering of the requests in the table
-   * @returns
-   */
+  //El Render
   const renderList = () => {
     return requestList
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
       .map((request) => (
         <Request
           request={request}
-          key={request.id}
+          key={request.inteRequId}
           delRequest={delRequest}
           editRequest={editRequest}
           viewRequest={viewRequest}
@@ -96,17 +90,37 @@ const RequestList = ({ edit }) => {
 
   return (
     <div>
-      <Search />
+      <Container>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
+          <Typography variant="h5" gutterBottom color="#072079">
+            Mis Solicitudes
+          </Typography>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to="/company/create"
+            startIcon={<AddIcon />}
+          >
+            Crear Solicitud
+          </Button>
+        </Stack>
+      </Container>
 
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: 300 }}>
+      <Card sx={{ borderRadius: 8 }}>
+        <Search />
+        <TableContainer sx={{ maxHeight: 400, mt: 5, mb: 5 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell align="center">Facultad</TableCell>
-                <TableCell align="center">Carrera</TableCell>
-                <TableCell align="center">Fecha de Inicio </TableCell>
-                <TableCell align="center">Número de Estudiantes </TableCell>
+                <TableCell align="right">Facultad</TableCell>
+                <TableCell align="right">Carrera</TableCell>
+                <TableCell align="right">Fecha de Inicio </TableCell>
+                <TableCell align="right">Número de Estudiantes </TableCell>
                 <TableCell align="center">Acciones</TableCell>
               </TableRow>
             </TableHead>
@@ -114,6 +128,7 @@ const RequestList = ({ edit }) => {
           </Table>
         </TableContainer>
         <TablePagination
+          sx={{ mb: 2 }}
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
           count={requestList.length}
@@ -122,10 +137,9 @@ const RequestList = ({ edit }) => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      </Paper>
-      <Button sx={{ mt: 5 }} variant="contained" onClick={handleClick}>
-        Crear Solicitud
-      </Button>
+      </Card>
+
+      <Paper sx={{ width: "100%", overflow: "hidden" }}></Paper>
     </div>
   );
 };
