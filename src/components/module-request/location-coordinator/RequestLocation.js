@@ -14,7 +14,7 @@ import Search from "../company/request/RequestSearch";
 import { useNavigate } from "react-router";
 //Redux
 import { useSelector, useDispatch } from "react-redux";
-import { fetchtInternsRequests, setListInternsRequests } from "../../store/slices/coordinator/CoordinatorSlice";
+import { fetchtInternsRequests} from "../../store/slices/coordinator/CoordinatorSlice";
 
 const RequestLocation = ({ requestView }) => {
   //lista de solicitudes de practica

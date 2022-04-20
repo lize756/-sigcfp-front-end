@@ -11,6 +11,8 @@ export const LoginSlice = createSlice({
     responseUserLogin: {},
     isLogin: false,
     rolee: "",
+    userCompanyId: "",
+    userPersonId: "",
   },
   reducers: {
     setUserr: (state, action) => {
@@ -28,6 +30,13 @@ export const LoginSlice = createSlice({
     setRolee: (state, action) => {
       state.rolee = action.payload;
     },
+    setUserPersonId: (state, action) => {
+      state.userPersonId = action.payload;
+    },
+    setUserCompanyId:(state,action) =>{
+      state.userCompanyId = action.payload;
+    }
+
   },
 });
 
@@ -44,6 +53,8 @@ export const sendToken = (data) => async (dispatch) => {
       //Update this rol in the initial state
       dispatch(setRolee(response.data.user.authorities[0].authority));
       dispatch(setIsLogin(true));
+      dispatch(setUserCompanyId(response.data.userCompanyId))
+      dispatch(setUserPersonId(response.data.userPersonId))
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -52,13 +63,13 @@ export const sendToken = (data) => async (dispatch) => {
     });
 };
 
-
-
 //Export the action to reducer of userLogin
 export const {
   setUserr,
   setResponseUserLogin,
   setIsLogin,
-  setRolee,  
+  setRolee,
+  setUserCompanyId,
+  setUserPersonId
 } = LoginSlice.actions;
 export default LoginSlice.reducer;

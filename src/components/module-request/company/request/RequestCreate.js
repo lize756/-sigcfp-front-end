@@ -4,6 +4,10 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
 import axios from "../../../../config/axios";
+/**
+ * Redux
+ */
+import { useDispatch, useSelector } from "react-redux";
 
 /**
  * Styles of the visual part of the component
@@ -57,16 +61,13 @@ const RequestCreate = () => {
   });
 
   const [careers, setCareers] = useState("");
-  const [listCareers, setlistCareers] = useState([]);
   const [inteRequFunctions, setInteRequFunctions] = useState();
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
 
-  // GET request using axios inside useEffect React hook
-  useEffect(() => {
-    axios.get("careers").then((res) => {
-      setlistCareers(res.data);
-    });
-  }, []);
+  const list_carreers = useSelector(
+    (state) => state.companySlice.list_carreers
+  );
+ 
 
   //------------Handlechange functions-------------------------------
 
@@ -162,8 +163,6 @@ const RequestCreate = () => {
       careers: careers,
     };
 
-    console.log(request);
-
     axios
       .post("internRequests/add", request)
       .then((res) => console.log(res))
@@ -185,7 +184,7 @@ const RequestCreate = () => {
 
           <Autocomplete
             multiple
-            options={listCareers}
+            options={list_carreers}
             getOptionLabel={(option) => option.careName}
             name="careers"
             onChange={(e, value) => handleSelect(value)}

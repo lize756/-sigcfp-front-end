@@ -21,9 +21,15 @@ import axios from "../../../../config/axios";
 import User from "./User";
 import AddIcon from "@mui/icons-material/Add";
 import Search from "../request/RequestSearch";
-import { useNavigate } from "react-router";
+
+//Redux
+import { useDispatch, useSelector } from "react-redux";
+//import { fetchCompany } from "../../../store/slices/company/CompanySlice";
 
 const ListUser = ({ userEdit }) => {
+
+
+  
   //User contacts
   const [userList, setUserList] = useState([]);
 
@@ -31,13 +37,9 @@ const ListUser = ({ userEdit }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  //navigate
-  let navigate = useNavigate();
-
-  //Axios
-  useEffect(() => {
-    axios.get("/contacts").then((res) => setUserList(res.data));
-  }, []);
+ 
+   //Get list of company saved in the store
+  const listContactOfCompany = useSelector((state) => state.companySlice.company.contacts);
 
   //Metodo delete
   const delUser = (user) => {
@@ -72,7 +74,7 @@ const ListUser = ({ userEdit }) => {
 
   // Render
   const renderList = () => {
-    return userList
+    return listContactOfCompany
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
       .map((user) => (
         <User
@@ -128,7 +130,7 @@ const ListUser = ({ userEdit }) => {
           sx={{ mb: 2 }}
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
-          count={userList.length}
+          count={listContactOfCompany.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

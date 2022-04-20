@@ -24,7 +24,11 @@ import Search from "./RequestSearch";
 import { useNavigate } from "react-router";
 import "../StylesCompany.css";
 
+//redux
+import { useDispatch, useSelector } from "react-redux";
+
 const RequestList = ({ edit }) => {
+
   //lista de solicitudes de practica
   const [requestList, setRequestList] = useState([]);
 
@@ -34,12 +38,9 @@ const RequestList = ({ edit }) => {
 
   //navigate
   let navigate = useNavigate();
-
-  //se guarda en requestlist la informacion de las solicitudes
-  //Axios
-  useEffect(() => {
-    axios.get("/internRequests").then((res) => setRequestList(res.data));
-  }, []);
+  const list_interRequestsOfCompany = useSelector(
+    (state) => state.companySlice.list_interRequestsOfCompany
+  );
 
   //Metodo delete
   const delRequest = (request) => {
@@ -75,7 +76,7 @@ const RequestList = ({ edit }) => {
 
   //El Render
   const renderList = () => {
-    return requestList
+    return list_interRequestsOfCompany
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
       .map((request) => (
         <Request
@@ -131,7 +132,7 @@ const RequestList = ({ edit }) => {
           sx={{ mb: 2 }}
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
-          count={requestList.length}
+          count={list_interRequestsOfCompany.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

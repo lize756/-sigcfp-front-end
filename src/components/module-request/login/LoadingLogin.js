@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router";
@@ -16,7 +16,7 @@ export const LoadingLogin = () => {
   useEffect(() => {
     setTimeout(() => {
       selectPath(userRole);
-    }, 3000);
+    }, 2000);
   }, [userRole]); // <- add the count variable here
 
   /**
@@ -32,6 +32,7 @@ export const LoadingLogin = () => {
         break;
 
       case "ROLEE_COMPANY":
+        navigate("/company/home")
         break;
 
       case "ROLEE_DIRECTOR":
