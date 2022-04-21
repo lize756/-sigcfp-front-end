@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "../../../../config/axios";
+import axios from "../../../config/axios";
 
+let headers;
 /**
  * This slice containt all related to the requests of the contact.
  */
@@ -49,9 +50,7 @@ export const contactSlice = createSlice({
  * @param {*} contact Correspond of element to add.
  * @returns
  */
-export const addcontact = (ACCESS_TOKEN, contact) => async (
-  dispatch
-) => {
+export const addcontact = (ACCESS_TOKEN, contact) => async (dispatch) => {
   headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -73,11 +72,7 @@ export const addcontact = (ACCESS_TOKEN, contact) => async (
  * @param {*} contact new contact to update.
  * @returns
  */
-export const updatecontact = (
-  ACCESS_TOKEN,
-  contId,
-  contact
-) => (dispatch) => {
+export const updatecontact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -97,9 +92,7 @@ export const updatecontact = (
  * @param {*} contId id of the contact that you want to delete
  * @returns
  */
-export const deletecontact = (ACCESS_TOKEN, contId) => async (
-  dispatch
-) => {
+export const deletecontact = (ACCESS_TOKEN, contId) => async (dispatch) => {
   headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -120,9 +113,7 @@ export const deletecontact = (ACCESS_TOKEN, contId) => async (
  * @param {*} contId contId id to search a one contact
  * @returns
  */
-export const getcontact = (ACCESS_TOKEN, contId) => async (
-  dispatch
-) => {
+export const getcontact = (ACCESS_TOKEN, contId) => async (dispatch) => {
   headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -182,6 +173,6 @@ export const getContactsAssociatedCompany = (ACCESS_TOKEN, companyId) => (
 export const {
   setContact,
   setListcontacts,
-  setListContactsOfCompany
+  setListContactsOfCompany,
 } = contactSlice.actions;
 export default contactSlice.reducer;

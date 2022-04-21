@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "../../../../config/axios";
+import axios from "../../../config/axios";
 
+
+
+let headers;
 /**
  * This slice containt all related to the requests of the company.
  */
