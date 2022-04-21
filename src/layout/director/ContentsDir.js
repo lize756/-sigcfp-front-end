@@ -2,7 +2,7 @@ import React from "react";
 import Modules from "../company/CardsModule";
 import TableHome from "./TableCompanies";
 import CardContact from "./CardContacts";
-import { Container, Grid, Paper } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 
 const ContentsCompany = () => {
   return (

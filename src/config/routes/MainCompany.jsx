@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import {Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import HomeCompany from "../../pages/CompanyApp";
 import ContentCompany from "../../layout/company/ContentsCompany";
-import HomeDirector from "../../pages/DirectorApp";
-import ContentDirector from "../../layout/director/ContentsDir";
 import UserList from "../../components/module-request/company/user/ListUser";
 import RequestList from "../../components/module-request/company/request/RequestList";
 import Create from "../../components/module-request/company/request/RequestCreate";
@@ -24,9 +22,6 @@ const MainCompany = () => {
   return (
     <>
       <Routes>
-        <Route path="/director" element={<HomeDirector />}>
-          <Route path="home" element={<ContentDirector />} />
-        </Route>
         <Route path="/company" element={<HomeCompany />}>
           <Route path="home" element={<ContentCompany />} />
         </Route>

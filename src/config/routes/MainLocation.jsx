@@ -20,49 +20,45 @@ const MainLocation = () => {
 
   return (
     <>
-        <Routes>
+      <Routes>
+        <Route
+          path="/location"
+          element={
+            <Home name="PORTAL DE SOLICITUDES PRACTICANTES DE LA UNIVERSIDAD ICESI" />
+          }
+        >
           <Route
-            path="/location"
-            element={
-              <Home name="PORTAL DE SOLICITUDES PRACTICANTES DE LA UNIVERSIDAD ICESI" />
-            }
-          >
-            <Route
-              path="request"
-              element={<RequestLocation requestView={requestView} />}
-            />
-          </Route>
-
-          <Route
-            path="/location"
-            element={
-              <Home name="PORTAL DE SOLICITUDES PRACTICANTES DE LA UNIVERSIDAD ICESI" />
-            }
-          >
-            <Route path="view" element={<View request={request} />} />
-          </Route>
-
-          <Route
-            path="/location"
-            element={<Home name="INFORMACIÓN DE CONTACTO DE LAS EMPRESAS" />}
-          >
-            <Route
-              path="contact"
-              element={<ContactList contacts={contact} />}
-            />
-          </Route>
-
-          <Route
-            path="/location"
-            element={<Home name="INFORMACIÓN DE LAS EMPRESAS" />}
-          >
-          <Route
-              path="companies"
-              element={<CompaniesList listContacts={listContacts} />}
+            path="request"
+            element={<RequestLocation requestView={requestView} />}
           />
-          
-          </Route>
-        </Routes>
+        </Route>
+
+        <Route
+          path="/location"
+          element={
+            <Home name="PORTAL DE SOLICITUDES PRACTICANTES DE LA UNIVERSIDAD ICESI" />
+          }
+        >
+          <Route path="view" element={<View request={request} />} />
+        </Route>
+
+        <Route
+          path="/location"
+          element={<Home name="INFORMACIÓN DE CONTACTO DE LAS EMPRESAS" />}
+        >
+          <Route path="contact" element={<ContactList contacts={contact} />} />
+        </Route>
+
+        <Route
+          path="/location"
+          element={<Home name="INFORMACIÓN DE LAS EMPRESAS" />}
+        >
+          <Route
+            path="companies"
+            element={<CompaniesList listContacts={listContacts} />}
+          />
+        </Route>
+      </Routes>
     </>
   );
 };

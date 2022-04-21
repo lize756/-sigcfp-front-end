@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Modules from "./CardsModule";
 import TableHome from "./TableContact";
 import { Container, Grid } from "@mui/material";
@@ -9,13 +9,13 @@ import { Container, Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchtInternsRequests,
-  fetchCompany,fetchCareers
+  fetchCompany,
+  fetchCareers,
 } from "../../components/store/slices/company/CompanySlice";
-
 
 /**
  * Main Class of Company
- * @returns 
+ * @returns
  */
 const ContentsCompany = () => {
   // Allow to send the elements of store
@@ -32,7 +32,7 @@ const ContentsCompany = () => {
   useEffect(() => {
     // Added to store the company that user login
     dispatch(fetchCompany(ACCESS_TOKEN, userCompanyId));
-    // Added to store the list of intern requests that company have associated. 
+    // Added to store the list of intern requests that company have associated.
     dispatch(fetchtInternsRequests(ACCESS_TOKEN, userCompanyId));
     //Added to store of list of carreers.
     dispatch(fetchCareers(ACCESS_TOKEN));
