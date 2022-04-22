@@ -17,7 +17,7 @@ export default configureStore({
   reducer: {
     //personRegister,
     //coordinatorSlice,
-
+    userLogin,
     CareerSlice,
     CompanySlice,
     ContactSlice,
