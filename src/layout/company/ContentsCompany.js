@@ -8,10 +8,16 @@ import { Container, Grid } from "@mui/material";
  */
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchtInternsRequests,
-  fetchCompany,
-  fetchCareers,
-} from "../../components/store/slices/company/CompanySlice";
+  getInternRequestsAssociatedCompany
+} from "../../components/store/slices/InternRequestSlice";
+
+import {
+  getCompany,
+} from "../../components/store/slices/CompanySlice";
+
+import {
+  getcareers,
+} from "../../components/store/slices/CareerSlice";
 
 /**
  * Main Class of Company
@@ -31,11 +37,11 @@ const ContentsCompany = () => {
   //Axios
   useEffect(() => {
     // Added to store the company that user login
-    dispatch(fetchCompany(ACCESS_TOKEN, userCompanyId));
+    dispatch(getCompany(ACCESS_TOKEN, userCompanyId));
     // Added to store the list of intern requests that company have associated.
-    dispatch(fetchtInternsRequests(ACCESS_TOKEN, userCompanyId));
+    dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
     //Added to store of list of carreers.
-    dispatch(fetchCareers(ACCESS_TOKEN));
+    dispatch(getcareers(ACCESS_TOKEN));
   }, []);
 
   return (

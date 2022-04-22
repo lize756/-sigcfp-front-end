@@ -28,7 +28,6 @@ import "../StylesCompany.css";
 import { useDispatch, useSelector } from "react-redux";
 
 const RequestList = ({ edit }) => {
-
   //lista de solicitudes de practica
   const [requestList, setRequestList] = useState([]);
 
@@ -39,7 +38,7 @@ const RequestList = ({ edit }) => {
   //navigate
   let navigate = useNavigate();
   const list_interRequestsOfCompany = useSelector(
-    (state) => state.companySlice.list_interRequestsOfCompany
+    (state) => state.InternRequestSlice.listIntReqsOfCompany
   );
 
   //Metodo delete
