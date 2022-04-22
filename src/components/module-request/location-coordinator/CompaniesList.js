@@ -25,7 +25,7 @@ const CompaniesList = ({ listContacts }) => {
         spacing={{ xs: 5, md: 4, gridColumn: "1 / 3" }}
         justifyContent="center"
       >
-        {companiesList?.map((company) => {
+        {companiesList?companiesList.map((company) => {
           return (
             <Company
               key={company.compId}
@@ -33,7 +33,7 @@ const CompaniesList = ({ listContacts }) => {
               contacts={contacts}
             />
           );
-        })}
+        }):""}
       </Grid>
     </>
   );

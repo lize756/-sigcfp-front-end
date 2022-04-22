@@ -60,14 +60,14 @@ const CardContacts = () => {
           }}
         >
           <Timeline>
-            {contactList?.map((item, index) => (
+            {contactList?contactList.map((item, index) => (
               <ContactItems
                 key={item.contId}
                 item={item}
                 index={index}
                 isLast={index === contactList.length - 1}
               />
-            ))}
+            )):""}
           </Timeline>
         </CardContent>
       </Card>

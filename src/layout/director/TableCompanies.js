@@ -42,7 +42,7 @@ const CompanyItems = ({ company }) => {
 };
 
 const TableCompanies = () => {
-  const [companyList, setCompanyList] = useState();
+  const [companyList, setCompanyList] = useState([]);
   const title = "Compañias Recientes";
 
   useEffect(() => {
@@ -59,9 +59,9 @@ const TableCompanies = () => {
 
         <CardContent>
           <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-            {companyList?.map((company) => (
+            {companyList?companyList.map((company) => (
               <CompanyItems key={company.compId} company={company} />
-            ))}
+            )):""}
           </Stack>
         </CardContent>
 

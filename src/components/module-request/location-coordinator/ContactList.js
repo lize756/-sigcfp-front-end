@@ -14,9 +14,9 @@ const ContactList = ({ contacts }) => {
   return (
     <>
       <Grid container spacing={{ xs: 5, md: 4 }} justifyContent="center">
-        {contactList?.map((contact) => {
+        {contactList?contactList.map((contact) => {
           return <Contacts key={contact.contId} contact={contact} />;
-        })}
+        }):""}
       </Grid>
     </>
   );

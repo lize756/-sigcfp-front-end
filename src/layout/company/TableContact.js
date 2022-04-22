@@ -61,9 +61,9 @@ const TableContact = () => {
 
         <CardContent>
           <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-            {contactList?.map((contact) => (
+            {contactList?contactList.map((contact) => (
               <ContactItems key={contact.contId} contact={contact} />
-            ))}
+            )):""}
           </Stack>
         </CardContent>
 
