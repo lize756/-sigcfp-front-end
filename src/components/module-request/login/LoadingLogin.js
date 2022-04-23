@@ -26,9 +26,11 @@ export const LoadingLogin = () => {
   const selectPath = (ROLEE) => {
     switch (ROLEE) {
       case "ROLEE_PROMOTION_COORDINATOR":
+        navigate("/promotion/home");
+
         break;
       case "ROLEE_LOCATION_COORDINATOR":
-        navigate("/location/request");
+        navigate("/location/home");
         break;
 
       case "ROLEE_COMPANY":
@@ -36,6 +38,7 @@ export const LoadingLogin = () => {
         break;
 
       case "ROLEE_DIRECTOR":
+        navigate("/director/home");
         break;
       case "ROLEE_GRADUATE":
         break;

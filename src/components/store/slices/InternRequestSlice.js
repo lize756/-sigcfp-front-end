@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
 
 let headers;
@@ -58,9 +58,10 @@ export const addInternRequest = (ACCESS_TOKEN, internRequest) => async (
   };
 
   axios
-    .post("/api/internRequests", { headers }, internRequest)
+    .post("/api/internRequests/add", internRequest, { headers })
     .then((res) => {
       dispatch(setIntReq(res.data));
+      dispatch(getInternRequests(ACCESS_TOKEN))
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -109,6 +110,7 @@ export const deleteInternRequest = (ACCESS_TOKEN, inteRequId) => async (
     .delete("/api/internRequests/" + inteRequId, { headers })
     .then((res) => {
       dispatch(setIntReq(res.data));
+      dispatch(setListIntReqs(res.data));
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -143,7 +145,7 @@ export const getInternRequest = (ACCESS_TOKEN, inteRequId) => async (
  * @param {*} ACCESS_TOKEN Token of the user that login to the system
  * @returns
  */
-export const getInternRequests = (ACCESS_TOKEN) => (dispatch) => {
+export const getInternRequests = (ACCESS_TOKEN) => async (dispatch) => {
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };

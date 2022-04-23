@@ -24,8 +24,8 @@ import Search from "./RequestSearch";
 import { useNavigate } from "react-router";
 import "../StylesCompany.css";
 
-//redux
-import { useDispatch, useSelector } from "react-redux";
+//Redux
+import {useSelector, shallowEqual } from "react-redux";
 
 const RequestList = ({ edit }) => {
   //lista de solicitudes de practica
@@ -37,10 +37,12 @@ const RequestList = ({ edit }) => {
 
   //navigate
   let navigate = useNavigate();
-  const list_interRequestsOfCompany = useSelector(
-    (state) => state.InternRequestSlice.listIntReqsOfCompany
+  let list_interRequestsOfCompany = useSelector(
+    (state) => state.InternRequestSlice.listIntReqsOfCompany,
+    shallowEqual
   );
 
+  console.log(list_interRequestsOfCompany.length)
   //Metodo delete
   const delRequest = (request) => {
     console.log(request.inteRequId);
@@ -117,6 +119,7 @@ const RequestList = ({ edit }) => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
+                <TableCell align="right">Nombre</TableCell>
                 <TableCell align="right">Facultad</TableCell>
                 <TableCell align="right">Carrera</TableCell>
                 <TableCell align="right">Fecha de Inicio </TableCell>
