@@ -15,72 +15,10 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-
-import { Link as RouterLink } from "react-router-dom";
-import axios from "../../../../config/axios";
 import User from "./User";
-import AddIcon from "@mui/icons-material/Add";
 import Search from "../../company/request/RequestSearch";
 import { useNavigate } from "react-router";
-
-const user = [
-  {
-    contId: 2,
-    contEmail: "pkilmister1@pbs.org",
-    contName: "Padget Kilmister",
-    contPhone: "307-438-7780",
-    contPosition: "Business Development",
-  },
-  {
-    contId: 3,
-    contEmail: "elias.estupinan@u.icesi.edu.co",
-    contName: "Caleb",
-    contPhone: "235-678-1670",
-    contPosition: "Legal",
-  },
-  {
-    contId: 4,
-    contEmail: "eliaset096@gmail.com",
-    contName: "Caleb",
-    contPhone: "838-580-8467",
-    contPosition: "Training",
-  },
-  {
-    contId: 5,
-    contEmail: "eliaset096@outlook.com",
-    contName: "Caleb",
-    contPhone: "495-607-7365",
-    contPosition: "Engineering",
-  },
-  {
-    contId: 6,
-    contEmail: "keithlan@yahoo.com",
-    contName: "Caleb",
-    contPhone: "396-118-2552",
-    contPosition: "Support",
-  },
-  {
-    contId: 8,
-    contEmail: "lize756cas@gmail.com",
-    contName: "Fanny",
-    contPhone: "652-629-4802",
-    contPosition: "Human Resources",
-  },
-  {
-    contId: 9,
-    contEmail: "osvan202@gmail.com",
-    contName: "Oscar",
-    contPhone: "412-228-3109",
-    contPosition: "Sales",
-  },
-  {
-    contId: 10,
-    contEmail: "bnarducci9@wordpress.com",
-    contName: "Birgit Narducci",
-    contPhone: "632-161-4066",
-    contPosition: "Marketing",
-  },
-];
+import { useSelector } from "react-redux";
 
 const UserList = ({ edit }) => {
   //list of company's contacts
@@ -90,12 +28,21 @@ const UserList = ({ edit }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  //Redux
+  const companyContacts = useSelector(
+    (state) => state.CompanySlice.company.contacts);
+
+
+
+
+
+
   //navigate
   let navigate = useNavigate();
 
   //Axios
   useEffect(() => {
-    axios.get("/contacts").then((res) => setUsertList(res.data));
+    setUsertList(companyContacts)
   }, []);
 
   const handleChangeRowsPerPage = (event) => {

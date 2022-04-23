@@ -199,7 +199,7 @@ const DirectorApp = () => {
               button
               key="Home"
               onClick={() => {
-                navigate("/company/home");
+                navigate("/director/home");
               }}
             >
               <ListItemIcon>
@@ -208,7 +208,13 @@ const DirectorApp = () => {
               <ListItemText primary="Home" />
             </ListItem>
 
-            <ListItem button key="Request">
+            <ListItem
+              button
+              key="Request"
+              onClick={() => {
+                navigate("/director/request");
+              }}
+            >
               <ListItemIcon>
                 <RequestIcon color="primary" />
               </ListItemIcon>
@@ -222,7 +228,13 @@ const DirectorApp = () => {
               <ListItemText primary="Perfiles Egresados" />
             </ListItem>
 
-            <ListItem button key="Companies">
+            <ListItem
+              button
+              key="Companies"
+              onClick={() => {
+                navigate("/director/companies");
+              }}
+            >
               <ListItemIcon>
                 <ContactsIcon color="primary" />
               </ListItemIcon>

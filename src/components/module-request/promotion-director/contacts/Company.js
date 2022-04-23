@@ -7,10 +7,20 @@ import {
   Menu,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 import MoreIcon from "@mui/icons-material/MoreVert";
+
+//Redux
+import { useDispatch} from "react-redux";
+import { setCompany } from "../../../store/slices/CompanySlice";
+
+
 
 const ITEM_HEIGHT = 40;
 const Company = ({ company, viewCompany }) => {
+  const dispatch = useDispatch();
+  // Allow navigate between roots
+  let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -20,13 +30,18 @@ const Company = ({ company, viewCompany }) => {
     setAnchorEl(null);
   };
 
+  const handleViewCompany = () => {
+    navigate("/director/contacts");
+    dispatch(setCompany(company))
+  };
+
   return (
     <TableRow
       hover
       role="checkbox"
       tabIndex={-1}
       onClick={() => {
-        viewCompany(company);
+        //viewCompany(company);
       }}
     >
       <TableCell align="left">{company.compName}</TableCell>
@@ -63,7 +78,7 @@ const Company = ({ company, viewCompany }) => {
           <MenuItem key="Home" onClick={handleClose}>
             <Typography textAlign="center">Ver Compañia</Typography>
           </MenuItem>
-          <MenuItem key="Perfil" onClick={handleClose}>
+          <MenuItem key="Perfil" onClick={handleViewCompany}>
             <Typography textAlign="center">Ver Contactos</Typography>
           </MenuItem>
         </Menu>

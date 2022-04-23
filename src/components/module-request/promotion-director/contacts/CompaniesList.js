@@ -37,16 +37,9 @@ const CompaniesList = () => {
 
   //Redux
   const listCompanies = useSelector(
-    (state) => state.CompanySlice.listCompanies);
+    (state) => state.CompanySlice.listCompanies
+  );
 
-  /**
-  * 
-  //Axios
-  useEffect(() => {
-    axios.get("/companies").then((res) => setCompanyList(res.data));
-    }, []);
-  
-  */
   const viewCompany = (company) => {
     //view(company);
     //navigate("/company/View");
