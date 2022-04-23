@@ -84,14 +84,12 @@ export const updateInternRequest = (
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("api/internRequests/update/" + inteRequId,{headers},internRequest)
+    .put("api/internRequests/update/" + inteRequId, { headers }, internRequest)
     .then((res) => {
       dispatch(setIntReq(res.data));
     })
-    .catch((err,trace) => {
+    .catch((err) => {
       console.log(err.toJSON());
-      console.log(trace);
-
     });
 };
 

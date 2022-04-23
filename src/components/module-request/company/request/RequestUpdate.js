@@ -8,6 +8,8 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInternRequest } from "../../../store/slices/InternRequestSlice";
 
+import { DesktopDatePicker } from "@mui/lab";
+
 /**
  * Styles of the visual part of the component
  */
@@ -100,12 +102,15 @@ const RequestUpdate = ({ request }) => {
    * date loaded from the database to the format needed by textfield date
    * @returns  date in correct format
    */
-  const getDate = () => {
-    const requDate = editRequest.inteRequStDate;
+  const  getDate = async () => {
+    const requDate = await editRequest.inteRequStDate;
     const datest = moment(requDate, "DD/MM/YYYY").format("yyyy-MM-DD");
-    return datest;
-  };
+    const [year,moth,day] = datest.split('-')
+    console.log(datest)
+    console.log(year+"-"+moth+"-"+day)
 
+    return datest
+  };
   //------------Handlechange functions-----------------------------------
   const handleChange = (e) => {
     setEditRequest({ ...editRequest, [e.target.name]: e.target.value });
@@ -267,7 +272,7 @@ const RequestUpdate = ({ request }) => {
             label="Fecha de Inicio"
             InputLabelProps={{ shrink: true, required: true }}
             type="date"
-            defaultValue={getDate()}
+            defaultValue= {getDate()}
             onChange={handleChange}
           />
 
