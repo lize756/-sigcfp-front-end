@@ -18,41 +18,86 @@ import {
 
 import { Link as RouterLink } from "react-router-dom";
 import axios from "../../../../config/axios";
-import Company from "./Company";
+import User from "./User";
+import AddIcon from "@mui/icons-material/Add";
 import Search from "../../company/request/RequestSearch";
 import { useNavigate } from "react-router";
-//redux
-import { useDispatch, useSelector } from "react-redux";
 
-const CompaniesList = () => {
-  //Company contacts
-  //const [companyList, setCompanyList] = useState([]);
+const user = [
+  {
+    contId: 2,
+    contEmail: "pkilmister1@pbs.org",
+    contName: "Padget Kilmister",
+    contPhone: "307-438-7780",
+    contPosition: "Business Development",
+  },
+  {
+    contId: 3,
+    contEmail: "elias.estupinan@u.icesi.edu.co",
+    contName: "Caleb",
+    contPhone: "235-678-1670",
+    contPosition: "Legal",
+  },
+  {
+    contId: 4,
+    contEmail: "eliaset096@gmail.com",
+    contName: "Caleb",
+    contPhone: "838-580-8467",
+    contPosition: "Training",
+  },
+  {
+    contId: 5,
+    contEmail: "eliaset096@outlook.com",
+    contName: "Caleb",
+    contPhone: "495-607-7365",
+    contPosition: "Engineering",
+  },
+  {
+    contId: 6,
+    contEmail: "keithlan@yahoo.com",
+    contName: "Caleb",
+    contPhone: "396-118-2552",
+    contPosition: "Support",
+  },
+  {
+    contId: 8,
+    contEmail: "lize756cas@gmail.com",
+    contName: "Fanny",
+    contPhone: "652-629-4802",
+    contPosition: "Human Resources",
+  },
+  {
+    contId: 9,
+    contEmail: "osvan202@gmail.com",
+    contName: "Oscar",
+    contPhone: "412-228-3109",
+    contPosition: "Sales",
+  },
+  {
+    contId: 10,
+    contEmail: "bnarducci9@wordpress.com",
+    contName: "Birgit Narducci",
+    contPhone: "632-161-4066",
+    contPosition: "Marketing",
+  },
+];
 
-  //table pagination
+const UserList = ({ edit }) => {
+  //list of company's contacts
+  const [userList, setUsertList] = useState([]);
+
+  //pagination
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   //navigate
   let navigate = useNavigate();
 
-  //Redux
-  const listCompanies = useSelector(
-    (state) => state.CompanySlice.listCompanies);
-
-  /**
-  * 
   //Axios
   useEffect(() => {
-    axios.get("/companies").then((res) => setCompanyList(res.data));
-    }, []);
-  
-  */
-  const viewCompany = (company) => {
-    //view(company);
-    //navigate("/company/View");
-  };
+    axios.get("/contacts").then((res) => setUsertList(res.data));
+  }, []);
 
-  //handleChange
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(event.target.value);
     setPage(0);
@@ -62,17 +107,11 @@ const CompaniesList = () => {
     setPage(newPage);
   };
 
-  // Render
+  //Render
   const renderList = () => {
-    return listCompanies
+    return userList
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map((company) => (
-        <Company
-          company={company}
-          key={company.compId}
-          viewCompany={viewCompany}
-        />
-      ));
+      .map((user) => <User user={user} key={user.contId} />);
   };
 
   return (
@@ -85,42 +124,39 @@ const CompaniesList = () => {
           mb={5}
         >
           <Typography variant="h5" gutterBottom color="#072079">
-            Empresas Registradas
+            Contactos empresariales
           </Typography>
         </Stack>
       </Container>
 
       <Card sx={{ borderRadius: 8 }}>
         <Search />
-        <TableContainer sx={{ maxHeight: 400, mt: 4, mb: 4 }}>
+        <TableContainer sx={{ maxHeight: 400, mt: 5, mb: 5 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 <TableCell align="left">Nombre</TableCell>
-                <TableCell align="left">Correo Electronico</TableCell>
+                <TableCell align="center">Correo Electronico</TableCell>
                 <TableCell align="center">Telefono</TableCell>
-                <TableCell align="right">Dirección </TableCell>
-                <TableCell align="right"> </TableCell>
+                <TableCell align="right">Posicioón </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{renderList()}</TableBody>
           </Table>
         </TableContainer>
         <TablePagination
-          sx={{ mb: 1 }}
+          sx={{ mb: 2 }}
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
-          count={listCompanies.length}
+          count={userList.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
-
-      <Paper sx={{ width: "100%", overflow: "hidden" }}></Paper>
     </div>
   );
 };
 
-export default CompaniesList;
+export default UserList;
