@@ -5,6 +5,7 @@ import HomeDirector from "../../pages/DirectorApp";
 import ContentDirector from "../../layout/director/ContentsDir";
 import Companies from "../../components/module-request/promotion-director/contacts/CompaniesList";
 import RequestList from "../../components/module-request/promotion-director/request/RequestList";
+import Contacts from "../../components/module-request/promotion-director/contacts/UserList";
 
 const MainDirector = () => {
   return (
@@ -19,6 +20,9 @@ const MainDirector = () => {
         </Route>
         <Route path="/director" element={<HomeDirector />}>
           <Route path="request" element={<RequestList />} />
+        </Route>
+        <Route path="/director" element={<HomeDirector />}>
+          <Route path="contacts" element={<Contacts />} />
         </Route>
       </Routes>
     </>
