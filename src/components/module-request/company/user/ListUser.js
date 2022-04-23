@@ -39,7 +39,7 @@ const ListUser = ({ userEdit }) => {
 
  
    //Get list of company saved in the store
-  const listContactOfCompany = useSelector((state) => state.companySlice.company.contacts);
+  const listContactOfCompany = useSelector((state) => state.CompanySlice.company.contacts);
 
   //Metodo delete
   const delUser = (user) => {

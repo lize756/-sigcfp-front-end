@@ -8,7 +8,7 @@ import axios from "../../../../config/axios";
  * Redux
  */
 import { useDispatch, useSelector } from "react-redux";
-
+import {addInternRequest, getInternRequests } from "../../../store/slices/InternRequestSlice";
 /**
  * Styles of the visual part of the component
  */
@@ -43,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
  */
 const RequestCreate = () => {
   const classes = useStyles();
+
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+
   let navigate = useNavigate();
 
   /**-------------------------------------------------------------
@@ -64,11 +68,16 @@ const RequestCreate = () => {
   const [inteRequFunctions, setInteRequFunctions] = useState();
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
 
-  const list_carreers = useSelector(
-    (state) => state.companySlice.list_carreers
-  );
- 
-
+  /**
+   * Redux
+   */
+  const list_carreers = useSelector((state) => state.CareerSlice.listCareers);
+  
+  // Get company of the store
+  const company = useSelector((state) => state.CompanySlice.company);
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
   //------------Handlechange functions-------------------------------
 
   /**
@@ -161,13 +170,18 @@ const RequestCreate = () => {
       inteRequBondingType: data.inteRequBondingType,
       inteRequOtherBenefits: data.inteRequOtherBenefits,
       careers: careers,
+      company: company,
     };
-
-    axios
-      .post("internRequests/add", request)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-
+    
+    dispatch(addInternRequest(ACCESS_TOKEN,request))
+    /**
+     * 
+     axios
+     .post("internRequests/add", request)
+     .then((res) => console.log(res))
+     .catch((err) => console.log(err));
+     
+     */
     navigate("/company/request");
   };
 

@@ -29,7 +29,8 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
   }, []);
 
   return (
-    <TableRow hover role="checkbox" tabIndex={-1} key={request.id}>
+    <TableRow hover role="checkbox" tabIndex={-1} key={request.inteRequId}>
+      <TableCell align="right">{request.inteRequName}</TableCell>
       <TableCell align="right">{getStrFaculty}</TableCell>
       <TableCell align="right">{getStrCareers}</TableCell>
       <TableCell align="right">{request.inteRequStDate}</TableCell>

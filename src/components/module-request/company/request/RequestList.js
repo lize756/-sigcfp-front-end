@@ -24,10 +24,12 @@ import Search from "./RequestSearch";
 import { useNavigate } from "react-router";
 import "../StylesCompany.css";
 
-//redux
-import { useDispatch, useSelector } from "react-redux";
+//Redux
+import {useDispatch, useSelector, shallowEqual } from "react-redux";
+import { deleteInternRequest } from "../../../store/slices/InternRequestSlice";
 
 const RequestList = ({ edit }) => {
+  const dispatch = useDispatch();
   //lista de solicitudes de practica
   const [requestList, setRequestList] = useState([]);
 
@@ -37,18 +39,28 @@ const RequestList = ({ edit }) => {
 
   //navigate
   let navigate = useNavigate();
-  const list_interRequestsOfCompany = useSelector(
-    (state) => state.InternRequestSlice.listIntReqsOfCompany
+  let list_interRequestsOfCompany = useSelector(
+    (state) => state.InternRequestSlice.listIntReqsOfCompany,
+    shallowEqual
   );
+    //Get acces_token of the user that start section
+    const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
 
+  console.log(list_interRequestsOfCompany.length)
   //Metodo delete
   const delRequest = (request) => {
     console.log(request.inteRequId);
-    axios.delete("internRequests/" + request.inteRequId).then(() => {
-      axios.get("internRequests").then((res) => {
-        setRequestList(res.data);
+
+    dispatch(deleteInternRequest(ACCESS_TOKEN,request.inteRequId))
+    /**
+     * 
+     axios.delete("internRequests/" + request.inteRequId).then(() => {
+       axios.get("internRequests").then((res) => {
+         setRequestList(res.data);
+        });
       });
-    });
+      */
   };
 
   //Metodo edit
@@ -117,6 +129,7 @@ const RequestList = ({ edit }) => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
+                <TableCell align="right">Nombre</TableCell>
                 <TableCell align="right">Facultad</TableCell>
                 <TableCell align="right">Carrera</TableCell>
                 <TableCell align="right">Fecha de Inicio </TableCell>

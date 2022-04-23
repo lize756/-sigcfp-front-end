@@ -5,6 +5,10 @@ import { makeStyles, Box, Container } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
 import axios from "../../../../config/axios";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { updateInternRequest } from "../../../store/slices/InternRequestSlice";
+
+import { DesktopDatePicker } from "@mui/lab";
 
 /**
  * Styles of the visual part of the component
@@ -38,6 +42,17 @@ const ListItem = styled("li")(({ theme }) => ({
  * @returns
  */
 const RequestUpdate = ({ request }) => {
+  /**
+   * Redux
+   */
+  const list_carreers = useSelector((state) => state.CareerSlice.listCareers);
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+
   const classes = useStyles();
   let navigate = useNavigate();
 
@@ -45,7 +60,7 @@ const RequestUpdate = ({ request }) => {
    * Handling the states of the attributes that make up a request
    * -------------------------------------------------------------
    */
-  const [listCareers, setlistCareers] = useState([]);
+  //const [listCareers, setlistCareers] = useState([]);
   const [careers, setCareers] = useState([]);
   const [defaultCareers, setDefaultCareers] = useState([]);
   const [inteRequFunctions, setInteRequFunctions] = useState([]);
@@ -72,24 +87,30 @@ const RequestUpdate = ({ request }) => {
     }
   }, [request]);
 
-  // GET request using axios inside useEffect React hook
-  useEffect(() => {
-    axios.get("careers").then((res) => {
-      setlistCareers(res.data);
-    });
-  }, []);
+  /**
+   * 
+   // GET request using axios inside useEffect React hook
+   useEffect(() => {
+     axios.get("careers").then((res) => {
+       setlistCareers(res.data);
+      });
+    }, []);
+    */
 
   /**
    * This function is responsible for converting the
    * date loaded from the database to the format needed by textfield date
    * @returns  date in correct format
    */
-  const getDate = () => {
-    const requDate = editRequest.inteRequStDate;
+  const  getDate = async () => {
+    const requDate = await editRequest.inteRequStDate;
     const datest = moment(requDate, "DD/MM/YYYY").format("yyyy-MM-DD");
-    return datest;
-  };
+    const [year,moth,day] = datest.split('-')
+    console.log(datest)
+    console.log(year+"-"+moth+"-"+day)
 
+    return datest
+  };
   //------------Handlechange functions-----------------------------------
   const handleChange = (e) => {
     setEditRequest({ ...editRequest, [e.target.name]: e.target.value });
@@ -149,6 +170,7 @@ const RequestUpdate = ({ request }) => {
       }
     );
     const request = {
+      inteRequId: editRequest.inteRequId,
       inteRequDuration: editRequest.inteRequDuration,
       inteRequName: editRequest.inteRequName,
       inteRequNumber: editRequest.inteRequNumber,
@@ -162,10 +184,17 @@ const RequestUpdate = ({ request }) => {
       careers: careers,
     };
     console.log(request);
-    axios
-      .put("internRequests/update/" + request.id, request)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+
+    dispatch(
+      updateInternRequest(ACCESS_TOKEN, editRequest.inteRequId, request)
+    );
+    /**
+     * 
+     axios
+     .put("internRequests/update/" + request.id, request)
+     .then((res) => console.log(res))
+     .catch((err) => console.log(err));
+     */
 
     navigate("/company/request");
   };
@@ -208,7 +237,7 @@ const RequestUpdate = ({ request }) => {
           <Autocomplete
             multiple
             fullWidth
-            options={listCareers}
+            options={list_carreers}
             getOptionLabel={(option) => option.careName}
             name="careers"
             onChange={(e, value) => handleSelect(value)}
@@ -243,7 +272,7 @@ const RequestUpdate = ({ request }) => {
             label="Fecha de Inicio"
             InputLabelProps={{ shrink: true, required: true }}
             type="date"
-            value={getDate()}
+            defaultValue= {getDate()}
             onChange={handleChange}
           />
 

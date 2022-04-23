@@ -19,13 +19,14 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import axios from "../../../../config/axios";
 import Company from "./Company";
-import AddIcon from "@mui/icons-material/Add";
 import Search from "../../company/request/RequestSearch";
 import { useNavigate } from "react-router";
+//redux
+import { useDispatch, useSelector } from "react-redux";
 
 const CompaniesList = ({ view }) => {
   //Company contacts
-  const [companyList, setCompanyList] = useState([]);
+  //const [companyList, setCompanyList] = useState([]);
 
   //table pagination
   const [page, setPage] = React.useState(0);
@@ -34,11 +35,18 @@ const CompaniesList = ({ view }) => {
   //navigate
   let navigate = useNavigate();
 
+  //Redux
+  const listCompanies = useSelector(
+    (state) => state.CompanySlice.listCompanies);
+
+  /**
+  * 
   //Axios
   useEffect(() => {
     axios.get("/companies").then((res) => setCompanyList(res.data));
-  }, []);
-
+    }, []);
+  
+  */
   const viewCompany = (company) => {
     view(company);
     //navigate("/company/View");
@@ -56,7 +64,7 @@ const CompaniesList = ({ view }) => {
 
   // Render
   const renderList = () => {
-    return companyList
+    return listCompanies
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
       .map((company) => (
         <Company
@@ -102,7 +110,7 @@ const CompaniesList = ({ view }) => {
           sx={{ mb: 1 }}
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
-          count={companyList.length}
+          count={listCompanies.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
