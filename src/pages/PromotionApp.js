@@ -211,7 +211,13 @@ const PromotionApp = () => {
               <ListItemText primary="Inicio" />
             </ListItem>
 
-            <ListItem button key="Request">
+            <ListItem
+              button
+              key="Request"
+              onClick={() => {
+                navigate("/promotion/request");
+              }}
+            >
               <ListItemIcon>
                 <RequestIcon color="primary" />
               </ListItemIcon>

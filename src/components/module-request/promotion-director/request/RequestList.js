@@ -22,8 +22,11 @@ import Request from "./Request";
 import AddIcon from "@mui/icons-material/Add";
 import Search from "../../company/request/RequestSearch";
 import { useNavigate } from "react-router";
+//Redux
+import {useDispatch, useSelector } from "react-redux";
 
-const RequestList = ({ edit }) => {
+
+const RequestList = () => {
   //lista de solicitudes de practica
   const [requestList, setRequestList] = useState([]);
 
@@ -34,15 +37,21 @@ const RequestList = ({ edit }) => {
   //navigate
   let navigate = useNavigate();
 
+  //List of intern requests 
+  let list_interRequests = useSelector(
+    (state) => state.InternRequestSlice.listInteReqs
+  );
+  
+
   //se guarda en requestlist la informacion de las solicitudes
   //Axios
   useEffect(() => {
-    axios.get("/internRequests").then((res) => setRequestList(res.data));
+    //axios.get("/internRequests").then((res) => setRequestList(res.data));
+    setRequestList(list_interRequests)
   }, []);
 
   //Metodo
   const viewRequest = (request) => {
-    edit(request);
     //navigate("/company/View");
   };
 
@@ -79,16 +88,8 @@ const RequestList = ({ edit }) => {
           mb={5}
         >
           <Typography variant="h5" gutterBottom color="#072079">
-            Solicitudes
+            Todas las solicitudes
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="/company/create"
-            startIcon={<AddIcon />}
-          >
-            Crear Solicitud
-          </Button>
         </Stack>
       </Container>
 

@@ -10,7 +10,7 @@ import { Container, Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getperson } from "../../components/store/slices/PersonSlice";
 import { getCompanies } from "../../components/store/slices/CompanySlice";
-
+import { getInternRequests } from "../../components/store/slices/InternRequestSlice";
 const ContentsCompany = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
@@ -27,6 +27,9 @@ const ContentsCompany = () => {
     dispatch(getperson(ACCESS_TOKEN, userPersonId));
     // Added to store of list of companies
     dispatch(getCompanies(ACCESS_TOKEN));
+    // Added to store of list of intern requests inside in database
+    dispatch(getInternRequests(ACCESS_TOKEN))
+
   }, []);
 
   return (

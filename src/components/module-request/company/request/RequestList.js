@@ -53,14 +53,6 @@ const RequestList = ({ edit }) => {
     console.log(request.inteRequId);
 
     dispatch(deleteInternRequest(ACCESS_TOKEN,request.inteRequId))
-    /**
-     * 
-     axios.delete("internRequests/" + request.inteRequId).then(() => {
-       axios.get("internRequests").then((res) => {
-         setRequestList(res.data);
-        });
-      });
-      */
   };
 
   //Metodo edit

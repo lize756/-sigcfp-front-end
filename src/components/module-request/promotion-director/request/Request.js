@@ -37,7 +37,7 @@ const Request = ({ request, viewRequest }) => {
         viewRequest(request);
       }}
     >
-      <TableCell align="right"></TableCell>
+      <TableCell align="right">{request.company.compName}</TableCell>
       <TableCell align="right">{getStrFaculty}</TableCell>
       <TableCell align="center">{getStrCareers}</TableCell>
       <TableCell align="center">{request.inteRequStDate}</TableCell>
