@@ -34,6 +34,8 @@ const ContentsCompany = () => {
   const ACCESS_TOKEN =
     "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
 
+ 
+
   //Axios
   useEffect(() => {
     // Added to store the company that user login

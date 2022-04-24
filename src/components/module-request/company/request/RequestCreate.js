@@ -96,15 +96,12 @@ const RequestCreate = () => {
    */
   const handleSelect = (value) => {
     const myJSON = JSON.stringify(value);
-    console.log(myJSON);
     setCareers(value);
     const listCrs = [];
     for (let i = 0; i < value.length; i++) {
       listCrs.push(value[i]);
       setCareers(listCrs);
     }
-    console.log(listCrs);
-    console.log(careers);
   };
 
   /**

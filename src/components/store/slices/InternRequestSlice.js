@@ -14,6 +14,7 @@ export const internRequestSlice = createSlice({
     intReq: {},
     // List the intern rquests associated a one company
     listIntReqsOfCompany: [],
+    isRender: false,
   },
   reducers: {
     /**
@@ -30,6 +31,9 @@ export const internRequestSlice = createSlice({
     },
     setListIntReqsOfCompany: (state, action) => {
       state.listIntReqsOfCompany = action.payload;
+    },
+    setIsRender: (state, action) => {
+      state.isRender = action.payload;
     },
     extraReducers: {
       // async reducers here
@@ -62,6 +66,7 @@ export const addInternRequest = (ACCESS_TOKEN, internRequest) => async (
     .then((res) => {
       dispatch(setIntReq(res.data));
       dispatch(getInternRequests(ACCESS_TOKEN));
+      dispatch(setIsRender(true))
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -99,7 +104,7 @@ export const updateInternRequest = (
  * @param {*} inteRequId id of the intern request that you want to delete
  * @returns
  */
-export const deleteInternRequest = (ACCESS_TOKEN, inteRequId) => async (
+export const deleteInternRequest = (ACCESS_TOKEN, inteRequId,userCompanyId) => async (
   dispatch
 ) => {
   headers = {
@@ -109,8 +114,8 @@ export const deleteInternRequest = (ACCESS_TOKEN, inteRequId) => async (
   axios
     .delete("/api/internRequests/" + inteRequId, { headers })
     .then((res) => {
-      dispatch(setIntReq(res.data));
-      dispatch(setListIntReqs(res.data));
+      console.log("La solicitud se elimino correctamente",res)
+      dispatch(setIsRender(true))
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -184,6 +189,7 @@ export const getInternRequestsAssociatedCompany = (ACCESS_TOKEN, companyId) => (
 //Export the action to reducer of internRequest
 export const {
   setIntReq,
+  setIsRender,
   setListIntReqs,
   setListIntReqsOfCompany,
 } = internRequestSlice.actions;

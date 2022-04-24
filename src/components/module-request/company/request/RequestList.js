@@ -25,8 +25,12 @@ import { useNavigate } from "react-router";
 import "../StylesCompany.css";
 
 //Redux
-import {useDispatch, useSelector, shallowEqual } from "react-redux";
-import { deleteInternRequest } from "../../../store/slices/InternRequestSlice";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import {
+  deleteInternRequest,
+  getInternRequestsAssociatedCompany,
+  setIsRender,
+} from "../../../store/slices/InternRequestSlice";
 
 const RequestList = ({ edit }) => {
   const dispatch = useDispatch();
@@ -39,20 +43,30 @@ const RequestList = ({ edit }) => {
 
   //navigate
   let navigate = useNavigate();
-  let list_interRequestsOfCompany = useSelector(
-    (state) => state.InternRequestSlice.listIntReqsOfCompany,
-    shallowEqual
+  const list_interRequestsOfCompany = useSelector(
+    (state) => state.InternRequestSlice.listIntReqsOfCompany
   );
-    //Get acces_token of the user that start section
-    const ACCESS_TOKEN =
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
     "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+  // Get company id of the store
+  const userCompanyId = useSelector((state) => state.userLogin.userCompanyId);
 
-  console.log(list_interRequestsOfCompany.length)
+  // Verified if change the list of intern requests associated to company
+  const isRender = useSelector((state) => state.InternRequestSlice.isRender);
+
+  useEffect(() => {
+    dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
+    dispatch(setIsRender(false))
+    console.log("Tamaño ", list_interRequestsOfCompany.length);
+  }, [isRender]);
+
   //Metodo delete
   const delRequest = (request) => {
     console.log(request.inteRequId);
-
-    dispatch(deleteInternRequest(ACCESS_TOKEN,request.inteRequId))
+    dispatch(
+      deleteInternRequest(ACCESS_TOKEN, request.inteRequId, userCompanyId)
+    );
   };
 
   //Metodo edit
@@ -79,19 +93,22 @@ const RequestList = ({ edit }) => {
 
   //El Render
   const renderList = () => {
-    return list_interRequestsOfCompany
-      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map((request) => (
-        <Request
-          request={request}
-          key={request.inteRequId}
-          delRequest={delRequest}
-          editRequest={editRequest}
-          viewRequest={viewRequest}
-        />
-      ));
+    if (list_interRequestsOfCompany.length > 0) {
+      return list_interRequestsOfCompany
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((request) => (
+          <Request
+            request={request}
+            key={request.inteRequId}
+            delRequest={delRequest}
+            editRequest={editRequest}
+            viewRequest={viewRequest}
+          />
+        ));
+    } else {
+      return <></>;
+    }
   };
-
   return (
     <div>
       <Container>
