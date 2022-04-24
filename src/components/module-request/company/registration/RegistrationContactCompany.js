@@ -175,13 +175,6 @@ const RegistrationContactCompany = () => {
           </form>
         </Container>
       </React.Fragment>
-      //Render list contact
-      <div>
-        <RegistrationBasicCompanyData
-          isRendered={false}
-          contacts={getListContact}
-        />
-      </div>
     </>
   );
 };

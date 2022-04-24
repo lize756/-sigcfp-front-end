@@ -45,17 +45,12 @@ export const companySlice = createSlice({
 
 /**
  *  Allow us add new company to the database
- * @param {*} ACCESS_TOKEN Token of the user that login to the system
  * @param {*} Company Correspond of element to add.
  * @returns
  */
-export const addCompany = (ACCESS_TOKEN, Company) => async (dispatch) => {
-  headers = {
-    Authorization: `${ACCESS_TOKEN}`,
-  };
-
+export const addCompany = (Company) => async (dispatch) => {
   axios
-    .post("/api/companies", { headers }, Company)
+    .post("/api/companies/add", Company)
     .then((res) => {
       dispatch(setCompany(res.data));
     })
