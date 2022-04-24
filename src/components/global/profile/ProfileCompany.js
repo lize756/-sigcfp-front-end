@@ -287,7 +287,7 @@ const ProfileCompany = () => {
         </Typography>
         <Stack spacing={3} sx={{ m: 4 }}>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
-            <FormControl sx={{ m: 1, width: "40ch" }} variant="standard">
+            <FormControl sx={{ width: "40ch" }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
                 Contraseña Actual
               </InputLabel>
@@ -341,7 +341,7 @@ const ProfileCompany = () => {
             </FormControl>
             <FormControl sx={{ m: 2, width: "40ch" }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
-                Confirmación Nueva Contraseña
+                Confirmar Nueva Contraseña
               </InputLabel>
               <Input
                 type={confirmPassword.showPassword ? "text" : "password"}
