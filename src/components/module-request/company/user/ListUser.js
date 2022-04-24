@@ -24,12 +24,16 @@ import Search from "../request/RequestSearch";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
-//import { fetchCompany } from "../../../store/slices/company/CompanySlice";
+import {
+  deleteContact,
+  setIsRenderContact,
+} from "../../../store/slices/ContactSlice";
+import { getCompany } from "../../../store/slices/CompanySlice";
 
 const ListUser = ({ userEdit }) => {
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
 
-
-  
   //User contacts
   const [userList, setUserList] = useState([]);
 
@@ -37,17 +41,43 @@ const ListUser = ({ userEdit }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
- 
-   //Get list of company saved in the store
-  const listContactOfCompany = useSelector((state) => state.CompanySlice.company.contacts);
+  /**
+   * REDUX
+   */
+  //Get list of company saved in the store
+  const listContactOfCompany = useSelector(
+    (state) => state.CompanySlice.company.contacts
+  );
+
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+  // Get company id of the store
+  const userCompanyId = useSelector((state) => state.userLogin.userCompanyId);
+
+  // Verified if change the list of intern requests associated to contact
+  const isRender = useSelector((state) => state.ContactSlice.isRenderContact);
+
+  useEffect(() => {
+    // Added to store the company that user login
+    dispatch(getCompany(ACCESS_TOKEN, userCompanyId));
+    dispatch(setIsRenderContact(false));
+    console.log("Tamaño ", listContactOfCompany.length);
+  }, [isRender]);
 
   //Metodo delete
   const delUser = (user) => {
-    axios.delete("contacts/" + user.contId).then(() => {
-      axios.get("contacts").then((res) => {
-        setUserList(res.data);
+    console.log(user.contId);
+
+    dispatch(deleteContact(ACCESS_TOKEN, user.contId));
+    /**
+     * 
+     axios.delete("contacts/" + user.contId).then(() => {
+       axios.get("contacts").then((res) => {
+         setUserList(res.data);
+        });
       });
-    });
+    */
   };
 
   //Metodo edit

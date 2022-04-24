@@ -33,6 +33,7 @@ import {
 } from "../../../store/slices/InternRequestSlice";
 
 const RequestList = ({ edit }) => {
+  // Allow to send the elements of store
   const dispatch = useDispatch();
   //lista de solicitudes de practica
   const [requestList, setRequestList] = useState([]);
@@ -43,9 +44,14 @@ const RequestList = ({ edit }) => {
 
   //navigate
   let navigate = useNavigate();
+
+  /**
+   * REDUX
+   */
   const list_interRequestsOfCompany = useSelector(
     (state) => state.InternRequestSlice.listIntReqsOfCompany
   );
+
   //Get acces_token of the user that start section
   const ACCESS_TOKEN =
     "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
@@ -57,7 +63,7 @@ const RequestList = ({ edit }) => {
 
   useEffect(() => {
     dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
-    dispatch(setIsRender(false))
+    dispatch(setIsRender(false));
     console.log("Tamaño ", list_interRequestsOfCompany.length);
   }, [isRender]);
 

@@ -14,6 +14,8 @@ export const contactSlice = createSlice({
     contact: {},
     // List the intern rquests z a one company
     listContactsOfCompany: [],
+    // Allow verified if a one element in the store in update
+    isRenderContact: false,
   },
   reducers: {
     /**
@@ -30,6 +32,9 @@ export const contactSlice = createSlice({
     },
     setListContactsOfCompany: (state, action) => {
       state.contact = action.payload;
+    },
+    setIsRenderContact: (state, action) => {
+      state.isRenderContact = action.payload;
     },
     extraReducers: {
       // async reducers here
@@ -50,7 +55,7 @@ export const contactSlice = createSlice({
  * @param {*} contact Correspond of element to add.
  * @returns
  */
-export const addcontact = (ACCESS_TOKEN, contact) => async (dispatch) => {
+export const addContact = (ACCESS_TOKEN, contact) => async (dispatch) => {
   headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -72,7 +77,7 @@ export const addcontact = (ACCESS_TOKEN, contact) => async (dispatch) => {
  * @param {*} contact new contact to update.
  * @returns
  */
-export const updatecontact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
+export const updateContact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -92,7 +97,7 @@ export const updatecontact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
  * @param {*} contId id of the contact that you want to delete
  * @returns
  */
-export const deletecontact = (ACCESS_TOKEN, contId) => async (dispatch) => {
+export const deleteContact = (ACCESS_TOKEN, contId) => async (dispatch) => {
   headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -100,7 +105,9 @@ export const deletecontact = (ACCESS_TOKEN, contId) => async (dispatch) => {
   axios
     .delete("/api/contacts/" + contId, { headers })
     .then((res) => {
+      console.log("Se elimino correctamente el contacto")
       dispatch(setContact(res.data));
+      dispatch(setIsRenderContact(true))
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -113,11 +120,10 @@ export const deletecontact = (ACCESS_TOKEN, contId) => async (dispatch) => {
  * @param {*} contId contId id to search a one contact
  * @returns
  */
-export const getcontact = (ACCESS_TOKEN, contId) => async (dispatch) => {
+export const getContact = (ACCESS_TOKEN, contId) => async (dispatch) => {
   headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
-
   axios
     .get("/api/contacts/" + contId, { headers })
     .then((res) => {
@@ -133,7 +139,7 @@ export const getcontact = (ACCESS_TOKEN, contId) => async (dispatch) => {
  * @param {*} ACCESS_TOKEN Token of the user that login to the system
  * @returns
  */
-export const getcontacts = (ACCESS_TOKEN) => (dispatch) => {
+export const getContacts = (ACCESS_TOKEN) => (dispatch) => {
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -172,6 +178,7 @@ export const getContactsAssociatedCompany = (ACCESS_TOKEN, companyId) => (
 //Export the action to reducer of contact
 export const {
   setContact,
+  setIsRenderContact,
   setListcontacts,
   setListContactsOfCompany,
 } = contactSlice.actions;

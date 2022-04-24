@@ -14,6 +14,7 @@ export const companySlice = createSlice({
     listCompanies: [],
     // Company
     company: {},
+
   },
   reducers: {
     /**

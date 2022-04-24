@@ -14,6 +14,7 @@ export const internRequestSlice = createSlice({
     intReq: {},
     // List the intern rquests associated a one company
     listIntReqsOfCompany: [],
+    // Allow verified if a one element in the store in update
     isRender: false,
   },
   reducers: {
