@@ -8,7 +8,10 @@ import axios from "../../../../config/axios";
  * Redux
  */
 import { useDispatch, useSelector } from "react-redux";
-import {addInternRequest, getInternRequests } from "../../../store/slices/InternRequestSlice";
+import {
+  addInternRequest,
+  getInternRequests,
+} from "../../../store/slices/InternRequestSlice";
 /**
  * Styles of the visual part of the component
  */
@@ -72,7 +75,7 @@ const RequestCreate = () => {
    * Redux
    */
   const list_carreers = useSelector((state) => state.CareerSlice.listCareers);
-  
+
   // Get company of the store
   const company = useSelector((state) => state.CompanySlice.company);
   //Get acces_token of the user that start section
@@ -172,8 +175,8 @@ const RequestCreate = () => {
       careers: careers,
       company: company,
     };
-    
-    dispatch(addInternRequest(ACCESS_TOKEN,request))
+
+    dispatch(addInternRequest(ACCESS_TOKEN, request));
     /**
      * 
      axios
@@ -187,7 +190,7 @@ const RequestCreate = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ bgcolor: "#FFFFFF" }}>
+      <Box sx={{ bgcolor: "#F2F6FE" }}>
         <form className={classes.root} onSubmit={addRequest}>
           <TextField
             name="inteRequName"

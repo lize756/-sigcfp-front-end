@@ -30,19 +30,15 @@ const UserList = ({ edit }) => {
 
   //Redux
   const companyContacts = useSelector(
-    (state) => state.CompanySlice.company.contacts);
-
-
-
-
-
+    (state) => state.CompanySlice.company.contacts
+  );
 
   //navigate
   let navigate = useNavigate();
 
   //Axios
   useEffect(() => {
-    setUsertList(companyContacts)
+    setUsertList(companyContacts);
   }, []);
 
   const handleChangeRowsPerPage = (event) => {
