@@ -150,10 +150,20 @@ const PromotionApp = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem key="Home" onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key="Home"
+                  onClick={() => {
+                    navigate("/promotion/home");
+                  }}
+                >
                   <Typography textAlign="center">Home</Typography>
                 </MenuItem>
-                <MenuItem key="Perfil" onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key="Perfil"
+                  onClick={() => {
+                    navigate("/promotion/profile");
+                  }}
+                >
                   <Typography textAlign="center">Perfil</Typography>
                 </MenuItem>
                 <Divider />

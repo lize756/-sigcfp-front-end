@@ -11,10 +11,8 @@ import { useNavigate } from "react-router";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
 //Redux
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { setCompany } from "../../../store/slices/CompanySlice";
-
-
 
 const ITEM_HEIGHT = 40;
 const Company = ({ company, viewCompany }) => {
@@ -32,7 +30,11 @@ const Company = ({ company, viewCompany }) => {
 
   const handleViewCompany = () => {
     navigate("/director/contacts");
-    dispatch(setCompany(company))
+    dispatch(setCompany(company));
+  };
+
+  const handleCompany = () => {
+    navigate("/director/company");
   };
 
   return (
@@ -75,7 +77,7 @@ const Company = ({ company, viewCompany }) => {
             },
           }}
         >
-          <MenuItem key="Home" onClick={handleClose}>
+          <MenuItem key="Company" onClick={handleCompany}>
             <Typography textAlign="center">Ver Compañia</Typography>
           </MenuItem>
           <MenuItem key="Perfil" onClick={handleViewCompany}>

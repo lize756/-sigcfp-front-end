@@ -147,10 +147,20 @@ const CompanyApp = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem key="Home" onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key="Home"
+                  onClick={() => {
+                    navigate("/company/home");
+                  }}
+                >
                   <Typography textAlign="center">Inicio</Typography>
                 </MenuItem>
-                <MenuItem key="Perfil" onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key="Perfil"
+                  onClick={() => {
+                    navigate("/company/profile");
+                  }}
+                >
                   <Typography textAlign="center">Perfil</Typography>
                 </MenuItem>
                 <Divider />

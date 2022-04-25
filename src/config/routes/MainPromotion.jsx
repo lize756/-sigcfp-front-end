@@ -5,6 +5,8 @@ import HomePromotion from "../../pages/PromotionApp";
 import ContentPromotion from "../../layout/coordinator/proCoordinator/ContentsPro";
 import Companies from "../../components/module-request/promotion-director/contacts/CompaniesList";
 import RequestList from "../../components/module-request/promotion-director/request/RequestList";
+import Profile from "../../components/global/profile/ProfilePerson";
+import Company from "../../components/module-request/promotion-director/contacts/ShowCompany";
 
 const MainPromotion = () => {
   return (
@@ -18,6 +20,12 @@ const MainPromotion = () => {
         </Route>
         <Route path="/promotion" element={<HomePromotion />}>
           <Route path="request" element={<RequestList />} />
+        </Route>
+        <Route path="/promotion" element={<HomePromotion />}>
+          <Route path="profile" element={<Profile />} />
+        </Route>
+        <Route path="/promotion" element={<HomePromotion />}>
+          <Route path="company" element={<Company />} />
         </Route>
       </Routes>
     </>
