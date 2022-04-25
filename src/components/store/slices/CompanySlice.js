@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
 
-
-
 let headers;
 /**
  * This slice containt all related to the requests of the company.
@@ -15,6 +13,8 @@ export const companySlice = createSlice({
     // Company
     company: {},
 
+    //AccordeonChangeValue
+    accordinRegisterPanel: "panel1",
   },
   reducers: {
     /**
@@ -28,6 +28,9 @@ export const companySlice = createSlice({
 
     setListCompanies: (state, action) => {
       state.listCompanies = action.payload;
+    },
+    setAccordinRegisterPanelValue: (state, action) => {
+      state.accordinRegisterPanel = action.payload;
     },
 
     extraReducers: {
@@ -142,5 +145,5 @@ export const getCompanies = (ACCESS_TOKEN) => (dispatch) => {
 };
 
 //Export the action to reducer of Company
-export const { setCompany, setListCompanies } = companySlice.actions;
+export const { setCompany, setListCompanies,setAccordinRegisterPanelValue } = companySlice.actions;
 export default companySlice.reducer;

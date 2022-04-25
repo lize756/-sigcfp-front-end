@@ -21,7 +21,7 @@ import {
   getCountries,
 } from "../../../store/slices/CountrySlice";
 import { addCompany, setCompany } from "../../../store/slices/CompanySlice";
-
+import { setAccordinRegisterPanelValue } from "../../../store/slices/CompanySlice";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -59,6 +59,7 @@ const RegistrationBasicCompanyData = () => {
    */
   // Allow to send the elements of store
   const dispatch = useDispatch();
+
   const listCountries = useSelector(
     (state) => state.CountrySlice.listCountries
   );
@@ -82,9 +83,6 @@ const RegistrationBasicCompanyData = () => {
   const [getCompIcesiStud, setCompIcesiStud] = useState("F");
   const [getCompEmail, setCompEmail] = useState("");
   const [getCompTelephone, setCompTelephone] = useState("");
-  //Create data
-  const [values, setValues] = React.useState([]);
-
   /**
    * ----------------------------------------------------------
    * --------------------------Functions-----------------------
@@ -126,29 +124,13 @@ const RegistrationBasicCompanyData = () => {
       compTelephone: getCompTelephone,
       compType: getCompType,
       compUrlAddress: getCompUrlAddress,
-      compCountry: getCompCountry.name,
-      compCity: getCompCity,
+      compCountryName: getCompCountry.name,
+      compCityName: getCompCity,
     };
     console.log(company);
 
     dispatch(addCompany(company));
-
-    /*
-    axios({
-        method: "POST",
-        URL: "companies/add",
-        data: {
-          compAddress: getCompAddress,
-          compEcoActiv: getCompEcoActiv,
-          compIcesiStud: getCompIcesiStud,
-          compName: getCompName,
-          compNit: getCompNit,
-          compType: getCompType,
-          compUrlAddress: getCompUrlAddress,
-          compCity: getCompCity
-        }
-      }).then(res => console.log(res.data)).catch(error => console.log(error))
-    */
+    dispatch(setAccordinRegisterPanelValue("panel2"));
   };
 
   /**

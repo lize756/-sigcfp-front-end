@@ -57,15 +57,19 @@ const CompaniesList = () => {
 
   // Render
   const renderList = () => {
-    return listCompanies
-      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map((company) => (
-        <Company
-          company={company}
-          key={company.compId}
-          viewCompany={viewCompany}
-        />
-      ));
+    if (listCompanies.length > 0) {
+      return listCompanies
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((company) => (
+          <Company
+            company={company}
+            key={company.compId}
+            viewCompany={viewCompany}
+          />
+        ));
+    } else {
+      return <></>;
+    }
   };
 
   return (

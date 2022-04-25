@@ -30,7 +30,7 @@ const UserList = ({ edit }) => {
 
   //Redux
   const companyContacts = useSelector(
-    (state) => state.CompanySlice.company.contacts);
+    (state) => state.ContactSlice.listContactsOfCompany);
 
 
 
@@ -43,7 +43,7 @@ const UserList = ({ edit }) => {
   //Axios
   useEffect(() => {
     setUsertList(companyContacts)
-  }, []);
+  }, [companyContacts]);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(event.target.value);
@@ -56,10 +56,15 @@ const UserList = ({ edit }) => {
 
   //Render
   const renderList = () => {
-    return userList
+    if(userList.length > 0){
+
+      return userList
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
       .map((user) => <User user={user} key={user.contId} />);
-  };
+    }else{
+      return <></>
+    }
+    };
 
   return (
     <div>

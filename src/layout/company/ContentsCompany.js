@@ -18,6 +18,7 @@ import {
 import {
   getcareers,
 } from "../../components/store/slices/CareerSlice";
+import { getContactsAssociatedCompany } from "../../components/store/slices/ContactSlice";
 
 /**
  * Main Class of Company
@@ -42,6 +43,7 @@ const ContentsCompany = () => {
     dispatch(getCompany(ACCESS_TOKEN, userCompanyId));
     // Added to store the list of intern requests that company have associated.
     dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
+    dispatch(getContactsAssociatedCompany(ACCESS_TOKEN,userCompanyId));
     //Added to store of list of carreers.
     dispatch(getcareers(ACCESS_TOKEN));
   }, []);

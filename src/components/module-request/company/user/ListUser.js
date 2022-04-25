@@ -26,9 +26,9 @@ import Search from "../request/RequestSearch";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteContact,
+  getContactsAssociatedCompany,
   setIsRenderContact,
 } from "../../../store/slices/ContactSlice";
-import { getCompany } from "../../../store/slices/CompanySlice";
 
 const ListUser = ({ userEdit }) => {
   // Allow to send the elements of store
@@ -46,7 +46,7 @@ const ListUser = ({ userEdit }) => {
    */
   //Get list of company saved in the store
   const listContactOfCompany = useSelector(
-    (state) => state.CompanySlice.company.contacts
+    (state) => state.ContactSlice.listContactsOfCompany
   );
 
   //Get acces_token of the user that start section
@@ -60,7 +60,7 @@ const ListUser = ({ userEdit }) => {
 
   useEffect(() => {
     // Added to store the company that user login
-    dispatch(getCompany(ACCESS_TOKEN, userCompanyId));
+    dispatch(getContactsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
     dispatch(setIsRenderContact(false));
     console.log("Tamaño ", listContactOfCompany.length);
   }, [isRender]);
@@ -104,17 +104,21 @@ const ListUser = ({ userEdit }) => {
 
   // Render
   const renderList = () => {
-    return listContactOfCompany
-      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map((user) => (
-        <User
-          user={user}
-          key={user.contId}
-          delUser={delUser}
-          editUser={editUser}
-          viewUser={viewUser}
-        />
-      ));
+    if (listContactOfCompany.length > 0) {
+      return listContactOfCompany
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((user) => (
+          <User
+            user={user}
+            key={user.contId}
+            delUser={delUser}
+            editUser={editUser}
+            viewUser={viewUser}
+          />
+        ));
+    } else {
+      return <></>;
+    }
   };
 
   return (

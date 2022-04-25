@@ -31,7 +31,7 @@ export const contactSlice = createSlice({
       state.listContacts = action.payload;
     },
     setListContactsOfCompany: (state, action) => {
-      state.contact = action.payload;
+      state.listContactsOfCompany = action.payload;
     },
     setIsRenderContact: (state, action) => {
       state.isRenderContact = action.payload;
@@ -64,6 +64,22 @@ export const addContact = (ACCESS_TOKEN, contact) => async (dispatch) => {
     .post("/api/contacts", { headers }, contact)
     .then((res) => {
       dispatch(setContact(res.data));
+    })
+    .catch((err) => {
+      console.log(err.toJSON());
+    });
+};
+
+/**
+ * Allows to added one list of contacts in the database
+ * @param {*} contacts contacts to add.
+ * @returns
+ */
+export const addContacts = (contacts) => async (dispatch) => {
+  axios
+    .post("/api/contacts/addContacts", contacts)
+    .then((res) => {
+      dispatch(setListContactsOfCompany(res.data));
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -105,9 +121,9 @@ export const deleteContact = (ACCESS_TOKEN, contId) => async (dispatch) => {
   axios
     .delete("/api/contacts/" + contId, { headers })
     .then((res) => {
-      console.log("Se elimino correctamente el contacto")
+      console.log("Se elimino correctamente el contacto");
       dispatch(setContact(res.data));
-      dispatch(setIsRenderContact(true))
+      dispatch(setIsRenderContact(true));
     })
     .catch((err) => {
       console.log(err.toJSON());

@@ -8,10 +8,20 @@ import TextField from "@material-ui/core/TextField";
 import { Button, IconButton } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/PersonAdd";
 import RemoveIcon from "@mui/icons-material/PersonRemove";
-import RegistrationBasicCompanyData from "./RegistrationBasicCompanyData";
+//Redux
 import { v4 as uuidv4 } from "uuid";
-
+import { useDispatch, useSelector } from "react-redux";
+import { addContacts } from "../../../store/slices/ContactSlice";
 const RegistrationContactCompany = () => {
+  /**
+   * ---------------------------------------------------------
+   * -------------------------REDUX-----------------------
+   * ---------------------------------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  const company = useSelector((state) => state.CompanySlice.company);
+
   const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex",
@@ -63,7 +73,11 @@ const RegistrationContactCompany = () => {
       contPosition: contPosition,
     };
     console.log(contact);*/
+    contacts.map((c) => { delete c.id
+      c['company'] = company
+    });
     console.log(contacts);
+    dispatch(addContacts(contacts));
   };
 
   /**
@@ -169,7 +183,7 @@ const RegistrationContactCompany = () => {
             ))}
             <div>
               <Button type="submit" variant="contained" color="primary">
-                Guardar información.
+                Registrarse
               </Button>
             </div>
           </form>

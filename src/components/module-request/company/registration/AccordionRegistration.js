@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -10,12 +10,31 @@ import "../StylesCompany.css";
 import RegistrationBasicCompanyData from "./RegistrationBasicCompanyData";
 import RegistrationContactCompany from "./RegistrationContactCompany";
 
+//Redux
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { setAccordinRegisterPanelValue } from "../../../store/slices/CompanySlice";
+
 //Component
 const AccordionRegistration = () => {
+  /**
+   * -------------------------------------------------
+   * -------------------- REDUX ----------------------
+   * -------------------------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  const accordionStateValue = useSelector(
+    (state) => state.CompanySlice.accordinRegisterPanel
+  );
   const [expanded, setExpanded] = React.useState("");
+
+  useEffect(() => {
+    setExpanded(accordionStateValue);
+  }, [accordionStateValue]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+    dispatch(setAccordinRegisterPanelValue(panel))
   };
 
   return (
@@ -36,7 +55,7 @@ const AccordionRegistration = () => {
         </AccordionSummary>
         <AccordionDetails>
           {/*Plane 1: Form for registration of basic company data*/}
-          <RegistrationBasicCompanyData/>
+          <RegistrationBasicCompanyData />
         </AccordionDetails>
       </Accordion>
       <Accordion
