@@ -12,11 +12,15 @@ import CompanySlice from "./slices/CompanySlice";
 import ContactSlice from "./slices/ContactSlice";
 import InternRequestSlice from "./slices/InternRequestSlice";
 import PersonSlice from "./slices/PersonSlice";
-
+import CountrySlice from "./slices/CountrySlice";
+/**
+ * Store of all application
+ */
 export default configureStore({
   reducer: {
     //personRegister,
     //coordinatorSlice,
+    CountrySlice,
     userLogin,
     CareerSlice,
     CompanySlice,

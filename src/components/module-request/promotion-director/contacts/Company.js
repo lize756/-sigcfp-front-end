@@ -11,14 +11,24 @@ import { useNavigate } from "react-router";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
 //Redux
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { setCompany } from "../../../store/slices/CompanySlice";
+import { getContactsAssociatedCompany } from "../../../store/slices/ContactSlice";
 
 
 
 const ITEM_HEIGHT = 40;
 const Company = ({ company, viewCompany }) => {
+  /**
+   * ----------------------------------------
+   * ---------------- REDUX -----------------
+   * ----------------------------------------
+   */
   const dispatch = useDispatch();
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+
   // Allow navigate between roots
   let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,6 +43,7 @@ const Company = ({ company, viewCompany }) => {
   const handleViewCompany = () => {
     navigate("/director/contacts");
     dispatch(setCompany(company))
+    dispatch(getContactsAssociatedCompany(ACCESS_TOKEN,company.compId))
   };
 
   return (

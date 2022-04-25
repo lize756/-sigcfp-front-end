@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
 
-
-
 let headers;
 /**
  * This slice containt all related to the requests of the company.
@@ -14,6 +12,9 @@ export const companySlice = createSlice({
     listCompanies: [],
     // Company
     company: {},
+
+    //AccordeonChangeValue
+    accordinRegisterPanel: "panel1",
   },
   reducers: {
     /**
@@ -27,6 +28,9 @@ export const companySlice = createSlice({
 
     setListCompanies: (state, action) => {
       state.listCompanies = action.payload;
+    },
+    setAccordinRegisterPanelValue: (state, action) => {
+      state.accordinRegisterPanel = action.payload;
     },
 
     extraReducers: {
@@ -44,17 +48,12 @@ export const companySlice = createSlice({
 
 /**
  *  Allow us add new company to the database
- * @param {*} ACCESS_TOKEN Token of the user that login to the system
  * @param {*} Company Correspond of element to add.
  * @returns
  */
-export const addCompany = (ACCESS_TOKEN, Company) => async (dispatch) => {
-  headers = {
-    Authorization: `${ACCESS_TOKEN}`,
-  };
-
+export const addCompany = (Company) => async (dispatch) => {
   axios
-    .post("/api/companies", { headers }, Company)
+    .post("/api/companies/add", Company)
     .then((res) => {
       dispatch(setCompany(res.data));
     })
@@ -146,5 +145,5 @@ export const getCompanies = (ACCESS_TOKEN) => (dispatch) => {
 };
 
 //Export the action to reducer of Company
-export const { setCompany, setListCompanies } = companySlice.actions;
+export const { setCompany, setListCompanies,setAccordinRegisterPanelValue } = companySlice.actions;
 export default companySlice.reducer;

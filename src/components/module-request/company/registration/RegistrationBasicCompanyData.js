@@ -14,6 +14,14 @@ import {
   FormLabel,
 } from "@mui/material";
 
+//Redux
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getCitiesAssociatedToCountry,
+  getCountries,
+} from "../../../store/slices/CountrySlice";
+import { addCompany, setCompany } from "../../../store/slices/CompanySlice";
+import { setAccordinRegisterPanelValue } from "../../../store/slices/CompanySlice";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -40,11 +48,22 @@ const useStyles = makeStyles((theme) => ({
 /**
  *
  * @param {*} propsWithAccordion Represent the property that the component called accordion has.
- * @param {*} isRendered Represente
+ * @param {*} isRendered Represent
  * @returns
  */
-const RegistrationBasicCompanyData = (props) => {
+const RegistrationBasicCompanyData = () => {
+  /**
+   * ---------------------------------------------------------
+   * -------------------------REDUX-----------------------
+   * ---------------------------------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
 
+  const listCountries = useSelector(
+    (state) => state.CountrySlice.listCountries
+  );
+  const listCities = useSelector((state) => state.CountrySlice.listCities);
 
   /**
    * ---------------------------------------------------------
@@ -56,20 +75,14 @@ const RegistrationBasicCompanyData = (props) => {
   const [getCompName, setCompName] = useState("");
   const [getCompNit, setCompNit] = useState("");
   const [getCompAddress, setCompAddress] = useState("");
-  const [getCompCity, setCompCity] = useState({});
+  const [getCompCountry, setCompCountry] = useState("");
+  const [getCompCity, setCompCity] = useState("");
   const [getCompEcoActiv, setCompEcoActiv] = useState("");
   const [getCompType, setCompType] = useState("");
   const [getCompUrlAddress, setCompUrlAddress] = useState("");
   const [getCompIcesiStud, setCompIcesiStud] = useState("F");
-  const [getCompEmail,setCompEmail] = useState("");
+  const [getCompEmail, setCompEmail] = useState("");
   const [getCompTelephone, setCompTelephone] = useState("");
-  //Create data
-  const [values, setValues] = React.useState([]);
-
-  console.log("line 71", props.contacts)
-
-
-
   /**
    * ----------------------------------------------------------
    * --------------------------Functions-----------------------
@@ -87,14 +100,13 @@ const RegistrationBasicCompanyData = (props) => {
    * @param {*} compType Type of company
    * @param {*} compIcesiStud Verify if the company recuitred colleged students
    */
-  
-
   // GET request using axios inside useEffect React hook
   useEffect(() => {
-    axios.get("cities").then((res) => {
-      setValues(res.data);
-    });
-  }, []);
+    dispatch(getCountries());
+    if (listCountries.length > 0) {
+      dispatch(getCitiesAssociatedToCountry(getCompCountry.name));
+    }
+  }, [getCompCountry]);
 
   /**
    * Send information of the front-end until back-end
@@ -102,9 +114,8 @@ const RegistrationBasicCompanyData = (props) => {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(getCompCity)
     const company = {
-      compAddress : getCompAddress,
+      compAddress: getCompAddress,
       compEcoActiv: getCompEcoActiv,
       compIcesiStud: getCompIcesiStud,
       compEmail: getCompEmail,
@@ -113,41 +124,20 @@ const RegistrationBasicCompanyData = (props) => {
       compTelephone: getCompTelephone,
       compType: getCompType,
       compUrlAddress: getCompUrlAddress,
-      city: getCompCity
-    }
-    console.log(company)
+      compCountryName: getCompCountry.name,
+      compCityName: getCompCity,
+    };
+    console.log(company);
 
-    axios.post('companies/add', company)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      })
-
-    /*
-    axios({
-        method: "POST",
-        URL: "companies/add",
-        data: {
-          compAddress: getCompAddress,
-          compEcoActiv: getCompEcoActiv,
-          compIcesiStud: getCompIcesiStud,
-          compName: getCompName,
-          compNit: getCompNit,
-          compType: getCompType,
-          compUrlAddress: getCompUrlAddress,
-          compCity: getCompCity
-        }
-      }).then(res => console.log(res.data)).catch(error => console.log(error))
-    */
+    dispatch(addCompany(company));
+    dispatch(setAccordinRegisterPanelValue("panel2"));
   };
 
- 
   /**
    * -----------------------------------------------------
    * ---------------Return of the component --------------
    * -----------------------------------------------------
    */
-  if(props.isRendered){
   return (
     <>
       <form className={classes.root} onSubmit={handleSubmit}>
@@ -157,7 +147,6 @@ const RegistrationBasicCompanyData = (props) => {
           required
           value={getCompName}
           onChange={(e) => setCompName(e.target.value)}
-       
         />
         <TextField
           label="NIT"
@@ -165,7 +154,6 @@ const RegistrationBasicCompanyData = (props) => {
           required
           value={getCompNit}
           onChange={(e) => setCompNit(e.target.value)}
-          
         />
         <TextField
           label="Dirección de la Empresa"
@@ -198,7 +186,7 @@ const RegistrationBasicCompanyData = (props) => {
           value={getCompType}
           onChange={(e) => setCompType(e.target.value)}
         />
-        
+
         <TextField
           label="Número telefonico"
           variant="outlined"
@@ -218,14 +206,44 @@ const RegistrationBasicCompanyData = (props) => {
           id="free-solo-2-demo"
           disableClearable
           /**
-           * List of cities 
+           * List of cities
            */
-          options={values}
+          options={listCountries}
+          /**
+           * This property allows to show in the user's view the property that we want to take from the object.
+           * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+           */
+          getOptionLabel={(option) => option.name + ", " + option.capital}
+          /**
+           * Allows send the select object to variable CompCity that correspond the element select
+           */
+          onChange={(event, value) => setCompCountry(value)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Seleccione su país"
+              variant="outlined"
+              InputProps={{
+                ...params.InputProps,
+                type: "search",
+              }}
+              //={(e,value) => setCompCity()}
+            />
+          )}
+        />
+        <Autocomplete
+          freeSolo
+          id="free-solo-2-demo"
+          disableClearable
+          /**
+           * List of cities
+           */
+          options={listCities}
           /**
            * This property allows to show in the user's view the property that we want to take from the object.
            * Such as: If we need show the name of the city then we ask the property of the object that correspond the name
            */
-          getOptionLabel={(option) => option.cityName}
+          getOptionLabel={(option) => option}
           /**
            * Allows send the select object to variable CompCity that correspond the element select
            */
@@ -233,12 +251,13 @@ const RegistrationBasicCompanyData = (props) => {
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Search country"
+              label="Seleccione la ciudad"
               variant="outlined"
               InputProps={{
                 ...params.InputProps,
                 type: "search",
               }}
+              onChange={(e) => setCompCity(e.target.value)}
               //={(e,value) => setCompCity()}
             />
           )}
@@ -276,12 +295,6 @@ const RegistrationBasicCompanyData = (props) => {
     </>
     // Get request.
   );
-      
-}else{
-  return <></>;
-}
-
-
 };
 
 export default RegistrationBasicCompanyData;

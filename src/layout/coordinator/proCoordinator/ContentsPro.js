@@ -8,6 +8,8 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getCompanies } from "../../../components/store/slices/CompanySlice";
 import { getperson } from "../../../components/store/slices/PersonSlice";
+import { getInternRequests } from "../../../components/store/slices/InternRequestSlice"
+
 /**
  * Main class of coordinator promotion
  * @returns 
@@ -28,6 +30,8 @@ const ContentsPro = () => {
     dispatch(getperson(ACCESS_TOKEN,userPersonId))
     // Added to store of list of companies
     dispatch(getCompanies(ACCESS_TOKEN));
+    // Added to store of list of intern requests inside in database
+    dispatch(getInternRequests(ACCESS_TOKEN))
   }, []);
 
   return (
