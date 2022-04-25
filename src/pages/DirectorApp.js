@@ -147,10 +147,20 @@ const DirectorApp = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem key="Home" onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key="Home"
+                  onClick={() => {
+                    navigate("/director/home");
+                  }}
+                >
                   <Typography textAlign="center">Inicio</Typography>
                 </MenuItem>
-                <MenuItem key="Perfil" onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key="Perfil"
+                  onClick={() => {
+                    navigate("/director/profile");
+                  }}
+                >
                   <Typography textAlign="center">Perfil</Typography>
                 </MenuItem>
                 <Divider />

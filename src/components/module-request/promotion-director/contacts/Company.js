@@ -15,8 +15,6 @@ import { useDispatch, useSelector} from "react-redux";
 import { setCompany } from "../../../store/slices/CompanySlice";
 import { getContactsAssociatedCompany } from "../../../store/slices/ContactSlice";
 
-
-
 const ITEM_HEIGHT = 40;
 const Company = ({ company, viewCompany }) => {
   /**
@@ -44,6 +42,11 @@ const Company = ({ company, viewCompany }) => {
     navigate("/director/contacts");
     dispatch(setCompany(company))
     dispatch(getContactsAssociatedCompany(ACCESS_TOKEN,company.compId))
+    dispatch(setCompany(company));
+  };
+
+  const handleCompany = () => {
+    navigate("/director/company");
   };
 
   return (
@@ -86,7 +89,7 @@ const Company = ({ company, viewCompany }) => {
             },
           }}
         >
-          <MenuItem key="Home" onClick={handleClose}>
+          <MenuItem key="Company" onClick={handleCompany}>
             <Typography textAlign="center">Ver Compañia</Typography>
           </MenuItem>
           <MenuItem key="Perfil" onClick={handleViewCompany}>
