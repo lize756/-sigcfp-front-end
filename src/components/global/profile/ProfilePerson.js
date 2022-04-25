@@ -155,7 +155,7 @@ const ProfilePerson = () => {
         </Stack>
       </Paper>
 
-      <Paper container sx={{ mt: 3, ml: 5, mr: 5 }}>
+      <Paper sx={{ mt: 3, ml: 5, mr: 5 }}>
         <Box md={6}>
           <Stack spacing={3} sx={{ m: 4 }}>
             <Stack
@@ -235,7 +235,7 @@ const ProfilePerson = () => {
         </Box>
       </Paper>
 
-      <Paper container sx={{ mt: 3, ml: 5, mr: 5 }}>
+      <Paper sx={{ mt: 3, ml: 5, mr: 5 }}>
         <Typography
           mt={2}
           ml={2}
