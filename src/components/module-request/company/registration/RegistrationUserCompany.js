@@ -19,9 +19,10 @@ const RegistrationUserCompany = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
   const companyStore = useSelector((state) => state.CompanySlice.company);
-  const [getCompany,setCompany] = useState({})
-  const [getEmail,setEmail] = useState("")
+  const [getCompany, setCompany] = useState({});
+  const [getEmail, setEmail] = useState("");
 
+  
   const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex",
@@ -41,9 +42,9 @@ const RegistrationUserCompany = () => {
   }));
 
   useEffect(() => {
-    setCompany(companyStore)
-    setEmail(companyStore.compEmail)
-  },[companyStore]);
+    setCompany(companyStore);
+    setEmail(companyStore.compEmail);
+  }, [companyStore]);
 
   // Use to styles of the view
   const classes = useStyles();
@@ -82,9 +83,12 @@ const RegistrationUserCompany = () => {
       userName: data.userEmail,
       userPassword: data.userPassword,
       company: getCompany,
-      isEnable: true
+      isEnable: true,
+      rolee: {
+        roleId:5
+      }
     };
-    dispatch(registerUser(user))
+    dispatch(registerUser(user));
     dispatch(setAccordinRegisterPanelValue("panel3"));
   };
 
@@ -96,7 +100,7 @@ const RegistrationUserCompany = () => {
           <Box sx={{ bgcolor: "#F2F6FE" }} />
           <form className={classes.root} onSubmit={handleSubmit}>
             <TextField
-             defaultValue={getCompany.compEmail}
+              defaultValue={getCompany.compEmail}
               label="Correo electrónico de inicio de sesión"
               variant="outlined"
               required

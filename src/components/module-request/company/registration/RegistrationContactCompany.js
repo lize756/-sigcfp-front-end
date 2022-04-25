@@ -8,10 +8,13 @@ import TextField from "@material-ui/core/TextField";
 import { Button, IconButton } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/PersonAdd";
 import RemoveIcon from "@mui/icons-material/PersonRemove";
+import { useNavigate } from "react-router";
+
 //Redux
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { addContacts } from "../../../store/slices/ContactSlice";
+
 const RegistrationContactCompany = () => {
   /**
    * ---------------------------------------------------------
@@ -21,6 +24,8 @@ const RegistrationContactCompany = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
   const company = useSelector((state) => state.CompanySlice.company);
+  // Allow navigate between roots
+  let navigate = useNavigate();
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -73,11 +78,13 @@ const RegistrationContactCompany = () => {
       contPosition: contPosition,
     };
     console.log(contact);*/
-    contacts.map((c) => { delete c.id
-      c['company'] = company
+    contacts.map((c) => {
+      delete c.id;
+      c["company"] = company;
     });
     console.log(contacts);
     dispatch(addContacts(contacts));
+    navigate("/SignIn")
   };
 
   /**
