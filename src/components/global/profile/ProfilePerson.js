@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Paper,
   Stack,
@@ -18,16 +18,40 @@ import SaveIcon from "@mui/icons-material/Save";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { green } from "@mui/material/colors";
+/**
+ * REDUX
+ */
+ import { useDispatch, useSelector } from "react-redux";
 
 const ProfilePerson = () => {
+/**
+   * ----------------------------------
+   * -------------- REDUX -------------
+   * ----------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+  // Get person id of the store
+  const personStore = useSelector((state) => state.PersonSlice.person);
+
+
+
+  
   const [person, setPerson] = useState({
-    persFirstName: "Oscar Ivan",
-    persLastName: "Riascos",
-    persDocument: "",
-    persEmail: "",
-    persGenre: "",
-    persAddress: "",
+    persFirstName: personStore.persFirstName,
+    persGenre: personStore.persGenre,
+    persLastName: personStore.persLastName,
+    persDocument: personStore.persDocument,
+    persEmail: personStore.persEmail,
+    persAddress: personStore.persAddress,
   });
+
+  useEffect(()=>{
+    console.log(personStore)
+  },[])
 
   const handleChange = (e) => {
     setPerson({ ...person, [e.target.name]: e.target.value });
@@ -44,6 +68,9 @@ const ProfilePerson = () => {
       persGenre: person.persGenre,
       persAddress: person.persAddress,
     };
+    
+    const returnedTarget = Object.assign(personStore,personData);
+    console.log(returnedTarget)
   };
 
   //=================================================Password State===================================================
