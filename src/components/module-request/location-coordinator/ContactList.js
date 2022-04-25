@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Contacts from "./Contacts";
-import axios from "../../../config/axios";
 import { Grid } from "@mui/material";
 
 const ContactList = ({ contacts }) => {

@@ -16,8 +16,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Link as RouterLink } from "react-router-dom";
-import axios from "../../../../config/axios";
 import Company from "./Company";
 import Search from "../../company/request/RequestSearch";
 import { useNavigate } from "react-router";

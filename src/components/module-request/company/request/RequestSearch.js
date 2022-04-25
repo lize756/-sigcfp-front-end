@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, InputBase, IconButton } from "@mui/material";
+import { TextField, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import "../StylesCompany.css";
 

@@ -16,7 +16,7 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
      let concatFaculty = "";
      const array = request.careers;
      for (let i = 0; i < array.length; i++) {
-       if (i == array.length - 1) {
+       if (i === array.length - 1) {
          concatCareers += array[i].careName;
          concatFaculty += array[i].faculty.facuName;
         } else {

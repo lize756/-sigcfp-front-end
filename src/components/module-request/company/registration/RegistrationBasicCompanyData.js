@@ -5,7 +5,6 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core";
 import Autocomplete from "@mui/material/Autocomplete";
-import axios from "../../../../config/axios";
 import {
   Radio,
   RadioGroup,
@@ -213,7 +212,7 @@ const RegistrationBasicCompanyData = () => {
            * This property allows to show in the user's view the property that we want to take from the object.
            * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
            */
-          getOptionLabel={(option) => option.name + ", " + option.capital}
+          getOptionLabel={(option) => option.name}
           /**
            * Allows send the select object to variable CompCity that correspond the element select
            */

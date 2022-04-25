@@ -74,9 +74,10 @@ export const updateCompany = (ACCESS_TOKEN, compId, Company) => (dispatch) => {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("api/companies/update/" + compId, { headers }, Company)
+    .put("api/companies/update/" + compId,Company,{ headers })
     .then((res) => {
       dispatch(setCompany(res.data));
+      console.log("Se actualizo correctamente la compañia")
     })
     .catch((err) => {
       console.log(err.toJSON());

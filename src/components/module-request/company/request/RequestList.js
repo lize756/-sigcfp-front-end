@@ -24,7 +24,7 @@ import { useNavigate } from "react-router";
 import "../StylesCompany.css";
 
 //Redux
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import {
   deleteInternRequest,
   getInternRequestsAssociatedCompany,

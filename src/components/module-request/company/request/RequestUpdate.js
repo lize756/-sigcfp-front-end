@@ -3,13 +3,9 @@ import { Autocomplete, TextField, Button, Chip } from "@mui/material";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
-import axios from "../../../../config/axios";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInternRequest } from "../../../store/slices/InternRequestSlice";
-
-import { DesktopDatePicker } from "@mui/lab";
-
 /**
  * Styles of the visual part of the component
  */

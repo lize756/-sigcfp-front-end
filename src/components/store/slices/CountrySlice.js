@@ -61,6 +61,7 @@ export const getCountries = () => async (dispatch) => {
     })
     .catch((err) => {
       console.log(err.toJSON());
+
     });
 };
 
@@ -80,6 +81,7 @@ export const getCitiesAssociatedToCountry = (countryName) => async (
     })
     .catch((err) => {
       dispatch(setListCities([]));
+      console.log("No se encontraron ciudades asociadas a este país")
      // console.log(err.toJSON());
     });
 };

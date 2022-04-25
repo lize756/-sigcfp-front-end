@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Paper,
   Stack,
@@ -18,21 +18,56 @@ import SaveIcon from "@mui/icons-material/Save";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { green } from "@mui/material/colors";
+import Autocomplete from "@mui/material/Autocomplete";
+
+/**
+ * REDUX
+ */
+import { useDispatch, useSelector } from "react-redux";
+import { companySlice, updateCompany } from "../../store/slices/CompanySlice";
+import {
+  getCitiesAssociatedToCountry,
+  getCountries,
+} from "../../store/slices/CountrySlice";
 
 const ProfileCompany = () => {
+  /**
+   * ----------------------------------
+   * -------------- REDUX -------------
+   * ----------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+
+  //Correspond of list of countries saved in the store.
+  const listCountries = useSelector(
+    (state) => state.CountrySlice.listCountries
+  );
+  //Correspond of list of cities saved in the store.
+  const listCities = useSelector((state) => state.CountrySlice.listCities);
+
+  // Get person id of the store
+  const companyStore = useSelector((state) => state.CompanySlice.company);
+
   const [company, setCompany] = useState({
-    compAddress: "2328 Cascade Pass",
-    compEcoActiv: "Capital Goods",
-    compEmail: "dbitterton0@accuweather.com",
-    compIcesiStud: "X",
-    compName: "Rempel, Hackett and Macejkovic",
-    compNit: "3566461110394479",
-    compTelephone: "549-176-8430",
-    compType:
-      "praesent id massa id nisl venenatis lacinia aenean sit amet justo morbi ut",
-    compUrlAddress:
-      "https://sfgate.com/aliquam/convallis/nunc/proin/at/turpis.html",
+    compId: companyStore.compId,
+    compAddress: companyStore.compAddress,
+    compEcoActiv: companyStore.compEcoActiv,
+    compEmail: companyStore.compEmail,
+    compIcesiStud: companyStore.compIcesiStud,
+    compName: companyStore.compName,
+    compNit: companyStore.compNit,
+    compTelephone: companyStore.compTelephone,
+    compType: companyStore.compType,
+    compUrlAddress: companyStore.compAddress,
+    compCityName: companyStore.compCityName,
+    compCountryName: companyStore.compCountryName,
   });
+  const [getCompCountry, setCompCountry] = useState({});
+  const [getCompCity, setCompCity] = useState("");
 
   const [currentPassword, setCurrentPassword] = useState({
     password: "",
@@ -49,6 +84,18 @@ const ProfileCompany = () => {
     showPassword: false,
   });
 
+  useEffect(() => {
+    dispatch(getCountries());
+    if (listCountries.length > 0) {
+      dispatch(getCitiesAssociatedToCountry(getCompCountry.name));
+    }
+  }, [getCompCountry]);
+
+  /**
+   * --------------------------------
+   * ---------Function---------------
+   * --------------------------------
+   */
   const handleClickShowPassword = () => {
     setCurrentPassword({
       ...currentPassword,
@@ -110,8 +157,8 @@ const ProfileCompany = () => {
 
   const saveProfile = (e) => {
     e.preventDefault();
-
     const profile = {
+      compId: company.compId,
       compAddress: company.compAddress,
       compEcoActiv: company.compEcoActiv,
       compEmail: company.compEmail,
@@ -120,9 +167,11 @@ const ProfileCompany = () => {
       compTelephone: company.compTelephone,
       compType: company.compType,
       compUrlAddress: company.compAddress,
+      compCityName: (getCompCity === "" ? company.compCityName : getCompCity),
+      compCountryName: (Object.keys(getCompCountry).length === 0?  company.compCountryName : getCompCountry.name)
     };
-
-    console.log("profile: " + profile);
+    //Update company profile
+    dispatch(updateCompany(ACCESS_TOKEN, profile.compId, profile));
   };
   return (
     <div>
@@ -216,12 +265,61 @@ const ProfileCompany = () => {
                 variant="standard"
                 onChange={handleChange}
               />
-              <TextField
+              <Autocomplete
                 sx={{ width: "95%" }}
-                label="Ciudad"
-                defaultValue="Cali"
-                variant="standard"
-                onChange={handleChange}
+                freeSolo
+                disableClearable
+                id="free-solo-2-demo"
+                defaultValue={{ name: company.compCountryName }}
+                // List of countries
+                options={listCountries}
+                /**
+                 * This property allows to show in the user's view the property that we want to take from the object.
+                 * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+                 */
+                getOptionLabel={(option) => option.name}
+                onChange={(event, value) => setCompCountry(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Seleccione su país"
+                    variant="standard"
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                    }}
+                  />
+                )}
+              />
+              <Autocomplete
+                sx={{ width: "95%" }}
+                freeSolo
+                disableClearable
+                id="free-solo-2-demo"
+                //List of cities
+                options={listCities}
+                defaultValue={company.compCityName}
+                /**
+                 * This property allows to show in the user's view the property that we want to take from the object.
+                 * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+                 */
+                getOptionLabel={(option) => option}
+                /**
+                 * Allows send the select object to variable CompCity that correspond the element select
+                 */
+                onChange={(event, value) => setCompCity(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Seleccione su ciudad"
+                    variant="standard"
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                    }}
+                    onChange={(e) => setCompCity(e.target.value)}
+                  />
+                )}
               />
             </Stack>
             <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
