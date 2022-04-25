@@ -33,10 +33,9 @@ export const LoginSlice = createSlice({
     setUserPersonId: (state, action) => {
       state.userPersonId = action.payload;
     },
-    setUserCompanyId:(state,action) =>{
+    setUserCompanyId: (state, action) => {
       state.userCompanyId = action.payload;
-    }
-
+    },
   },
 });
 
@@ -53,13 +52,23 @@ export const sendToken = (data) => async (dispatch) => {
       //Update this rol in the initial state
       dispatch(setRolee(response.data.user.authorities[0].authority));
       dispatch(setIsLogin(true));
-      dispatch(setUserCompanyId(response.data.userCompanyId))
-      dispatch(setUserPersonId(response.data.userPersonId))
+      dispatch(setUserCompanyId(response.data.userCompanyId));
+      dispatch(setUserPersonId(response.data.userPersonId));
     })
     .catch((err) => {
       console.log(err.toJSON());
       dispatch(setResponseUserLogin({}));
       dispatch(setIsLogin(false));
+    });
+};
+
+export const registerUser = (data) => async (dispatch) => {
+  await axios
+    .post("/api/auth/register", data)
+    .then((response) => {
+    })
+    .catch((err) => {
+      console.log(err.toJSON());
     });
 };
 
@@ -70,6 +79,6 @@ export const {
   setIsLogin,
   setRolee,
   setUserCompanyId,
-  setUserPersonId
+  setUserPersonId,
 } = LoginSlice.actions;
 export default LoginSlice.reducer;
