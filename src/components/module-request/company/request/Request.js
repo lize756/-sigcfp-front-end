@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { TableCell, TableRow } from "@mui/material";
+import {
+  TableCell,
+  TableRow,
+  IconButton,
+  MenuItem,
+  Menu,
+  Typography,
+} from "@mui/material";
+import MoreIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import EyeIcon from "@mui/icons-material/Visibility";
 
+const ITEM_HEIGHT = 40;
 const Request = ({ request, delRequest, editRequest, viewRequest }) => {
   //lista de solicitudes de practica
   const [getStrCareers, setStrCareers] = useState("");
@@ -12,50 +21,108 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
   useEffect(() => {
     // Allow concat the elements in the list of careers with its faculty
 
-     let concatCareers = "";
-     let concatFaculty = "";
-     const array = request.careers;
-     for (let i = 0; i < array.length; i++) {
-       if (i === array.length - 1) {
-         concatCareers += array[i].careName;
-         concatFaculty += array[i].faculty.facuName;
-        } else {
-          concatCareers += array[i].careName + ",";
-          concatFaculty += array[i].faculty.facuName + ",";
-        }
+    let concatCareers = "";
+    let concatFaculty = "";
+    const array = request.careers;
+    for (let i = 0; i < array.length; i++) {
+      if (i === array.length - 1) {
+        concatCareers += array[i].careName;
+        concatFaculty += array[i].faculty.facuName;
+      } else {
+        concatCareers += array[i].careName + ",";
+        concatFaculty += array[i].faculty.facuName + ",";
       }
-      setStrCareers(concatCareers);
-      setStrFaculty(concatFaculty);
+    }
+    setStrCareers(concatCareers);
+    setStrFaculty(concatFaculty);
   }, []);
 
   return (
     <TableRow hover role="checkbox" tabIndex={-1} key={request.inteRequId}>
-      <TableCell align="right">{request.inteRequName}</TableCell>
-      <TableCell align="right">{getStrFaculty}</TableCell>
-      <TableCell align="right">{getStrCareers}</TableCell>
-      <TableCell align="right">{request.inteRequStDate}</TableCell>
-      <TableCell align="right">{request.inteRequNumber}</TableCell>
+      <TableCell
+        align="left"
+        onClick={() => {
+          viewRequest(request);
+        }}
+      >
+        {request.inteRequName}
+      </TableCell>
+      <TableCell
+        align="center"
+        onClick={() => {
+          viewRequest(request);
+        }}
+      >
+        {getStrFaculty}
+      </TableCell>
+      <TableCell
+        align="center"
+        onClick={() => {
+          viewRequest(request);
+        }}
+      >
+        {getStrCareers}
+      </TableCell>
+      <TableCell
+        align="center"
+        onClick={() => {
+          viewRequest(request);
+        }}
+      >
+        {request.inteRequStDate}
+      </TableCell>
+      <TableCell
+        align="right"
+        onClick={() => {
+          viewRequest(request);
+        }}
+      >
+        {request.inteRequNumber}
+      </TableCell>
       <TableCell align="center">
-        <DeleteIcon
-          color="error"
-          onClick={() => {
-            delRequest(request);
+        <IconButton
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          <MoreIcon />
+        </IconButton>
+
+        <Menu
+          id="long-menu"
+          MenuListProps={{
+            "aria-labelledby": "long-button",
           }}
-        />{" "}
-        &nbsp;
-        <EditIcon
-          color="primary"
-          onClick={() => {
-            editRequest(request);
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            style: {
+              maxHeight: ITEM_HEIGHT * 4.5,
+              width: "20ch",
+            },
           }}
-        />
-        &nbsp;
-        <EyeIcon
-          color="primary"
-          onClick={() => {
-            viewRequest(request);
-          }}
-        />
+        >
+          <MenuItem
+            key="Company"
+            onClick={() => {
+              editRequest;
+            }}
+          >
+            <Typography textAlign="center">Editar solicitud</Typography>
+          </MenuItem>
+          <MenuItem
+            key="Perfil"
+            onClick={() => {
+              delRequest(request);
+            }}
+          >
+            <Typography textAlign="center">Eliminar solicitud</Typography>
+          </MenuItem>
+        </Menu>
       </TableCell>
     </TableRow>
   );

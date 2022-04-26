@@ -24,7 +24,7 @@ import { useNavigate } from "react-router";
 import "../StylesCompany.css";
 
 //Redux
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteInternRequest,
   getInternRequestsAssociatedCompany,
@@ -143,12 +143,12 @@ const RequestList = ({ edit }) => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell align="right">Nombre</TableCell>
-                <TableCell align="right">Facultad</TableCell>
-                <TableCell align="right">Carrera</TableCell>
-                <TableCell align="right">Fecha de Inicio </TableCell>
+                <TableCell align="left">Nombre</TableCell>
+                <TableCell align="center">Facultad</TableCell>
+                <TableCell align="center">Carrera</TableCell>
+                <TableCell align="center">Fecha de Inicio </TableCell>
                 <TableCell align="right">Número de Estudiantes </TableCell>
-                <TableCell align="center">Acciones</TableCell>
+                <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{renderList()}</TableBody>
