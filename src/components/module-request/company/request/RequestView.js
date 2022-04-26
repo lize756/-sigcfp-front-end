@@ -92,13 +92,15 @@ const RequestView = ({ request, edit }) => {
             }}
             component="ul"
           >
-            {careers.map((career) => {
-              return (
-                <ListItem key={career.careId}>
-                  <Chip label={career.careName} />
-                </ListItem>
-              );
-            })}
+            {careers
+              ? careers.map((career) => {
+                  return (
+                    <ListItem key={career.careId}>
+                      <Chip label={career.careName} />
+                    </ListItem>
+                  );
+                })
+              : ""}
           </Box>
 
           <TextField

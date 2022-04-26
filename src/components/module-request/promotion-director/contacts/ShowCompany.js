@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Paper, Stack, Avatar, Box, Typography } from "@mui/material";
+import { Paper, Stack, Avatar, Box, Typography, Grid } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
@@ -8,7 +8,7 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import MoneyIcon from "@mui/icons-material/AttachMoney";
 import BusinessIcon from "@mui/icons-material/BusinessCenter";
 import SchoolIcon from "@mui/icons-material/School";
-import { purple, red, orange, pink } from "@mui/material/colors";
+import { red, orange, pink } from "@mui/material/colors";
 
 const ShowCompany = () => {
   const [company, setCompany] = useState({
@@ -87,6 +87,8 @@ const ShowCompany = () => {
               </Typography>
 
               <Typography
+                mb={1}
+                mr={1}
                 variant="body1"
                 sx={{ fontWeight: "medium", color: red[400] }}
               >
@@ -120,6 +122,8 @@ const ShowCompany = () => {
               </Typography>
 
               <Typography
+                mb={1}
+                mr={1}
                 variant="body1"
                 sx={{ fontWeight: "medium", color: red[500] }}
               >
@@ -155,6 +159,8 @@ const ShowCompany = () => {
               </Typography>
 
               <Typography
+                mb={1}
+                mr={1}
                 variant="body1"
                 sx={{ fontWeight: "medium", color: orange[400] }}
               >
@@ -191,6 +197,8 @@ const ShowCompany = () => {
 
               <Typography
                 variant="body1"
+                mb={1}
+                mr={1}
                 sx={{ fontWeight: "medium", color: orange[500] }}
               >
                 {company.city}
@@ -225,6 +233,8 @@ const ShowCompany = () => {
               </Typography>
 
               <Typography
+                mb={1}
+                mr={1}
                 variant="body1"
                 sx={{ fontWeight: "medium", color: pink[400] }}
               >
@@ -260,6 +270,7 @@ const ShowCompany = () => {
               <Typography
                 variant="body1"
                 mb={1}
+                mr={1}
                 sx={{ fontWeight: "medium", color: pink[400] }}
               >
                 {company.compType}

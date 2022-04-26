@@ -136,7 +136,7 @@ const ListUser = ({ userEdit }) => {
           <Button
             variant="contained"
             component={RouterLink}
-            to="/company/create"
+            to="/company/createUser"
             startIcon={<AddIcon />}
           >
             Crear Contacto
@@ -154,7 +154,7 @@ const ListUser = ({ userEdit }) => {
                 <TableCell align="center">Correo Electronico</TableCell>
                 <TableCell align="center">Telefono</TableCell>
                 <TableCell align="right">Posicion </TableCell>
-                <TableCell align="center">Acciones</TableCell>
+                <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{renderList()}</TableBody>

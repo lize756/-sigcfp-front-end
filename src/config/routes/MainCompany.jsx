@@ -8,6 +8,8 @@ import Create from "../../components/module-request/company/request/RequestCreat
 import Update from "../../components/module-request/company/request/RequestUpdate";
 import RequestView from "../../components/module-request/company/request/RequestView";
 import Profile from "../../components/global/profile/ProfileCompany";
+import UpdateUser from "../../components/module-request/company/user/UpdateUser";
+import CreateUser from "../../components/module-request/company/user/CreateUser";
 
 const MainCompany = () => {
   const [requestEdit, setRequestEdit] = useState({});
@@ -45,6 +47,14 @@ const MainCompany = () => {
 
         <Route path="/company" element={<HomeCompany />}>
           <Route path="users" element={<UserList userEdit={editUser} />} />
+        </Route>
+
+        <Route path="/company" element={<HomeCompany />}>
+          <Route path="updateUser" element={<UpdateUser />} />
+        </Route>
+
+        <Route path="/company" element={<HomeCompany />}>
+          <Route path="createUser" element={<CreateUser />} />
         </Route>
 
         {/** ====================================Profile=============================== */}
