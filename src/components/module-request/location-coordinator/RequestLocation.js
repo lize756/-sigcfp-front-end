@@ -14,7 +14,6 @@ import Search from "../company/request/RequestSearch";
 import { useNavigate } from "react-router";
 //Redux
 import { useSelector, useDispatch } from "react-redux";
-import { fetchtInternsRequests} from "../../store/slices/coordinator/CoordinatorSlice";
 
 const RequestLocation = ({ requestView }) => {
   //lista de solicitudes de practica
@@ -37,7 +36,6 @@ const RequestLocation = ({ requestView }) => {
     
     
     useEffect(() => {
-      dispatch(fetchtInternsRequests(ACCESS_TOKEN))
     }, []);
     
     const requestList = useSelector((state) => state.coordinatorSlice).list_interns_requests

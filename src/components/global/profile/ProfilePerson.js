@@ -81,11 +81,16 @@ const ProfilePerson = () => {
       persEmail: person.persEmail,
       persGenre: person.persGenre,
       persAddress: person.persAddress,
-      persCityName: (getPersonCity === "" ? person.persCityName : getPersonCity),
-      persCountryName:(Object.keys(getPersonCountry).length === 0?  person.persCountryName : getPersonCountry.name)
+      persCityName: getPersonCity === "" ? person.persCityName : getPersonCity,
+      persCountryName:
+        Object.keys(getPersonCountry).length === 0
+          ? person.persCountryName
+          : getPersonCountry.name,
     };
     //console.log(personData)
-    dispatch(updatePartiallyPerson(ACCESS_TOKEN,personData.persId,personData))
+    dispatch(
+      updatePartiallyPerson(ACCESS_TOKEN, personData.persId, personData)
+    );
   };
   const [getPersonCountry, setPersonCountry] = useState({});
   const [getPersonCity, setPersonCity] = useState("");
@@ -98,7 +103,6 @@ const ProfilePerson = () => {
       dispatch(getCitiesAssociatedToCountry(getPersonCountry.name));
     }
   }, [getPersonCountry]);
-
 
   //=================================================Password State===================================================
 
@@ -257,15 +261,6 @@ const ProfilePerson = () => {
             <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
               <TextField
                 sx={{ width: "95%" }}
-                label="Dirección"
-                name="persAddress"
-                defaultValue={person.persAddress}
-                variant="standard"
-                onChange={handleChange}
-              />
-
-              <TextField
-                sx={{ width: "95%" }}
                 label="Generó"
                 name="persGenre"
                 defaultValue={person.persGenre}
@@ -327,6 +322,14 @@ const ProfilePerson = () => {
                     onChange={(e) => setPersonCity(e.target.value)}
                   />
                 )}
+              />
+              <TextField
+                sx={{ width: "95%" }}
+                label="Dirección"
+                name="persAddress"
+                defaultValue={person.persAddress}
+                variant="standard"
+                onChange={handleChange}
               />
             </Stack>
           </Stack>

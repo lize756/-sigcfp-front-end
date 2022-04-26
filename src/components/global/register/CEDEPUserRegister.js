@@ -3,6 +3,8 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -10,12 +12,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useNavigate } from "react-router";
-/**
- * Import to redux
- */
-import { useDispatch } from "react-redux";
-import { setPerson, addPerson} from "../../../store/slices/coordinator/PersonSlice";
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import Alert from "@mui/material/Alert";
+import { addUserr, addPerson } from "../../store/slices/PersonSlice";
+import { Collapse } from "@mui/material";
 
 function Copyright() {
   return (
@@ -52,22 +53,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CoordBasicRegister = () => {
+const CoordUserRegister = () => {
   const classes = useStyles();
-  // Allow navigate between roots
-  let navigate = useNavigate();
   // Allow to send the elements of store
   const dispatch = useDispatch();
- /**-------------------------------------------------------------
+  // Allow to bring the email to one person
+  const personStore = useSelector((state) => state.PersonSlice).person;
+  const [openAlert, setOpenAlert] = useState({
+    isOpen: false,
+    alertMessages: [],
+  });
+
+  /**-------------------------------------------------------------
    * Handling the states of the attributes that make up a register
    * -------------------------------------------------------------
    */
   const [data, setData] = useState({
-    persFirstName: " ",
-    persLastName: "",
-    persEmail: "",
-    persEmailR:"",
-    persDocument: "",
+    userName: personStore.persEmail,
+    userPassword: "",
+    userPasswordR: "",
   });
 
   /*
@@ -83,25 +87,59 @@ const CoordBasicRegister = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  //On Action of the button
+  let listALerts = openAlert.alertMessages.map((item, index) => {
+    return (
+      <Alert severity="error" key={index} align="justify">
+        {item}
+      </Alert>
+    );
+  });
+
   const submit = (e) => {
     e.preventDefault();
-    //Correspond to information of the promotion coodinator
-    const promotionCoordinator = {
-      persFirstName: data.persFirstName,
-      persLastName: data.persLastName,
-      persDocument: data.persDocument,
-      persEmail: data.persEmail,
-    };
-    
-    dispatch(setPerson(promotionCoordinator));
-    navigate("/coordinator/register/user_register");
+    let userr = {};
+    // Check if there is another person with the same username
+    if (data.userName === "Oscar") {
+      openAlert.isOpen = true;
+      openAlert.alertMessages.push(
+        "Ya hay otra persona que tiene esta dirección de correo electrónico. Prueba de nuevo con otro nombre de usuario"
+      );
+    } else {
+      openAlert.isOpen = false;
+    }
+    //Check if the passwords were writed correctly
+    if (data.userPassword !== data.userPasswordR) {
+      openAlert.isOpen = true;
+      data.userPassword = "";
+      openAlert.alertMessages.push(
+        "Las contraseñas no son las mismas. Prueba de nuevo"
+      );
+    } else {
+      openAlert.isOpen = false;
+    }
+
+    openAlert.alertMessages.map((text) => console.log(text));
+    if (!openAlert.isOpen) {
+      console.log(!openAlert.isOpen);
+      //setOpenAlert({ isOpen: false });
+      openAlert.isOpen = false;
+      //Correspond to information of the one userr
+      userr = {
+        userEmail: data.persEmail,
+        userName: data.userName,
+        userPassword: data.userPassword,
+        person: personStore,
+      };
+      //dispatch(addUserr(userr));
+
+      //dispatch(setPerson(promotionCoordinatorUpdate));
+      //dispatch(addPerson(promotionCoordinatorUpdate))
+    }
   };
 
- 
-
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
+      <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -111,34 +149,14 @@ const CoordBasicRegister = () => {
         </Typography>
         <form className={classes.form} noValidate onSubmit={submit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                name="persFirstName"
-                variant="outlined"
-                required
-                fullWidth
-                label="Nombres"
-                autoFocus
-                onChange={handleChange}
-                />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Apellidos"
-                name="persLastName"
-                onChange={handleChange}
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
+                defaultValue={data.persEmail}
                 label="Correo electrónico"
-                name="persEmail"
+                name="userName"
                 onChange={handleChange}
               />
             </Grid>
@@ -147,8 +165,9 @@ const CoordBasicRegister = () => {
                 variant="outlined"
                 required
                 fullWidth
-                label="Confirmar correo electrónico"
-                name="persEmailR"
+                name="userPassword"
+                label="Contraseña"
+                type="password"
                 onChange={handleChange}
               />
             </Grid>
@@ -157,21 +176,37 @@ const CoordBasicRegister = () => {
                 variant="outlined"
                 required
                 fullWidth
-                label="Cédula"
-                name="persDocument"
+                name="userPasswordR"
+                label="Confirmar contraseña"
+                type="password"
                 onChange={handleChange}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                label="Aquí va una frase"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Collapse in={openAlert.isOpen}>{listALerts}</Collapse>
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Siguiente
-          </Button>
+          <Grid container spacing={2}>
+            <Button type="submit" fullWidth variant="contained" color="primary">
+              Regresar
+            </Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Siguiente
+            </Button>
+          </Grid>
+
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="#" variant="body2">
@@ -188,4 +223,4 @@ const CoordBasicRegister = () => {
   );
 };
 
-export default CoordBasicRegister;
+export default CoordUserRegister;
