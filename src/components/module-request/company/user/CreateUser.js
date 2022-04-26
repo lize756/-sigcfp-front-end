@@ -17,12 +17,12 @@ const validationSchema = yup.object({
     .required("Tu posición es requerida"),
 });
 
-const UpdateUser = () => {
+const CreateUser = () => {
   const user = {
-    contName: "Oscar Ivan Riascos",
-    contEmail: "oscar1@gmail.com",
-    contPhone: "12385757686",
-    contPosition: "jdjdijdijdj",
+    contName: "",
+    contEmail: "",
+    contPhone: "",
+    contPosition: "",
   };
 
   const formik = useFormik({
@@ -37,7 +37,7 @@ const UpdateUser = () => {
   return (
     <div>
       <Typography variant="h5" gutterBottom color="#072079" mt={3} ml={5}>
-        Editar contacto
+        Crear contacto
       </Typography>
       <form onSubmit={formik.handleSubmit}>
         <Box ml={5} mr={5}>
@@ -104,4 +104,4 @@ const UpdateUser = () => {
   );
 };
 
-export default UpdateUser;
+export default CreateUser;
