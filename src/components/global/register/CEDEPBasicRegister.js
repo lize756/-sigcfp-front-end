@@ -134,11 +134,11 @@ const CoordBasicRegister = () => {
       persDocument: data.persDocument,
       persEmail: data.persEmail,
       persAddress: data.persAddress,
-      persCountryName: getPersonCountry,
+      persCountryName: getPersonCountry.name,
       persCityName: getPersonCity,
     };
-    //console.log(persontoAdd)
-   // dispatch(addperson(ACCESS_TOKEN,persontoAdd))
+    console.log(persontoAdd)
+    dispatch(addperson(persontoAdd))
     navigate("/cedep/register/user_register");
   };
 

@@ -12,11 +12,14 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { useNavigate } from "react-router";
+
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import Alert from "@mui/material/Alert";
 import { addUserr, addPerson } from "../../store/slices/PersonSlice";
 import { Collapse } from "@mui/material";
+import { registerUser } from "../../store/slices/UserrSlice";
 
 function Copyright() {
   return (
@@ -54,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CoordUserRegister = () => {
+  let navigate = useNavigate();
+
   const classes = useStyles();
   // Allow to send the elements of store
   const dispatch = useDispatch();
@@ -129,11 +134,9 @@ const CoordUserRegister = () => {
         userName: data.userName,
         userPassword: data.userPassword,
         person: personStore,
-      };
-      //dispatch(addUserr(userr));
-
-      //dispatch(setPerson(promotionCoordinatorUpdate));
-      //dispatch(addPerson(promotionCoordinatorUpdate))
+      }
+      dispatch(registerUser(userr))
+      navigate("/cedep/register/user_register");
     }
   };
 

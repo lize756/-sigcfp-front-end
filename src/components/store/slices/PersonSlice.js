@@ -46,13 +46,10 @@ export const personSlice = createSlice({
  * @param {*} person Correspond of element to add.
  * @returns
  */
-export const addPerson = (ACCESS_TOKEN, person) => async (dispatch) => {
-  headers = {
-    Authorization: `${ACCESS_TOKEN}`,
-  };
-
+export const addperson = (person) => async (dispatch) => {
+ 
   axios
-    .post("/api/persons", { headers }, person)
+    .post("/api/persons/add", person)
     .then((res) => {
       dispatch(setPerson(res.data));
     })
@@ -97,9 +94,9 @@ export const updatePartiallyPerson = (ACCESS_TOKEN, persId, person) => (dispatch
     .put("api/persons/partiallyUpdate/" + persId, person, { headers })
     .then((res) => {
       dispatch(setPerson(res.data));
-      console.log("Se actualizo correctamente la persona")
     })
     .catch((err) => {
+      console.log("Se actualizo correctamente la persona")
       console.log(err.toJSON());
     });
 };
