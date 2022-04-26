@@ -56,14 +56,6 @@ const RegistrationContactCompany = () => {
       contPhone: "",
     },
   ]);
-
-  /**Not used */
-  const [getListContact, setListContact] = useState([]);
-  const [contName, setContName] = useState("");
-  const [contPosition, setContPosition] = useState("");
-  const [contEmail, setContEmail] = useState("");
-  const [contPhone, setContPhone] = useState("");
-
   /**
    * This method allow print to console the result of the form
    * @param {*} e
