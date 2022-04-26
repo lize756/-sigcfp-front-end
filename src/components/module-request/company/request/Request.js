@@ -18,6 +18,15 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
   const [getStrCareers, setStrCareers] = useState("");
   const [getStrFaculty, setStrFaculty] = useState("");
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   useEffect(() => {
     // Allow concat the elements in the list of careers with its faculty
 
@@ -109,7 +118,7 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
           <MenuItem
             key="Company"
             onClick={() => {
-              editRequest;
+              editRequest(request);
             }}
           >
             <Typography textAlign="center">Editar solicitud</Typography>
