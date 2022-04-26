@@ -62,15 +62,6 @@ export const sendToken = (data) => async (dispatch) => {
     });
 };
 
-export const registerUser = (data) => async (dispatch) => {
-  await axios
-    .post("/api/auth/register", data)
-    .then((response) => {
-    })
-    .catch((err) => {
-      console.log(err.toJSON());
-    });
-};
 
 //Export the action to reducer of userLogin
 export const {

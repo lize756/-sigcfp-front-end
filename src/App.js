@@ -10,7 +10,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 //Redu
 import { Provider } from "react-redux";
-import store from "../src/components/store/index";
+import store from "../src/components/store/indexStore";
 import MainRegister from "./config/routes/MainRegister";
 
 function App() {

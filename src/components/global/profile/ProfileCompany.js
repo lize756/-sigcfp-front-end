@@ -24,7 +24,7 @@ import Autocomplete from "@mui/material/Autocomplete";
  * REDUX
  */
 import { useDispatch, useSelector } from "react-redux";
-import { companySlice, updateCompany } from "../../store/slices/CompanySlice";
+import {updateCompany } from "../../store/slices/CompanySlice";
 import {
   getCitiesAssociatedToCountry,
   getCountries,

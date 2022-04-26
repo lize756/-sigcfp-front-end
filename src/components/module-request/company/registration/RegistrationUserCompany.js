@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccordinRegisterPanelValue } from "../../../store/slices/CompanySlice";
-import { registerUser } from "../../../store/slices/SignIn/LoginSlice";
+import { registerUser } from "../../../store/slices/UserrSlice"
 
 const RegistrationUserCompany = () => {
   /**

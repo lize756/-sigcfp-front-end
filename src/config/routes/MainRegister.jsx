@@ -14,8 +14,8 @@ import SignInSide from "../../components/module-request/login/SignInSide";
 import DashboardCreateAccount from "../../components/module-request/login/DashboardCreateAccount";
 
 import StepperRegistration from "../../components/module-request/company/registration/AccordionRegistration";
-import CoordBasicRegister from "../../components/module-request/coordinator/register/CoordBasicRegister";
-import CoordUserRegister from "../../components/module-request/coordinator/register/CoordUserRegister";
+import CEDEPBasicRegister from "../../components/global/register/CEDEPBasicRegister";
+import CEDEPUserRegister from "../../components/global/register/CEDEPUserRegister";
 const MainRegister = () => {
   return (
     <>
@@ -34,11 +34,11 @@ const MainRegister = () => {
             </Route>
 
             {/*Registration route of a coordinator*/}
-            <Route path="/coordinator" element={<Home name="REGISTRO" />}>
-              <Route path="register" element={<CoordBasicRegister />} />
+            <Route path="/cedep" element={<Home name="REGISTRO" />}>
+              <Route path="register" element={<CEDEPBasicRegister />} />
               <Route
                 path="register/user_register"
-                element={<CoordUserRegister />}
+                element={<CEDEPUserRegister />}
               />
             </Route>
 

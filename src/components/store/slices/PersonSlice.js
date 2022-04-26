@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
 
-
-
 let headers;
 /**
  * This slice containt all related to the requests of the one person.
@@ -48,13 +46,10 @@ export const personSlice = createSlice({
  * @param {*} person Correspond of element to add.
  * @returns
  */
-export const addperson = (ACCESS_TOKEN, person) => async (dispatch) => {
-  headers = {
-    Authorization: `${ACCESS_TOKEN}`,
-  };
-
+export const addperson = (person) => async (dispatch) => {
+ 
   axios
-    .post("/api/persons", { headers }, person)
+    .post("/api/persons/add", person)
     .then((res) => {
       dispatch(setPerson(res.data));
     })
@@ -80,6 +75,28 @@ export const updateperson = (ACCESS_TOKEN, persId, person) => (dispatch) => {
       dispatch(setPerson(res.data));
     })
     .catch((err) => {
+      console.log(err.toJSON());
+    });
+};
+
+/**
+ * Allow update a one person
+ * @param {*} ACCESS_TOKEN Token of the user that login to the system
+ * @param {*} persId persId id of the person to update.
+ * @param {*} person new person to update.
+ * @returns
+ */
+export const updatePartiallyPerson = (ACCESS_TOKEN, persId, person) => (dispatch) => {
+  const headers = {
+    Authorization: `${ACCESS_TOKEN}`,
+  };
+  axios
+    .put("api/persons/partiallyUpdate/" + persId, person, { headers })
+    .then((res) => {
+      dispatch(setPerson(res.data));
+    })
+    .catch((err) => {
+      console.log("Se actualizo correctamente la persona")
       console.log(err.toJSON());
     });
 };

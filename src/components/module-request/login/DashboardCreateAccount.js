@@ -40,7 +40,7 @@ export default function DashboardCreateAccount() {
   const classes = useStyles();
   const urlToCompanyRegister = "/company/register";
   const urlToGraduatedRegister = "#";
-  const urlToCEDEPRegister = "/coordinator/register";
+  const urlToCEDEPRegister = "/cedep/register";
 
   return (
     <Grid
