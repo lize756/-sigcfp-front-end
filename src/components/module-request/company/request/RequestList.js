@@ -165,8 +165,6 @@ const RequestList = ({ edit }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
-
-      <Paper sx={{ width: "100%", overflow: "hidden" }}></Paper>
     </div>
   );
 };
