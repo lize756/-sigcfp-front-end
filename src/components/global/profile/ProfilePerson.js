@@ -19,6 +19,8 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { green } from "@mui/material/colors";
 import Autocomplete from "@mui/material/Autocomplete";
+import Select from "@mui/material/Select";
+import { MenuItem } from "@material-ui/core";
 
 /**
  * REDUX
@@ -49,6 +51,8 @@ const ProfilePerson = () => {
 
   // Get person id of the store
   const personStore = useSelector((state) => state.PersonSlice.person);
+  //Correspond to list of gender that a person
+  const listGender = ["MASCULINO", "FEMENINO", "OTRO"];
 
   const [person, setPerson] = useState({
     persFirstName: personStore.persFirstName,
@@ -79,7 +83,7 @@ const ProfilePerson = () => {
       persLastName: person.persLastName,
       persDocument: person.persDocument,
       persEmail: person.persEmail,
-      persGenre: person.persGenre,
+      persGenre: getPersGenre === "" ? person.persGenre : getPersGenre,
       persAddress: person.persAddress,
       persCityName: getPersonCity === "" ? person.persCityName : getPersonCity,
       persCountryName:
@@ -94,7 +98,7 @@ const ProfilePerson = () => {
   };
   const [getPersonCountry, setPersonCountry] = useState({});
   const [getPersonCity, setPersonCity] = useState("");
-
+  const [getPersGenre,setPersGenre] = useState("");
   //================================================= UseEffect ===================================================
 
   useEffect(() => {
@@ -257,16 +261,19 @@ const ProfilePerson = () => {
                 variant="standard"
                 onChange={handleChange}
               />
+              <Autocomplete
+                sx={{ width: "95%" }}
+                id="combo-box-persGenre"
+                disablePortal
+                defaultValue={person.persGenre}
+                options={listGender}
+                onChange={(event, value) => setPersGenre(value)}
+                renderInput={(params) => (
+                  <TextField {...params} label="Género" variant="standard" />
+                )}
+              />
             </Stack>
             <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
-              <TextField
-                sx={{ width: "95%" }}
-                label="Generó"
-                name="persGenre"
-                defaultValue={person.persGenre}
-                variant="standard"
-                onChange={handleChange}
-              />
               <Autocomplete
                 sx={{ width: "95%" }}
                 freeSolo
