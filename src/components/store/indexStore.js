@@ -4,7 +4,7 @@
 // Represent the index to store of all application
 import { configureStore } from "@reduxjs/toolkit";
 // Login
-import userLogin from "./slices/SignIn/LoginSlice";
+import userLogin, { localStorageMiddleware, reHydrateStore } from "./slices/SignIn/LoginSlice";
 
 //Other slice
 import CareerSlice from "./slices/CareerSlice";
@@ -30,4 +30,9 @@ export default configureStore({
     InternRequestSlice,
     PersonSlice,
   },
+  // This line allow preload the state the application when the window is reload it
+  preloadedState: reHydrateStore(),
+  // Correspond a the middleware that allow saved the information the global application
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(localStorageMiddleware),
 });

@@ -34,6 +34,11 @@ import CardProfile from "../layout/CardProfile";
 import { useNavigate } from "react-router";
 
 import { Outlet } from "react-router-dom";
+/**
+ * REDUX
+ */
+import { useDispatch } from "react-redux";
+import { logout, reHydrateStore} from "../components/store/slices/SignIn/LoginSlice";
 
 const drawerWidth = 260;
 
@@ -84,6 +89,8 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const PromotionApp = () => {
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
   const theme = useTheme();
   let navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -103,6 +110,11 @@ const PromotionApp = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+  const handleLogOut = () => {
+    setAnchorElUser(null);
+  //  dispatch();
+    navigate("/SignIn");
   };
 
   return (
@@ -167,7 +179,7 @@ const PromotionApp = () => {
                   <Typography textAlign="center">Perfil</Typography>
                 </MenuItem>
                 <Divider />
-                <MenuItem key="Cerrar Sesion" onClick={handleCloseUserMenu}>
+                <MenuItem key="Cerrar Sesion" onClick={handleLogOut}>
                   <Typography textAlign="center">Cerrar Sesión</Typography>
                 </MenuItem>
               </Menu>
