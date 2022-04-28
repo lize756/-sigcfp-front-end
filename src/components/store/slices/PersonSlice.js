@@ -70,7 +70,7 @@ export const updateperson = (ACCESS_TOKEN, persId, person) => (dispatch) => {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("api/persons/update/" + persId, { headers }, person)
+    .put("api/persons/update/" + persId, person,{ headers })
     .then((res) => {
       dispatch(setPerson(res.data));
     })

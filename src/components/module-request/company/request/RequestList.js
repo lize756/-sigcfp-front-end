@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteInternRequest,
   getInternRequestsAssociatedCompany,
-  setIsRender,
+  setIsRender, setIntReq
 } from "../../../store/slices/InternRequestSlice";
 
 const RequestList = ({ edit }) => {
@@ -76,6 +76,7 @@ const RequestList = ({ edit }) => {
 
   //Metodo edit
   const editRequest = (request) => {
+    dispatch(setIntReq(request))
     edit(request);
     navigate("/company/update");
   };

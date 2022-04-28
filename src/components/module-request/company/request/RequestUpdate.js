@@ -37,11 +37,13 @@ const ListItem = styled("li")(({ theme }) => ({
  * @params the intern request to update
  * @returns
  */
-const RequestUpdate = ({ request }) => {
+const RequestUpdate = () => {
   /**
    * Redux
    */
   const list_carreers = useSelector((state) => state.CareerSlice.listCareers);
+  const request = useSelector((state) => state.InternRequestSlice.intReq);
+
   // Allow to send the elements of store
   const dispatch = useDispatch();
 
@@ -72,11 +74,12 @@ const RequestUpdate = ({ request }) => {
     inteRequSalary: "",
     inteRequOtherBenefits: "",
   });
+  const [isRender, setIsRender] = useState(false);
 
   useEffect(() => {
     setEditRequest(request);
     setDefaultCareers(request.careers);
-
+    setIsRender(true);
     if (request.inteRequFunctions !== "") {
       const arrayDefaults = request.inteRequFunctions.split(",");
       setDefaultInteRequFunctions(arrayDefaults);
@@ -98,14 +101,13 @@ const RequestUpdate = ({ request }) => {
    * date loaded from the database to the format needed by textfield date
    * @returns  date in correct format
    */
-  const  getDate = async () => {
-    const requDate = await editRequest.inteRequStDate;
+  const getDate = () => {
+    const requDate = editRequest.inteRequStDate;
     const datest = moment(requDate, "DD/MM/YYYY").format("yyyy-MM-DD");
-    const [year,moth,day] = datest.split('-')
-    console.log(datest)
-    console.log(year+"-"+moth+"-"+day)
-
-    return datest
+    const [year, moth, day] = datest.split("-");
+    console.log(datest);
+    console.log(year + "-" + moth + "-" + day);
+    return year + "-" + moth + "-" + day;
   };
   //------------Handlechange functions-----------------------------------
   const handleChange = (e) => {
@@ -194,168 +196,171 @@ const RequestUpdate = ({ request }) => {
 
     navigate("/company/request");
   };
+  if (isRender) {
+    return (
+      <Container maxWidth="lg">
+        <Box sx={{ bgcolor: "#F2F6FE" }}>
+          <form className={classes.root} onSubmit={putRequest}>
+            <TextField
+              name="inteRequName"
+              value={editRequest.inteRequName}
+              label="Nombre de la solicitud"
+              onChange={handleChange}
+            />
 
-  return (
-    <Container maxWidth="lg">
-      <Box sx={{ bgcolor: "#F2F6FE" }}>
-        <form className={classes.root} onSubmit={putRequest}>
-          <TextField
-            name="inteRequName"
-            value={editRequest.inteRequName}
-            label="Nombre de la solicitud"
-            onChange={handleChange}
-          />
+            <Box
+              sx={{
+                bgcolor: "#F2F6FE",
+                display: "flex",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                listStyle: "none",
+                p: 0.5,
+                m: 0,
+              }}
+              component="ul"
+            >
+              {defaultCareers.map((career) => {
+                return (
+                  <ListItem key={career.careId}>
+                    <Chip
+                      label={career.careName}
+                      onDelete={handleDelete(career)}
+                    />
+                  </ListItem>
+                );
+              })}
+            </Box>
 
-          <Box
-            sx={{
-              bgcolor: "#F2F6FE",
-              display: "flex",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              listStyle: "none",
-              p: 0.5,
-              m: 0,
-            }}
-            component="ul"
-          >
-            {defaultCareers.map((career) => {
-              return (
-                <ListItem key={career.careId}>
+            <Autocomplete
+              multiple
+              fullWidth
+              options={list_carreers}
+              getOptionLabel={(option) => option.careName}
+              name="careers"
+              onChange={(e, value) => handleSelect(value)}
+              filterSelectedOptions
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Carreras de Interés"
+                  placeholder="Carreras de Interés"
+                />
+              )}
+            />
+
+            <TextField
+              id="outlined-textarea"
+              name="inteRequDepartment"
+              value={editRequest.inteRequDepartment}
+              label="Area o Departamento"
+              onChange={handleChange}
+            />
+
+            <TextField
+              name="inteRequNumber"
+              value={editRequest.inteRequNumber}
+              label="Número de Estudiantes"
+              type="number"
+              onChange={handleChange}
+            />
+
+            <TextField
+              name="inteRequStDate"
+              label="Fecha de Inicio"
+              InputLabelProps={{ shrink: true, required: true }}
+              type="date"
+              defaultValue={getDate()}
+              onChange={handleChange}
+            />
+
+            <Autocomplete
+              multiple
+              fullWidth
+              options={[]}
+              freeSolo
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
                   <Chip
-                    label={career.careName}
-                    onDelete={handleDelete(career)}
+                    variant="outlined"
+                    label={option}
+                    {...getTagProps({ index })}
                   />
-                </ListItem>
-              );
-            })}
-          </Box>
-
-          <Autocomplete
-            multiple
-            fullWidth
-            options={list_carreers}
-            getOptionLabel={(option) => option.careName}
-            name="careers"
-            onChange={(e, value) => handleSelect(value)}
-            filterSelectedOptions
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Carreras de Interés"
-                placeholder="Carreras de Interés"
-              />
-            )}
-          />
-
-          <TextField
-            id="outlined-textarea"
-            name="inteRequDepartment"
-            value={editRequest.inteRequDepartment}
-            label="Area o Departamento"
-            onChange={handleChange}
-          />
-
-          <TextField
-            name="inteRequNumber"
-            value={editRequest.inteRequNumber}
-            label="Número de Estudiantes"
-            type="number"
-            onChange={handleChange}
-          />
-
-          <TextField
-            name="inteRequStDate"
-            label="Fecha de Inicio"
-            InputLabelProps={{ shrink: true, required: true }}
-            type="date"
-            defaultValue= {getDate()}
-            onChange={handleChange}
-          />
-
-          <Autocomplete
-            multiple
-            fullWidth
-            options={[]}
-            freeSolo
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip
+                ))
+              }
+              onChange={(e, value) => handleFunctions(value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
                   variant="outlined"
-                  label={option}
-                  {...getTagProps({ index })}
+                  label="Funciones Principales"
                 />
-              ))
-            }
-            onChange={(e, value) => handleFunctions(value)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="Funciones Principales"
-              />
-            )}
-          />
+              )}
+            />
 
-          <Autocomplete
-            multiple
-            fullWidth
-            options={[]}
-            freeSolo
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip
+            <Autocomplete
+              multiple
+              fullWidth
+              options={[]}
+              freeSolo
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    variant="outlined"
+                    label={option}
+                    {...getTagProps({ index })}
+                  />
+                ))
+              }
+              onChange={(e, value) => handleCompetencies(value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
                   variant="outlined"
-                  label={option}
-                  {...getTagProps({ index })}
+                  label="Competencias Claves del Éxito"
                 />
-              ))
-            }
-            onChange={(e, value) => handleCompetencies(value)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="Competencias Claves del Éxito"
-              />
-            )}
-          />
+              )}
+            />
 
-          <TextField
-            name="inteRequBondingType"
-            multiline
-            value={editRequest.inteRequBondingType}
-            label="Tipo de Vinculación"
-            onChange={handleChange}
-          />
-          <TextField
-            name="inteRequDuration"
-            label="Duración de la Practica"
-            multiline
-            value={editRequest.inteRequDuration}
-            onChange={handleChange}
-          />
-          <TextField
-            name="inteRequSalary"
-            label="Valor de Bonificación"
-            type="number"
-            value={editRequest.inteRequSalary}
-            onChange={handleChange}
-          />
-          <TextField
-            name="inteRequOtherBenefits"
-            label="Otros Beneficios"
-            value={editRequest.inteRequOtherBenefits}
-            multiline
-            onChange={handleChange}
-          />
+            <TextField
+              name="inteRequBondingType"
+              multiline
+              value={editRequest.inteRequBondingType}
+              label="Tipo de Vinculación"
+              onChange={handleChange}
+            />
+            <TextField
+              name="inteRequDuration"
+              label="Duración de la Practica"
+              multiline
+              value={editRequest.inteRequDuration}
+              onChange={handleChange}
+            />
+            <TextField
+              name="inteRequSalary"
+              label="Valor de Bonificación"
+              type="number"
+              value={editRequest.inteRequSalary}
+              onChange={handleChange}
+            />
+            <TextField
+              name="inteRequOtherBenefits"
+              label="Otros Beneficios"
+              value={editRequest.inteRequOtherBenefits}
+              multiline
+              onChange={handleChange}
+            />
 
-          <Button sx={{ mt: 5, pr: 3 }} variant="contained" type="submit">
-            Editar Solicitud
-          </Button>
-        </form>
-      </Box>
-    </Container>
-  );
+            <Button sx={{ mt: 5, pr: 3 }} variant="contained" type="submit">
+              Editar Solicitud
+            </Button>
+          </form>
+        </Box>
+      </Container>
+    );
+  }else{
+    return <></>
+  }
 };
 
 export default RequestUpdate;
