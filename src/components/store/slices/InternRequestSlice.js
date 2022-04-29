@@ -71,6 +71,7 @@ export const addInternRequest = (ACCESS_TOKEN, internRequest) => async (
     })
     .catch((err) => {
       console.log(err.toJSON());
+
     });
 };
 

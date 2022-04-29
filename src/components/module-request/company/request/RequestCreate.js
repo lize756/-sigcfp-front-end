@@ -133,7 +133,6 @@ const RequestCreate = () => {
   const addRequest = (e) => {
     e.preventDefault();
 
-
     const functions = inteRequFunctions.functions.substring(
       0,
       inteRequFunctions.functions.length - 1
@@ -144,8 +143,11 @@ const RequestCreate = () => {
       inteRequCompetencies.competencies.length - 1
     );
 
-    let currentDate = new Date().toLocaleDateString('en-ca')
-    console.log("This date",currentDate )
+    //  let currentDate = new Date().toLocaleDateString('en-ca')
+    const currentDate = new Date().toLocaleDateString();
+    const [year,month,day] = data.inteRequStDate.split("-")
+    const stDate = day+"/"+month+"/"+year
+    console.log(currentDate,stDate)
     const request = {
       inteRequCreate: currentDate,
       inteRequDuration: data.inteRequDuration,
@@ -153,7 +155,7 @@ const RequestCreate = () => {
       inteRequNumber: data.inteRequNumber,
       inteRequSalary: data.inteRequSalary,
       inteRequDepartment: data.inteRequDepartment,
-      inteRequStDate: data.inteRequStDate,
+      inteRequStDate: stDate,
       inteRequFunctions: functions,
       inteRequCompetencies: competencies,
       inteRequBondingType: data.inteRequBondingType,
@@ -161,16 +163,9 @@ const RequestCreate = () => {
       careers: careers,
       company: company,
     };
+    console.log(request)
 
     dispatch(addInternRequest(ACCESS_TOKEN, request));
-    /**
-     * 
-     axios
-     .post("internRequests/add", request)
-     .then((res) => console.log(res))
-     .catch((err) => console.log(err));
-     
-     */
     navigate("/company/request");
   };
 
