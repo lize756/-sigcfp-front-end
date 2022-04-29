@@ -94,6 +94,7 @@ export const updateInternRequest = (
     .put("api/internRequests/update/" + inteRequId, internRequest,{ headers })
     .then((res) => {
       dispatch(setIntReq(res.data));
+      dispatch(setIsRender(true))
     })
     .catch((err) => {
       console.log(err.toJSON());

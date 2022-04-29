@@ -63,7 +63,6 @@ const RequestList = ({ edit }) => {
   useEffect(() => {
     dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
     dispatch(setIsRender(false));
-    console.log("Tamaño ", list_interRequestsOfCompany.length);
   }, [isRender]);
 
   //Metodo delete

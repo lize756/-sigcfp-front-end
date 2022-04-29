@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Autocomplete, TextField, Button, Chip } from "@mui/material";
+import { Autocomplete, TextField, Button, Chip, Checkbox } from "@mui/material";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
@@ -61,10 +61,12 @@ const RequestUpdate = () => {
   //const [listCareers, setlistCareers] = useState([]);
   const [careers, setCareers] = useState([]);
   const [defaultCareers, setDefaultCareers] = useState([]);
-  const [inteRequFunctions, setInteRequFunctions] = useState([]);
-  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState([]);
-  const [inteRequCompetencies, setInteRequCompetencies] = useState([]);
-  const [defaultInteRequCompetencies, setDefaulInteRequCompetencies] = useState([]);
+  const [inteRequFunctions, setInteRequFunctions] = useState("");
+  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState();
+  const [inteRequCompetencies, setInteRequCompetencies] = useState("");
+  const [defaultInteRequCompetencies, setDefaulInteRequCompetencies] = useState(
+    []
+  );
 
   const [editRequest, setEditRequest] = useState({
     inteRequName: " ",
@@ -87,21 +89,11 @@ const RequestUpdate = () => {
       setDefaultInteRequFunctions(arrayDefaults);
     }
 
-    if(request.inteRequFunctions !== ""){
+    if (request.inteRequFunctions !== "") {
       const arrayDefaults = request.inteRequCompetencies.split(",");
       setDefaulInteRequCompetencies(arrayDefaults);
     }
   }, [request]);
-
-  /**
-   * 
-   // GET request using axios inside useEffect React hook
-   useEffect(() => {
-     axios.get("careers").then((res) => {
-       setlistCareers(res.data);
-      });
-    }, []);
-    */
 
   /**
    * This function is responsible for converting the
@@ -132,8 +124,8 @@ const RequestUpdate = () => {
    */
   const handleFunctions = (value) => {
     const functions = [...new Set([...defaultInteRequFunctions, ...value])];
-    console.log(functions)
-    setInteRequFunctions(functions);
+    //console.log(functions)
+    setInteRequFunctions(functions.toString());
   };
 
   /**
@@ -141,9 +133,11 @@ const RequestUpdate = () => {
    * @param {*} value
    */
   const handleCompetencies = (value) => {
-    const competencies = [...new Set([...defaultInteRequCompetencies, ...value])];
-    console.log(competencies)
-    setInteRequCompetencies(competencies);
+    const competencies = [
+      ...new Set([...defaultInteRequCompetencies, ...value]),
+    ];
+    //console.log(competencies)
+    setInteRequCompetencies(competencies.toString());
   };
 
   const handleDelete = (chipToDelete) => () => {
@@ -197,12 +191,15 @@ const RequestUpdate = () => {
       inteRequCompetencies: inteRequCompetencies,
       inteRequBondingType: editRequest.inteRequBondingType,
       inteRequOtherBenefits: editRequest.inteRequOtherBenefits,
+      company: editRequest.company,
       careers: careers,
     };
     console.log(JSON.stringify(request));
 
-    //dispatch(updateInternRequest(ACCESS_TOKEN, editRequest.inteRequId, request));
-    //navigate("/company/request");
+    dispatch(
+      updateInternRequest(ACCESS_TOKEN, editRequest.inteRequId, request)
+    );
+    navigate("/company/request");
   };
   if (isRender) {
     return (
@@ -285,17 +282,10 @@ const RequestUpdate = () => {
             <Autocomplete
               multiple
               fullWidth
-              options={[]}
+              options={["A","B","C","D","E"]}
               freeSolo
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip
-                    variant="outlined"
-                    label={option}
-                    {...getTagProps({ index })}
-                  />
-                ))
-              }
+              getOptionLabel={(option) => option}
+              getOptionSelected={(option, value) => console.log(value)}
               onChange={(e, value) => handleFunctions(value)}
               renderInput={(params) => (
                 <TextField
@@ -304,6 +294,7 @@ const RequestUpdate = () => {
                   label="Funciones Principales"
                 />
               )}
+         
             />
 
             <Autocomplete
