@@ -156,7 +156,9 @@ const RequestCreate = () => {
       month: "2-digit",
       day: "2-digit",
     });
+    
 
+    console.log("This date", data.inteRequStDate)
     const request = {
       inteRequCreate: today,
       inteRequDuration: data.inteRequDuration,

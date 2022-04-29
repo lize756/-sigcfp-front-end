@@ -30,6 +30,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CardProfile from "../layout/CardProfile";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router";
+import { logOut } from "../components/store/slices/SignIn/LoginSlice";
 
 const drawerWidth = 270;
 
@@ -99,7 +100,9 @@ const CompanyApp = () => {
   };
 
   const handleCloseUserMenu = () => {
+    logOut();
     setAnchorElUser(null);
+    navigate("/SignIn");
   };
 
   return (
