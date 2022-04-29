@@ -133,11 +133,6 @@ const RequestCreate = () => {
   const addRequest = (e) => {
     e.preventDefault();
 
-    const today = new Date().toLocaleDateString("en-GB", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    });
 
     const functions = inteRequFunctions.functions.substring(
       0,
@@ -149,24 +144,16 @@ const RequestCreate = () => {
       inteRequCompetencies.competencies.length - 1
     );
 
-    console.log(data.inteRequDepartment);
-
-    const stDate = new Date(data.inteRequStDate).toLocaleDateString("en-GB", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    });
-    
-
-    console.log("This date", data.inteRequStDate)
+    let currentDate = new Date().toLocaleDateString('en-ca')
+    console.log("This date",currentDate )
     const request = {
-      inteRequCreate: today,
+      inteRequCreate: currentDate,
       inteRequDuration: data.inteRequDuration,
       inteRequName: data.inteRequName,
       inteRequNumber: data.inteRequNumber,
       inteRequSalary: data.inteRequSalary,
       inteRequDepartment: data.inteRequDepartment,
-      inteRequStDate: stDate,
+      inteRequStDate: data.inteRequStDate,
       inteRequFunctions: functions,
       inteRequCompetencies: competencies,
       inteRequBondingType: data.inteRequBondingType,
