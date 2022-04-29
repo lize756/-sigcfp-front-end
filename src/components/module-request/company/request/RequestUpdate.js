@@ -62,8 +62,10 @@ const RequestUpdate = () => {
   const [careers, setCareers] = useState([]);
   const [defaultCareers, setDefaultCareers] = useState([]);
   const [inteRequFunctions, setInteRequFunctions] = useState([]);
-  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState();
-  const [inteRequCompetencies, setInteRequCompetencies] = useState();
+  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState([]);
+  const [inteRequCompetencies, setInteRequCompetencies] = useState([]);
+  const [defaultInteRequCompetencies, setDefaulInteRequCompetencies] = useState([]);
+
   const [editRequest, setEditRequest] = useState({
     inteRequName: " ",
     inteRequDepartment: "",
@@ -84,6 +86,11 @@ const RequestUpdate = () => {
       const arrayDefaults = request.inteRequFunctions.split(",");
       setDefaultInteRequFunctions(arrayDefaults);
     }
+
+    if(request.inteRequFunctions !== ""){
+      const arrayDefaults = request.inteRequCompetencies.split(",");
+      setDefaulInteRequCompetencies(arrayDefaults);
+    }
   }, [request]);
 
   /**
@@ -102,12 +109,8 @@ const RequestUpdate = () => {
    * @returns  date in correct format
    */
   const getDate = () => {
-    const requDate = editRequest.inteRequStDate;
-    const datest = moment(requDate, "DD/MM/YYYY").format("yyyy-MM-DD");
-    const [year, moth, day] = datest.split("-");
-    console.log(datest);
-    console.log(year + "-" + moth + "-" + day);
-    return year + "-" + moth + "-" + day;
+    const [day, month, year] = editRequest.inteRequStDate.split("/");
+    return year + "-" + month + "-" + day;
   };
   //------------Handlechange functions-----------------------------------
   const handleChange = (e) => {
@@ -119,9 +122,8 @@ const RequestUpdate = () => {
    * @param {*} value
    */
   const handleSelect = (value) => {
-    let arrayCareers = careers;
-    arrayCareers[arrayCareers.length] = value;
-    setCareers(arrayCareers);
+    console.log("Valor de los elementos seleccionados", value);
+    setCareers(value);
   };
 
   /**
@@ -129,8 +131,9 @@ const RequestUpdate = () => {
    * @param {*} value
    */
   const handleFunctions = (value) => {
-    const functions = value + ",";
-    setInteRequFunctions({ ...inteRequFunctions, functions });
+    const functions = [...new Set([...defaultInteRequFunctions, ...value])];
+    console.log(functions)
+    setInteRequFunctions(functions);
   };
 
   /**
@@ -138,8 +141,9 @@ const RequestUpdate = () => {
    * @param {*} value
    */
   const handleCompetencies = (value) => {
-    const competencies = value + ",";
-    setInteRequCompetencies({ ...inteRequCompetencies, competencies });
+    const competencies = [...new Set([...defaultInteRequCompetencies, ...value])];
+    console.log(competencies)
+    setInteRequCompetencies(competencies);
   };
 
   const handleDelete = (chipToDelete) => () => {
@@ -149,31 +153,45 @@ const RequestUpdate = () => {
   };
 
   const handleDeleteFunctions = (chipToDelete) => () => {
-    setDefaultInteRequFunctions((chipCrs) =>
+    setInteRequFunctions((chipCrs) =>
       chipCrs.filter((chip) => chip !== chipToDelete)
     );
+  };
+  /**
+   * This function allow delete the duplicate elements in the result of concat both array of objects
+   * @param {Array} arrayA Array of object to concat
+   * @param {Array} arrayB Array of object to concat
+   * @returns
+   */
+  const removeDuplicateItems = (arrayA, arrayB) => {
+    const arrayC = arrayA.concat(arrayB);
+    return arrayC.filter((element, index, array) => {
+      if (array.filter((v) => v.careId === element.careId).length > 1) {
+        array.splice(index, 1);
+      }
+      return array;
+    });
   };
   //Metodo put aacomodar toda esta clase
   const putRequest = (e) => {
     e.preventDefault();
 
-    setCareers(careers.concat(defaultCareers));
+    //setCareers(careers.concat(defaultCareers));
+    //setCareers(removeDuplicateItems(careers,defaultCareers));
+    console.log("carreras->>>", careers);
+    console.log("defaultCareers->>>", defaultCareers);
 
-    const stDate = new Date(editRequest.inteRequStDate).toLocaleDateString(
-      "en-GB",
-      {
-        year: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-      }
-    );
+    console.log(removeDuplicateItems(careers, defaultCareers));
+
+    const [year, month, day] = editRequest.inteRequStDate.split("-");
+    const stDate = day + "/" + month + "/" + year;
     const request = {
       inteRequId: editRequest.inteRequId,
       inteRequDuration: editRequest.inteRequDuration,
       inteRequName: editRequest.inteRequName,
       inteRequNumber: editRequest.inteRequNumber,
       inteRequSalary: editRequest.inteRequSalary,
-      inteRequDepartament: editRequest.inteRequDepartment,
+      inteRequDepartment: editRequest.inteRequDepartment,
       inteRequStDate: stDate,
       inteRequFunctions: inteRequFunctions,
       inteRequCompetencies: inteRequCompetencies,
@@ -181,20 +199,10 @@ const RequestUpdate = () => {
       inteRequOtherBenefits: editRequest.inteRequOtherBenefits,
       careers: careers,
     };
-    console.log(request);
+    console.log(JSON.stringify(request));
 
-    dispatch(
-      updateInternRequest(ACCESS_TOKEN, editRequest.inteRequId, request)
-    );
-    /**
-     * 
-     axios
-     .put("internRequests/update/" + request.id, request)
-     .then((res) => console.log(res))
-     .catch((err) => console.log(err));
-     */
-
-    navigate("/company/request");
+    //dispatch(updateInternRequest(ACCESS_TOKEN, editRequest.inteRequId, request));
+    //navigate("/company/request");
   };
   if (isRender) {
     return (
@@ -358,8 +366,8 @@ const RequestUpdate = () => {
         </Box>
       </Container>
     );
-  }else{
-    return <></>
+  } else {
+    return <></>;
   }
 };
 
