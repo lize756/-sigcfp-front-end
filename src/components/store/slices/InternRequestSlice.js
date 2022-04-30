@@ -66,7 +66,7 @@ export const addInternRequest = (ACCESS_TOKEN, internRequest) => async (
     .post("/api/internRequests/add", internRequest, { headers })
     .then((res) => {
       dispatch(setIntReq(res.data));
-      dispatch(getInternRequests(ACCESS_TOKEN));
+      //dispatch(getInternRequests(ACCESS_TOKEN));
       dispatch(setIsRender(true))
     })
     .catch((err) => {

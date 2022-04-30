@@ -100,8 +100,8 @@ const CompanyApp = () => {
   };
 
   const handleCloseUserMenu = () => {
-    logOut();
     setAnchorElUser(null);
+    logOut();
     navigate("/SignIn");
   };
 
@@ -162,6 +162,7 @@ const CompanyApp = () => {
                   key="Perfil"
                   onClick={() => {
                     navigate("/company/profile");
+                    setAnchorElUser(null);
                   }}
                 >
                   <Typography textAlign="center">Perfil</Typography>

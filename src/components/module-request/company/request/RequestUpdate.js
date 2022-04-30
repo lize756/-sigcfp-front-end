@@ -60,14 +60,25 @@ const RequestUpdate = () => {
    */
   //const [listCareers, setlistCareers] = useState([]);
   const [careers, setCareers] = useState([]);
+  /**
+   * Careers states
+   */
   const [defaultCareers, setDefaultCareers] = useState([]);
-  const [inteRequFunctions, setInteRequFunctions] = useState("");
-  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState();
-  const [inteRequCompetencies, setInteRequCompetencies] = useState("");
-  const [defaultInteRequCompetencies, setDefaulInteRequCompetencies] = useState(
-    []
-  );
 
+  /**
+   * Inter request functions states
+   */
+  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState([]);
+  const [inteRequFunctions, setInteRequFunctions] = useState([]);
+
+  /**
+   * Inter request competencies states.
+   */
+  const [inteRequCompetencies, setInteRequCompetencies] = useState([]);
+  const [
+    defaultInteRequCompetencies,
+    setDefaultInteRequCompetencies,
+  ] = useState([]);
   const [editRequest, setEditRequest] = useState({
     inteRequName: " ",
     inteRequDepartment: "",
@@ -82,17 +93,31 @@ const RequestUpdate = () => {
 
   useEffect(() => {
     setEditRequest(request);
-    setDefaultCareers(request.careers);
     setIsRender(true);
+
+    /**
+     * Carreers
+     */
+    setDefaultCareers(request.careers);
+    //setCareers(list_carreers);
+    /**
+     * Intern request functions
+     */
     if (request.inteRequFunctions !== "") {
       const arrayDefaults = request.inteRequFunctions.split(",");
       setDefaultInteRequFunctions(arrayDefaults);
+      setInteRequFunctions(arrayDefaults);
     }
 
-    if (request.inteRequFunctions !== "") {
+    /**
+     * Intern request competencies
+     */
+    if (request.inteRequCompetencies !== "") {
       const arrayDefaults = request.inteRequCompetencies.split(",");
-      setDefaulInteRequCompetencies(arrayDefaults);
+      setDefaultInteRequCompetencies(arrayDefaults);
+      setInteRequCompetencies(arrayDefaults);
     }
+    console.log("entre");
   }, [request]);
 
   /**
@@ -114,7 +139,7 @@ const RequestUpdate = () => {
    * @param {*} value
    */
   const handleSelect = (value) => {
-    console.log("Valor de los elementos seleccionados", value);
+    console.log(value);
     setCareers(value);
   };
 
@@ -123,9 +148,9 @@ const RequestUpdate = () => {
    * @param {*} value
    */
   const handleFunctions = (value) => {
-    const functions = [...new Set([...defaultInteRequFunctions, ...value])];
+    const functions = value;
     //console.log(functions)
-    setInteRequFunctions(functions.toString());
+    setInteRequFunctions(functions);
   };
 
   /**
@@ -133,11 +158,10 @@ const RequestUpdate = () => {
    * @param {*} value
    */
   const handleCompetencies = (value) => {
-    const competencies = [
-      ...new Set([...defaultInteRequCompetencies, ...value]),
-    ];
-    //console.log(competencies)
-    setInteRequCompetencies(competencies.toString());
+    //const competencies = [...new Set([...defaultInteRequCompetencies, ...value]),];
+    const competencies = value;
+    console.log(competencies);
+    setInteRequCompetencies(competencies);
   };
 
   const handleDelete = (chipToDelete) => () => {
@@ -146,11 +170,6 @@ const RequestUpdate = () => {
     );
   };
 
-  const handleDeleteFunctions = (chipToDelete) => () => {
-    setInteRequFunctions((chipCrs) =>
-      chipCrs.filter((chip) => chip !== chipToDelete)
-    );
-  };
   /**
    * This function allow delete the duplicate elements in the result of concat both array of objects
    * @param {Array} arrayA Array of object to concat
@@ -169,38 +188,59 @@ const RequestUpdate = () => {
   //Metodo put aacomodar toda esta clase
   const putRequest = (e) => {
     e.preventDefault();
-
-    //setCareers(careers.concat(defaultCareers));
-    //setCareers(removeDuplicateItems(careers,defaultCareers));
-    console.log("carreras->>>", careers);
-    console.log("defaultCareers->>>", defaultCareers);
-
-    console.log(removeDuplicateItems(careers, defaultCareers));
-
+    /**
+     * This line allow formatter of elements that the user write in the user interface
+     * for the format to be accepted by the database
+     */
+    /**
+     * Formatted dates
+     */
     const [year, month, day] = editRequest.inteRequStDate.split("-");
-    const stDate = day + "/" + month + "/" + year;
-    const request = {
+    // Verified that date have the size of default
+    const formattedStDate =
+      editRequest.inteRequStDate === request.inteRequStDate
+        ? request.inteRequStDate
+        : day + "/" + month + "/" + year;
+    /**
+     * Formatted arrays
+     */
+    const formattedFunctions = editRequest.inteRequFunctions.toString();
+    const formattedCompetencies = editRequest.inteRequCompetencies.toString();
+    const formattedCareers = [...new Set(careers)];
+
+    const requesUpdate = {
       inteRequId: editRequest.inteRequId,
       inteRequDuration: editRequest.inteRequDuration,
       inteRequName: editRequest.inteRequName,
       inteRequNumber: editRequest.inteRequNumber,
       inteRequSalary: editRequest.inteRequSalary,
       inteRequDepartment: editRequest.inteRequDepartment,
-      inteRequStDate: stDate,
-      inteRequFunctions: inteRequFunctions,
-      inteRequCompetencies: inteRequCompetencies,
+      inteRequStDate: formattedStDate,
+      inteRequCreate: request.inteRequCreate,
+      inteRequFunctions: formattedFunctions,
+      inteRequCompetencies: formattedCompetencies,
       inteRequBondingType: editRequest.inteRequBondingType,
       inteRequOtherBenefits: editRequest.inteRequOtherBenefits,
       company: editRequest.company,
-      careers: careers,
+      careers: formattedCareers,
     };
-    console.log(JSON.stringify(request));
+    console.log(JSON.stringify(requesUpdate));
 
     dispatch(
-      updateInternRequest(ACCESS_TOKEN, editRequest.inteRequId, request)
+      updateInternRequest(ACCESS_TOKEN, requesUpdate.inteRequId, requesUpdate)
     );
     navigate("/company/request");
   };
+  const options = [
+    { id: "10", text: "One" },
+    { id: "20", text: "Two" },
+    { id: "30", text: "Three" },
+  ];
+  const [value, setValue] = useState([
+    { id: "10", text: "One" },
+    { id: "20", text: "Two" },
+    { id: "30", text: "Three" },
+  ]);
   if (isRender) {
     return (
       <Container maxWidth="lg">
@@ -240,8 +280,13 @@ const RequestUpdate = () => {
             <Autocomplete
               multiple
               fullWidth
+              defaultValue={defaultCareers}
               options={list_carreers}
+              freeSolo
               getOptionLabel={(option) => option.careName}
+              getOptionSelected={(option, value) =>
+                option.careId === value.careId
+              }
               name="careers"
               onChange={(e, value) => handleSelect(value)}
               filterSelectedOptions
@@ -282,10 +327,11 @@ const RequestUpdate = () => {
             <Autocomplete
               multiple
               fullWidth
-              options={["A","B","C","D","E"]}
+              defaultValue={defaultInteRequFunctions}
+              options={inteRequFunctions}
               freeSolo
               getOptionLabel={(option) => option}
-              getOptionSelected={(option, value) => console.log(value)}
+              getOptionSelected={(option, value) => option === value}
               onChange={(e, value) => handleFunctions(value)}
               renderInput={(params) => (
                 <TextField
@@ -294,23 +340,15 @@ const RequestUpdate = () => {
                   label="Funciones Principales"
                 />
               )}
-         
             />
-
             <Autocomplete
               multiple
               fullWidth
-              options={[]}
+              defaultValue={defaultInteRequCompetencies}
+              options={inteRequCompetencies}
               freeSolo
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip
-                    variant="outlined"
-                    label={option}
-                    {...getTagProps({ index })}
-                  />
-                ))
-              }
+              getOptionLabel={(option) => option}
+              getOptionSelected={(option, value) => option === value}
               onChange={(e, value) => handleCompetencies(value)}
               renderInput={(params) => (
                 <TextField
