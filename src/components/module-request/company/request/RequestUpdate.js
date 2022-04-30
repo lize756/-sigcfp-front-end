@@ -117,7 +117,6 @@ const RequestUpdate = () => {
       setDefaultInteRequCompetencies(arrayDefaults);
       setInteRequCompetencies(arrayDefaults);
     }
-    console.log("entre");
   }, [request]);
 
   /**
@@ -149,7 +148,6 @@ const RequestUpdate = () => {
    */
   const handleFunctions = (value) => {
     const functions = value;
-    //console.log(functions)
     setInteRequFunctions(functions);
   };
 
@@ -204,9 +202,9 @@ const RequestUpdate = () => {
     /**
      * Formatted arrays
      */
-    const formattedFunctions = editRequest.inteRequFunctions.toString();
-    const formattedCompetencies = editRequest.inteRequCompetencies.toString();
-    const formattedCareers = [...new Set(careers)];
+    const formattedFunctions = inteRequFunctions.toString();
+    const formattedCompetencies = inteRequCompetencies.toString();
+    const formattedCareers = [...new Set([...careers])];
 
     const requesUpdate = {
       inteRequId: editRequest.inteRequId,
@@ -227,7 +225,7 @@ const RequestUpdate = () => {
     console.log(JSON.stringify(requesUpdate));
 
     dispatch(
-      updateInternRequest(ACCESS_TOKEN, requesUpdate.inteRequId, requesUpdate)
+     updateInternRequest(ACCESS_TOKEN, requesUpdate.inteRequId, requesUpdate)
     );
     navigate("/company/request");
   };
