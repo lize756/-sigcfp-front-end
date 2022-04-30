@@ -204,7 +204,7 @@ const RequestUpdate = () => {
      */
     const formattedFunctions = inteRequFunctions.toString();
     const formattedCompetencies = inteRequCompetencies.toString();
-    const formattedCareers = [...new Set([...careers])];
+    const formattedCareers =  careers.length > 0 ? [...new Set([...careers])]: defaultCareers;
 
     const requesUpdate = {
       inteRequId: editRequest.inteRequId,

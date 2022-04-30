@@ -90,7 +90,7 @@ export const updateInternRequest = (
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
-  axios
+  await axios
     .put("api/internRequests/update/" + inteRequId, internRequest,{ headers })
     .then((res) => {
       dispatch(setIntReq(res.data));
