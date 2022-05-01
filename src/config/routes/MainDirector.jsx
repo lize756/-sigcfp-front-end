@@ -8,6 +8,7 @@ import RequestList from "../../components/module-request/promotion-director/requ
 import Contacts from "../../components/module-request/promotion-director/contacts/UserList";
 import Profile from "../../components/global/profile/ProfilePerson";
 import Company from "../../components/module-request/promotion-director/contacts/ShowCompany";
+import Request from "../../components/module-request/global/GeneralRequest";
 
 const MainDirector = () => {
   return (
@@ -31,6 +32,9 @@ const MainDirector = () => {
         </Route>
         <Route path="/director" element={<HomeDirector />}>
           <Route path="company" element={<Company />} />
+        </Route>
+        <Route path="/director" element={<HomeDirector />}>
+          <Route path="show" element={<Request />} />
         </Route>
       </Routes>
     </>

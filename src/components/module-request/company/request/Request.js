@@ -11,10 +11,12 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import EyeIcon from "@mui/icons-material/Visibility";
+import { useNavigate } from "react-router";
 
 const ITEM_HEIGHT = 40;
 const Request = ({ request, delRequest, editRequest, viewRequest }) => {
   //lista de solicitudes de practica
+  let navigate = useNavigate();
   const [getStrCareers, setStrCareers] = useState("");
   const [getStrFaculty, setStrFaculty] = useState("");
 
@@ -51,7 +53,7 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
       <TableCell
         align="left"
         onClick={() => {
-          viewRequest(request);
+          navigate("/company/show");
         }}
       >
         {request.inteRequName}
@@ -59,7 +61,7 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
       <TableCell
         align="center"
         onClick={() => {
-          viewRequest(request);
+          navigate("/company/show");
         }}
       >
         {getStrFaculty}
@@ -67,7 +69,7 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
       <TableCell
         align="center"
         onClick={() => {
-          viewRequest(request);
+          navigate("/company/show");
         }}
       >
         {getStrCareers}
@@ -75,7 +77,7 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
       <TableCell
         align="center"
         onClick={() => {
-          viewRequest(request);
+          navigate("/company/show");
         }}
       >
         {request.inteRequStDate}
@@ -83,7 +85,7 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
       <TableCell
         align="right"
         onClick={() => {
-          viewRequest(request);
+          navigate("/company/show");
         }}
       >
         {request.inteRequNumber}
@@ -116,7 +118,7 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
           }}
         >
           <MenuItem
-            key="Company"
+            key="edit"
             onClick={() => {
               editRequest(request);
             }}
@@ -124,7 +126,7 @@ const Request = ({ request, delRequest, editRequest, viewRequest }) => {
             <Typography textAlign="center">Editar solicitud</Typography>
           </MenuItem>
           <MenuItem
-            key="Perfil"
+            key="delete"
             onClick={() => {
               delRequest(request);
             }}

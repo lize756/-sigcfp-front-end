@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { TableCell, TableRow } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import EyeIcon from "@mui/icons-material/Visibility";
+import { useNavigate } from "react-router";
 
 const Request = ({ request, viewRequest }) => {
+  let navigate = useNavigate();
   //lista de solicitudes de practica
   const [getStrCareers, setStrCareers] = useState("");
   const [getStrFaculty, setStrFaculty] = useState("");
@@ -34,7 +33,7 @@ const Request = ({ request, viewRequest }) => {
       role="checkbox"
       tabIndex={-1}
       onClick={() => {
-        viewRequest(request);
+        navigate("/director/show");
       }}
     >
       <TableCell align="right">{request.company.compName}</TableCell>
