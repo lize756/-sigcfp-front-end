@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Autocomplete, TextField, Button, Chip } from "@mui/material";
+import { Autocomplete, TextField, Button, Chip, Checkbox } from "@mui/material";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
@@ -37,11 +37,13 @@ const ListItem = styled("li")(({ theme }) => ({
  * @params the intern request to update
  * @returns
  */
-const RequestUpdate = ({ request }) => {
+const RequestUpdate = () => {
   /**
    * Redux
    */
   const list_carreers = useSelector((state) => state.CareerSlice.listCareers);
+  const request = useSelector((state) => state.InternRequestSlice.intReq);
+
   // Allow to send the elements of store
   const dispatch = useDispatch();
 
@@ -58,10 +60,25 @@ const RequestUpdate = ({ request }) => {
    */
   //const [listCareers, setlistCareers] = useState([]);
   const [careers, setCareers] = useState([]);
+  /**
+   * Careers states
+   */
   const [defaultCareers, setDefaultCareers] = useState([]);
+
+  /**
+   * Inter request functions states
+   */
+  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState([]);
   const [inteRequFunctions, setInteRequFunctions] = useState([]);
-  const [defaultInteRequFunctions, setDefaultInteRequFunctions] = useState();
-  const [inteRequCompetencies, setInteRequCompetencies] = useState();
+
+  /**
+   * Inter request competencies states.
+   */
+  const [inteRequCompetencies, setInteRequCompetencies] = useState([]);
+  const [
+    defaultInteRequCompetencies,
+    setDefaultInteRequCompetencies,
+  ] = useState([]);
   const [editRequest, setEditRequest] = useState({
     inteRequName: " ",
     inteRequDepartment: "",
@@ -72,40 +89,44 @@ const RequestUpdate = ({ request }) => {
     inteRequSalary: "",
     inteRequOtherBenefits: "",
   });
+  const [isRender, setIsRender] = useState(false);
 
   useEffect(() => {
     setEditRequest(request);
-    setDefaultCareers(request.careers);
+    setIsRender(true);
 
+    /**
+     * Carreers
+     */
+    setDefaultCareers(request.careers);
+    //setCareers(list_carreers);
+    /**
+     * Intern request functions
+     */
     if (request.inteRequFunctions !== "") {
       const arrayDefaults = request.inteRequFunctions.split(",");
       setDefaultInteRequFunctions(arrayDefaults);
+      setInteRequFunctions(arrayDefaults);
+    }
+
+    /**
+     * Intern request competencies
+     */
+    if (request.inteRequCompetencies !== "") {
+      const arrayDefaults = request.inteRequCompetencies.split(",");
+      setDefaultInteRequCompetencies(arrayDefaults);
+      setInteRequCompetencies(arrayDefaults);
     }
   }, [request]);
-
-  /**
-   * 
-   // GET request using axios inside useEffect React hook
-   useEffect(() => {
-     axios.get("careers").then((res) => {
-       setlistCareers(res.data);
-      });
-    }, []);
-    */
 
   /**
    * This function is responsible for converting the
    * date loaded from the database to the format needed by textfield date
    * @returns  date in correct format
    */
-  const  getDate = async () => {
-    const requDate = await editRequest.inteRequStDate;
-    const datest = moment(requDate, "DD/MM/YYYY").format("yyyy-MM-DD");
-    const [year,moth,day] = datest.split('-')
-    console.log(datest)
-    console.log(year+"-"+moth+"-"+day)
-
-    return datest
+  const getDate = () => {
+    const [day, month, year] = editRequest.inteRequStDate.split("/");
+    return year + "-" + month + "-" + day;
   };
   //------------Handlechange functions-----------------------------------
   const handleChange = (e) => {
@@ -117,9 +138,8 @@ const RequestUpdate = ({ request }) => {
    * @param {*} value
    */
   const handleSelect = (value) => {
-    let arrayCareers = careers;
-    arrayCareers[arrayCareers.length] = value;
-    setCareers(arrayCareers);
+    console.log(value);
+    setCareers(value);
   };
 
   /**
@@ -127,8 +147,8 @@ const RequestUpdate = ({ request }) => {
    * @param {*} value
    */
   const handleFunctions = (value) => {
-    const functions = value + ",";
-    setInteRequFunctions({ ...inteRequFunctions, functions });
+    const functions = value;
+    setInteRequFunctions(functions);
   };
 
   /**
@@ -136,8 +156,10 @@ const RequestUpdate = ({ request }) => {
    * @param {*} value
    */
   const handleCompetencies = (value) => {
-    const competencies = value + ",";
-    setInteRequCompetencies({ ...inteRequCompetencies, competencies });
+    //const competencies = [...new Set([...defaultInteRequCompetencies, ...value]),];
+    const competencies = value;
+    console.log(competencies);
+    setInteRequCompetencies(competencies);
   };
 
   const handleDelete = (chipToDelete) => () => {
@@ -146,216 +168,209 @@ const RequestUpdate = ({ request }) => {
     );
   };
 
-  const handleDeleteFunctions = (chipToDelete) => () => {
-    setDefaultInteRequFunctions((chipCrs) =>
-      chipCrs.filter((chip) => chip !== chipToDelete)
-    );
+  /**
+   * This function allow delete the duplicate elements in the result of concat both array of objects
+   * @param {Array} arrayA Array of object to concat
+   * @param {Array} arrayB Array of object to concat
+   * @returns
+   */
+  const removeDuplicateItems = (arrayA, arrayB) => {
+    const arrayC = arrayA.concat(arrayB);
+    return arrayC.filter((element, index, array) => {
+      if (array.filter((v) => v.careId === element.careId).length > 1) {
+        array.splice(index, 1);
+      }
+      return array;
+    });
   };
   //Metodo put aacomodar toda esta clase
   const putRequest = (e) => {
     e.preventDefault();
+    /**
+     * This line allow formatter of elements that the user write in the user interface
+     * for the format to be accepted by the database
+     */
+    /**
+     * Formatted dates
+     */
+    const [year, month, day] = editRequest.inteRequStDate.split("-");
+    // Verified that date have the size of default
+    const formattedStDate =
+      editRequest.inteRequStDate === request.inteRequStDate
+        ? request.inteRequStDate
+        : day + "/" + month + "/" + year;
+    /**
+     * Formatted arrays
+     */
+    const formattedFunctions = inteRequFunctions.toString();
+    const formattedCompetencies = inteRequCompetencies.toString();
+    const formattedCareers =  careers.length > 0 ? [...new Set([...careers])]: defaultCareers;
 
-    setCareers(careers.concat(defaultCareers));
-
-    const stDate = new Date(editRequest.inteRequStDate).toLocaleDateString(
-      "en-GB",
-      {
-        year: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-      }
-    );
-    const request = {
+    const requesUpdate = {
       inteRequId: editRequest.inteRequId,
       inteRequDuration: editRequest.inteRequDuration,
       inteRequName: editRequest.inteRequName,
       inteRequNumber: editRequest.inteRequNumber,
       inteRequSalary: editRequest.inteRequSalary,
-      inteRequDepartament: editRequest.inteRequDepartment,
-      inteRequStDate: stDate,
-      inteRequFunctions: inteRequFunctions,
-      inteRequCompetencies: inteRequCompetencies,
+      inteRequDepartment: editRequest.inteRequDepartment,
+      inteRequStDate: formattedStDate,
+      inteRequCreate: request.inteRequCreate,
+      inteRequFunctions: formattedFunctions,
+      inteRequCompetencies: formattedCompetencies,
       inteRequBondingType: editRequest.inteRequBondingType,
       inteRequOtherBenefits: editRequest.inteRequOtherBenefits,
-      careers: careers,
+      company: editRequest.company,
+      careers: formattedCareers,
     };
-    console.log(request);
+    console.log(JSON.stringify(requesUpdate));
 
     dispatch(
-      updateInternRequest(ACCESS_TOKEN, editRequest.inteRequId, request)
+     updateInternRequest(ACCESS_TOKEN, requesUpdate.inteRequId, requesUpdate)
     );
-    /**
-     * 
-     axios
-     .put("internRequests/update/" + request.id, request)
-     .then((res) => console.log(res))
-     .catch((err) => console.log(err));
-     */
-
     navigate("/company/request");
   };
-
-  return (
-    <Container maxWidth="lg">
-      <Box sx={{ bgcolor: "#F2F6FE" }}>
-        <form className={classes.root} onSubmit={putRequest}>
-          <TextField
-            name="inteRequName"
-            value={editRequest.inteRequName}
-            label="Nombre de la solicitud"
-            onChange={handleChange}
-          />
-
-          <Box
-            sx={{
-              bgcolor: "#F2F6FE",
-              display: "flex",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              listStyle: "none",
-              p: 0.5,
-              m: 0,
-            }}
-            component="ul"
-          >
-            {defaultCareers.map((career) => {
-              return (
-                <ListItem key={career.careId}>
-                  <Chip
-                    label={career.careName}
-                    onDelete={handleDelete(career)}
-                  />
-                </ListItem>
-              );
-            })}
-          </Box>
-
-          <Autocomplete
-            multiple
-            fullWidth
-            options={list_carreers}
-            getOptionLabel={(option) => option.careName}
-            name="careers"
-            onChange={(e, value) => handleSelect(value)}
-            filterSelectedOptions
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Carreras de Interés"
-                placeholder="Carreras de Interés"
-              />
-            )}
-          />
-
-          <TextField
-            id="outlined-textarea"
-            name="inteRequDepartment"
-            value={editRequest.inteRequDepartment}
-            label="Area o Departamento"
-            onChange={handleChange}
-          />
-
-          <TextField
-            name="inteRequNumber"
-            value={editRequest.inteRequNumber}
-            label="Número de Estudiantes"
-            type="number"
-            onChange={handleChange}
-          />
-
-          <TextField
-            name="inteRequStDate"
-            label="Fecha de Inicio"
-            InputLabelProps={{ shrink: true, required: true }}
-            type="date"
-            defaultValue= {getDate()}
-            onChange={handleChange}
-          />
-
-          <Autocomplete
-            multiple
-            fullWidth
-            options={[]}
-            freeSolo
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip
-                  variant="outlined"
-                  label={option}
-                  {...getTagProps({ index })}
+  const options = [
+    { id: "10", text: "One" },
+    { id: "20", text: "Two" },
+    { id: "30", text: "Three" },
+  ];
+  const [value, setValue] = useState([
+    { id: "10", text: "One" },
+    { id: "20", text: "Two" },
+    { id: "30", text: "Three" },
+  ]);
+  if (isRender) {
+    return (
+      <Container maxWidth="lg">
+        <Box sx={{ bgcolor: "#F2F6FE" }}>
+          <form className={classes.root} onSubmit={putRequest}>
+            <TextField
+              name="inteRequName"
+              value={editRequest.inteRequName}
+              label="Nombre de la solicitud"
+              onChange={handleChange}
+            />
+            <Autocomplete
+              multiple
+              fullWidth
+              defaultValue={defaultCareers}
+              options={list_carreers}
+              freeSolo
+              getOptionLabel={(option) => option.careName}
+              getOptionSelected={(option, value) =>
+                option.careId === value.careId
+              }
+              name="careers"
+              onChange={(e, value) => handleSelect(value)}
+              filterSelectedOptions
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Carreras de Interés"
+                  placeholder="Carreras de Interés"
                 />
-              ))
-            }
-            onChange={(e, value) => handleFunctions(value)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="Funciones Principales"
-              />
-            )}
-          />
+              )}
+            />
 
-          <Autocomplete
-            multiple
-            fullWidth
-            options={[]}
-            freeSolo
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip
+            <TextField
+              id="outlined-textarea"
+              name="inteRequDepartment"
+              value={editRequest.inteRequDepartment}
+              label="Area o Departamento"
+              onChange={handleChange}
+            />
+
+            <TextField
+              name="inteRequNumber"
+              value={editRequest.inteRequNumber}
+              label="Número de Estudiantes"
+              type="number"
+              onChange={handleChange}
+            />
+
+            <TextField
+              name="inteRequStDate"
+              label="Fecha de Inicio"
+              InputLabelProps={{ shrink: true, required: true }}
+              type="date"
+              defaultValue={getDate()}
+              onChange={handleChange}
+            />
+
+            <Autocomplete
+              multiple
+              fullWidth
+              defaultValue={defaultInteRequFunctions}
+              options={inteRequFunctions}
+              freeSolo
+              getOptionLabel={(option) => option}
+              getOptionSelected={(option, value) => option === value}
+              onChange={(e, value) => handleFunctions(value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
                   variant="outlined"
-                  label={option}
-                  {...getTagProps({ index })}
+                  label="Funciones Principales"
                 />
-              ))
-            }
-            onChange={(e, value) => handleCompetencies(value)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="Competencias Claves del Éxito"
-              />
-            )}
-          />
+              )}
+            />
+            <Autocomplete
+              multiple
+              fullWidth
+              defaultValue={defaultInteRequCompetencies}
+              options={inteRequCompetencies}
+              freeSolo
+              getOptionLabel={(option) => option}
+              getOptionSelected={(option, value) => option === value}
+              onChange={(e, value) => handleCompetencies(value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Competencias Claves del Éxito"
+                />
+              )}
+            />
 
-          <TextField
-            name="inteRequBondingType"
-            multiline
-            value={editRequest.inteRequBondingType}
-            label="Tipo de Vinculación"
-            onChange={handleChange}
-          />
-          <TextField
-            name="inteRequDuration"
-            label="Duración de la Practica"
-            multiline
-            value={editRequest.inteRequDuration}
-            onChange={handleChange}
-          />
-          <TextField
-            name="inteRequSalary"
-            label="Valor de Bonificación"
-            type="number"
-            value={editRequest.inteRequSalary}
-            onChange={handleChange}
-          />
-          <TextField
-            name="inteRequOtherBenefits"
-            label="Otros Beneficios"
-            value={editRequest.inteRequOtherBenefits}
-            multiline
-            onChange={handleChange}
-          />
+            <TextField
+              name="inteRequBondingType"
+              multiline
+              value={editRequest.inteRequBondingType}
+              label="Tipo de Vinculación"
+              onChange={handleChange}
+            />
+            <TextField
+              name="inteRequDuration"
+              label="Duración de la Practica"
+              multiline
+              value={editRequest.inteRequDuration}
+              onChange={handleChange}
+            />
+            <TextField
+              name="inteRequSalary"
+              label="Valor de Bonificación"
+              type="number"
+              value={editRequest.inteRequSalary}
+              onChange={handleChange}
+            />
+            <TextField
+              name="inteRequOtherBenefits"
+              label="Otros Beneficios"
+              value={editRequest.inteRequOtherBenefits}
+              multiline
+              onChange={handleChange}
+            />
 
-          <Button sx={{ mt: 5, pr: 3 }} variant="contained" type="submit">
-            Editar Solicitud
-          </Button>
-        </form>
-      </Box>
-    </Container>
-  );
+            <Button sx={{ mt: 5, pr: 3 }} variant="contained" type="submit">
+              Editar Solicitud
+            </Button>
+          </form>
+        </Box>
+      </Container>
+    );
+  } else {
+    return <></>;
+  }
 };
 
 export default RequestUpdate;

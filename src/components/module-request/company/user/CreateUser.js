@@ -2,6 +2,12 @@ import React from "react";
 import { Stack, TextField, Box, Button, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
+/**
+ * Redux
+ */
+import { useDispatch, useSelector } from "react-redux";
+import { addContact, addContacts } from "../../../store/slices/ContactSlice";
+import { useNavigate } from "react-router";
 
 const validationSchema = yup.object({
   contName: yup.string("Digita tu nombre").required("El nombre es requerido"),
@@ -18,18 +24,34 @@ const validationSchema = yup.object({
 });
 
 const CreateUser = () => {
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+  /**
+   * REDUX
+   */
+  // Get company of the store
+  const company = useSelector((state) => state.CompanySlice.company);
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+    
   const user = {
     contName: "",
     contEmail: "",
     contPhone: "",
     contPosition: "",
+    company: company,
   };
+
+  //------------Handlechange functions-------------------------------
 
   const formik = useFormik({
     initialValues: user,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      dispatch(addContact(ACCESS_TOKEN, values));
+      navigate("/company/users")
     },
   });
 

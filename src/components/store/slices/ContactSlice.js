@@ -61,9 +61,10 @@ export const addContact = (ACCESS_TOKEN, contact) => async (dispatch) => {
   };
 
   axios
-    .post("/api/contacts", { headers }, contact)
+    .post("/api/contacts/add", contact, { headers })
     .then((res) => {
       dispatch(setContact(res.data));
+      dispatch(setIsRenderContact(true));
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -98,9 +99,10 @@ export const updateContact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("api/contacts/update/" + contId, { headers }, contact)
+    .put("/api/contacts/update/" + contId,contact,{ headers })
     .then((res) => {
       dispatch(setContact(res.data));
+      dispatch(setIsRenderContact(true));
     })
     .catch((err) => {
       console.log(err.toJSON());

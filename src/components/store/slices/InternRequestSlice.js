@@ -66,11 +66,12 @@ export const addInternRequest = (ACCESS_TOKEN, internRequest) => async (
     .post("/api/internRequests/add", internRequest, { headers })
     .then((res) => {
       dispatch(setIntReq(res.data));
-      dispatch(getInternRequests(ACCESS_TOKEN));
+      //dispatch(getInternRequests(ACCESS_TOKEN));
       dispatch(setIsRender(true))
     })
     .catch((err) => {
       console.log(err.toJSON());
+
     });
 };
 
@@ -89,10 +90,11 @@ export const updateInternRequest = (
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
-  axios
-    .put("api/internRequests/update/" + inteRequId, { headers }, internRequest)
+  await axios
+    .put("api/internRequests/update/" + inteRequId, internRequest,{ headers })
     .then((res) => {
       dispatch(setIntReq(res.data));
+      dispatch(setIsRender(true))
     })
     .catch((err) => {
       console.log(err.toJSON());

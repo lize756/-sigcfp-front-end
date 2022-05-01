@@ -3,7 +3,6 @@ import { Autocomplete, TextField, Button, Chip } from "@mui/material";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
-import axios from "../../../../config/axios";
 /**
  * Redux
  */
@@ -133,12 +132,6 @@ const RequestCreate = () => {
   const addRequest = (e) => {
     e.preventDefault();
 
-    const today = new Date().toLocaleDateString("en-GB", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    });
-
     const functions = inteRequFunctions.functions.substring(
       0,
       inteRequFunctions.functions.length - 1
@@ -149,16 +142,13 @@ const RequestCreate = () => {
       inteRequCompetencies.competencies.length - 1
     );
 
-    console.log(data.inteRequDepartment);
-
-    const stDate = new Date(data.inteRequStDate).toLocaleDateString("en-GB", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    });
-
+    //  let currentDate = new Date().toLocaleDateString('en-ca')
+    const currentDate = new Date().toLocaleDateString();
+    const [year,month,day] = data.inteRequStDate.split("-")
+    const stDate = day+"/"+month+"/"+year
+    console.log(currentDate,stDate)
     const request = {
-      inteRequCreate: today,
+      inteRequCreate: currentDate,
       inteRequDuration: data.inteRequDuration,
       inteRequName: data.inteRequName,
       inteRequNumber: data.inteRequNumber,
@@ -172,16 +162,9 @@ const RequestCreate = () => {
       careers: careers,
       company: company,
     };
+    console.log(request)
 
     dispatch(addInternRequest(ACCESS_TOKEN, request));
-    /**
-     * 
-     axios
-     .post("internRequests/add", request)
-     .then((res) => console.log(res))
-     .catch((err) => console.log(err));
-     
-     */
     navigate("/company/request");
   };
 
