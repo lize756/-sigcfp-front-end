@@ -1,62 +1,26 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import RequestLocation from "../../components/module-request/location-coordinator/RequestLocation";
-import Home from "../../components/module-request/location-coordinator/HomeLocation";
-import View from "../../components/module-request/location-coordinator/RequestLocView";
-import ContactList from "../../components/module-request/location-coordinator/ContactList";
-import CompaniesList from "../../components/module-request/location-coordinator/CompaniesList";
+
+import HomeLocation from "../../pages/LocCoordinatorApp";
+import ContentsLocation from "../../layout/coordinator/locCoordinator/ContentsLoc";
+import RequestList from "../../components/module-request/locCoordinator/CareerList";
+import Request from "../../components/module-request/global/GeneralRequest";
 
 const MainLocation = () => {
-  const [request, setRequest] = useState({});
-  const [contact, setContact] = useState({});
-
-  const requestView = (request) => {
-    setRequest(request);
-  };
-
-  const listContacts = (contacts) => {
-    setContact(contacts);
-  };
-
   return (
     <>
       <Routes>
-        <Route
-          path="/location"
-          element={
-            <Home name="PORTAL DE SOLICITUDES PRACTICANTES DE LA UNIVERSIDAD ICESI" />
-          }
-        >
-          <Route
-            path="request"
-            element={<RequestLocation requestView={requestView} />}
-          />
+        {/**===========================================Nuevo============================================== */}
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="home" element={<ContentsLocation />} />
         </Route>
 
-        <Route
-          path="/location"
-          element={
-            <Home name="PORTAL DE SOLICITUDES PRACTICANTES DE LA UNIVERSIDAD ICESI" />
-          }
-        >
-          <Route path="view" element={<View request={request} />} />
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="request" element={<RequestList />} />
         </Route>
 
-        <Route
-          path="/location"
-          element={<Home name="INFORMACIÓN DE CONTACTO DE LAS EMPRESAS" />}
-        >
-          <Route path="contact" element={<ContactList contacts={contact} />} />
-        </Route>
-
-        <Route
-          path="/location"
-          element={<Home name="INFORMACIÓN DE LAS EMPRESAS" />}
-        >
-          <Route
-            path="companies"
-            element={<CompaniesList listContacts={listContacts} />}
-          />
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="view" element={<Request />} />
         </Route>
       </Routes>
     </>

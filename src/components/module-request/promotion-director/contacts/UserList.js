@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import {
-  Paper,
   Container,
   Stack,
   Card,
@@ -12,7 +11,6 @@ import {
   TableRow,
   TableBody,
   TablePagination,
-  Button,
   Typography,
 } from "@mui/material";
 import User from "./User";
@@ -30,19 +28,15 @@ const UserList = ({ edit }) => {
 
   //Redux
   const companyContacts = useSelector(
-    (state) => state.ContactSlice.listContactsOfCompany);
-
-
-
-
-
+    (state) => state.ContactSlice.listContactsOfCompany
+  );
 
   //navigate
   let navigate = useNavigate();
 
   //Axios
   useEffect(() => {
-    setUsertList(companyContacts)
+    setUsertList(companyContacts);
   }, [companyContacts]);
 
   const handleChangeRowsPerPage = (event) => {
@@ -56,15 +50,14 @@ const UserList = ({ edit }) => {
 
   //Render
   const renderList = () => {
-    if(userList.length > 0){
-
+    if (userList.length > 0) {
       return userList
-      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map((user) => <User user={user} key={user.contId} />);
-    }else{
-      return <></>
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((user) => <User user={user} key={user.contId} />);
+    } else {
+      return <></>;
     }
-    };
+  };
 
   return (
     <div>
