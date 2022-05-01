@@ -99,7 +99,7 @@ export const updateContact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("api/contacts/update/" + contId, { headers }, contact)
+    .put("/api/contacts/update/" + contId,contact,{ headers })
     .then((res) => {
       dispatch(setContact(res.data));
       dispatch(setIsRenderContact(true));

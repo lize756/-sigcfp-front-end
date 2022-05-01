@@ -23,7 +23,7 @@ const User = ({ user, delUser, editUser }) => {
   };
 
   const handleEdit = () => {
-    navigate("company/updateUser");
+    navigate("/company/updateUser");
   };
 
   const handleDelete = () => {

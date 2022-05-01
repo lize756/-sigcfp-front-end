@@ -1,7 +1,15 @@
 import React from "react";
 import { Stack, TextField, Box, Button, Typography } from "@mui/material";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router";
+
+/**
+ * Redux
+ */
+import { useDispatch, useSelector } from "react-redux";
+
 import * as yup from "yup";
+import { updateContact } from "../../../store/slices/ContactSlice";
 
 const validationSchema = yup.object({
   contName: yup.string("Digita tu nombre").required("El nombre es requerido"),
@@ -18,18 +26,29 @@ const validationSchema = yup.object({
 });
 
 const UpdateUser = () => {
-  const user = {
-    contName: "Oscar Ivan Riascos",
-    contEmail: "oscar1@gmail.com",
-    contPhone: "12385757686",
-    contPosition: "jdjdijdijdj",
-  };
+  /**
+   * Redux
+   */
+  const currentContact = useSelector((state) => state.ContactSlice.contact);
+
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+
+  let navigate = useNavigate();
 
   const formik = useFormik({
-    initialValues: user,
+    //Contact to edit
+    initialValues: currentContact,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      //alert(JSON.stringify(values, null, 2));
+      console.log(JSON.stringify(values));
+      dispatch(updateContact(ACCESS_TOKEN, values.contId, values));
+      navigate("/company/users");
     },
   });
 
