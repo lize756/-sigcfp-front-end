@@ -250,31 +250,6 @@ const RequestUpdate = () => {
               label="Nombre de la solicitud"
               onChange={handleChange}
             />
-
-            <Box
-              sx={{
-                bgcolor: "#F2F6FE",
-                display: "flex",
-                justifyContent: "center",
-                flexWrap: "wrap",
-                listStyle: "none",
-                p: 0.5,
-                m: 0,
-              }}
-              component="ul"
-            >
-              {defaultCareers.map((career) => {
-                return (
-                  <ListItem key={career.careId}>
-                    <Chip
-                      label={career.careName}
-                      onDelete={handleDelete(career)}
-                    />
-                  </ListItem>
-                );
-              })}
-            </Box>
-
             <Autocomplete
               multiple
               fullWidth

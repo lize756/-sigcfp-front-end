@@ -3,7 +3,6 @@ import { Autocomplete, TextField, Button, Chip } from "@mui/material";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
-import axios from "../../../../config/axios";
 /**
  * Redux
  */
