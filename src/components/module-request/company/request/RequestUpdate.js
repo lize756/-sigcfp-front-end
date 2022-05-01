@@ -98,14 +98,14 @@ const RequestUpdate = ({ request }) => {
    * date loaded from the database to the format needed by textfield date
    * @returns  date in correct format
    */
-  const  getDate = async () => {
+  const getDate = async () => {
     const requDate = await editRequest.inteRequStDate;
     const datest = moment(requDate, "DD/MM/YYYY").format("yyyy-MM-DD");
-    const [year,moth,day] = datest.split('-')
-    console.log(datest)
-    console.log(year+"-"+moth+"-"+day)
+    const [year, moth, day] = datest.split("-");
+    console.log(datest);
+    console.log(year + "-" + moth + "-" + day);
 
-    return datest
+    return datest;
   };
   //------------Handlechange functions-----------------------------------
   const handleChange = (e) => {
@@ -268,7 +268,7 @@ const RequestUpdate = ({ request }) => {
             label="Fecha de Inicio"
             InputLabelProps={{ shrink: true, required: true }}
             type="date"
-            defaultValue= {getDate()}
+            defaultValue={getDate()}
             onChange={handleChange}
           />
 

@@ -6,10 +6,11 @@ import UserList from "../../components/module-request/company/user/ListUser";
 import RequestList from "../../components/module-request/company/request/RequestList";
 import Create from "../../components/module-request/company/request/RequestCreate";
 import Update from "../../components/module-request/company/request/RequestUpdate";
-import RequestView from "../../components/module-request/company/request/RequestView";
+
 import Profile from "../../components/global/profile/ProfileCompany";
 import UpdateUser from "../../components/module-request/company/user/UpdateUser";
 import CreateUser from "../../components/module-request/company/user/CreateUser";
+import Show from "../../components/module-request/global/CompanyRequest";
 
 const MainCompany = () => {
   const [requestEdit, setRequestEdit] = useState({});
@@ -28,22 +29,26 @@ const MainCompany = () => {
         <Route path="/company" element={<HomeCompany />}>
           <Route path="home" element={<ContentCompany />} />
         </Route>
+
         <Route path="/company" element={<HomeCompany />}>
           <Route path="request" element={<RequestList edit={edit} />} />
         </Route>
+
+        {/** ====================================Actions====================================== */}
+
         <Route path="/company" element={<HomeCompany />}>
           <Route path="create" element={<Create />} />
         </Route>
+
         <Route path="/company" element={<HomeCompany />}>
           <Route path="update" element={<Update request={requestEdit} />} />
         </Route>
+
         <Route path="/company" element={<HomeCompany />}>
-          <Route
-            path="view"
-            element={<RequestView request={requestEdit} edit={edit} />}
-          />
+          <Route path="show" element={<Show />} />
         </Route>
-        {/** ====================================Contacts=============================== */}
+
+        {/** ====================================Contacts===================================== */}
 
         <Route path="/company" element={<HomeCompany />}>
           <Route path="users" element={<UserList userEdit={editUser} />} />
@@ -57,7 +62,8 @@ const MainCompany = () => {
           <Route path="createUser" element={<CreateUser />} />
         </Route>
 
-        {/** ====================================Profile=============================== */}
+        {/** ====================================Profile==================================== */}
+
         <Route path="/company" element={<HomeCompany />}>
           <Route path="profile" element={<Profile />} />
         </Route>
