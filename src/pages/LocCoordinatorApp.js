@@ -153,7 +153,7 @@ const LocCoordinatorApp = () => {
                 <MenuItem
                   key="Home"
                   onClick={() => {
-                    navigate("");
+                    navigate("/location/home");
                   }}
                 >
                   <Typography textAlign="center">Inicio</Typography>
@@ -161,7 +161,7 @@ const LocCoordinatorApp = () => {
                 <MenuItem
                   key="Perfil"
                   onClick={() => {
-                    navigate("/company/profile");
+                    navigate("/location/profile");
                   }}
                 >
                   <Typography textAlign="center">Perfil</Typography>
@@ -225,7 +225,7 @@ const LocCoordinatorApp = () => {
               button
               key="Request"
               onClick={() => {
-                navigate("/location/request");
+                navigate("/location/careers");
               }}
             >
               <ListItemIcon>
@@ -254,7 +254,13 @@ const LocCoordinatorApp = () => {
               <ListItemText primary="Reportes " />
             </ListItem>
 
-            <ListItem button key="Profile">
+            <ListItem
+              button
+              key="Profile"
+              onClick={() => {
+                navigate("/location/profile");
+              }}
+            >
               <ListItemIcon>
                 <PersonPinIcon color="primary" />
               </ListItemIcon>

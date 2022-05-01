@@ -3,10 +3,10 @@ import { Routes, Route } from "react-router-dom";
 
 import HomePromotion from "../../pages/PromotionApp";
 import ContentPromotion from "../../layout/coordinator/proCoordinator/ContentsPro";
-import Companies from "../../components/module-request/promotion-director/contacts/CompaniesList";
+import Companies from "../../components/module-request/global/contacts/CompaniesList";
 import RequestList from "../../components/module-request/promotion-director/request/RequestList";
 import Profile from "../../components/global/profile/ProfilePerson";
-import Company from "../../components/module-request/promotion-director/contacts/ShowCompany";
+import Company from "../../components/module-request/global/contacts/ShowCompany";
 import Request from "../../components/module-request/global/GeneralRequest";
 
 const MainPromotion = () => {

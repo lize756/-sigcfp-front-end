@@ -215,7 +215,7 @@ const DirectorApp = () => {
               <ListItemIcon>
                 <HomeIcon color="primary" />
               </ListItemIcon>
-              <ListItemText primary="Home" />
+              <ListItemText primary="Inicio" />
             </ListItem>
 
             <ListItem
@@ -251,7 +251,13 @@ const DirectorApp = () => {
               <ListItemText primary="Compañias " />
             </ListItem>
 
-            <ListItem button key="Profile">
+            <ListItem
+              button
+              key="Profile"
+              onClick={() => {
+                navigate("/director/profile");
+              }}
+            >
               <ListItemIcon>
                 <PersonPinIcon color="primary" />
               </ListItemIcon>

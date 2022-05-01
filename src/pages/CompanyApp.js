@@ -219,7 +219,7 @@ const CompanyApp = () => {
               <ListItemIcon>
                 <HomeIcon color="primary" />
               </ListItemIcon>
-              <ListItemText primary="Home" />
+              <ListItemText primary="Inicio" />
             </ListItem>
 
             <ListItem
@@ -255,7 +255,13 @@ const CompanyApp = () => {
               <ListItemText primary="Contactos " />
             </ListItem>
 
-            <ListItem button key="Profile">
+            <ListItem
+              button
+              key="Profile"
+              onClick={() => {
+                navigate("/company/profile");
+              }}
+            >
               <ListItemIcon>
                 <PersonPinIcon color="primary" />
               </ListItemIcon>

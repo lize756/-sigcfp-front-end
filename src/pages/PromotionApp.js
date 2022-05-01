@@ -38,7 +38,10 @@ import { Outlet } from "react-router-dom";
  * REDUX
  */
 import { useDispatch } from "react-redux";
-import { logout, reHydrateStore} from "../components/store/slices/SignIn/LoginSlice";
+import {
+  logout,
+  reHydrateStore,
+} from "../components/store/slices/SignIn/LoginSlice";
 
 const drawerWidth = 260;
 
@@ -113,7 +116,7 @@ const PromotionApp = () => {
   };
   const handleLogOut = () => {
     setAnchorElUser(null);
-  //  dispatch();
+    //  dispatch();
     navigate("/SignIn");
   };
 
@@ -266,7 +269,13 @@ const PromotionApp = () => {
               <ListItemText primary="Reportes " />
             </ListItem>
 
-            <ListItem button key="Profile">
+            <ListItem
+              button
+              key="Profile"
+              onClick={() => {
+                navigate("/promotion/profile");
+              }}
+            >
               <ListItemIcon>
                 <PersonPinIcon color="primary" />
               </ListItemIcon>
