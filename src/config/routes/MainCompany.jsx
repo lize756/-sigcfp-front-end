@@ -3,8 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import HomeCompany from "../../pages/CompanyApp";
 import ContentCompany from "../../layout/company/ContentsCompany";
 //import UserList from "../../components/module-request/company/user/ListUser";
-import UserList from "../../components/module-request/company/user/ListUserModified";
-import RequestList from "../../components/module-request/company/request/RequestList";
+import UserList from "../../components/module-request/company/user/ListUser";
+import RequestList from "../../components/module-request/company/request/RequestListModified";
 import Create from "../../components/module-request/company/request/RequestCreate";
 import Update from "../../components/module-request/company/request/RequestUpdate";
 
@@ -15,15 +15,7 @@ import Show from "../../components/module-request/global/CompanyRequest";
 
 const MainCompany = () => {
   const [requestEdit, setRequestEdit] = useState({});
-  const [UserEdit, setUserEdit] = useState({});
 
-  const edit = (request) => {
-    setRequestEdit(request);
-  };
-
-  const editUser = (user) => {
-    setUserEdit(user);
-  };
   return (
     <>
       <Routes>
@@ -32,7 +24,7 @@ const MainCompany = () => {
         </Route>
 
         <Route path="/company" element={<HomeCompany />}>
-          <Route path="request" element={<RequestList/>} />
+          <Route path="request" element={<RequestList />} />
         </Route>
 
         {/** ====================================Actions====================================== */}
@@ -52,7 +44,7 @@ const MainCompany = () => {
         {/** ====================================Contacts===================================== */}
 
         <Route path="/company" element={<HomeCompany />}>
-          <Route path="users" element={<UserList/>} />
+          <Route path="users" element={<UserList />} />
         </Route>
 
         <Route path="/company" element={<HomeCompany />}>
