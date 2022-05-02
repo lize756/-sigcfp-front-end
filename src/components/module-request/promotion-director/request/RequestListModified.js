@@ -1,53 +1,40 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Container,
-  Stack,
-  Card,
-  TableContainer,
-  TablePagination,
-  Button,
-} from "@mui/material";
+import { Paper, Container, Stack, Card, TableContainer } from "@mui/material";
+import Search from "../../company/request/RequestSearch";
 
 //Data Grid
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 //Icon
 import { IconButton, Typography } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { Link as RouterLink } from "react-router-dom";
-import Request from "./Request";
 import AddIcon from "@mui/icons-material/Add";
-import Search from "./RequestSearch";
 import { useNavigate } from "react-router";
-import "../StylesCompany.css";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteInternRequest,
   getInternRequestsAssociatedCompany,
   setIsRender,
-  setIntReq,
 } from "../../../store/slices/InternRequestSlice";
-import { async } from "q";
 
 const RequestList = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
-
-  //lista de paginacion de la tabla
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
   //navigate
   let navigate = useNavigate();
 
-  /**
-   * REDUX
-   */
+  //lista de solicitudes de practica
+  const [requestList, setRequestList] = useState([]);
+
+  //List of intern requests
+  const list_interRequests = useSelector(
+    (state) => state.InternRequestSlice.listInteReqs
+  );
+  // List of intern request associated of company
   const list_interRequestsOfCompany = useSelector(
     (state) => state.InternRequestSlice.listIntReqsOfCompany
   );
@@ -61,10 +48,11 @@ const RequestList = () => {
   // Verified if change the list of intern requests associated to company
   const isRender = useSelector((state) => state.InternRequestSlice.isRender);
 
-  /**
-   * This useEffect allow render the DOM when the list is update
-   */
+  //se guarda en requestlist la informacion de las solicitudes
+  //Axios
   useEffect(() => {
+    //axios.get("/internRequests").then((res) => setRequestList(res.data));
+    setRequestList(list_interRequests);
     dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
     setTimeout(() => {
       dispatch(setIsRender(false));
@@ -79,11 +67,11 @@ const RequestList = () => {
   const renderFacultiesAndCareers = (inteRequIdCurrent) => {
     let concatCareers = "";
     let concatFaculty = "";
-    const index = list_interRequestsOfCompany.findIndex(
+    const index = list_interRequests.findIndex(
       (i) => i.inteRequId === inteRequIdCurrent.inteRequId
     );
     //console.log(index)
-    const array = list_interRequestsOfCompany[index].careers;
+    const array = list_interRequests[index].careers;
     for (let i = 0; i < array.length; i++) {
       if (i === array.length - 1) {
         concatCareers += array[i].careName;
@@ -96,6 +84,7 @@ const RequestList = () => {
 
     return [concatFaculty, concatCareers];
   };
+
   /**
    * ------------------------------------------------------------------------------------
    * ----------------Method relationated with the crud action of contact-----------------
@@ -109,7 +98,7 @@ const RequestList = () => {
    */
   const handleEdit = (event, cellValues) => {
     const currentReq = cellValues.row;
-    dispatch(setIntReq(currentReq));
+    // dispatch(setIntReq(currentReq));
     navigate("/company/update");
   };
 
@@ -120,13 +109,7 @@ const RequestList = () => {
    */
   const handleDelete = (event, cellValues) => {
     const currentReqToDelete = cellValues.row;
-    dispatch(
-      deleteInternRequest(
-        ACCESS_TOKEN,
-        currentReqToDelete.inteRequId,
-        currentReqToDelete
-      )
-    );
+    //dispatch();
   };
   /// End to method of crud intern request
 
@@ -170,6 +153,7 @@ const RequestList = () => {
       renderCell: (cellValues) => {
         const [faculties, careers] = renderFacultiesAndCareers(cellValues.row);
         currentCareers = careers;
+        console.log(cellValues.row);
         return (
           <Typography variant="string" align="center" noWrap>
             {faculties}
@@ -204,38 +188,7 @@ const RequestList = () => {
       headerName: "Número de Estudiantes",
       headerAlign: "center",
       align: "center",
-      flex: 1,
-    },
-    {
-      field: "Opciones",
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-
-      renderCell: (cellValues) => {
-        return (
-          <>
-            <IconButton
-              size="large"
-              aria-label="delete"
-              onClick={(event) => {
-                handleEdit(event, cellValues);
-              }}
-            >
-              <ModeEditIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="delete"
-              onClick={(event) => {
-                handleDelete(event, cellValues);
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </>
-        );
-      },
+      flex: "10px",
     },
   ];
 
@@ -249,16 +202,8 @@ const RequestList = () => {
           mb={5}
         >
           <Typography variant="h5" gutterBottom color="#072079">
-            Mis Solicitudes
+            Todas las solicitudes
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="/company/create"
-            startIcon={<AddIcon />}
-          >
-            Crear Solicitud
-          </Button>
         </Stack>
       </Container>
 
@@ -273,12 +218,11 @@ const RequestList = () => {
           }}
         >
           <DataGrid
-            sx={{ display: "-ms-flexbox" }}
             rowHeight={50}
             loading={isRender}
             autoHeight
             getRowId={(row) => row.inteRequId}
-            rows={isRender ? [] : list_interRequestsOfCompany}
+            rows={isRender ? [] : list_interRequests}
             columns={columns}
             pageSize={5}
             onCellClick={handleCellClick}
@@ -289,6 +233,8 @@ const RequestList = () => {
           />
         </TableContainer>
       </Card>
+
+      <Paper sx={{ width: "100%", overflow: "hidden" }}></Paper>
     </div>
   );
 };

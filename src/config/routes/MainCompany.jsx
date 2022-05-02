@@ -4,7 +4,7 @@ import HomeCompany from "../../pages/CompanyApp";
 import ContentCompany from "../../layout/company/ContentsCompany";
 //import UserList from "../../components/module-request/company/user/ListUser";
 import UserList from "../../components/module-request/company/user/ListUser";
-import RequestList from "../../components/module-request/company/request/RequestListModified";
+import RequestList from "../../components/module-request/company/request/RequestList";
 import Create from "../../components/module-request/company/request/RequestCreate";
 import Update from "../../components/module-request/company/request/RequestUpdate";
 
@@ -14,8 +14,6 @@ import CreateUser from "../../components/module-request/company/user/CreateUser"
 import Show from "../../components/module-request/global/CompanyRequest";
 
 const MainCompany = () => {
-  const [requestEdit, setRequestEdit] = useState({});
-
   return (
     <>
       <Routes>
@@ -34,7 +32,7 @@ const MainCompany = () => {
         </Route>
 
         <Route path="/company" element={<HomeCompany />}>
-          <Route path="update" element={<Update request={requestEdit} />} />
+          <Route path="update" element={<Update />} />
         </Route>
 
         <Route path="/company" element={<HomeCompany />}>

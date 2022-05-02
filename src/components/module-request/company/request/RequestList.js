@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from "react";
 
 import {
-  Paper,
   Container,
   Stack,
   Card,
-  Table,
   TableContainer,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableBody,
   TablePagination,
   Button,
-  Typography,
 } from "@mui/material";
 
+//Data Grid
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+//Icon
+import { IconButton, Typography } from "@mui/material";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import { Link as RouterLink } from "react-router-dom";
-import Request from "./Request";
 import AddIcon from "@mui/icons-material/Add";
-import Search from "./RequestSearch";
 import { useNavigate } from "react-router";
 import "../StylesCompany.css";
 
@@ -28,14 +26,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteInternRequest,
   getInternRequestsAssociatedCompany,
-  setIsRender, setIntReq
+  setIsRender,
+  setIntReq,
 } from "../../../store/slices/InternRequestSlice";
 
 const RequestList = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
-  //lista de solicitudes de practica
-  const [requestList, setRequestList] = useState([]);
 
   //lista de paginacion de la tabla
   const [page, setPage] = React.useState(0);
@@ -60,58 +57,184 @@ const RequestList = () => {
   // Verified if change the list of intern requests associated to company
   const isRender = useSelector((state) => state.InternRequestSlice.isRender);
 
+  /**
+   * This useEffect allow render the DOM when the list is update
+   */
   useEffect(() => {
     dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
-    dispatch(setIsRender(false));
+    setTimeout(() => {
+      dispatch(setIsRender(false));
+    }, "1000");
   }, [isRender]);
 
-  //Metodo delete
-  const delRequest = (request) => {
-    console.log(request.inteRequId);
-    dispatch(
-      deleteInternRequest(ACCESS_TOKEN, request.inteRequId, userCompanyId)
-    );
-  };
+  /**
+   * This method allow show data relationated with the careers and
+   * faculties associated of intern request
+   */
 
-  //Metodo edit
-  const editRequest = (request) => {
-    dispatch(setIntReq(request))
+  const renderFacultiesAndCareers = (inteRequIdCurrent) => {
+    let concatCareers = "";
+    let concatFaculty = "";
+    const index = list_interRequestsOfCompany.findIndex(
+      (i) => i.inteRequId === inteRequIdCurrent.inteRequId
+    );
+    //console.log(index)
+    const array = list_interRequestsOfCompany[index].careers;
+    for (let i = 0; i < array.length; i++) {
+      if (i === array.length - 1) {
+        concatCareers += array[i].careName;
+        concatFaculty += array[i].faculty.facuName;
+      } else {
+        concatCareers += array[i].careName + ",";
+        concatFaculty += array[i].faculty.facuName + ",";
+      }
+    }
+
+    return [concatFaculty, concatCareers];
+  };
+  /**
+   * ------------------------------------------------------------------------------------
+   * ----------------Method relationated with the crud action of contact-----------------
+   * ------------------------------------------------------------------------------------
+   */
+
+  /**
+   * Allow edit an intern request
+   * @param {*} event
+   * @param {*} cellValues correspond the cell that you want edit
+   */
+  const handleEdit = (event, cellValues) => {
+    const currentReq = cellValues.row;
+    dispatch(setIntReq(currentReq));
     navigate("/company/update");
   };
 
-  //Metodo
-  const viewRequest = (request) => {
-    navigate("/company/View");
+  /**
+   * Allow delete an intern request
+   * @param {} event
+   * @param {*} cellValues correspond the cell that you want delete
+   */
+  const handleDelete = (event, cellValues) => {
+    const currentReqToDelete = cellValues.row;
+    dispatch(
+      deleteInternRequest(
+        ACCESS_TOKEN,
+        currentReqToDelete.inteRequId,
+        currentReqToDelete
+      )
+    );
+  };
+  /// End to method of crud intern request
+
+  /**
+   * ------------------------------------------------------------------------------------
+   * ------------------------------------Methods of datagrid-----------------------------
+   * ------------------------------------------------------------------------------------
+   */
+  const handleCellClick = (param, event) => {
+    event.stopPropagation();
+    console.log(param.cellClick);
   };
 
-  //Metodos handleChange
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-    setPage(0);
+  const handleRowClick = (param, event) => {
+    event.stopPropagation();
   };
+  // End to method of datagrid
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  /**
+   * -----------------------------------------------------------------------------
+   * This lines represent the column name that it have the grid
+   * table. This contains the list of request associated of a one company.
+   * -----------------------------------------------------------------------------
+   */
 
-  //El Render
-  const renderList = () => {
-    if (list_interRequestsOfCompany.length > 0) {
-      return list_interRequestsOfCompany
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((request) => (
-          <Request
-            request={request}
-            key={request.inteRequId}
-            delRequest={delRequest}
-            editRequest={editRequest}
-            viewRequest={viewRequest}
-          />
-        ));
-    } else {
-      return <></>;
-    }
-  };
+  let currentCareers = "";
+  const columns = [
+    {
+      field: "inteRequName",
+      headerName: "Nombre",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "faculties",
+      headerName: "Facultad",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        const [faculties, careers] = renderFacultiesAndCareers(cellValues.row);
+        currentCareers = careers;
+        return (
+          <Typography variant="string" align="center" noWrap>
+            {faculties}
+          </Typography>
+        );
+      },
+    },
+    {
+      field: "careers",
+      headerName: "Carrera",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <Typography variant="string" align="center" noWrap>
+            {currentCareers}
+          </Typography>
+        );
+      },
+    },
+
+    {
+      field: "inteRequStDate",
+      headerName: "Fecha de Inicio",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "inteRequNumber",
+      headerName: "Número de Estudiantes",
+      headerAlign: "center",
+      align: "center",
+      flex: '10px',
+    },
+    {
+      field: "Opciones",
+      headerAlign: "center",
+      align: "center",
+      flex: '10px',
+
+      renderCell: (cellValues) => {
+        return (
+          <>
+            <IconButton
+              size="large"
+              aria-label="delete"
+              onClick={(event) => {
+                handleEdit(event, cellValues);
+              }}
+            >
+              <ModeEditIcon />
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="delete"
+              onClick={(event) => {
+                handleDelete(event, cellValues);
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </>
+        );
+      },
+    },
+  ];
+
   return (
     <div>
       <Container>
@@ -136,32 +259,30 @@ const RequestList = () => {
       </Container>
 
       <Card sx={{ borderRadius: 8 }}>
-        <Search />
-        <TableContainer sx={{ maxHeight: 400, mt: 5, mb: 5 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Nombre</TableCell>
-                <TableCell align="center">Facultad</TableCell>
-                <TableCell align="center">Carrera</TableCell>
-                <TableCell align="center">Fecha de Inicio </TableCell>
-                <TableCell align="right">Número de Estudiantes </TableCell>
-                <TableCell align="center"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>{renderList()}</TableBody>
-          </Table>
+        <TableContainer
+          sx={{
+            maxHeight: 400,
+            mt: 5,
+            mb: 5,
+            height: 500,
+            width: "100%",
+          }}
+        >
+          <DataGrid
+            rowHeight={50}
+            loading={isRender}
+            autoHeight
+            getRowId={(row) => row.inteRequId}
+            rows={isRender ? [] : list_interRequestsOfCompany}
+            columns={columns}
+            pageSize={5}
+            onCellClick={handleCellClick}
+            onRowClick={handleRowClick}
+            components={{
+              Toolbar: GridToolbar,
+            }}
+          />
         </TableContainer>
-        <TablePagination
-          sx={{ mb: 2 }}
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={list_interRequestsOfCompany.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Card>
     </div>
   );
