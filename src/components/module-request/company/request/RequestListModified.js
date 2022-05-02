@@ -66,7 +66,9 @@ const RequestList = () => {
    */
   useEffect(() => {
     dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
-    dispatch(setIsRender(false));
+    setTimeout(() => {
+      dispatch(setIsRender(false));
+    }, "1000");
   }, [isRender]);
 
   /**
@@ -273,9 +275,10 @@ const RequestList = () => {
           <DataGrid
             sx={{ display: "-ms-flexbox" }}
             rowHeight={50}
+            loading={isRender}
             autoHeight
             getRowId={(row) => row.inteRequId}
-            rows={list_interRequestsOfCompany}
+            rows={isRender ? [] : list_interRequestsOfCompany}
             columns={columns}
             pageSize={5}
             onCellClick={handleCellClick}
