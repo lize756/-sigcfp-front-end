@@ -12,6 +12,7 @@ import {
   IconButton,
   Input,
   InputAdornment,
+  Grid,
 } from "@mui/material";
 import BadgeIcon from "@mui/icons-material/Badge";
 import SaveIcon from "@mui/icons-material/Save";
@@ -98,7 +99,7 @@ const ProfilePerson = () => {
   };
   const [getPersonCountry, setPersonCountry] = useState({});
   const [getPersonCity, setPersonCity] = useState("");
-  const [getPersGenre,setPersGenre] = useState("");
+  const [getPersGenre, setPersGenre] = useState("");
   //================================================= UseEffect ===================================================
 
   useEffect(() => {
@@ -218,140 +219,144 @@ const ProfilePerson = () => {
       </Paper>
 
       <Paper sx={{ mt: 3, ml: 5, mr: 5 }}>
-        <Box md={6}>
-          <Stack spacing={3} sx={{ m: 4 }}>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              spacing={3}
-              sx={{ mt: 4 }}
-            >
-              <TextField
-                sx={{ width: "95%" }}
-                label="Nombres"
-                name="persFirstName"
-                defaultValue={person.persFirstName}
-                variant="standard"
-                onChange={handleChange}
-              />
+        <Grid container spacing={3} mt={2} mx={1}>
+          <Grid item xs={6}>
+            <TextField
+              sx={{ width: "85%" }}
+              label="Nombres"
+              name="persFirstName"
+              defaultValue={person.persFirstName}
+              variant="standard"
+              onChange={handleChange}
+            />
+          </Grid>{" "}
+          <Grid item xs={6}>
+            <TextField
+              label="Apellidos"
+              sx={{ width: "85%" }}
+              name="persLastName"
+              defaultValue={person.persLastName}
+              variant="standard"
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              sx={{ width: "85%" }}
+              label="Documento de identidad"
+              name="persDocument"
+              defaultValue={person.persDocument}
+              variant="standard"
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              sx={{ width: "85%" }}
+              type="email"
+              label="Correo electrónico"
+              name="persEmail"
+              defaultValue={person.persEmail}
+              variant="standard"
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Autocomplete
+              sx={{ width: "85%" }}
+              id="combo-box-persGenre"
+              disablePortal
+              defaultValue={person.persGenre}
+              options={listGender}
+              onChange={(event, value) => setPersGenre(value)}
+              renderInput={(params) => (
+                <TextField {...params} label="Género" variant="standard" />
+              )}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Autocomplete
+              sx={{ width: "85%" }}
+              freeSolo
+              disableClearable
+              id="free-solo-2-demo"
+              defaultValue={{ name: personStore.persCountryName }}
+              // List of countries
+              options={listCountries}
+              /**
+               * This property allows to show in the user's view the property that we want to take from the object.
+               * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+               */
+              getOptionLabel={(option) => option.name}
+              onChange={(event, value) => setPersonCountry(value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Seleccione su país"
+                  variant="standard"
+                  InputProps={{
+                    ...params.InputProps,
+                    type: "search",
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Autocomplete
+              sx={{ width: "85%" }}
+              freeSolo
+              disableClearable
+              id="free-solo-2-demo"
+              //List of cities
+              options={listCities}
+              defaultValue={personStore.persCityName}
+              /**
+               * This property allows to show in the user's view the property that we want to take from the object.
+               * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+               */
+              getOptionLabel={(option) => option}
+              /**
+               * Allows send the select object to variable CompCity that correspond the element select
+               */
+              onChange={(event, value) => setPersonCity(value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Seleccione su ciudad"
+                  variant="standard"
+                  InputProps={{
+                    ...params.InputProps,
+                    type: "search",
+                  }}
+                  onChange={(e) => setPersonCity(e.target.value)}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              sx={{ width: "85%" }}
+              label="Dirección"
+              name="persAddress"
+              defaultValue={person.persAddress}
+              variant="standard"
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
 
-              <TextField
-                label="Apellidos"
-                sx={{ width: "95%" }}
-                name="persLastName"
-                defaultValue={person.persLastName}
-                variant="standard"
-                onChange={handleChange}
-              />
-            </Stack>
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
-              <TextField
-                sx={{ width: "95%" }}
-                label="Documento de identidad"
-                name="persDocument"
-                defaultValue={person.persDocument}
-                variant="standard"
-                onChange={handleChange}
-              />
-              <TextField
-                sx={{ width: "95%" }}
-                type="email"
-                label="Correo electrónico"
-                name="persEmail"
-                defaultValue={person.persEmail}
-                variant="standard"
-                onChange={handleChange}
-              />
-              <Autocomplete
-                sx={{ width: "95%" }}
-                id="combo-box-persGenre"
-                disablePortal
-                defaultValue={person.persGenre}
-                options={listGender}
-                onChange={(event, value) => setPersGenre(value)}
-                renderInput={(params) => (
-                  <TextField {...params} label="Género" variant="standard" />
-                )}
-              />
-            </Stack>
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
-              <Autocomplete
-                sx={{ width: "95%" }}
-                freeSolo
-                disableClearable
-                id="free-solo-2-demo"
-                defaultValue={{ name: personStore.persCountryName }}
-                // List of countries
-                options={listCountries}
-                /**
-                 * This property allows to show in the user's view the property that we want to take from the object.
-                 * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
-                 */
-                getOptionLabel={(option) => option.name}
-                onChange={(event, value) => setPersonCountry(value)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Seleccione su país"
-                    variant="standard"
-                    InputProps={{
-                      ...params.InputProps,
-                      type: "search",
-                    }}
-                  />
-                )}
-              />
-              <Autocomplete
-                sx={{ width: "95%" }}
-                freeSolo
-                disableClearable
-                id="free-solo-2-demo"
-                //List of cities
-                options={listCities}
-                defaultValue={personStore.persCityName}
-                /**
-                 * This property allows to show in the user's view the property that we want to take from the object.
-                 * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
-                 */
-                getOptionLabel={(option) => option}
-                /**
-                 * Allows send the select object to variable CompCity that correspond the element select
-                 */
-                onChange={(event, value) => setPersonCity(value)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Seleccione su ciudad"
-                    variant="standard"
-                    InputProps={{
-                      ...params.InputProps,
-                      type: "search",
-                    }}
-                    onChange={(e) => setPersonCity(e.target.value)}
-                  />
-                )}
-              />
-              <TextField
-                sx={{ width: "95%" }}
-                label="Dirección"
-                name="persAddress"
-                defaultValue={person.persAddress}
-                variant="standard"
-                onChange={handleChange}
-              />
-            </Stack>
-          </Stack>
-          <Box>
-            <Button
-              sx={{ mb: 4, ml: 4 }}
-              variant="contained"
-              startIcon={<SaveIcon />}
-              onClick={(e) => {
-                savePerson(e);
-              }}
-            >
-              Guardar
-            </Button>
-          </Box>
+        <Box>
+          <Button
+            sx={{ my: 4, ml: 4 }}
+            variant="contained"
+            startIcon={<SaveIcon />}
+            onClick={(e) => {
+              savePerson(e);
+            }}
+          >
+            Guardar
+          </Button>
         </Box>
       </Paper>
 
@@ -364,11 +369,12 @@ const ProfilePerson = () => {
         >
           Cambiar contraseña
         </Typography>
-        <Stack spacing={3} sx={{ m: 4 }}>
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
-            <FormControl sx={{ width: "40ch" }} variant="standard">
+
+        <Grid container spacing={3} mt={2} ml={1.5}>
+          <Grid item xs={4}>
+            <FormControl sx={{ m: 2 }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
-                Contraseña Actual
+                Contraseña actual
               </InputLabel>
               <Input
                 type={currentPassword.showPassword ? "text" : "password"}
@@ -391,9 +397,11 @@ const ProfilePerson = () => {
                 }
               />
             </FormControl>
-            <FormControl sx={{ m: 2, width: "40ch" }} variant="standard">
+          </Grid>
+          <Grid item xs={4}>
+            <FormControl sx={{ m: 2 }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
-                Nueva Contraseña
+                Nueva contraseña
               </InputLabel>
               <Input
                 type={newPassword.showPassword ? "text" : "password"}
@@ -416,9 +424,11 @@ const ProfilePerson = () => {
                 }
               />
             </FormControl>
-            <FormControl sx={{ m: 2, width: "40ch" }} variant="standard">
+          </Grid>
+          <Grid item xs={4}>
+            <FormControl sx={{ m: 2 }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
-                Confirmar Nueva Contraseña
+                Confirmar contraseña
               </InputLabel>
               <Input
                 type={confirmPassword.showPassword ? "text" : "password"}
@@ -441,18 +451,19 @@ const ProfilePerson = () => {
                 }
               />
             </FormControl>
-          </Stack>
-        </Stack>
+          </Grid>
+        </Grid>
+
         <Box>
           <Button
-            sx={{ mb: 4, ml: 4 }}
+            sx={{ my: 4, ml: 4 }}
             variant="contained"
             startIcon={<SaveIcon />}
             onClick={(e) => {
               savePassword(e);
             }}
           >
-            Guardar
+            Cambiar contraseña
           </Button>
         </Box>
       </Paper>
