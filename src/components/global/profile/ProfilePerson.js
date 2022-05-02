@@ -15,6 +15,7 @@ import {
   Grid,
 } from "@mui/material";
 import BadgeIcon from "@mui/icons-material/Badge";
+import PersonIcon from "@mui/icons-material/PersonPin";
 import SaveIcon from "@mui/icons-material/Save";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -184,18 +185,9 @@ const ProfilePerson = () => {
     <div>
       <Paper sx={{ mt: 2, ml: 5, mr: 5 }}>
         <Stack direction="row" spacing={2}>
-          <Avatar
-            sx={{
-              mt: 2,
-              ml: 7,
-              mb: 2,
-              bgcolor: green[500],
-              width: 65,
-              height: 65,
-            }}
-          >
-            <BadgeIcon />
-          </Avatar>
+          <PersonIcon
+            sx={{ color: green[500], width: 65, height: 65, ml: 5, mt: 1 }}
+          />
 
           <Box md={6}>
             <Typography
@@ -219,7 +211,7 @@ const ProfilePerson = () => {
       </Paper>
 
       <Paper sx={{ mt: 3, ml: 5, mr: 5 }}>
-        <Grid container spacing={3} mt={2} mx={1}>
+        <Grid container spacing={2} mt={2} mx={1}>
           <Grid item xs={6}>
             <TextField
               sx={{ width: "85%" }}
@@ -370,9 +362,9 @@ const ProfilePerson = () => {
           Cambiar contraseña
         </Typography>
 
-        <Grid container spacing={3} mt={2} ml={1.5}>
-          <Grid item xs={4}>
-            <FormControl sx={{ m: 2 }} variant="standard">
+        <Grid container spacing={2} mt={2} ml={1.5}>
+          <Grid item xs={6}>
+            <FormControl sx={{ m: 2, width: "85%" }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
                 Contraseña actual
               </InputLabel>
@@ -398,8 +390,8 @@ const ProfilePerson = () => {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={4}>
-            <FormControl sx={{ m: 2 }} variant="standard">
+          <Grid item xs={6}>
+            <FormControl sx={{ mt: 2, width: "85%" }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
                 Nueva contraseña
               </InputLabel>
@@ -425,10 +417,10 @@ const ProfilePerson = () => {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={4}>
-            <FormControl sx={{ m: 2 }} variant="standard">
+          <Grid item xs={6}>
+            <FormControl sx={{ mt: 2, ml: 2, width: "85%" }} variant="standard">
               <InputLabel htmlFor="standard-adornment-password">
-                Confirmar contraseña
+                Confirmar nueva ontraseña
               </InputLabel>
               <Input
                 type={confirmPassword.showPassword ? "text" : "password"}
