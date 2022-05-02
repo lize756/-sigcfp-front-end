@@ -31,7 +31,7 @@ import {
   setIsRender, setIntReq
 } from "../../../store/slices/InternRequestSlice";
 
-const RequestList = ({ edit }) => {
+const RequestList = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
   //lista de solicitudes de practica
@@ -76,13 +76,11 @@ const RequestList = ({ edit }) => {
   //Metodo edit
   const editRequest = (request) => {
     dispatch(setIntReq(request))
-    edit(request);
     navigate("/company/update");
   };
 
   //Metodo
   const viewRequest = (request) => {
-    edit(request);
     navigate("/company/View");
   };
 

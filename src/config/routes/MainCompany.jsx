@@ -32,7 +32,7 @@ const MainCompany = () => {
         </Route>
 
         <Route path="/company" element={<HomeCompany />}>
-          <Route path="request" element={<RequestList edit={edit} />} />
+          <Route path="request" element={<RequestList/>} />
         </Route>
 
         {/** ====================================Actions====================================== */}
@@ -52,7 +52,7 @@ const MainCompany = () => {
         {/** ====================================Contacts===================================== */}
 
         <Route path="/company" element={<HomeCompany />}>
-          <Route path="users" element={<UserList userEdit={editUser} />} />
+          <Route path="users" element={<UserList/>} />
         </Route>
 
         <Route path="/company" element={<HomeCompany />}>

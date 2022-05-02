@@ -5,33 +5,41 @@ import {
   Container,
   Stack,
   Card,
-  Table,
   TableContainer,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableBody,
-  TablePagination,
   Button,
+} from "@mui/material";
+import {
+  TableCell,
+  TableRow,
+  IconButton,
+  MenuItem,
+  Menu,
   Typography,
 } from "@mui/material";
-
+import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link, Link as RouterLink } from "react-router-dom";
-import axios from "../../../../config/axios";
 import User from "./User";
-import AddIcon from "@mui/icons-material/Add";
 import Search from "../request/RequestSearch";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+/**
+ * Icons
+ */
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import AddIcon from "@mui/icons-material/Add";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteContact,
   getContactsAssociatedCompany,
+  setContact,
   setIsRenderContact,
 } from "../../../store/slices/ContactSlice";
+import { useNavigate } from "react-router";
 
-const ListUserModified = ({ userEdit }) => {
+const ITEM_HEIGHT = 40;
+const ListUserModified = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
 
@@ -66,33 +74,54 @@ const ListUserModified = ({ userEdit }) => {
     console.log("Tamaño ", listContactOfCompany.length);
   }, [isRender]);
 
-  //Metodo delete
-  const delUser = (user) => {
-    console.log(user.contId);
-
-    dispatch(deleteContact(ACCESS_TOKEN, user.contId));
-  };
-
   //Metodo edit
   const editUser = (user) => {
-    userEdit(user);
     //navigate("/company/update");
   };
 
   //Metodo
   const viewUser = (user) => {
-    userEdit(user);
     //navigate("/company/View");
   };
 
   /**
    * ------------------------------------------------------------------------------------
-   * ----------------------------------Metodos nuevos--------------------------------
+   * ----------------Metodos relacionados con el menuItem--------------------------------
    * ------------------------------------------------------------------------------------
    */
-  const handleClick = (event, cellValues) => {
-    console.log(cellValues.row);
+  let navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEdit = (event, cellValues) => {
+    const currentContact= cellValues.row;
+    dispatch(setContact(currentContact))
+    navigate("/company/updateUser");
+  };
+
+  const handleDelete = (event, cellValues) => {
+    const currentUserToDelete = cellValues.row;
+    dispatch(deleteContact(ACCESS_TOKEN, currentUserToDelete.contId));
+  };
+
+  /**
+   * ------------------------------------------------------------------------------------
+   * ----------------Metodos nuevos relacionados con el datagrid-------------------------
+   * ------------------------------------------------------------------------------------
+   */
+  /**
+  
+   const handleClick = (event, cellValues) => {
+     console.log(cellValues.row);
+    };
+    */
 
   const handleCellClick = (param, event) => {
     event.stopPropagation();
@@ -143,16 +172,28 @@ const ListUserModified = ({ userEdit }) => {
       flex: 1,
 
       renderCell: (cellValues) => {
+        const current = cellValues;
         return (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={(event) => {
-              handleClick(event, cellValues);
-            }}
-          >
-            Print
-          </Button>
+          <>
+            <IconButton
+              size="large"
+              aria-label="delete"
+              onClick={(event) => {
+                handleEdit(event, cellValues);
+              }}
+            >
+              <ModeEditIcon />
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="delete"
+              onClick={(event) => {
+                handleDelete(event, cellValues);
+              }}
+            >
+              <PersonRemoveIcon />
+            </IconButton>
+          </>
         );
       },
     },
