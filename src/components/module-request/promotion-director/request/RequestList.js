@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import { Paper, Container, Stack, Card, TableContainer } from "@mui/material";
-import Search from "../../company/request/RequestSearch";
 
 //Data Grid
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
@@ -117,7 +116,6 @@ const RequestList = () => {
    * -----------------------------------------------------------------------------
    */
 
-  let currentCareers = "";
   const columns = [
     {
       field: "inteRequName",

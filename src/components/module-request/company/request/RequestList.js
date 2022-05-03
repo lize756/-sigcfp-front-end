@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Container,
-  Stack,
-  Card,
-  TableContainer,
-  Button,
-} from "@mui/material";
+import { Container, Stack, Card, TableContainer, Button } from "@mui/material";
 
 //Data Grid
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
@@ -33,12 +27,11 @@ const RequestList = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
 
-  //lista de paginacion de la tabla
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
   //navigate
   let navigate = useNavigate();
+
+  // Const
+  const [getIntReqAssocCompany, setIntReqAssocCompany] = useState([]);
 
   /**
    * REDUX
@@ -61,22 +54,33 @@ const RequestList = () => {
    */
   useEffect(() => {
     dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
+    let listReqOfCompany = customInternRequestEstructure();
+    setIntReqAssocCompany(listReqOfCompany)
     setTimeout(() => {
       dispatch(setIsRender(false));
     }, "1000");
   }, [isRender]);
 
+  const customInternRequestEstructure = () => {
+    return list_interRequestsOfCompany.map((element, index) => {
+      const [faculties, careers] = renderFacultiesAndCareers(index);
+      const customFaculties = faculties;
+      const customCareers = careers;
+      return {
+        ...element,
+        customFaculties,
+        customCareers,
+      };
+    });
+  };
   /**
    * This method allow show data relationated with the careers and
    * faculties associated of intern request
    */
 
-  const renderFacultiesAndCareers = (inteRequIdCurrent) => {
+  const renderFacultiesAndCareers = (index) => {
     let concatCareers = "";
     let concatFaculty = "";
-    const index = list_interRequestsOfCompany.findIndex(
-      (i) => i.inteRequId === inteRequIdCurrent.inteRequId
-    );
     //console.log(index)
     const array = list_interRequestsOfCompany[index].careers;
     for (let i = 0; i < array.length; i++) {
@@ -147,7 +151,6 @@ const RequestList = () => {
    * -----------------------------------------------------------------------------
    */
 
-  let currentCareers = "";
   const columns = [
     {
       field: "inteRequName",
@@ -157,34 +160,18 @@ const RequestList = () => {
       flex: 1,
     },
     {
-      field: "faculties",
+      field: "customFaculties",
       headerName: "Facultad",
       headerAlign: "center",
       align: "center",
       flex: 1,
-      renderCell: (cellValues) => {
-        const [faculties, careers] = renderFacultiesAndCareers(cellValues.row);
-        currentCareers = careers;
-        return (
-          <Typography variant="string" align="center" noWrap>
-            {faculties}
-          </Typography>
-        );
-      },
     },
     {
-      field: "careers",
+      field: "customCareers",
       headerName: "Carrera",
       headerAlign: "center",
       align: "center",
       flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <Typography variant="string" align="center" noWrap>
-            {currentCareers}
-          </Typography>
-        );
-      },
     },
 
     {
@@ -199,13 +186,13 @@ const RequestList = () => {
       headerName: "Número de Estudiantes",
       headerAlign: "center",
       align: "center",
-      flex: '10px',
+      flex: "10px",
     },
     {
       field: "Opciones",
       headerAlign: "center",
       align: "center",
-      flex: '10px',
+      flex: "10px",
 
       renderCell: (cellValues) => {
         return (
@@ -272,7 +259,7 @@ const RequestList = () => {
             loading={isRender}
             autoHeight
             getRowId={(row) => row.inteRequId}
-            rows={isRender ? [] : list_interRequestsOfCompany}
+            rows={isRender ? [] : getIntReqAssocCompany}
             columns={columns}
             pageSize={5}
             onCellClick={handleCellClick}
