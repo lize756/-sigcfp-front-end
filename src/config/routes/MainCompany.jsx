@@ -11,7 +11,7 @@ import Update from "../../components/module-request/company/request/RequestUpdat
 import Profile from "../../components/global/profile/ProfileCompany";
 import UpdateUser from "../../components/module-request/company/user/UpdateUser";
 import CreateUser from "../../components/module-request/company/user/CreateUser";
-import Show from "../../components/module-request/global/CompanyRequest";
+import Request from "../../components/module-request/global/GeneralRequest";
 
 const MainCompany = () => {
   return (
@@ -36,7 +36,7 @@ const MainCompany = () => {
         </Route>
 
         <Route path="/company" element={<HomeCompany />}>
-          <Route path="show" element={<Show />} />
+          <Route path="show" element={<Request />} />
         </Route>
 
         {/** ====================================Contacts===================================== */}

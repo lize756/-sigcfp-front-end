@@ -3,16 +3,21 @@ import React, { useState, useEffect } from "react";
 import { Container, Stack, Card, TableContainer, Button } from "@mui/material";
 
 //Data Grid
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, esES } from "@mui/x-data-grid";
+import { esES as coreeEsEs } from "@mui/material/locale";
 //Icon
 import { IconButton, Typography } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PreviewIcon from "@mui/icons-material/Preview";
 
 import { Link as RouterLink } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router";
 import "../StylesCompany.css";
+
+//Config lenguage of default.
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +28,7 @@ import {
   setIntReq,
 } from "../../../store/slices/InternRequestSlice";
 
+const themeLanguageDataGrid = createTheme(esES, coreeEsEs);
 const RequestList = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
@@ -127,6 +133,19 @@ const RequestList = () => {
       )
     );
   };
+
+  /**
+   * Allow view of info tha have a company
+   * @param {*} event
+   * @param {*} cellValues correspond the select company that you want view
+   */
+  const handleViewInterReqInfo = (event, cellValues) => {
+    const currentIntReq = cellValues.row;
+    console.log(currentIntReq)
+    dispatch(setIntReq(currentIntReq))
+    navigate("/company/show");
+  };
+
   /// End to method of crud intern request
 
   /**
@@ -186,20 +205,20 @@ const RequestList = () => {
       headerName: "Número de Estudiantes",
       headerAlign: "center",
       align: "center",
-      flex: "10px",
+      flex: 1,
     },
     {
       field: "Opciones",
       headerAlign: "center",
       align: "center",
-      flex: "10px",
+      flex: 1,
 
       renderCell: (cellValues) => {
         return (
           <>
             <IconButton
               size="large"
-              aria-label="delete"
+              aria-label="edit"
               onClick={(event) => {
                 handleEdit(event, cellValues);
               }}
@@ -214,6 +233,15 @@ const RequestList = () => {
               }}
             >
               <DeleteIcon />
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="viewCompany"
+              onClick={(event) => {
+                handleViewInterReqInfo(event, cellValues);
+              }}
+            >
+              <PreviewIcon />
             </IconButton>
           </>
         );
@@ -256,6 +284,7 @@ const RequestList = () => {
         >
           <DataGrid
             rowHeight={50}
+            localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             loading={isRender}
             autoHeight
             getRowId={(row) => row.inteRequId}

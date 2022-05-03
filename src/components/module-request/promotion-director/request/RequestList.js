@@ -36,6 +36,7 @@ const RequestList = () => {
   // Verified if change the list of intern requests associated to company
   const isRender = useSelector((state) => state.InternRequestSlice.isRender);
 
+  const rolUserLogin =  useSelector((state) => state.userLogin.rolee);
   //se guarda en requestlist la informacion de las solicitudes
   //Axios
   useEffect(() => {
@@ -97,7 +98,34 @@ const RequestList = () => {
   const handleViewRequest = (event, cellValues) => {
     const currentReq = cellValues.row;
     dispatch(setIntReq(currentReq));
-    navigate("/promotion/show");
+    selectPath(rolUserLogin)
+  };
+
+
+  /**
+   * This function is responsible for choosing the route that corresponds to the person logged in
+   * @param {*} ROLEE Role of the person who logged in to the application
+   */
+   const selectPath = (ROLEE) => {
+    switch (ROLEE) {
+      case "ROLEE_PROMOTION_COORDINATOR":
+        navigate("/promotion/show");
+
+        break;
+      case "ROLEE_LOCATION_COORDINATOR":
+        navigate("/location/show");
+        break;
+
+      case "ROLEE_COMPANY":
+        navigate("/company/show");
+        break;
+
+      case "ROLEE_DIRECTOR":
+        navigate("/director/show");
+        break;
+      case "ROLEE_GRADUATE":
+        break;
+    }
   };
 
   /// End to method of crud intern request
