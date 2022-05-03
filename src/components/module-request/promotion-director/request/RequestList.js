@@ -1,102 +1,161 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Paper,
-  Container,
-  Stack,
-  Card,
-  Table,
-  TableContainer,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableBody,
-  TablePagination,
-  Button,
-  Typography,
-} from "@mui/material";
-import Request from "./Request";
+import { Paper, Container, Stack, Card, TableContainer } from "@mui/material";
 import Search from "../../company/request/RequestSearch";
+
+//Data Grid
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+//Icon
+import { Typography } from "@mui/material";
 import { useNavigate } from "react-router";
-import { DataGrid } from "@mui/x-data-grid";
+
 //Redux
 import { useDispatch, useSelector } from "react-redux";
+import { setIsRender } from "../../../store/slices/InternRequestSlice";
 
 const RequestList = () => {
-  //ID
-  const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "firstName", headerName: "First name", width: 130 },
-    { field: "lastName", headerName: "Last name", width: 130 },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      width: 90,
-    },
-    {
-      field: "fullName",
-      headerName: "Full name",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      width: 160,
-      valueGetter: (params) =>
-        `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    },
-  ];
-
-
-  //BORRAR
-
-  //lista de solicitudes de practica
-  const [requestList, setRequestList] = useState([]);
-
-  //lista de paginacion de la tabla
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
   //navigate
   let navigate = useNavigate();
 
+  const [getInternRequests, setInternRequests] = useState([]);
   //List of intern requests
-  let list_interRequests = useSelector(
+  const list_interRequests = useSelector(
     (state) => state.InternRequestSlice.listInteReqs
   );
+
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+
+  // Verified if change the list of intern requests associated to company
+  const isRender = useSelector((state) => state.InternRequestSlice.isRender);
 
   //se guarda en requestlist la informacion de las solicitudes
   //Axios
   useEffect(() => {
-    //axios.get("/internRequests").then((res) => setRequestList(res.data));
-    setRequestList(list_interRequests);
-  }, []);
+    let listReq = customInternRequestEstructure();
+    setInternRequests(listReq);
+    setTimeout(() => {
+      dispatch(setIsRender(false));
+    }, "1000");
+  }, [isRender]);
 
-  //Metodo
-  const viewRequest = (request) => {
-    //navigate("/company/View");
+  const customInternRequestEstructure = () => {
+    return list_interRequests.map((element, index) => {
+      const [faculties, careers] = renderFacultiesAndCareers(index);
+      const customFaculties = faculties;
+      const customCareers = careers;
+      return {
+        ...element,
+        customFaculties,
+        customCareers,
+      };
+    });
   };
 
-  //Metodos handleChange
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-    setPage(0);
+  /**
+   * This method allow show data relationated with the careers and
+   * faculties associated of intern request
+   */
+
+  const renderFacultiesAndCareers = (inteRequIdCurrent) => {
+    let concatCareers = "";
+    let concatFaculty = "";
+    const array = list_interRequests[inteRequIdCurrent].careers;
+    for (let i = 0; i < array.length; i++) {
+      if (i === array.length - 1) {
+        concatCareers += array[i].careName;
+        concatFaculty += array[i].faculty.facuName;
+      } else {
+        concatCareers += array[i].careName + ",";
+        concatFaculty += array[i].faculty.facuName + ",";
+      }
+    }
+
+    return [concatFaculty, concatCareers];
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  /**
+   * ------------------------------------------------------------------------------------
+   * ----------------Method relationated with the crud action of contact-----------------
+   * ------------------------------------------------------------------------------------
+   */
+
+  /**
+   * Allow view of intern request
+   * @param {*} event
+   * @param {*} cellValues correspond the cell that you want edit
+   */
+  const handleViewRequest = (event, cellValues) => {
+    const currentReq = cellValues.row;
+    // dispatch(setIntReq(currentReq));
+    navigate("/company/update");
   };
 
-  //El Render
-  const renderList = () => {
-    return requestList
-      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map((request) => (
-        <Request
-          request={request}
-          key={request.inteRequId}
-          viewRequest={viewRequest}
-        />
-      ));
+  /// End to method of crud intern request
+
+  /**
+   * ------------------------------------------------------------------------------------
+   * ------------------------------------Methods of datagrid-----------------------------
+   * ------------------------------------------------------------------------------------
+   */
+  const handleCellClick = (param, event) => {
+    event.stopPropagation();
   };
+
+  const handleRowClick = (param, event) => {
+    event.stopPropagation();
+  };
+  // End to method of datagrid
+
+  /**
+   * -----------------------------------------------------------------------------
+   * This lines represent the column name that it have the grid
+   * table. This contains the list of request associated of a one company.
+   * -----------------------------------------------------------------------------
+   */
+
+  let currentCareers = "";
+  const columns = [
+    {
+      field: "inteRequName",
+      headerName: "Nombre",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "customFaculties",
+      headerName: "Facultad",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "customCareers",
+      headerName: "Carrera",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+
+    {
+      field: "inteRequStDate",
+      headerName: "Fecha de Inicio",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "inteRequNumber",
+      headerName: "Número de Estudiantes",
+      headerAlign: "center",
+      align: "center",
+      flex: "10px",
+    },
+  ];
 
   return (
     <div>
@@ -114,33 +173,30 @@ const RequestList = () => {
       </Container>
 
       <Card sx={{ borderRadius: 8 }}>
-        <Search />
-        <TableContainer sx={{ maxHeight: 400, mt: 5, mb: 5 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Compañia</TableCell>
-                <TableCell align="center">Facultad</TableCell>
-                <TableCell align="center">Carrera</TableCell>
-                <TableCell align="center">Fecha de Inicio </TableCell>
-                <TableCell align="right">Número de Estudiantes </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>{renderList()}</TableBody>
-          </Table>
+        <TableContainer
+          sx={{
+            maxHeight: 400,
+            mt: 5,
+            mb: 5,
+            height: 500,
+            width: "100%",
+          }}
+        >
+          <DataGrid
+            rowHeight={50}
+            loading={isRender}
+            autoHeight
+            getRowId={(row) => row.inteRequId}
+            rows={isRender ? [] : getInternRequests}
+            columns={columns}
+            pageSize={5}
+            onCellClick={handleCellClick}
+            onRowClick={handleRowClick}
+            components={{
+              Toolbar: GridToolbar,
+            }}
+          />
         </TableContainer>
-        <TablePagination
-          sx={{ mb: 2 }}
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={requestList.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-  
-  );
       </Card>
 
       <Paper sx={{ width: "100%", overflow: "hidden" }}></Paper>
