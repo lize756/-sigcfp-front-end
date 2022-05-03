@@ -260,7 +260,9 @@ const LocCoordinatorApp = () => {
               <ListItemText primary="Reportes " />
             </ListItem>
 
-            <ListItem button key="Profile">
+            <ListItem button key="Profile"  onClick={() => {
+                    navigate("/company/profile");
+                  }}>
               <ListItemIcon>
                 <PersonPinIcon color="primary" />
               </ListItemIcon>

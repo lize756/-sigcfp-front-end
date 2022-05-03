@@ -259,7 +259,14 @@ const CompanyApp = () => {
               <ListItemText primary="Contactos " />
             </ListItem>
 
-            <ListItem button key="Profile">
+            <ListItem
+              button
+              key="Profile"
+              onClick={() => {
+                navigate("/company/profile");
+                setAnchorElUser(null);
+              }}
+            >
               <ListItemIcon>
                 <PersonPinIcon color="primary" />
               </ListItemIcon>
