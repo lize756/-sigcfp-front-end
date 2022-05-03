@@ -5,12 +5,17 @@ import { Paper, Container, Stack, Card, TableContainer } from "@mui/material";
 //Data Grid
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 //Icon
+import { IconButton } from "@mui/material";
+import PreviewIcon from "@mui/icons-material/Preview";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
-import { setIsRender } from "../../../store/slices/InternRequestSlice";
+import {
+  setIntReq,
+  setIsRender,
+} from "../../../store/slices/InternRequestSlice";
 
 const RequestList = () => {
   // Allow to send the elements of store
@@ -46,10 +51,12 @@ const RequestList = () => {
       const [faculties, careers] = renderFacultiesAndCareers(index);
       const customFaculties = faculties;
       const customCareers = careers;
+      const customCompName = element.company.compName;
       return {
         ...element,
         customFaculties,
         customCareers,
+        customCompName,
       };
     });
   };
@@ -89,8 +96,8 @@ const RequestList = () => {
    */
   const handleViewRequest = (event, cellValues) => {
     const currentReq = cellValues.row;
-    // dispatch(setIntReq(currentReq));
-    navigate("/company/update");
+    dispatch(setIntReq(currentReq));
+    navigate("/promotion/show");
   };
 
   /// End to method of crud intern request
@@ -118,12 +125,20 @@ const RequestList = () => {
 
   const columns = [
     {
-      field: "inteRequName",
-      headerName: "Nombre",
+      field: "customCompName",
+      headerName: "Nombre de la compañia",
       headerAlign: "center",
       align: "center",
       flex: 1,
     },
+    {
+      field: "inteRequName",
+      headerName: "Nombre de la solicitud",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+
     {
       field: "customFaculties",
       headerName: "Facultad",
@@ -152,6 +167,29 @@ const RequestList = () => {
       headerAlign: "center",
       align: "center",
       flex: "10px",
+    },
+    {
+      field: "Opciones",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+
+      renderCell: (cellValues) => {
+        const current = cellValues;
+        return (
+          <>
+            <IconButton
+              size="large"
+              aria-label="viewCompany"
+              onClick={(event) => {
+                handleViewRequest(event, cellValues);
+              }}
+            >
+              <PreviewIcon />
+            </IconButton>
+          </>
+        );
+      },
     },
   ];
 

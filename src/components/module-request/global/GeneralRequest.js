@@ -15,34 +15,28 @@ import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import TimeIcon from "@mui/icons-material/AccessTimeFilled";
 import SchoolIcon from "@mui/icons-material/School";
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { current } from "@reduxjs/toolkit";
 
 const GeneralRequest = () => {
+  //Redux
+  const currentIntReq = useSelector((state) => state.InternRequestSlice.intReq);
+  //Correspond to info that it have the current intern request.
   const request = {
-    inteRequName: "Liga de la justicia ",
-    companyName: "Carvajal",
-    contactName: "Clark Kent",
-    inteRequNumber: 3,
-    inteRequStDate: "29 de febrero 2022",
-    inteRequDuration: "5 Meses",
-    inteRequSalary: "1000000",
-    inteRequDepartment: "Diario el planeta",
-    inteRequBondingType: "Superheroes",
-    inteRequFunctions:
-      "Salvar el mundo, Rescatar gaticos, Cargar carros, Detener a los malos",
-    inteRequCompetences:
-      "Periodista, honorable, cursi, ser de la realeza o millonario",
-    inteRequOtherBenefits:
-      "Volar, vision de calor, superfuerza, saber luchar, ser un justiciero",
-    careers: [
-      {
-        id: 1,
-        name: "Derecho",
-      },
-      {
-        id: 2,
-        name: "Negocios internacionales",
-      },
-    ],
+    inteRequName: currentIntReq.inteRequName,
+    companyName: currentIntReq.company.compName,
+    contactName: "",
+    inteRequNumber: currentIntReq.inteRequNumber,
+    inteRequStDate: currentIntReq.inteRequStDate,
+    inteRequDuration: currentIntReq.inteRequDuration,
+    inteRequSalary: currentIntReq.inteRequSalary,
+    inteRequDepartment: currentIntReq.inteRequDepartment,
+    inteRequBondingType: currentIntReq.inteRequBondingType,
+    inteRequFunctions: currentIntReq.inteRequFunctions,
+    inteRequCompetencies: currentIntReq.inteRequCompetencies,
+    inteRequOtherBenefits: currentIntReq.inteRequOtherBenefits,
+    careers: currentIntReq.careers,
   };
 
   return (
@@ -166,9 +160,9 @@ const GeneralRequest = () => {
             {request.careers.map((data) => {
               return (
                 <Stack direction="row" spacing={1}>
-                  <ListItem key={data.id}>
+                  <ListItem key={data.careId}>
                     <Chip
-                      label={data.name}
+                      label={data.careName}
                       color="primary"
                       variant="outlined"
                     />
@@ -221,7 +215,7 @@ const GeneralRequest = () => {
             }}
             component="ul"
           >
-            {request.inteRequCompetences.split(",").map((data) => {
+            {request.inteRequCompetencies.split(",").map((data) => {
               return (
                 <Stack direction="row" spacing={1}>
                   <ListItem key={data}>
