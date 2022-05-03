@@ -8,7 +8,6 @@ import Create from "../../components/module-request/company/request/RequestCreat
 import Update from "../../components/module-request/company/request/RequestUpdate";
 
 import Profile from "../../components/global/profile/company/ProfileCompany";
-import ProfileFormik from "../../components/global/profile/company/ProfileGeneral";
 import UpdateUser from "../../components/module-request/company/user/UpdateUser";
 import CreateUser from "../../components/module-request/company/user/CreateUser";
 import Show from "../../components/module-request/global/CompanyRequest";
@@ -67,10 +66,6 @@ const MainCompany = () => {
 
         <Route path="/company" element={<HomeCompany />}>
           <Route path="profile" element={<Profile />} />
-        </Route>
-
-        <Route path="/company" element={<HomeCompany />}>
-          <Route path="profileformik" element={<ProfileFormik />} />
         </Route>
       </Routes>
     </>
