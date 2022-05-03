@@ -55,7 +55,7 @@ const RequestList = () => {
   useEffect(() => {
     dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
     let listReqOfCompany = customInternRequestEstructure();
-    setIntReqAssocCompany(listReqOfCompany)
+    setIntReqAssocCompany(listReqOfCompany);
     setTimeout(() => {
       dispatch(setIsRender(false));
     }, "1000");
