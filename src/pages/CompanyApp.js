@@ -101,6 +101,10 @@ const CompanyApp = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleCloseSection = () => {
+    setAnchorElUser(null);
     logOut();
     navigate("/SignIn");
   };
@@ -168,7 +172,7 @@ const CompanyApp = () => {
                   <Typography textAlign="center">Perfil</Typography>
                 </MenuItem>
                 <Divider />
-                <MenuItem key="Cerrar Sesion" onClick={handleCloseUserMenu}>
+                <MenuItem key="Cerrar Sesion" onClick={handleCloseSection}>
                   <Typography textAlign="center">Cerrar Sesión</Typography>
                 </MenuItem>
               </Menu>
