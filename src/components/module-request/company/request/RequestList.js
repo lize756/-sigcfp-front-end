@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { Container, Stack, Card, TableContainer, Button } from "@mui/material";
+import EditAlert from "../../../global/alert/EditAlert";
 
 //Data Grid
 import { DataGrid, GridToolbar, esES } from "@mui/x-data-grid";
@@ -27,7 +28,8 @@ import {
   setIsRender,
   setIntReq,
 } from "../../../store/slices/InternRequestSlice";
-
+import { setShowAlert } from "../../../store/slices/AlertSlice";
+import { render } from "react-dom";
 const themeLanguageDataGrid = createTheme(esES, coreeEsEs);
 const RequestList = () => {
   // Allow to send the elements of store
@@ -44,6 +46,11 @@ const RequestList = () => {
    */
   const list_interRequestsOfCompany = useSelector(
     (state) => state.InternRequestSlice.listIntReqsOfCompany
+  );
+
+  // Verified if the user to accept the conditions to change this state, if isAcceptedAlert, the user agree on the contrary disagree
+  const isAcceptedAlert = useSelector(
+    (state) => state.AlertSlice.isAcceptedAlert
   );
 
   //Get acces_token of the user that start section
@@ -125,14 +132,23 @@ const RequestList = () => {
    */
   const handleDelete = (event, cellValues) => {
     const currentReqToDelete = cellValues.row;
-    dispatch(
-      deleteInternRequest(
-        ACCESS_TOKEN,
-        currentReqToDelete.inteRequId,
-        currentReqToDelete
-      )
-    );
-  };
+    openAlert();
+      dispatch(
+        deleteInternRequest(
+          ACCESS_TOKEN,
+          currentReqToDelete.inteRequId,
+          currentReqToDelete
+        )
+      );
+    }
+  
+   const  openAlert = ()=> {
+      dispatch(setShowAlert(true));
+      <EditAlert/>
+        
+    };
+
+  
 
   /**
    * Allow view of info tha have a company
@@ -141,8 +157,8 @@ const RequestList = () => {
    */
   const handleViewInterReqInfo = (event, cellValues) => {
     const currentIntReq = cellValues.row;
-    console.log(currentIntReq)
-    dispatch(setIntReq(currentIntReq))
+    console.log(currentIntReq);
+    dispatch(setIntReq(currentIntReq));
     navigate("/company/show");
   };
 
