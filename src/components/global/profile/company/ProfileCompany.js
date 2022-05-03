@@ -2,7 +2,7 @@ import React from "react";
 import ProfileGeneral from "./ProfileGeneral";
 import ProfilePassword from "../ProfilePassword";
 
-const ProfilePerson = () => {
+const ProfileCompany = () => {
   return (
     <div>
       <ProfileGeneral />
@@ -11,4 +11,4 @@ const ProfilePerson = () => {
   );
 };
 
-export default ProfilePerson;
+export default ProfileCompany;

@@ -7,9 +7,8 @@ import RequestList from "../../components/module-request/company/request/Request
 import Create from "../../components/module-request/company/request/RequestCreate";
 import Update from "../../components/module-request/company/request/RequestUpdate";
 
-import Profile from "../../components/global/profile/ProfileCompany";
-import ProfileFormik from "../../components/global/profile/person/ProfileGeneral";
-import PasswordFormik from "../../components/global/profile/person/ProfilePassword";
+import Profile from "../../components/global/profile/company/ProfileCompany";
+import ProfileFormik from "../../components/global/profile/company/ProfileGeneral";
 import UpdateUser from "../../components/module-request/company/user/UpdateUser";
 import CreateUser from "../../components/module-request/company/user/CreateUser";
 import Show from "../../components/module-request/global/CompanyRequest";
@@ -71,7 +70,7 @@ const MainCompany = () => {
         </Route>
 
         <Route path="/company" element={<HomeCompany />}>
-          <Route path="profileFormik" element={<PasswordFormik />} />
+          <Route path="profileformik" element={<ProfileFormik />} />
         </Route>
       </Routes>
     </>

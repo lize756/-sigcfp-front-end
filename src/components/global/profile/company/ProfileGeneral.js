@@ -1,0 +1,316 @@
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import {
+  Paper,
+  TextField,
+  Button,
+  Grid,
+  Stack,
+  Box,
+  Typography,
+} from "@mui/material";
+import { green } from "@mui/material/colors";
+import PersonIcon from "@mui/icons-material/PersonPin";
+import Autocomplete from "@mui/material/Autocomplete";
+import SaveIcon from "@mui/icons-material/Save";
+
+const validationSchema = yup.object({
+  compName: yup
+    .string("Ingrese el nombre de la empresa ")
+    .required("Campo obligatorio"),
+  compNit: yup
+    .string("Ingrese el Nit de la compañia ")
+    .required("Campo obligatorio"),
+
+  compEmail: yup
+    .string("Ingrese el correo electrónico de la compañia")
+    .email("Ingresa un correo electrónico válido")
+    .required("Campo obligatorio"),
+  compAddress: yup
+    .string("Ingrese la dirección de la compañia ")
+    .required("Campo obligatorio"),
+  compTelephone: yup
+    .string("Ingrese el teléfono de la compañia ")
+    .required("Campo obligatorio"),
+  compEcoActiv: yup
+    .string("Ingrese la actividad económica de la compañia ")
+    .required("Campo obligatorio"),
+  compType: yup
+    .string("Ingrese el tipo de compañia ")
+    .required("Campo obligatorio"),
+  compUrlAddress: yup
+    .string("Ingrese la dirección de la página web de la compañia ")
+    .required("Campo obligatorio"),
+});
+
+const ProfileGeneral = () => {
+  const listCities = ["Bogota", "Cali", "Medellin"];
+  const listCountries = [
+    { id: 1, name: "Colombia" },
+    { id: 2, name: "Paraguay" },
+    { id: 3, name: "Argentina" },
+  ];
+  const [getCompCountry, setCompCountry] = useState({
+    id: 1,
+    name: "Colombia",
+  });
+  const [getCompCity, setCompCity] = useState("Bogota");
+
+  const formik = useFormik({
+    initialValues: {
+      compAddress: "norte 1234",
+      compEcoActiv: "actividad 1, actividad 2",
+      compEmail: "company@company.com",
+      compIcesiStud: "x",
+      compName: "company",
+      compNit: "123490590",
+      compTelephone: "18487575858",
+      compType: "tipo 1234",
+      compUrlAddress: "https://company.com",
+    },
+
+    validationSchema: validationSchema,
+
+    onSubmit: (values) => {
+      values.compCountryName = getCompCountry;
+      values.compCityName = getCompCity;
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
+  return (
+    <div>
+      <Paper sx={{ mt: 2, ml: 5, mr: 5 }}>
+        <Stack direction="row" spacing={2}>
+          <PersonIcon
+            sx={{ color: green[500], width: 65, height: 65, ml: 5, mt: 1 }}
+          />
+
+          <Box md={6}>
+            <Typography
+              mt={2}
+              ml={2}
+              variant="h6"
+              sx={{ fontWeight: "medium", color: "#072079" }}
+            >
+              {formik.values.compName}
+            </Typography>
+            <Typography
+              ml={2}
+              mb={2}
+              variant="subtitle2"
+              sx={{ color: "#072079" }}
+            >
+              Editar Perfil
+            </Typography>
+          </Box>
+        </Stack>
+      </Paper>{" "}
+      <Paper sx={{ mt: 3, ml: 5, mr: 5 }}>
+        <form onSubmit={formik.handleSubmit}>
+          <Grid container spacing={2} mt={2} mx={1}>
+            <Grid item xs={6}>
+              <TextField
+                sx={{ width: "85%" }}
+                label="Nombre compañÍa"
+                name="compName"
+                value={formik.values.compName}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.compName && Boolean(formik.errors.compName)
+                }
+                helperText={formik.touched.compName && formik.errors.compName}
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                label="Nit de la  compañÍa"
+                sx={{ width: "85%" }}
+                name="compNit"
+                value={formik.values.compNit}
+                onChange={formik.handleChange}
+                error={formik.touched.compNit && Boolean(formik.errors.compNit)}
+                helperText={formik.touched.compNit && formik.errors.compNit}
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                sx={{ width: "85%" }}
+                type="email"
+                label="Correo electrónico"
+                name="compEmail"
+                value={formik.values.compEmail}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.compEmail && Boolean(formik.errors.compEmail)
+                }
+                helperText={formik.touched.compEmail && formik.errors.compEmail}
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                sx={{ width: "85%" }}
+                label="Dirección"
+                name="compAddress"
+                value={formik.values.compAddress}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.compAddress &&
+                  Boolean(formik.errors.compAddress)
+                }
+                helperText={
+                  formik.touched.compAddress && formik.errors.compAddress
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                sx={{ width: "85%" }}
+                type="tel"
+                label="Teléfono"
+                name="compTelephone"
+                value={formik.values.compTelephone}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.compTelephone &&
+                  Boolean(formik.errors.compTelephone)
+                }
+                helperText={
+                  formik.touched.compTelephone && formik.errors.compTelephone
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                sx={{ width: "85%" }}
+                label="Dirección URL"
+                type="url"
+                name="compUrlAddress"
+                value={formik.values.compUrlAddress}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.compUrlAddress &&
+                  Boolean(formik.errors.compUrlAddress)
+                }
+                helperText={
+                  formik.touched.compUrlAddress && formik.errors.compUrlAddress
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Autocomplete
+                sx={{ width: "85%" }}
+                freeSolo
+                disableClearable
+                id="free-solo-2-demo"
+                defaultValue={{ name: getCompCountry.name }}
+                // List of countries
+                options={listCountries}
+                /**
+                 * This property allows to show in the user's view the property that we want to take from the object.
+                 * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+                 */
+                getOptionLabel={(option) => option.name}
+                onChange={(event, value) => setCompCountry(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Seleccione su país"
+                    required
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                    }}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Autocomplete
+                sx={{ width: "85%" }}
+                freeSolo
+                disableClearable
+                id="free-solo-2-demo"
+                //List of cities
+                options={listCities}
+                defaultValue={getCompCity}
+                /**
+                 * This property allows to show in the user's view the property that we want to take from the object.
+                 * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+                 */
+                getOptionLabel={(option) => option}
+                /**
+                 * Allows send the select object to variable CompCity that correspond the element select
+                 */
+                onChange={(event, value) => setCompCity(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Seleccione su ciudad"
+                    required
+                    error={getCompCity === ""}
+                    helperText={getCompCity === "" ? "Elemento requerido" : ""}
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                    }}
+                    onChange={(e) => setCompCity(e.target.value)}
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                sx={{ width: "85%" }}
+                label="Actividad económica de la compañía"
+                multiline
+                rows={2}
+                name="compEcoActiv"
+                value={formik.values.compEcoActiv}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.compEcoActiv &&
+                  Boolean(formik.errors.compEcoActiv)
+                }
+                helperText={
+                  formik.touched.compEcoActiv && formik.errors.compEcoActiv
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                sx={{ width: "85%" }}
+                type="tel"
+                label="Tipo de compañía"
+                multiline
+                rows={2}
+                name="compType"
+                value={formik.values.compType}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.compType && Boolean(formik.errors.compType)
+                }
+                helperText={formik.touched.compType && formik.errors.compType}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            sx={{ my: 4, ml: 4 }}
+            variant="contained"
+            startIcon={<SaveIcon />}
+            type="submit"
+          >
+            Guardar
+          </Button>
+        </form>
+      </Paper>
+    </div>
+  );
+};
+
+export default ProfileGeneral;
