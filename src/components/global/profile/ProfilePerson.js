@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Paper,
   Stack,
-  Avatar,
   Box,
   Typography,
   TextField,
@@ -21,8 +20,6 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { green } from "@mui/material/colors";
 import Autocomplete from "@mui/material/Autocomplete";
-import Select from "@mui/material/Select";
-import { MenuItem } from "@material-ui/core";
 
 /**
  * REDUX

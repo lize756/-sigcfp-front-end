@@ -5,7 +5,7 @@ import HomeLocation from "../../pages/LocCoordinatorApp";
 import ContentsLocation from "../../layout/coordinator/locCoordinator/ContentsLoc";
 import CareerList from "../../components/module-request/locCoordinator/CareerList";
 import Request from "../../components/module-request/global/GeneralRequest";
-import Profile from "../../components/global/profile/ProfilePerson";
+import Profile from "../../components/global/profile/person/ProfilePerson";
 
 const MainLocation = () => {
   return (

@@ -6,7 +6,7 @@ import ContentDirector from "../../layout/director/ContentsDir";
 import Companies from "../../components/module-request/global/contacts/CompaniesList";
 import RequestList from "../../components/module-request/promotion-director/request/RequestList";
 import Contacts from "../../components/module-request/global/contacts/UserList";
-import Profile from "../../components/global/profile/ProfilePerson";
+import Profile from "../../components/global/profile/person/ProfilePerson";
 import Company from "../../components/module-request/global/contacts/ShowCompany";
 import Request from "../../components/module-request/global/GeneralRequest";
 
