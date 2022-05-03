@@ -34,6 +34,7 @@ import CardProfile from "../layout/CardProfile";
 import { useNavigate } from "react-router";
 
 import { Outlet } from "react-router-dom";
+import { logOut } from "../components/store/slices/SignIn/LoginSlice";
 
 const drawerWidth = 260;
 
@@ -99,6 +100,11 @@ const LocCoordinatorApp = () => {
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseSection = () => {
+    setAnchorElUser(null);
+    logOut();
+    navigate("/SignIn");
   };
 
   const handleCloseUserMenu = () => {
@@ -167,7 +173,7 @@ const LocCoordinatorApp = () => {
                   <Typography textAlign="center">Perfil</Typography>
                 </MenuItem>
                 <Divider />
-                <MenuItem key="Cerrar Sesion" onClick={handleCloseUserMenu}>
+                <MenuItem key="Cerrar Sesion" onClick={handleCloseSection}>
                   <Typography textAlign="center">Cerrar Sesión</Typography>
                 </MenuItem>
               </Menu>
@@ -254,7 +260,9 @@ const LocCoordinatorApp = () => {
               <ListItemText primary="Reportes " />
             </ListItem>
 
-            <ListItem button key="Profile">
+            <ListItem button key="Profile"  onClick={() => {
+                    navigate("/company/profile");
+                  }}>
               <ListItemIcon>
                 <PersonPinIcon color="primary" />
               </ListItemIcon>

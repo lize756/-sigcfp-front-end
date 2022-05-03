@@ -9,21 +9,29 @@ import MoneyIcon from "@mui/icons-material/AttachMoney";
 import BusinessIcon from "@mui/icons-material/BusinessCenter";
 import SchoolIcon from "@mui/icons-material/School";
 import { red, orange, pink } from "@mui/material/colors";
+//redux
+import { useDispatch, useSelector } from "react-redux";
 
 const ShowCompany = () => {
+  /**
+   * ----------------------------------------
+   * ---------------- REDUX -----------------
+   * ----------------------------------------
+   */
+  const currentCompany = useSelector((state) => state.CompanySlice.company);
+
+
   const [company, setCompany] = useState({
-    compName: "Rempel, Hackett and Macejkovic",
-    compNit: "3566461110394479",
-    compAddress: "2328 Cascade Pass",
-    city: "Cali",
-    compEmail: "dbitterton0@accuweather.com",
-    compTelephone: "549-176-8430",
-    compIcesiStud: "X",
-    compEcoActiv: "Capital Goods",
-    compType:
-      "praesent id massa id nisl venenatis lacinia aenean sit amet justo morbi ut",
-    compUrlAddress:
-      "https://sfgate.com/aliquam/convallis/nunc/proin/at/turpis.html",
+    compName: currentCompany.compName,
+    compNit: currentCompany.compNit,
+    compAddress: currentCompany.compAddress,
+    city: currentCompany.compCityName,
+    compEmail: currentCompany.compEmail,
+    compTelephone: currentCompany.compTelephone,
+    compIcesiStud: currentCompany.compIcesiStud,
+    compEcoActiv: currentCompany.compEcoActiv,
+    compType: currentCompany.compType,
+    compUrlAddress: currentCompany.compUrlAddress
   });
   return (
     <div>

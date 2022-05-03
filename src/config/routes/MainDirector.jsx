@@ -24,7 +24,7 @@ const MainDirector = () => {
         <Route path="/director" element={<HomeDirector />}>
           <Route path="request" element={<RequestList />} />
         </Route>
-        <Route path="/director" element={<HomeDirector />}>
+        <Route path="/company" element={<HomeDirector />}>
           <Route path="contacts" element={<Contacts />} />
         </Route>
         <Route path="/director" element={<HomeDirector />}>

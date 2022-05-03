@@ -1,63 +1,70 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Container,
-  Stack,
-  Card,
-  Table,
-  TableContainer,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableBody,
-  TablePagination,
-  Typography,
-} from "@mui/material";
-import User from "./User";
-import Search from "../../company/request/RequestSearch";
+import { Card, Container, Stack, TableContainer, Typography } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 
-const UserList = ({ edit }) => {
-  //list of company's contacts
-  const [userList, setUsertList] = useState([]);
-
-  //pagination
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+const UserList = () => {
   //Redux
   const companyContacts = useSelector(
     (state) => state.ContactSlice.listContactsOfCompany
   );
+  const currentCompany = useSelector((state) => state.CompanySlice.company);
 
-  //navigate
-  let navigate = useNavigate();
-
-  //Axios
-  useEffect(() => {
-    setUsertList(companyContacts);
-  }, [companyContacts]);
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-    setPage(0);
+  /**
+   * ------------------------------------------------------------------------------------
+   * ------------------------------------Methods of datagrid-----------------------------
+   * ------------------------------------------------------------------------------------
+   */
+  const handleCellClick = (param, event) => {
+    event.stopPropagation();
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleRowClick = (param, event) => {
+    event.stopPropagation();
   };
+  /**
+   * -----------------------------------------------------------------------------
+   * This lines represent the column name that it have the grid
+   * table that contains the list of contact
+   * -----------------------------------------------------------------------------
+   */
 
-  //Render
-  const renderList = () => {
-    if (userList.length > 0) {
-      return userList
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((user) => <User user={user} key={user.contId} />);
-    } else {
-      return <></>;
-    }
-  };
+  const columns = [
+    {
+      field: "contName",
+      headerName: "Nombre de contacto",
+      width: 300,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "contPhone",
+      headerName: "Telefono",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "contEmail",
+      headerName: "Email",
+      width: 300,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "contPosition",
+      headerName: "Posición",
+      width: 150,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+  ];
 
   return (
     <div>
@@ -69,36 +76,27 @@ const UserList = ({ edit }) => {
           mb={5}
         >
           <Typography variant="h5" gutterBottom color="#072079">
-            Contactos empresariales
+            Contactos empresariales de la empresa {currentCompany.compName}
           </Typography>
         </Stack>
       </Container>
-
-      <Card sx={{ borderRadius: 8 }}>
-        <Search />
-        <TableContainer sx={{ maxHeight: 400, mt: 5, mb: 5 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Nombre</TableCell>
-                <TableCell align="center">Correo Electronico</TableCell>
-                <TableCell align="center">Telefono</TableCell>
-                <TableCell align="right">Posicioón </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>{renderList()}</TableBody>
-          </Table>
+      <Card sx={{ borderRadius: 8, padding: "0px 20px 0px 20px" }}>
+        <TableContainer
+          sx={{ maxHeight: 400, mt: 5, mb: 5, height: 500, width: "100%" }}
+        >
+          <DataGrid
+            rowHeight={50}
+            getRowId={(row) => row.contId}
+            rows={companyContacts}
+            columns={columns}
+            pageSize={5}
+            onCellClick={handleCellClick}
+            onRowClick={handleRowClick}
+            components={{
+              Toolbar: GridToolbar,
+            }}
+          />
         </TableContainer>
-        <TablePagination
-          sx={{ mb: 2 }}
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={userList.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Card>
     </div>
   );

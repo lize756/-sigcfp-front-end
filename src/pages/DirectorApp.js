@@ -30,6 +30,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CardProfile from "../layout/CardProfile";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router";
+import { logOut } from "../components/store/slices/SignIn/LoginSlice";
 
 const drawerWidth = 270;
 
@@ -102,6 +103,13 @@ const DirectorApp = () => {
     setAnchorElUser(null);
   };
 
+  const handleCloseSection = () => {
+    setAnchorElUser(null);
+    logOut();
+    navigate("/SignIn");
+  };
+
+
   return (
     <div>
       <Box sx={{ display: "flex" }}>
@@ -164,7 +172,7 @@ const DirectorApp = () => {
                   <Typography textAlign="center">Perfil</Typography>
                 </MenuItem>
                 <Divider />
-                <MenuItem key="Cerrar Sesion" onClick={handleCloseUserMenu}>
+                <MenuItem key="Cerrar Sesion" onClick={handleCloseSection}>
                   <Typography textAlign="center">Cerrar Sesión</Typography>
                 </MenuItem>
               </Menu>

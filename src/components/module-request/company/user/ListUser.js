@@ -5,41 +5,33 @@ import {
   Container,
   Stack,
   Card,
-  Table,
   TableContainer,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableBody,
-  TablePagination,
   Button,
-  Typography,
 } from "@mui/material";
 
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Link as RouterLink } from "react-router-dom";
-import axios from "../../../../config/axios";
-import User from "./User";
+/**
+ * Icons
+ */
+import { IconButton, Typography } from "@mui/material";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import AddIcon from "@mui/icons-material/Add";
-import Search from "../request/RequestSearch";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteContact,
   getContactsAssociatedCompany,
+  setContact,
   setIsRenderContact,
 } from "../../../store/slices/ContactSlice";
+import { useNavigate } from "react-router";
 
-const ListUser = ({ userEdit }) => {
+const ListUser = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
-
-  //User contacts
-  const [userList, setUserList] = useState([]);
-
-  //table pagination
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   /**
    * REDUX
@@ -56,71 +48,134 @@ const ListUser = ({ userEdit }) => {
   const userCompanyId = useSelector((state) => state.userLogin.userCompanyId);
 
   // Verified if change the list of intern requests associated to contact
-  const isRender = useSelector((state) => state.ContactSlice.isRenderContact);
+  const isRenderContact = useSelector(
+    (state) => state.ContactSlice.isRenderContact
+  );
 
   useEffect(() => {
     // Added to store the company that user login
     dispatch(getContactsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
-    dispatch(setIsRenderContact(false));
+
+    setTimeout(() => {
+      dispatch(setIsRenderContact(false));
+    }, "1000");
     console.log("Tamaño ", listContactOfCompany.length);
-  }, [isRender]);
+  }, [isRenderContact]);
 
-  //Metodo delete
-  const delUser = (user) => {
-    console.log(user.contId);
+  let navigate = useNavigate();
+  /**
+   * ------------------------------------------------------------------------------------
+   * ----------------Method relationated with the crud action of contact-----------------
+   * ------------------------------------------------------------------------------------
+   */
 
-    dispatch(deleteContact(ACCESS_TOKEN, user.contId));
-    /**
-     * 
-     axios.delete("contacts/" + user.contId).then(() => {
-       axios.get("contacts").then((res) => {
-         setUserList(res.data);
-        });
-      });
-    */
+  /**
+   * Allow edit a contact
+   * @param {*} event
+   * @param {*} cellValues correspond the cell that you want edit
+   */
+  const handleEdit = (event, cellValues) => {
+    const currentContact = cellValues.row;
+    dispatch(setContact(currentContact));
+    navigate("/company/updateUser");
   };
 
-  //Metodo edit
-  const editUser = (user) => {
-    userEdit(user);
-    //navigate("/company/update");
+  /**
+   * Allow delete a contact
+   * @param {} event
+   * @param {*} cellValues correspond the cell that you want delete
+   */
+  const handleDelete = (event, cellValues) => {
+    const currentUserToDelete = cellValues.row;
+    dispatch(deleteContact(ACCESS_TOKEN, currentUserToDelete.contId));
   };
 
-  //Metodo
-  const viewUser = (user) => {
-    userEdit(user);
-    //navigate("/company/View");
+  /**
+   * ------------------------------------------------------------------------------------
+   * ------------------------------------Methods of datagrid-----------------------------
+   * ------------------------------------------------------------------------------------
+   */
+  const handleCellClick = (param, event) => {
+    event.stopPropagation();
   };
 
-  //handleChange
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
-    setPage(0);
+  const handleRowClick = (param, event) => {
+    event.stopPropagation();
   };
+  /**
+   * -----------------------------------------------------------------------------
+   * This lines represent the column name that it have the grid
+   * table that contains the list of contact
+   * -----------------------------------------------------------------------------
+   */
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const columns = [
+    {
+      field: "contName",
+      headerName: "Nombre de contacto",
+      width: 300,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "contPhone",
+      headerName: "Telefono",
+      width: 200,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "contEmail",
+      headerName: "Email",
+      width: 300,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "contPosition",
+      headerName: "Posición",
+      width: 150,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
 
-  // Render
-  const renderList = () => {
-    if (listContactOfCompany.length > 0) {
-      return listContactOfCompany
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((user) => (
-          <User
-            user={user}
-            key={user.contId}
-            delUser={delUser}
-            editUser={editUser}
-            viewUser={viewUser}
-          />
-        ));
-    } else {
-      return <></>;
-    }
-  };
+    {
+      field: "Opciones",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
 
+      renderCell: (cellValues) => {
+        const current = cellValues;
+        return (
+          <>
+            <IconButton
+              size="large"
+              aria-label="edit"
+              onClick={(event) => {
+                handleEdit(event, cellValues);
+              }}
+            >
+              <ModeEditIcon />
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="delete"
+              onClick={(event) => {
+                handleDelete(event, cellValues);
+              }}
+            >
+              <PersonRemoveIcon />
+            </IconButton>
+          </>
+        );
+      },
+    },
+  ];
   return (
     <div>
       <Container>
@@ -144,32 +199,24 @@ const ListUser = ({ userEdit }) => {
         </Stack>
       </Container>
 
-      <Card sx={{ borderRadius: 8 }}>
-        <Search />
-        <TableContainer sx={{ maxHeight: 400, mt: 5, mb: 5 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Nombre</TableCell>
-                <TableCell align="center">Correo Electronico</TableCell>
-                <TableCell align="center">Telefono</TableCell>
-                <TableCell align="right">Posicion </TableCell>
-                <TableCell align="center"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>{renderList()}</TableBody>
-          </Table>
+      <Card sx={{ borderRadius: 8, padding: "0px 20px 0px 20px" }}>
+        <TableContainer
+          sx={{ maxHeight: 400, mt: 5, mb: 5, height: 500, width: "100%" }}
+        >
+          <DataGrid
+            rowHeight={50}
+            loading={isRenderContact}
+            getRowId={(row) => row.contId}
+            rows={isRenderContact ? [] : listContactOfCompany}
+            columns={columns}
+            pageSize={5}
+            onCellClick={handleCellClick}
+            onRowClick={handleRowClick}
+            components={{
+              Toolbar: GridToolbar,
+            }}
+          />
         </TableContainer>
-        <TablePagination
-          sx={{ mb: 2 }}
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={listContactOfCompany.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Card>
 
       <Paper sx={{ width: "100%", overflow: "hidden" }}></Paper>

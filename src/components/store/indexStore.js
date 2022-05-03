@@ -14,6 +14,7 @@ import InternRequestSlice from "./slices/InternRequestSlice";
 import PersonSlice from "./slices/PersonSlice";
 import CountrySlice from "./slices/CountrySlice";
 import UserrSlice from "./slices/UserrSlice";
+import AlertSlice from "./slices/AlertSlice"
 /**
  * Store of all application
  */
@@ -24,6 +25,7 @@ export default configureStore({
     UserrSlice,
     CountrySlice,
     userLogin,
+    AlertSlice,
     CareerSlice,
     CompanySlice,
     ContactSlice,
