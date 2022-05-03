@@ -155,7 +155,7 @@ const ListUser = () => {
           <>
             <IconButton
               size="large"
-              aria-label="delete"
+              aria-label="edit"
               onClick={(event) => {
                 handleEdit(event, cellValues);
               }}

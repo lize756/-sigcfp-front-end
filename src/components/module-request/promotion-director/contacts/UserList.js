@@ -18,7 +18,7 @@ import Search from "../../company/request/RequestSearch";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 
-const UserList = ({ edit }) => {
+const UserList = () => {
   //list of company's contacts
   const [userList, setUsertList] = useState([]);
 
@@ -30,6 +30,10 @@ const UserList = ({ edit }) => {
   const companyContacts = useSelector(
     (state) => state.ContactSlice.listContactsOfCompany
   );
+  const currentCompany = useSelector(
+    (state) => state.CompanySlice.company
+  );
+
 
   //navigate
   let navigate = useNavigate();
@@ -69,7 +73,7 @@ const UserList = ({ edit }) => {
           mb={5}
         >
           <Typography variant="h5" gutterBottom color="#072079">
-            Contactos empresariales
+            Contactos de la empresa {currentCompany.compName.toUpperCase()}
           </Typography>
         </Stack>
       </Container>
@@ -89,16 +93,6 @@ const UserList = ({ edit }) => {
             <TableBody>{renderList()}</TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          sx={{ mb: 2 }}
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={userList.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Card>
     </div>
   );
