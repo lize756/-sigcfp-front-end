@@ -5,7 +5,6 @@ import {
   Stack,
   Card,
   TableContainer,
-  TablePagination,
   Button,
 } from "@mui/material";
 
@@ -258,7 +257,7 @@ const RequestList = () => {
         </Stack>
       </Container>
 
-      <Card sx={{ borderRadius: 8 }}>
+      <Card sx={{ borderRadius: 8, padding: "0px 20px 0px 20px" }}>
         <TableContainer
           sx={{
             maxHeight: 400,

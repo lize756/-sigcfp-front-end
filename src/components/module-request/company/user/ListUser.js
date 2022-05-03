@@ -48,14 +48,19 @@ const ListUser = () => {
   const userCompanyId = useSelector((state) => state.userLogin.userCompanyId);
 
   // Verified if change the list of intern requests associated to contact
-  const isRender = useSelector((state) => state.ContactSlice.isRenderContact);
+  const isRenderContact = useSelector(
+    (state) => state.ContactSlice.isRenderContact
+  );
 
   useEffect(() => {
     // Added to store the company that user login
     dispatch(getContactsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
-    dispatch(setIsRenderContact(false));
-    //console.log("Tamaño ", listContactOfCompany.length);
-  }, [isRender]);
+
+    setTimeout(() => {
+      dispatch(setIsRenderContact(false));
+    }, "1000");
+    console.log("Tamaño ", listContactOfCompany.length);
+  }, [isRenderContact]);
 
   let navigate = useNavigate();
   /**
@@ -200,8 +205,9 @@ const ListUser = () => {
         >
           <DataGrid
             rowHeight={50}
+            loading={isRenderContact}
             getRowId={(row) => row.contId}
-            rows={listContactOfCompany}
+            rows={isRenderContact ? [] : listContactOfCompany}
             columns={columns}
             pageSize={5}
             onCellClick={handleCellClick}
