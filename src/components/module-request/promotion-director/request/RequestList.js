@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from "react";
 
-import { Paper, Container, Stack, Card, TableContainer } from "@mui/material";
-
 //Data Grid
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-//Icon
+import {
+  DataGrid,
+  esES,
+  GridToolbarExport,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarDensitySelector,
+  GridToolbarFilterButton,
+} from "@mui/x-data-grid"; //Icon
 import { IconButton } from "@mui/material";
 import PreviewIcon from "@mui/icons-material/Preview";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router";
+import {
+  Paper,
+  Container,
+  Stack,
+  Card,
+  TableContainer,
+} from "@mui/material";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +28,8 @@ import {
   setIntReq,
   setIsRender,
 } from "../../../store/slices/InternRequestSlice";
-
+//Config lenguage of default.
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 const RequestList = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
@@ -36,7 +49,7 @@ const RequestList = () => {
   // Verified if change the list of intern requests associated to company
   const isRender = useSelector((state) => state.InternRequestSlice.isRender);
 
-  const rolUserLogin =  useSelector((state) => state.userLogin.rolee);
+  const rolUserLogin = useSelector((state) => state.userLogin.rolee);
   //se guarda en requestlist la informacion de las solicitudes
   //Axios
   useEffect(() => {
@@ -98,15 +111,14 @@ const RequestList = () => {
   const handleViewRequest = (event, cellValues) => {
     const currentReq = cellValues.row;
     dispatch(setIntReq(currentReq));
-    selectPath(rolUserLogin)
+    selectPath(rolUserLogin);
   };
-
 
   /**
    * This function is responsible for choosing the route that corresponds to the person logged in
    * @param {*} ROLEE Role of the person who logged in to the application
    */
-   const selectPath = (ROLEE) => {
+  const selectPath = (ROLEE) => {
     switch (ROLEE) {
       case "ROLEE_PROMOTION_COORDINATOR":
         navigate("/promotion/show");
@@ -220,6 +232,45 @@ const RequestList = () => {
       },
     },
   ];
+  /**
+   * ------------------------------------------------------------------------------------
+   * ------------------------------------Custom config of datagrid-----------------------------
+   * ------------------------------------------------------------------------------------
+   */
+
+  /**
+   *This constant allows to establish the theme that the datagrid will have,
+   *this includes: the colors, the size of the cells, the language, among others....
+   *In this case we use it to establish the language of the datagrid
+   *More info: https://v4.mui.com/components/data-grid/localization/
+   */
+  const customLanguageDataGrid = createTheme({}, esES);
+
+  /**
+   * This function allows establishing which header buttons the datagrid will have (filtering button, column density...),
+   * as well as establishing the format to export the information to a csv file
+   * more info: https://mui.com/x/react-data-grid/components/
+   * @returns the custom Grid Toolbar Options Of Datagrid
+   */
+  function GridToolbarOptionsOfDatagrid() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarFilterButton />
+        <GridToolbarExport
+          csvOptions={{
+            fileName: "Mis solicitudes",
+            delimiter: ";",
+            utf8WithBom: true,
+          }}
+        ></GridToolbarExport>
+      </GridToolbarContainer>
+    );
+  }
+  /**
+   * --------------------------End custom config datagrid--------------------------------
+   */
 
   return (
     <div>
@@ -246,20 +297,22 @@ const RequestList = () => {
             width: "100%",
           }}
         >
-          <DataGrid
-            rowHeight={50}
-            loading={isRender}
-            autoHeight
-            getRowId={(row) => row.inteRequId}
-            rows={isRender ? [] : getInternRequests}
-            columns={columns}
-            pageSize={5}
-            onCellClick={handleCellClick}
-            onRowClick={handleRowClick}
-            components={{
-              Toolbar: GridToolbar,
-            }}
-          />
+          <ThemeProvider theme={customLanguageDataGrid}>
+            <DataGrid
+              rowHeight={50}
+              loading={isRender}
+              autoHeight
+              getRowId={(row) => row.inteRequId}
+              rows={isRender ? [] : getInternRequests}
+              columns={columns}
+              pageSize={5}
+              onCellClick={handleCellClick}
+              onRowClick={handleRowClick}
+              components={{
+                Toolbar: GridToolbarOptionsOfDatagrid,
+              }}
+            />
+          </ThemeProvider>
         </TableContainer>
       </Card>
 

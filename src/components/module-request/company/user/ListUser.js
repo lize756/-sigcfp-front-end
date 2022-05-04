@@ -7,9 +7,11 @@ import {
   Card,
   TableContainer,
   Button,
+  ThemeProvider,
+  createTheme,
 } from "@mui/material";
 
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, esES, GridToolbar, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
 import { Link as RouterLink } from "react-router-dom";
 /**
  * Icons
@@ -176,6 +178,47 @@ const ListUser = () => {
       },
     },
   ];
+
+  /**
+   * ------------------------------------------------------------------------------------
+   * ------------------------------------Custom config of datagrid-----------------------------
+   * ------------------------------------------------------------------------------------
+   */
+
+  /**
+   *This constant allows to establish the theme that the datagrid will have,
+   *this includes: the colors, the size of the cells, the language, among others....
+   *In this case we use it to establish the language of the datagrid
+   *More info: https://v4.mui.com/components/data-grid/localization/
+   */
+  const customLanguageDataGrid = createTheme({}, esES);
+
+  /**
+   * This function allows establishing which header buttons the datagrid will have (filtering button, column density...),
+   * as well as establishing the format to export the information to a csv file
+   * more info: https://mui.com/x/react-data-grid/components/
+   * @returns the custom Grid Toolbar Options Of Datagrid
+   */
+  function GridToolbarOptionsOfDatagrid() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarFilterButton />
+        <GridToolbarExport
+          csvOptions={{
+            fileName: "Mis solicitudes",
+            delimiter: ";",
+            utf8WithBom: true,
+          }}
+        ></GridToolbarExport>
+      </GridToolbarContainer>
+    );
+  }
+  /**
+   * --------------------------End custom config datagrid--------------------------------
+   */
+
   return (
     <div>
       <Container>
@@ -203,6 +246,7 @@ const ListUser = () => {
         <TableContainer
           sx={{ maxHeight: 400, mt: 5, mb: 5, height: 500, width: "100%" }}
         >
+        <ThemeProvider theme={customLanguageDataGrid}>
           <DataGrid
             rowHeight={50}
             loading={isRenderContact}
@@ -213,9 +257,10 @@ const ListUser = () => {
             onCellClick={handleCellClick}
             onRowClick={handleRowClick}
             components={{
-              Toolbar: GridToolbar,
+              Toolbar: GridToolbarOptionsOfDatagrid,
             }}
           />
+        </ThemeProvider>
         </TableContainer>
       </Card>
 

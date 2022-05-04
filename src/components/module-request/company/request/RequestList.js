@@ -6,7 +6,6 @@ import EditAlert from "../../../global/alert/EditAlert";
 //Data Grid
 import {
   DataGrid,
-  GridToolbar,
   esES,
   GridToolbarExport,
   GridToolbarContainer,
@@ -298,15 +297,23 @@ const RequestList = () => {
   ];
 
   /**
+   * ------------------------------------------------------------------------------------
+   * ------------------------------------Custom config of datagrid-----------------------------
+   * ------------------------------------------------------------------------------------
+   */
+
+  /**
    *This constant allows to establish the theme that the datagrid will have,
    *this includes: the colors, the size of the cells, the language, among others....
    *In this case we use it to establish the language of the datagrid
+   *More info: https://v4.mui.com/components/data-grid/localization/
    */
   const customLanguageDataGrid = createTheme({}, esES);
 
   /**
    * This function allows establishing which header buttons the datagrid will have (filtering button, column density...),
    * as well as establishing the format to export the information to a csv file
+   * more info: https://mui.com/x/react-data-grid/components/
    * @returns the custom Grid Toolbar Options Of Datagrid
    */
   function GridToolbarOptionsOfDatagrid() {
@@ -325,6 +332,9 @@ const RequestList = () => {
       </GridToolbarContainer>
     );
   }
+  /**
+   * --------------------------End custom config datagrid--------------------------------
+   */
 
   return (
     <div>
