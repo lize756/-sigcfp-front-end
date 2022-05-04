@@ -4,7 +4,16 @@ import { Container, Stack, Card, TableContainer, Button } from "@mui/material";
 import EditAlert from "../../../global/alert/EditAlert";
 
 //Data Grid
-import { DataGrid, GridToolbar, esES } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbar,
+  esES,
+  GridToolbarExport,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarDensitySelector,
+  GridToolbarFilterButton,
+} from "@mui/x-data-grid";
 import { esES as coreeEsEs } from "@mui/material/locale";
 //Icon
 import { IconButton, Typography } from "@mui/material";
@@ -151,7 +160,8 @@ const RequestList = () => {
     dispatch(setShowAlert(true));
     const alert = {
       alertTitle: "¿Está usted seguro de que desea elimnar esta solicitud?",
-      alertDescription: "Nombre de solicitud: "+ currentReqToDelete.inteRequName,
+      alertDescription:
+        "Nombre de solicitud: " + currentReqToDelete.inteRequName,
       alertOtherInfo: "",
     };
     dispatch(setAlert(alert));
@@ -287,6 +297,35 @@ const RequestList = () => {
     },
   ];
 
+  /**
+   *This constant allows to establish the theme that the datagrid will have,
+   *this includes: the colors, the size of the cells, the language, among others....
+   *In this case we use it to establish the language of the datagrid
+   */
+  const customLanguageDataGrid = createTheme({}, esES);
+
+  /**
+   * This function allows establishing which header buttons the datagrid will have (filtering button, column density...),
+   * as well as establishing the format to export the information to a csv file
+   * @returns the custom Grid Toolbar Options Of Datagrid
+   */
+  function GridToolbarOptionsOfDatagrid() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarFilterButton />
+        <GridToolbarExport
+          csvOptions={{
+            fileName: "Mis solicitudes",
+            delimiter: ";",
+            utf8WithBom: true,
+          }}
+        ></GridToolbarExport>
+      </GridToolbarContainer>
+    );
+  }
+
   return (
     <div>
       {displayAlert()}
@@ -320,21 +359,22 @@ const RequestList = () => {
             width: "100%",
           }}
         >
-          <DataGrid
-            rowHeight={50}
-            localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-            loading={isRender}
-            autoHeight
-            getRowId={(row) => row.inteRequId}
-            rows={isRender ? [] : getIntReqAssocCompany}
-            columns={columns}
-            pageSize={5}
-            onCellClick={handleCellClick}
-            onRowClick={handleRowClick}
-            components={{
-              Toolbar: GridToolbar,
-            }}
-          />
+          <ThemeProvider theme={customLanguageDataGrid}>
+            <DataGrid
+              rowHeight={50}
+              loading={isRender}
+              autoHeight
+              getRowId={(row) => row.inteRequId}
+              rows={isRender ? [] : getIntReqAssocCompany}
+              columns={columns}
+              pageSize={5}
+              onCellClick={handleCellClick}
+              onRowClick={handleRowClick}
+              components={{
+                Toolbar: GridToolbarOptionsOfDatagrid,
+              }}
+            />
+          </ThemeProvider>
         </TableContainer>
       </Card>
     </div>
