@@ -11,7 +11,7 @@ import {
   createTheme,
 } from "@mui/material";
 
-import { DataGrid, esES, GridToolbar, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
+import { DataGrid, esES,GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
 import { Link as RouterLink } from "react-router-dom";
 /**
  * Icons
@@ -207,7 +207,7 @@ const ListUser = () => {
         <GridToolbarFilterButton />
         <GridToolbarExport
           csvOptions={{
-            fileName: "Mis solicitudes",
+            fileName: "Mis contactos",
             delimiter: ";",
             utf8WithBom: true,
           }}
