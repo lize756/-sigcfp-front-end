@@ -223,7 +223,7 @@ const CompanyApp = () => {
               <ListItemIcon>
                 <HomeIcon color="primary" />
               </ListItemIcon>
-              <ListItemText primary="Home" />
+              <ListItemText primary="Inicio" />
             </ListItem>
 
             <ListItem

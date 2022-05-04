@@ -8,7 +8,7 @@ import RequestList from "../../components/module-request/company/request/Request
 import Create from "../../components/module-request/company/request/RequestCreate";
 import Update from "../../components/module-request/company/request/RequestUpdate";
 
-import Profile from "../../components/global/profile/ProfileCompany";
+import Profile from "../../components/global/profile/company/ProfileCompany";
 import UpdateUser from "../../components/module-request/company/user/UpdateUser";
 import CreateUser from "../../components/module-request/company/user/CreateUser";
 import Request from "../../components/module-request/global/GeneralRequest";
