@@ -7,9 +7,10 @@ export const alertSlice = createSlice({
   name: "alert",
   initialState: {
     // object alert that contains the info that have one career
-    alert:{
+    alert: {
         alertTitle: "",
         alertDescription: "",
+        alertOtherInfo:"",
     },
     isShowAlert: false,
     isAcceptedAlert: false
@@ -21,7 +22,7 @@ export const alertSlice = createSlice({
      * @param {*} action Corresponds to the action to be performed on the state of the slice
      */
     setAlert: (state, action) => {
-      state.alertTitle = action.payload;
+      state.alert = action.payload;
     },
 
     setAcceptedAlert: (state, action) =>{
@@ -35,5 +36,5 @@ export const alertSlice = createSlice({
   
 });
 //Export the action to reducer of alert
-export const { setAcceptedAlert, setShowAlert } = alertSlice.actions;
+export const { setAlert, setAcceptedAlert, setShowAlert } = alertSlice.actions;
 export default alertSlice.reducer;

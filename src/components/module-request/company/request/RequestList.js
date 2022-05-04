@@ -28,7 +28,11 @@ import {
   setIsRender,
   setIntReq,
 } from "../../../store/slices/InternRequestSlice";
-import { setShowAlert } from "../../../store/slices/AlertSlice";
+import {
+  setAcceptedAlert,
+  setShowAlert,
+  setAlert,
+} from "../../../store/slices/AlertSlice";
 import { render } from "react-dom";
 const themeLanguageDataGrid = createTheme(esES, coreeEsEs);
 const RequestList = () => {
@@ -37,20 +41,14 @@ const RequestList = () => {
 
   //navigate
   let navigate = useNavigate();
-
   // Const
   const [getIntReqAssocCompany, setIntReqAssocCompany] = useState([]);
-
+  const [getRequestDelete, setRequestDelete] = useState({});
   /**
    * REDUX
    */
   const list_interRequestsOfCompany = useSelector(
     (state) => state.InternRequestSlice.listIntReqsOfCompany
-  );
-
-  // Verified if the user to accept the conditions to change this state, if isAcceptedAlert, the user agree on the contrary disagree
-  const isAcceptedAlert = useSelector(
-    (state) => state.AlertSlice.isAcceptedAlert
   );
 
   //Get acces_token of the user that start section
@@ -61,7 +59,12 @@ const RequestList = () => {
 
   // Verified if change the list of intern requests associated to company
   const isRender = useSelector((state) => state.InternRequestSlice.isRender);
-
+  // Verified if the user to accept the conditions to change this state, if isAcceptedAlert, the user agree on the contrary disagree
+  const isAcceptedAlert = useSelector(
+    (state) => state.AlertSlice.isAcceptedAlert
+  );
+  // Verified if the user to deploy a alert.
+  const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
   /**
    * This useEffect allow render the DOM when the list is update
    */
@@ -73,6 +76,13 @@ const RequestList = () => {
       dispatch(setIsRender(false));
     }, "1000");
   }, [isRender]);
+
+  /**
+   * This useEffect allow update the state the element that allow delete a one request.
+   *    */
+  useEffect(() => {
+    auxiliarHandleDelete(getRequestDelete);
+  }, [isAcceptedAlert]);
 
   const customInternRequestEstructure = () => {
     return list_interRequestsOfCompany.map((element, index) => {
@@ -126,13 +136,29 @@ const RequestList = () => {
   };
 
   /**
+   * -----------------------------------------------------------------------------------------------
+   * ----------------------------------Delete functions---------------------------------------------
+   * -----------------------------------------------------------------------------------------------
+   */
+  /**
    * Allow delete an intern request
    * @param {} event
    * @param {*} cellValues correspond the cell that you want delete
    */
   const handleDelete = (event, cellValues) => {
     const currentReqToDelete = cellValues.row;
-    openAlert();
+    setRequestDelete(currentReqToDelete);
+    dispatch(setShowAlert(true));
+    const alert = {
+      alertTitle: "¿Está usted seguro de que desea elimnar esta solicitud?",
+      alertDescription: "Nombre de solicitud: "+ currentReqToDelete.inteRequName,
+      alertOtherInfo: "",
+    };
+    dispatch(setAlert(alert));
+  };
+
+  const auxiliarHandleDelete = (currentReqToDelete) => {
+    if (isAcceptedAlert) {
       dispatch(
         deleteInternRequest(
           ACCESS_TOKEN,
@@ -140,15 +166,9 @@ const RequestList = () => {
           currentReqToDelete
         )
       );
+      dispatch(setAcceptedAlert(false));
     }
-  
-   const  openAlert = ()=> {
-      dispatch(setShowAlert(true));
-      <EditAlert/>
-        
-    };
-
-  
+  };
 
   /**
    * Allow view of info tha have a company
@@ -157,7 +177,6 @@ const RequestList = () => {
    */
   const handleViewInterReqInfo = (event, cellValues) => {
     const currentIntReq = cellValues.row;
-    console.log(currentIntReq);
     dispatch(setIntReq(currentIntReq));
     navigate("/company/show");
   };
@@ -171,13 +190,16 @@ const RequestList = () => {
    */
   const handleCellClick = (param, event) => {
     event.stopPropagation();
-    console.log(param.cellClick);
   };
 
   const handleRowClick = (param, event) => {
     event.stopPropagation();
   };
   // End to method of datagrid
+
+  const displayAlert = () => {
+    return isShowAlert ? <EditAlert /> : <></>;
+  };
 
   /**
    * -----------------------------------------------------------------------------
@@ -267,6 +289,7 @@ const RequestList = () => {
 
   return (
     <div>
+      {displayAlert()}
       <Container>
         <Stack
           direction="row"
@@ -287,7 +310,6 @@ const RequestList = () => {
           </Button>
         </Stack>
       </Container>
-
       <Card sx={{ borderRadius: 8, padding: "0px 20px 0px 20px" }}>
         <TableContainer
           sx={{

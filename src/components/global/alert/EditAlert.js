@@ -9,8 +9,9 @@ import { setAcceptedAlert, setShowAlert } from "../../store/slices/AlertSlice";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 
-export default function AlertDialog() {
-    console.log("entre")
+const EditAlert = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [getInfoAlert, setInfoAlert] = React.useState({});
   /**
    * --------------------------------------------------------
    * -----------------------  REDUX -------------------------
@@ -20,7 +21,12 @@ export default function AlertDialog() {
   const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
 
   // Allow verified if the state of the obejct alert is change.
-  const currentAlert = useSelector((state) => state.AlertSlice.alert);
+  const currentInfoAlert = useSelector((state) => state.AlertSlice.alert);
+
+  React.useEffect(() => {
+    setIsOpen(isShowAlert);
+    setInfoAlert(currentInfoAlert);
+  }, [isShowAlert, currentInfoAlert]);
 
   // Allow to send the elements of store
   const dispatch = useDispatch();
@@ -38,26 +44,24 @@ export default function AlertDialog() {
   return (
     <div>
       <Dialog
-        open={isShowAlert}
+        open={isOpen}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{getInfoAlert.alertTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+            { getInfoAlert.alertDescription}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDisagree}>Disagree</Button>
+          <Button onClick={handleDisagree}>Cancelar</Button>
           <Button onClick={handleAgree} autoFocus>
-            Agree
+            Aceptar
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
+export default EditAlert;
