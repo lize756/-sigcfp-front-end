@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
-import { setAlert, setShowAlert } from "./AlertSlice";
+import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
 
 let headers;
 /**
@@ -69,9 +69,27 @@ export const addInternRequest = (ACCESS_TOKEN, internRequest) => async (
       dispatch(setIntReq(res.data));
       //dispatch(getInternRequests(ACCESS_TOKEN));
       dispatch(setIsRender(true));
+      // Allow display alert when is create a  intern request
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se creo correctamente la solicitud",
+          alertSeverity: "success",
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      // Allow display alert when the intern request was not created correctly
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo crear la solicitud",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 
@@ -95,9 +113,29 @@ export const updateInternRequest = (
     .then((res) => {
       dispatch(setIntReq(res.data));
       dispatch(setIsRender(true));
+
+      // Allow display alert when is update the intern request
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se actualizo correctamente la solicitud",
+          alertSeverity: "info",
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      // Allow display alert when the intern request was not update correctly
+
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo actualizar la solicitud",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 
@@ -107,10 +145,9 @@ export const updateInternRequest = (
  * @param {*} inteRequId id of the intern request that you want to delete
  * @returns
  */
-export const deleteInternRequest = (
-  ACCESS_TOKEN,
-  inteRequId,
-) => async (dispatch) => {
+export const deleteInternRequest = (ACCESS_TOKEN, inteRequId) => async (
+  dispatch
+) => {
   headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -121,15 +158,25 @@ export const deleteInternRequest = (
       dispatch(setIsRender(true));
 
       // Allow display alert when is delete a intern request
+      dispatch(setTypeAlert("1"));
       dispatch(setShowAlert(true));
       dispatch(
         setAlert({
           alertTitle: "Se elimino correctamente la solicitud",
+          alertSeverity: "info",
         })
       );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo eliminar la solicitud",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 

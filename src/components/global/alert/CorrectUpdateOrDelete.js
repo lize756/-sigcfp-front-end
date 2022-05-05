@@ -45,7 +45,7 @@ export default function CorrectUpdateOrDeletejs() {
     <Stack spacing={2} sx={{ width: "100%" }}>
       <Snackbar
         open={isOpen}
-        autoHideDuration={3000}
+        autoHideDuration={2500}
         onClose={handleClose}
       >
         <Alert severity={getInfoAlert.alertSeverity} sx={{ width: "100%" }}>

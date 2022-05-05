@@ -40,8 +40,10 @@ import {
   setAcceptedAlert,
   setShowAlert,
   setAlert,
+  setTypeAlert,
 } from "../../../store/slices/AlertSlice";
 import { render } from "react-dom";
+import CorrectUpdateOrDeletejs from "../../../global/alert/CorrectUpdateOrDelete";
 const themeLanguageDataGrid = createTheme(esES, coreeEsEs);
 const RequestList = () => {
   // Allow to send the elements of store
@@ -76,6 +78,8 @@ const RequestList = () => {
   );
   // Verified if the user to deploy a alert.
   const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
+  // Correspond to type of alert
+  const typeAlert = useSelector((state) => state.AlertSlice.typeAlert);
   /**
    * This useEffect allow render the DOM when the list is update
    */
@@ -160,6 +164,8 @@ const RequestList = () => {
     const currentReqToDelete = cellValues.row;
     setRequestDelete(currentReqToDelete);
     dispatch(setShowAlert(true));
+    dispatch(setTypeAlert("0"));
+
     const alert = {
       alertTitle: "¿Está usted seguro de que desea elimnar esta solicitud?",
       alertMaxWidth: "xs",
@@ -170,8 +176,8 @@ const RequestList = () => {
   };
 
   /**
-   * This function allow delete a one contact after the that user accept delele the current contact 
-   * @param {} currentReqToDelete 
+   * This function allow delete a one contact after the that user accept delele the current contact
+   * @param {} currentReqToDelete
    */
   const auxiliarHandleDelete = (currentReqToDelete) => {
     if (isAcceptedAlert) {
@@ -187,13 +193,26 @@ const RequestList = () => {
   };
 
   /**
-   * Allow display the alert dialog 
-   * @returns 
+   * This method allows an alert to be displayed on the screen according to the type of alert specified.
+   * If the alert is to accept or reach, the type is '0',
+   * otherwise it is just a notification message, the type is '1'
+   * @returns
    */
   const displayAlert = () => {
-    return isShowAlert ? <DeleteAlert /> : <></>;
+    let componentToDisplay = <></>;
+    if (isShowAlert) {
+      //Display alert dialog or snackbark
+      componentToDisplay =
+        typeAlert === "0" ? (
+          <DeleteAlert />
+        ) : typeAlert === "1" ? (
+          <CorrectUpdateOrDeletejs />
+        ) : (
+          <></>
+        );
+    }
+    return componentToDisplay;
   };
-
   /**
    * Allow view of info tha have a company
    * @param {*} event
@@ -220,7 +239,6 @@ const RequestList = () => {
     event.stopPropagation();
   };
   // End to method of datagrid
-
 
   /**
    * -----------------------------------------------------------------------------

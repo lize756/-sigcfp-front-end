@@ -67,18 +67,26 @@ export const addContact = (ACCESS_TOKEN, contact) => async (dispatch) => {
       dispatch(setContact(res.data));
       dispatch(setIsRenderContact(true));
       // Allow display alert when is create a contact
-      dispatch(setTypeAlert('1'))
+      dispatch(setTypeAlert("1"));
       dispatch(setShowAlert(true));
       dispatch(
         setAlert({
           alertTitle: "Se creo correctamente el contacto",
-          alertSeverity:"success",
-
+          alertSeverity: "success",
         })
       );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      // Allow display alert when the contact was not created correctly
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo crear el contacto",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 
@@ -115,18 +123,26 @@ export const updateContact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
       dispatch(setContact(res.data));
       dispatch(setIsRenderContact(true));
       // Allow display alert when is update a contact
-      dispatch(setTypeAlert('1'))
+      dispatch(setTypeAlert("1"));
       dispatch(setShowAlert(true));
       dispatch(
         setAlert({
           alertTitle: "Se actualizo correctamente el contacto",
-          alertSeverity:"info",
-
+          alertSeverity: "info",
         })
       );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      // Allow display alert when the contact was not update correctly
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo actualizar el contacto",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 
@@ -147,18 +163,25 @@ export const deleteContact = (ACCESS_TOKEN, contId) => async (dispatch) => {
       dispatch(setContact(res.data));
       dispatch(setIsRenderContact(true));
       // Allow display alert when is delete a contact
-      dispatch(setTypeAlert('1'))
+      dispatch(setTypeAlert("1"));
       dispatch(setShowAlert(true));
       dispatch(
         setAlert({
           alertTitle: "Se elimino correctamente el contacto",
-          alertSeverity:"info",
-
+          alertSeverity: "info",
         })
       );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo eliminar el contacto",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 
