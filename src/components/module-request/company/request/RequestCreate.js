@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Autocomplete, TextField, Button, Chip } from "@mui/material";
-import { useEffect } from "react";
+import { Autocomplete, TextField, Button, Chip, Grid } from "@mui/material";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
 /**
@@ -20,19 +19,19 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
 
     "& .MuiTextField-root": {
       margin: theme.spacing(2),
       width: "90%",
     },
-
     "& .MuiAutocomplete-root": {
-      margin: theme.spacing(2),
       justifyContent: "center",
       alignItems: "center",
-      width: "90%",
+      margin: theme.spacing(1),
+      width: "105%",
     },
+
     "& .MuiButtonBase-root": {
       margin: theme.spacing(2),
     },
@@ -129,7 +128,7 @@ const RequestCreate = () => {
    * model through the use of axios
    * @param {*} e represents an event
    */
-  const addRequest = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
 
     const functions = inteRequFunctions.functions.substring(
@@ -144,9 +143,9 @@ const RequestCreate = () => {
 
     //  let currentDate = new Date().toLocaleDateString('en-ca')
     const currentDate = new Date().toLocaleDateString();
-    const [year,month,day] = data.inteRequStDate.split("-")
-    const stDate = day+"/"+month+"/"+year
-    console.log(currentDate,stDate)
+    const [year, month, day] = data.inteRequStDate.split("-");
+    const stDate = day + "/" + month + "/" + year;
+    console.log(currentDate, stDate);
     const request = {
       inteRequCreate: currentDate,
       inteRequDuration: data.inteRequDuration,
@@ -162,7 +161,7 @@ const RequestCreate = () => {
       careers: careers,
       company: company,
     };
-    console.log(request)
+    console.log(request);
 
     dispatch(addInternRequest(ACCESS_TOKEN, request));
     navigate("/company/request");
@@ -171,127 +170,161 @@ const RequestCreate = () => {
   return (
     <Container maxWidth="lg">
       <Box sx={{ bgcolor: "#F2F6FE" }}>
-        <form className={classes.root} onSubmit={addRequest}>
-          <TextField
-            name="inteRequName"
-            placeholder="Smith-Lynch"
-            label="Nombre de la solicitud"
-            onChange={handleChange}
-          />
-
-          <Autocomplete
-            multiple
-            options={list_carreers}
-            getOptionLabel={(option) => option.careName}
-            name="careers"
-            onChange={(e, value) => handleSelect(value)}
-            filterSelectedOptions
-            renderInput={(params) => (
+        <form className={classes.root} onSubmit={onSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
               <TextField
-                {...params}
-                label="Carreras de Interés"
-                placeholder="Carreras de Interés"
+                required
+                name="inteRequName"
+                placeholder="Smith-Lynch"
+                label="Nombre de la solicitud"
+                onChange={handleChange}
               />
-            )}
-          />
-
-          <TextField
-            id="outlined-textarea"
-            name="inteRequDepartment"
-            placeholder="Recursos humanos\n"
-            label="Area o Departamento"
-            onChange={handleChange}
-          />
-
-          <TextField
-            name="inteRequNumber"
-            placeholder="5"
-            label="Número de Estudiantes"
-            type="number"
-            onChange={handleChange}
-          />
-          <TextField
-            name="inteRequStDate"
-            label="Fecha de Inicio"
-            InputLabelProps={{ shrink: true, required: true }}
-            type="date"
-            onChange={handleChange}
-          />
-
-          <Autocomplete
-            multiple
-            fullWidth
-            options={[]}
-            rows={4}
-            freeSolo
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip
-                  variant="outlined"
-                  label={option}
-                  {...getTagProps({ index })}
-                />
-              ))
-            }
-            onChange={(e, value) => handleFunctions(value)}
-            renderInput={(params) => (
+            </Grid>
+            <Grid item xs={6}>
               <TextField
-                {...params}
-                variant="outlined"
-                label="Funciones Principales"
+                required
+                placeholder="Smith-Lynch"
+                label="Nombre del creador"
               />
-            )}
-          />
-
-          <Autocomplete
-            multiple
-            fullWidth
-            options={[]}
-            rows={4}
-            freeSolo
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip
-                  variant="outlined"
-                  label={option}
-                  {...getTagProps({ index })}
-                />
-              ))
-            }
-            onChange={(e, value) => handleCompetencies(value)}
-            renderInput={(params) => (
+            </Grid>
+            <Grid item xs={12}>
+              <Autocomplete
+                multiple
+                options={list_carreers}
+                getOptionLabel={(option) => option.careName}
+                name="careers"
+                onChange={(e, value) => handleSelect(value)}
+                filterSelectedOptions
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Carreras de Interés"
+                    required
+                    placeholder="Carreras de Interés"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
               <TextField
-                {...params}
-                variant="outlined"
-                label="Competencias Claves del Éxito"
+                required
+                name="inteRequDepartment"
+                placeholder="Recursos humanos\n"
+                label="Area o Departamento"
+                onChange={handleChange}
               />
-            )}
-          />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                name="inteRequNumber"
+                placeholder="5"
+                label="Número de Estudiantes"
+                type="number"
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                name="inteRequStDate"
+                label="Fecha de Inicio"
+                InputLabelProps={{ shrink: true, required: true }}
+                type="date"
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Autocomplete
+                multiple
+                options={[]}
+                rows={4}
+                freeSolo
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option}
+                      {...getTagProps({ index })}
+                    />
+                  ))
+                }
+                onChange={(e, value) => handleFunctions(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    required
+                    label="Funciones Principales"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Autocomplete
+                multiple
+                options={[]}
+                rows={4}
+                freeSolo
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option}
+                      {...getTagProps({ index })}
+                    />
+                  ))
+                }
+                onChange={(e, value) => handleCompetencies(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    required
+                    label="Competencias Claves del Éxito"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                multiline
+                required
+                name="inteRequDuration"
+                label="Duración de la Practica"
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                name="inteRequSalary"
+                label="Valor de Bonificación"
+                type="number"
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                multiline
+                required
+                name="inteRequBondingType"
+                label="Tipo de Vinculación"
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                multiline
+                required
+                name="inteRequOtherBenefits"
+                label="Otros Beneficios"
+                onChange={handleChange}
+              />
+            </Grid>
+          </Grid>
 
-          <TextField
-            name="inteRequBondingType"
-            multiline
-            label="Tipo de Vinculación"
-            onChange={handleChange}
-          />
-          <TextField
-            name="inteRequDuration"
-            label="Duración de la Practica"
-            multiline
-            onChange={handleChange}
-          />
-          <TextField
-            name="inteRequSalary"
-            label="Valor de Bonificación"
-            type="number"
-            onChange={handleChange}
-          />
-          <TextField
-            name="inteRequOtherBenefits"
-            label="Otros Beneficios"
-            multiline
-            onChange={handleChange}
-          />
           <Button sx={{ mt: 5, pr: 3 }} variant="contained" type="submit">
             Crear Solicitud
           </Button>

@@ -133,22 +133,18 @@ const RequestList = () => {
   const handleDelete = (event, cellValues) => {
     const currentReqToDelete = cellValues.row;
     openAlert();
-      dispatch(
-        deleteInternRequest(
-          ACCESS_TOKEN,
-          currentReqToDelete.inteRequId,
-          currentReqToDelete
-        )
-      );
-    }
-  
-   const  openAlert = ()=> {
-      dispatch(setShowAlert(true));
-      <EditAlert/>
-        
-    };
+    dispatch(
+      deleteInternRequest(
+        ACCESS_TOKEN,
+        currentReqToDelete.inteRequId,
+        currentReqToDelete
+      )
+    );
+  };
 
-  
+  const openAlert = () => {
+    dispatch(setShowAlert(true));
+  };
 
   /**
    * Allow view of info tha have a company

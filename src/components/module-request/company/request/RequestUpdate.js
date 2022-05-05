@@ -204,7 +204,8 @@ const RequestUpdate = () => {
      */
     const formattedFunctions = inteRequFunctions.toString();
     const formattedCompetencies = inteRequCompetencies.toString();
-    const formattedCareers =  careers.length > 0 ? [...new Set([...careers])]: defaultCareers;
+    const formattedCareers =
+      careers.length > 0 ? [...new Set([...careers])] : defaultCareers;
 
     const requesUpdate = {
       inteRequId: editRequest.inteRequId,
@@ -225,7 +226,7 @@ const RequestUpdate = () => {
     console.log(JSON.stringify(requesUpdate));
 
     dispatch(
-     updateInternRequest(ACCESS_TOKEN, requesUpdate.inteRequId, requesUpdate)
+      updateInternRequest(ACCESS_TOKEN, requesUpdate.inteRequId, requesUpdate)
     );
     navigate("/company/request");
   };
@@ -245,6 +246,7 @@ const RequestUpdate = () => {
         <Box sx={{ bgcolor: "#F2F6FE" }}>
           <form className={classes.root} onSubmit={putRequest}>
             <TextField
+              required
               name="inteRequName"
               value={editRequest.inteRequName}
               label="Nombre de la solicitud"
@@ -268,12 +270,13 @@ const RequestUpdate = () => {
                   {...params}
                   label="Carreras de Interés"
                   placeholder="Carreras de Interés"
+                  required
                 />
               )}
             />
 
             <TextField
-              id="outlined-textarea"
+              required
               name="inteRequDepartment"
               value={editRequest.inteRequDepartment}
               label="Area o Departamento"
@@ -289,6 +292,7 @@ const RequestUpdate = () => {
             />
 
             <TextField
+              required
               name="inteRequStDate"
               label="Fecha de Inicio"
               InputLabelProps={{ shrink: true, required: true }}
@@ -311,6 +315,7 @@ const RequestUpdate = () => {
                   {...params}
                   variant="outlined"
                   label="Funciones Principales"
+                  required
                 />
               )}
             />
@@ -328,11 +333,13 @@ const RequestUpdate = () => {
                   {...params}
                   variant="outlined"
                   label="Competencias Claves del Éxito"
+                  required
                 />
               )}
             />
 
             <TextField
+              required
               name="inteRequBondingType"
               multiline
               value={editRequest.inteRequBondingType}
@@ -340,6 +347,7 @@ const RequestUpdate = () => {
               onChange={handleChange}
             />
             <TextField
+              required
               name="inteRequDuration"
               label="Duración de la Practica"
               multiline
@@ -354,6 +362,7 @@ const RequestUpdate = () => {
               onChange={handleChange}
             />
             <TextField
+              required
               name="inteRequOtherBenefits"
               label="Otros Beneficios"
               value={editRequest.inteRequOtherBenefits}
