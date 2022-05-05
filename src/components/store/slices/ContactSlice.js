@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
+import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
 
 let headers;
 /**
@@ -65,6 +66,16 @@ export const addContact = (ACCESS_TOKEN, contact) => async (dispatch) => {
     .then((res) => {
       dispatch(setContact(res.data));
       dispatch(setIsRenderContact(true));
+      // Allow display alert when is create a contact
+      dispatch(setTypeAlert('1'))
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se creo correctamente el contacto",
+          alertSeverity:"success",
+
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -99,10 +110,20 @@ export const updateContact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("/api/contacts/update/" + contId,contact,{ headers })
+    .put("/api/contacts/update/" + contId, contact, { headers })
     .then((res) => {
       dispatch(setContact(res.data));
       dispatch(setIsRenderContact(true));
+      // Allow display alert when is update a contact
+      dispatch(setTypeAlert('1'))
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se actualizo correctamente el contacto",
+          alertSeverity:"info",
+
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -123,9 +144,18 @@ export const deleteContact = (ACCESS_TOKEN, contId) => async (dispatch) => {
   axios
     .delete("/api/contacts/" + contId, { headers })
     .then((res) => {
-      console.log("Se elimino correctamente el contacto");
       dispatch(setContact(res.data));
       dispatch(setIsRenderContact(true));
+      // Allow display alert when is delete a contact
+      dispatch(setTypeAlert('1'))
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se elimino correctamente el contacto",
+          alertSeverity:"info",
+
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());

@@ -39,7 +39,13 @@ import {
   setIsRenderContact,
 } from "../../../store/slices/ContactSlice";
 import { useNavigate } from "react-router";
-import { setAcceptedAlert, setAlert, setShowAlert } from "../../../store/slices/AlertSlice";
+import {
+  setAcceptedAlert,
+  setAlert,
+  setShowAlert,
+  setTypeAlert,
+} from "../../../store/slices/AlertSlice";
+import CorrectUpdateOrDeletejs from "../../../global/alert/CorrectUpdateOrDelete";
 
 const ListUser = () => {
   // Allow to send the elements of store
@@ -77,6 +83,9 @@ const ListUser = () => {
   );
   // Verified if the user to deploy a alert.
   const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
+
+  const typeAlert = useSelector((state) => state.AlertSlice.typeAlert);
+
   useEffect(() => {
     // Added to store the company that user login
     dispatch(getContactsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
@@ -84,18 +93,14 @@ const ListUser = () => {
     setTimeout(() => {
       dispatch(setIsRenderContact(false));
     }, "1000");
-    console.log("Tamaño ", listContactOfCompany.length);
   }, [isRenderContact]);
 
-
-
- /**
+  /**
    * This useEffect allow update the state the element that allow delete a the current contact.
    *    */
   useEffect(() => {
     auxiliarHandleDelete(getContactDelete);
   }, [isAcceptedAlert]);
-
 
   /**
    * ------------------------------------------------------------------------------------
@@ -126,8 +131,9 @@ const ListUser = () => {
    */
   const handleDelete = (event, cellValues) => {
     const currentContactToDelete = cellValues.row;
-    setContactDelete(currentContactToDelete)
+    setContactDelete(currentContactToDelete);
     dispatch(setShowAlert(true));
+    dispatch(setTypeAlert("0"));
     const alert = {
       alertTitle: "¿Está usted seguro de que desea elimnar este contacto?",
       alertMaxWidth: "xs",
@@ -138,8 +144,8 @@ const ListUser = () => {
   };
 
   /**
-   * This function allow delete a one contact after the that user accept delele the current contact 
-   * @param {*} currentReqToDelete 
+   * This function allow delete a one contact after the that user accept delele the current contact
+   * @param {*} currentReqToDelete
    */
   const auxiliarHandleDelete = (currentContactToDelete) => {
     if (isAcceptedAlert) {
@@ -154,15 +160,28 @@ const ListUser = () => {
     }
   };
 
-    /**
-   * Allow display the alert dialog 
-   * @returns 
+  /**
+   * This method allows an alert to be displayed on the screen according to the type of alert specified.
+   * If the alert is to accept or reach, the type is '0',
+   * otherwise it is just a notification message, the type is '1'
+   * @returns
    */
-     const displayAlert = () => {
-      return isShowAlert ? <DeleteAlert /> : <></>;
-    };
+  const displayAlert = () => {
+    let componentToDisplay = <></>;
+    if (isShowAlert) {
+      //Display alert dialog or snackbark
+      componentToDisplay =
+        typeAlert === "0" ? (
+          <DeleteAlert />
+        ) : typeAlert === "1" ? (
+          <CorrectUpdateOrDeletejs />
+        ) : (
+          <></>
+        );
+    }
+    return componentToDisplay;
+  };
 
-    
   /**
    * ------------------------------------------------------------------------------------
    * ------------------------------------Methods of datagrid-----------------------------
@@ -292,7 +311,7 @@ const ListUser = () => {
 
   return (
     <div>
-    {displayAlert()}
+      {displayAlert()}
       <Container>
         <Stack
           direction="row"

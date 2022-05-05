@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
+import { setAlert, setShowAlert } from "./AlertSlice";
 
 let headers;
 /**
@@ -67,11 +68,10 @@ export const addInternRequest = (ACCESS_TOKEN, internRequest) => async (
     .then((res) => {
       dispatch(setIntReq(res.data));
       //dispatch(getInternRequests(ACCESS_TOKEN));
-      dispatch(setIsRender(true))
+      dispatch(setIsRender(true));
     })
     .catch((err) => {
       console.log(err.toJSON());
-
     });
 };
 
@@ -91,10 +91,10 @@ export const updateInternRequest = (
     Authorization: `${ACCESS_TOKEN}`,
   };
   await axios
-    .put("api/internRequests/update/" + inteRequId, internRequest,{ headers })
+    .put("api/internRequests/update/" + inteRequId, internRequest, { headers })
     .then((res) => {
       dispatch(setIntReq(res.data));
-      dispatch(setIsRender(true))
+      dispatch(setIsRender(true));
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -107,9 +107,10 @@ export const updateInternRequest = (
  * @param {*} inteRequId id of the intern request that you want to delete
  * @returns
  */
-export const deleteInternRequest = (ACCESS_TOKEN, inteRequId,userCompanyId) => async (
-  dispatch
-) => {
+export const deleteInternRequest = (
+  ACCESS_TOKEN,
+  inteRequId,
+) => async (dispatch) => {
   headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -117,8 +118,15 @@ export const deleteInternRequest = (ACCESS_TOKEN, inteRequId,userCompanyId) => a
   axios
     .delete("/api/internRequests/" + inteRequId, { headers })
     .then((res) => {
-      console.log("La solicitud se elimino correctamente",res)
-      dispatch(setIsRender(true))
+      dispatch(setIsRender(true));
+
+      // Allow display alert when is delete a intern request
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se elimino correctamente la solicitud",
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());

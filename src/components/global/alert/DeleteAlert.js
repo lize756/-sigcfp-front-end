@@ -5,9 +5,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { setAcceptedAlert, setShowAlert } from "../../store/slices/AlertSlice";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
+import { setAcceptedAlert, setShowAlert } from "../../store/slices/AlertSlice";
 
 const DeleteAlert = () => {
   const [isOpen, setIsOpen] = React.useState(false);

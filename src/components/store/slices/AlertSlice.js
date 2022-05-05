@@ -12,7 +12,9 @@ export const alertSlice = createSlice({
         alertDescription: "",
         alertOtherInfo:"",
         alertMaxWidth:"",
+        alertSeverity:"",
     },
+    typeAlert: 1, // Option: 0: Dialog Alert 1: Snackbar
     isShowAlert: false,
     isAcceptedAlert: false
   },
@@ -33,9 +35,19 @@ export const alertSlice = createSlice({
     setShowAlert: (state, action) => {
       state.isShowAlert = action.payload;
     },
+    /**
+     * Correspond of type the alert to display:
+     * if value is 0: Display dialog alert
+     * but if value is 1: Display the snackbar
+     * @param {} state 
+     * @param {*} action 
+     */
+    setTypeAlert:(state, action) =>{
+      state.typeAlert = action.payload;
+    }
   },
   
 });
 //Export the action to reducer of alert
-export const { setAlert, setAcceptedAlert, setShowAlert } = alertSlice.actions;
+export const { setAlert, setTypeAlert,setAcceptedAlert, setShowAlert } = alertSlice.actions;
 export default alertSlice.reducer;
