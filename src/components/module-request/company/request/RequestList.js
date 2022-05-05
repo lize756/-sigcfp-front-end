@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { Container, Stack, Card, TableContainer, Button } from "@mui/material";
-import EditAlert from "../../../global/alert/EditAlert";
+import DeleteAlert from "../../../global/alert/DeleteAlert";
 
 //Data Grid
 import {
@@ -52,8 +52,11 @@ const RequestList = () => {
   // Const
   const [getIntReqAssocCompany, setIntReqAssocCompany] = useState([]);
   const [getRequestDelete, setRequestDelete] = useState({});
+
   /**
-   * REDUX
+   * -----------------------------------------------------------
+   * --------------------------REDUX ---------------------------
+   * -----------------------------------------------------------
    */
   const list_interRequestsOfCompany = useSelector(
     (state) => state.InternRequestSlice.listIntReqsOfCompany
@@ -159,13 +162,17 @@ const RequestList = () => {
     dispatch(setShowAlert(true));
     const alert = {
       alertTitle: "¿Está usted seguro de que desea elimnar esta solicitud?",
-      alertDescription:
-        "Nombre de solicitud: " + currentReqToDelete.inteRequName,
+      alertMaxWidth: "xs",
+      alertDescription: "",
       alertOtherInfo: "",
     };
     dispatch(setAlert(alert));
   };
 
+  /**
+   * This function allow delete a one contact after the that user accept delele the current contact 
+   * @param {} currentReqToDelete 
+   */
   const auxiliarHandleDelete = (currentReqToDelete) => {
     if (isAcceptedAlert) {
       dispatch(
@@ -177,6 +184,14 @@ const RequestList = () => {
       );
       dispatch(setAcceptedAlert(false));
     }
+  };
+
+  /**
+   * Allow display the alert dialog 
+   * @returns 
+   */
+  const displayAlert = () => {
+    return isShowAlert ? <DeleteAlert /> : <></>;
   };
 
   /**
@@ -206,9 +221,6 @@ const RequestList = () => {
   };
   // End to method of datagrid
 
-  const displayAlert = () => {
-    return isShowAlert ? <EditAlert /> : <></>;
-  };
 
   /**
    * -----------------------------------------------------------------------------

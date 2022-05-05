@@ -11,7 +11,15 @@ import {
   createTheme,
 } from "@mui/material";
 
-import { DataGrid, esES,GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  esES,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+} from "@mui/x-data-grid";
 import { Link as RouterLink } from "react-router-dom";
 /**
  * Icons
@@ -20,6 +28,7 @@ import { IconButton, Typography } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteAlert from "../../../global/alert/DeleteAlert";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -30,13 +39,22 @@ import {
   setIsRenderContact,
 } from "../../../store/slices/ContactSlice";
 import { useNavigate } from "react-router";
+import { setAcceptedAlert, setAlert, setShowAlert } from "../../../store/slices/AlertSlice";
 
 const ListUser = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
+  let navigate = useNavigate();
 
   /**
-   * REDUX
+   * Const
+   */
+  const [getContactDelete, setContactDelete] = useState({});
+
+  /**
+   * -----------------------------------------------------------
+   * --------------------------REDUX ---------------------------
+   * -----------------------------------------------------------
    */
   //Get list of company saved in the store
   const listContactOfCompany = useSelector(
@@ -53,7 +71,12 @@ const ListUser = () => {
   const isRenderContact = useSelector(
     (state) => state.ContactSlice.isRenderContact
   );
-
+  // Verified if the user to accept the conditions to change this state, if isAcceptedAlert, the user agree on the contrary disagree
+  const isAcceptedAlert = useSelector(
+    (state) => state.AlertSlice.isAcceptedAlert
+  );
+  // Verified if the user to deploy a alert.
+  const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
   useEffect(() => {
     // Added to store the company that user login
     dispatch(getContactsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
@@ -64,7 +87,16 @@ const ListUser = () => {
     console.log("Tamaño ", listContactOfCompany.length);
   }, [isRenderContact]);
 
-  let navigate = useNavigate();
+
+
+ /**
+   * This useEffect allow update the state the element that allow delete a the current contact.
+   *    */
+  useEffect(() => {
+    auxiliarHandleDelete(getContactDelete);
+  }, [isAcceptedAlert]);
+
+
   /**
    * ------------------------------------------------------------------------------------
    * ----------------Method relationated with the crud action of contact-----------------
@@ -83,15 +115,54 @@ const ListUser = () => {
   };
 
   /**
+   * -----------------------------------------------------------------------------------------------
+   * ----------------------------------Delete functions---------------------------------------------
+   * -----------------------------------------------------------------------------------------------
+   */
+  /**
    * Allow delete a contact
    * @param {} event
    * @param {*} cellValues correspond the cell that you want delete
    */
   const handleDelete = (event, cellValues) => {
-    const currentUserToDelete = cellValues.row;
-    dispatch(deleteContact(ACCESS_TOKEN, currentUserToDelete.contId));
+    const currentContactToDelete = cellValues.row;
+    setContactDelete(currentContactToDelete)
+    dispatch(setShowAlert(true));
+    const alert = {
+      alertTitle: "¿Está usted seguro de que desea elimnar este contacto?",
+      alertMaxWidth: "xs",
+      alertDescription: "",
+      alertOtherInfo: "",
+    };
+    dispatch(setAlert(alert));
   };
 
+  /**
+   * This function allow delete a one contact after the that user accept delele the current contact 
+   * @param {*} currentReqToDelete 
+   */
+  const auxiliarHandleDelete = (currentContactToDelete) => {
+    if (isAcceptedAlert) {
+      dispatch(
+        deleteContact(
+          ACCESS_TOKEN,
+          currentContactToDelete.contId,
+          currentContactToDelete
+        )
+      );
+      dispatch(setAcceptedAlert(false));
+    }
+  };
+
+    /**
+   * Allow display the alert dialog 
+   * @returns 
+   */
+     const displayAlert = () => {
+      return isShowAlert ? <DeleteAlert /> : <></>;
+    };
+
+    
   /**
    * ------------------------------------------------------------------------------------
    * ------------------------------------Methods of datagrid-----------------------------
@@ -221,6 +292,7 @@ const ListUser = () => {
 
   return (
     <div>
+    {displayAlert()}
       <Container>
         <Stack
           direction="row"
@@ -246,21 +318,21 @@ const ListUser = () => {
         <TableContainer
           sx={{ maxHeight: 400, mt: 5, mb: 5, height: 500, width: "100%" }}
         >
-        <ThemeProvider theme={customLanguageDataGrid}>
-          <DataGrid
-            rowHeight={50}
-            loading={isRenderContact}
-            getRowId={(row) => row.contId}
-            rows={isRenderContact ? [] : listContactOfCompany}
-            columns={columns}
-            pageSize={5}
-            onCellClick={handleCellClick}
-            onRowClick={handleRowClick}
-            components={{
-              Toolbar: GridToolbarOptionsOfDatagrid,
-            }}
-          />
-        </ThemeProvider>
+          <ThemeProvider theme={customLanguageDataGrid}>
+            <DataGrid
+              rowHeight={50}
+              loading={isRenderContact}
+              getRowId={(row) => row.contId}
+              rows={isRenderContact ? [] : listContactOfCompany}
+              columns={columns}
+              pageSize={5}
+              onCellClick={handleCellClick}
+              onRowClick={handleRowClick}
+              components={{
+                Toolbar: GridToolbarOptionsOfDatagrid,
+              }}
+            />
+          </ThemeProvider>
         </TableContainer>
       </Card>
 

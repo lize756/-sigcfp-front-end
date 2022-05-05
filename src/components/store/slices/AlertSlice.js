@@ -11,6 +11,7 @@ export const alertSlice = createSlice({
         alertTitle: "",
         alertDescription: "",
         alertOtherInfo:"",
+        alertMaxWidth:"",
     },
     isShowAlert: false,
     isAcceptedAlert: false
