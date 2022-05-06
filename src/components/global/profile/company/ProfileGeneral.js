@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import {
@@ -14,6 +14,17 @@ import { green } from "@mui/material/colors";
 import PersonIcon from "@mui/icons-material/PersonPin";
 import Autocomplete from "@mui/material/Autocomplete";
 import SaveIcon from "@mui/icons-material/Save";
+/**
+ * -------------------------------------------------
+ * ------------------REDUX -------------------------
+ * -------------------------------------------------
+ */
+import { useDispatch, useSelector } from "react-redux";
+import { updateCompany } from "../../../store/slices/CompanySlice";
+import {
+  getCitiesAssociatedToCountry,
+  getCountries,
+} from "../../../store/slices/CountrySlice";
 
 const validationSchema = yup.object({
   compName: yup
@@ -45,39 +56,80 @@ const validationSchema = yup.object({
 });
 
 const ProfileGeneral = () => {
-  const listCities = ["Bogota", "Cali", "Medellin"];
-  const listCountries = [
-    { id: 1, name: "Colombia" },
-    { id: 2, name: "Paraguay" },
-    { id: 3, name: "Argentina" },
-  ];
-  const [getCompCountry, setCompCountry] = useState({
-    id: 1,
-    name: "Colombia",
-  });
-  const [getCompCity, setCompCity] = useState("Bogota");
+  /**
+   * ----------------------------------
+   * -------------- REDUX -------------
+   * ----------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+
+  //Correspond of list of countries saved in the store.
+  const listCountries = useSelector(
+    (state) => state.CountrySlice.listCountries
+  );
+  //Correspond of list of cities saved in the store.
+  const listCities = useSelector((state) => state.CountrySlice.listCities);
+
+  // Get person id of the store
+  const companyStore = useSelector((state) => state.CompanySlice.company);
+
+  const [getCompCountry, setCompCountry] = useState({});
+  const [getCompCity, setCompCity] = useState("");
 
   const formik = useFormik({
     initialValues: {
-      compAddress: "norte 1234",
-      compEcoActiv: "actividad 1, actividad 2",
-      compEmail: "company@company.com",
-      compIcesiStud: "x",
-      compName: "company",
-      compNit: "123490590",
-      compTelephone: "18487575858",
-      compType: "tipo 1234",
-      compUrlAddress: "https://company.com",
+      compId: companyStore.compId,
+      compAddress: companyStore.compAddress,
+      compEcoActiv: companyStore.compEcoActiv,
+      compEmail: companyStore.compEmail,
+      compIcesiStud: companyStore.compIcesiStud,
+      compName: companyStore.compName,
+      compNit: companyStore.compNit,
+      compTelephone: companyStore.compTelephone,
+      compType: companyStore.compType,
+      compUrlAddress: companyStore.compUrlAddress,
+      compCityName: companyStore.compCityName,
+      compCountryName: companyStore.compCountryName,
     },
 
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
-      values.compCountryName = getCompCountry;
-      values.compCityName = getCompCity;
-      alert(JSON.stringify(values, null, 2));
+      const profile = values;
+      profile.compCountryName =
+        Object.keys(getCompCountry).length === 0
+          ? companyStore.compCountryName
+          : getCompCountry.name;
+      profile.compCityName =
+        getCompCity === undefined ? companyStore.compCityName : getCompCity;
+      //alert(JSON.stringify(values, null, 2));
+      dispatch(updateCompany(ACCESS_TOKEN, profile.compId, profile));
     },
   });
+
+  /**
+   * This used effect allow display the list of countries associated a country particular
+   */
+  useEffect(() => {
+    if (listCountries.length > 0) {
+      dispatch(getCitiesAssociatedToCountry(getCompCountry.name));
+    }
+  }, [getCompCountry]);
+
+  /**
+   * This used effect allow load the default list of countries and cities
+   */
+  useEffect(() => {
+    dispatch(getCountries());
+    dispatch(getCitiesAssociatedToCountry(companyStore.compCountryName));
+    setCompCity(companyStore.getCompCity);
+  }, []);
+
+
 
   return (
     <div>
@@ -207,7 +259,7 @@ const ProfileGeneral = () => {
                 freeSolo
                 disableClearable
                 id="free-solo-2-demo"
-                defaultValue={{ name: getCompCountry.name }}
+                defaultValue={{ name: companyStore.compCountryName }}
                 // List of countries
                 options={listCountries}
                 /**
@@ -237,7 +289,7 @@ const ProfileGeneral = () => {
                 id="free-solo-2-demo"
                 //List of cities
                 options={listCities}
-                defaultValue={getCompCity}
+                defaultValue={companyStore.compCityName}
                 /**
                  * This property allows to show in the user's view the property that we want to take from the object.
                  * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
@@ -253,7 +305,7 @@ const ProfileGeneral = () => {
                     label="Seleccione su ciudad"
                     required
                     error={getCompCity === ""}
-                    helperText={getCompCity === "" ? "Elemento requerido" : ""}
+                    helperText={getCompCity === "" ? "Elemento requerido" : " "}
                     InputProps={{
                       ...params.InputProps,
                       type: "search",

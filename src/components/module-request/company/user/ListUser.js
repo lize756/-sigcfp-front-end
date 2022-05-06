@@ -83,7 +83,7 @@ const ListUser = () => {
   );
   // Verified if the user to deploy a alert.
   const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
-
+  // Correspond to type of alert to display
   const typeAlert = useSelector((state) => state.AlertSlice.typeAlert);
 
   useEffect(() => {
