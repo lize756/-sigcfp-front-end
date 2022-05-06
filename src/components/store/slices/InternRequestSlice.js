@@ -127,7 +127,6 @@ export const updateInternRequest = (
     .catch((err) => {
       console.log(err.toJSON());
       // Allow display alert when the intern request was not update correctly
-
       dispatch(setTypeAlert("1"));
       dispatch(setShowAlert(true));
       dispatch(

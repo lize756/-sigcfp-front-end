@@ -25,6 +25,7 @@ import {
   getCitiesAssociatedToCountry,
   getCountries,
 } from "../../../store/slices/CountrySlice";
+import CorrectUpdateOrDeletejs from "../../alert/CorrectUpdateOrDelete";
 
 const validationSchema = yup.object({
   compName: yup
@@ -66,7 +67,10 @@ const ProfileGeneral = () => {
   //Get acces_token of the user that start section
   const ACCESS_TOKEN =
     "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
-
+  // Verified if the user to deploy a alert.
+  const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
+  // Correspond to type of alert
+  const typeAlert = useSelector((state) => state.AlertSlice.typeAlert);
   //Correspond of list of countries saved in the store.
   const listCountries = useSelector(
     (state) => state.CountrySlice.listCountries
@@ -126,13 +130,29 @@ const ProfileGeneral = () => {
   useEffect(() => {
     dispatch(getCountries());
     dispatch(getCitiesAssociatedToCountry(companyStore.compCountryName));
-    setCompCity(companyStore.getCompCity);
-  }, []);
+    console.log(companyStore !== undefined);
+    setCompCity(companyStore.compCityName);
+  }, [companyStore !== undefined]);
 
-
+  /**
+   * This method allows an alert to be displayed on the screen according to the type of alert specified.
+   * If the alert is to accept or reach, the type is '0',
+   * otherwise it is just a notification message, the type is '1'
+   * @returns
+   */
+  const displayAlert = () => {
+    let componentToDisplay = <></>;
+    if (isShowAlert) {
+      //Display alert dialog or snackbark
+      componentToDisplay =
+        typeAlert === "1" ? <CorrectUpdateOrDeletejs /> : <></>;
+    }
+    return componentToDisplay;
+  };
 
   return (
     <div>
+    {displayAlert()}
       <Paper sx={{ mt: 2, ml: 5, mr: 5 }}>
         <Stack direction="row" spacing={2}>
           <PersonIcon

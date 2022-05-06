@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
+import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
 
 let headers;
 /**
@@ -73,9 +74,28 @@ export const updateperson = (ACCESS_TOKEN, persId, person) => (dispatch) => {
     .put("api/persons/update/" + persId, person,{ headers })
     .then((res) => {
       dispatch(setPerson(res.data));
+        // Allow display alert when is update a one person
+        dispatch(setTypeAlert("1"));
+        dispatch(setShowAlert(true));
+        dispatch(
+          setAlert({
+            alertTitle: "Se actualizo correctamente el perfil",
+            alertSeverity: "info",
+          })
+        );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      // Allow display alert when the intern request was not update correctly
+
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo actualizar el perfil",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 
