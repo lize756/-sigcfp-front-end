@@ -3,17 +3,25 @@ import axios from "../../../config/axios";
 
 let headers;
 /**
+ * Initial state of CareerSlice
+ * @returns
+ */
+const initialState = () => ({
+  // List the career of the database
+  listCareers: [],
+  // Career
+  career: {},
+});
+
+/**
  * This slice containt all related to the requests of the career.
  */
 export const careerSlice = createSlice({
   name: "career",
-  initialState: {
-    // List the career of the database
-    listCareers: [],
-    // Career
-    career: {},
-  },
+  initialState: initialState(),
   reducers: {
+    resetCareerSliceState: (state) => initialState(),
+
     /**
      * Allows you to get data from a career
      * @param {*} state Corresponds to the initial or current state of the slice
@@ -144,5 +152,9 @@ export const getcareers = (ACCESS_TOKEN) => (dispatch) => {
 };
 
 //Export the action to reducer of career
-export const { setCareer, setlistCareers } = careerSlice.actions;
+export const {
+  setCareer,
+  setlistCareers,
+  resetCareerSliceState,
+} = careerSlice.actions;
 export default careerSlice.reducer;

@@ -2,19 +2,27 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
 import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
 
+/**
+ * Initial state of PersonSlice
+ * @returns
+ */
+const initialState = () => ({
+  // List the person of the database
+  listPersons: [],
+  // person
+  person: {},
+});
+
 let headers;
 /**
  * This slice containt all related to the requests of the one person.
  */
 export const personSlice = createSlice({
   name: "person",
-  initialState: {
-    // List the person of the database
-    listPersons: [],
-    // person
-    person: {},
-  },
+  initialState: initialState(),
   reducers: {
+    resetPersonSliceState: (state) => initialState(),
+
     /**
      * Allows you to get data from a person
      * @param {*} state Corresponds to the initial or current state of the slice
@@ -48,7 +56,6 @@ export const personSlice = createSlice({
  * @returns
  */
 export const addperson = (person) => async (dispatch) => {
- 
   axios
     .post("/api/persons/add", person)
     .then((res) => {
@@ -71,18 +78,18 @@ export const updateperson = (ACCESS_TOKEN, persId, person) => (dispatch) => {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("api/persons/update/" + persId, person,{ headers })
+    .put("api/persons/update/" + persId, person, { headers })
     .then((res) => {
       dispatch(setPerson(res.data));
-        // Allow display alert when is update a one person
-        dispatch(setTypeAlert("1"));
-        dispatch(setShowAlert(true));
-        dispatch(
-          setAlert({
-            alertTitle: "Se actualizo correctamente el perfil",
-            alertSeverity: "info",
-          })
-        );
+      // Allow display alert when is update a one person
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se actualizo correctamente el perfil",
+          alertSeverity: "info",
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -106,7 +113,9 @@ export const updateperson = (ACCESS_TOKEN, persId, person) => (dispatch) => {
  * @param {*} person new person to update.
  * @returns
  */
-export const updatePartiallyPerson = (ACCESS_TOKEN, persId, person) => (dispatch) => {
+export const updatePartiallyPerson = (ACCESS_TOKEN, persId, person) => (
+  dispatch
+) => {
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -116,7 +125,7 @@ export const updatePartiallyPerson = (ACCESS_TOKEN, persId, person) => (dispatch
       dispatch(setPerson(res.data));
     })
     .catch((err) => {
-      console.log("Se actualizo correctamente la persona")
+      console.log("Se actualizo correctamente la persona");
       console.log(err.toJSON());
     });
 };
@@ -183,5 +192,9 @@ export const getpersons = (ACCESS_TOKEN) => (dispatch) => {
 };
 
 //Export the action to reducer of person
-export const { setPerson, setListPersons } = personSlice.actions;
+export const {
+  setPerson,
+  setListPersons,
+  resetPersonSliceState,
+} = personSlice.actions;
 export default personSlice.reducer;

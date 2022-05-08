@@ -2,23 +2,34 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
 import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
 
+
+
+
+
+/**
+ * Initial state of InternRequest
+ * @returns
+ */
+const initialState = () => ({
+  // List the intern request of the database
+  listInteReqs: [],
+  // Inter request
+  intReq: {},
+  // List the intern rquests associated a one company
+  listIntReqsOfCompany: [],
+  // Allow verified if a one element in the store in update
+  isRender: false,
+});
 let headers;
 /**
  * This slice containt all related to the requests of the intern request.
  */
 export const internRequestSlice = createSlice({
   name: "internRequest",
-  initialState: {
-    // List the intern request of the database
-    listInteReqs: [],
-    // Inter request
-    intReq: {},
-    // List the intern rquests associated a one company
-    listIntReqsOfCompany: [],
-    // Allow verified if a one element in the store in update
-    isRender: false,
-  },
+  initialState: initialState(),
   reducers: {
+    resetInternRequestSliceState: (state) => initialState(),
+
     /**
      * Allows you to get data from a intern request
      * @param {*} state Corresponds to the initial or current state of the slice
@@ -249,5 +260,6 @@ export const {
   setIsRender,
   setListIntReqs,
   setListIntReqsOfCompany,
+  resetInternRequestSliceState,
 } = internRequestSlice.actions;
 export default internRequestSlice.reducer;

@@ -4,21 +4,28 @@ import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
 
 let headers;
 /**
+ * Initial state of ContactSlice
+ * @returns
+ */
+const initialState = () => ({
+  // List the contact of the database
+  listContacts: [],
+  // Inter request
+  contact: {},
+  // List the intern rquests z a one company
+  listContactsOfCompany: [],
+  // Allow verified if a one element in the store in update
+  isRenderContact: false,
+});
+/**
  * This slice containt all related to the requests of the contact.
  */
 export const contactSlice = createSlice({
   name: "contact",
-  initialState: {
-    // List the contact of the database
-    listContacts: [],
-    // Inter request
-    contact: {},
-    // List the intern rquests z a one company
-    listContactsOfCompany: [],
-    // Allow verified if a one element in the store in update
-    isRenderContact: false,
-  },
+  initialState: initialState(),
   reducers: {
+    resetContactSliceState: (state) => initialState(),
+
     /**
      * Allows you to get data from a contact
      * @param {*} state Corresponds to the initial or current state of the slice
@@ -250,6 +257,7 @@ export const getContactsAssociatedCompany = (ACCESS_TOKEN, companyId) => (
 export const {
   setContact,
   setIsRenderContact,
+  resetContactSliceState,
   setListcontacts,
   setListContactsOfCompany,
 } = contactSlice.actions;
