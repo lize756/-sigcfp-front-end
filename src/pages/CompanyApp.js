@@ -33,10 +33,6 @@ import { useNavigate } from "react-router";
 import { logOut } from "../components/store/slices/SignIn/LoginSlice";
 import { useDispatch } from "react-redux";
 
-
-
-
-
 const drawerWidth = 270;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -91,7 +87,7 @@ const CompanyApp = () => {
   let navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -108,12 +104,11 @@ const CompanyApp = () => {
     setAnchorElUser(null);
   };
 
-  const handleCloseSection = () => {
+  async function handleCloseSection() {
     setAnchorElUser(null);
-    dispatch(logOut())
-    console.log("Entre")
+    dispatch(logOut());
     navigate("/SignIn");
-  };
+  }
 
   return (
     <div>

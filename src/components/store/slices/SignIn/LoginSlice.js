@@ -4,6 +4,9 @@ import axios from "../../../../config/axios";
 const initialAuthState = {
   isAuthenticated: true,
 };
+const initialState ={
+  return: {}
+}
 export const LoginSlice = createSlice({
   name: "userlogin",
   initialState: {
@@ -72,10 +75,24 @@ export const reHydrateStore = () => {
   }
 };
 
-export const logOut = () => async (dispatch)=> {
+export const logOut = () => async (dispatch) => {
   if (localStorage.getItem("applicationState") !== null) {
-    localStorage.removeItem("applicationState");
+    try {
+      dispatch(localStorage.clear());
+    } catch (e) {
+      console.log(
+        "removeStorage: Error removing key [aplicationSate] from localStorage: " +
+          JSON.stringify(e)
+      );
+      return false;
+    }
   }
+  if (localStorage.getItem("applicationState") !== null) {
+    console.log("Existe");
+  } else {
+    console.log("No existe")
+  }
+  return true;
 };
 
 /**
@@ -105,6 +122,7 @@ export const sendToken = (data) => async (dispatch) => {
 export const {
   logout,
   setUserr,
+  reset,
   setResponseUserLogin,
   setIsLogin,
   setRolee,
