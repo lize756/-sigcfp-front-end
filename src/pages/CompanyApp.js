@@ -31,6 +31,11 @@ import CardProfile from "../layout/CardProfile";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { logOut } from "../components/store/slices/SignIn/LoginSlice";
+import { useDispatch } from "react-redux";
+
+
+
+
 
 const drawerWidth = 270;
 
@@ -86,7 +91,7 @@ const CompanyApp = () => {
   let navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
-
+  const dispatch = useDispatch()
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -105,7 +110,8 @@ const CompanyApp = () => {
 
   const handleCloseSection = () => {
     setAnchorElUser(null);
-    logOut();
+    dispatch(logOut())
+    console.log("Entre")
     navigate("/SignIn");
   };
 

@@ -72,9 +72,9 @@ export const reHydrateStore = () => {
   }
 };
 
-export const logOut = () => {
+export const logOut = () => async (dispatch)=> {
   if (localStorage.getItem("applicationState") !== null) {
-    localStorage.clear();
+    localStorage.removeItem("applicationState");
   }
 };
 
