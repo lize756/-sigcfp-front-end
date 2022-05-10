@@ -84,10 +84,12 @@ const AppBar = styled(MuiAppBar, {
 
 const CompanyApp = () => {
   const theme = useTheme();
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
   let navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const dispatch = useDispatch();
+
   const handleDrawerClose = () => {
     setOpen(false);
   };

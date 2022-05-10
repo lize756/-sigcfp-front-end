@@ -116,11 +116,11 @@ const PromotionApp = () => {
     setAnchorElUser(null);
   };
 
-  const handleCloseSection = () => {
+  async function handleCloseSection() {
     setAnchorElUser(null);
-    logOut();
+    dispatch(logOut());
     navigate("/SignIn");
-  };
+  }
 
   return (
     <div>
