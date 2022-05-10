@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
+import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
 
 /*
  * Initial state of CountrySlice
@@ -78,19 +79,29 @@ export const getCountries = () => async (dispatch) => {
 export const getCitiesAssociatedToCountry = (countryName) => async (
   dispatch
 ) => {
-  const data = {
-    country: `${countryName}`,
-  };
-  axios
-    .post("https://countriesnow.space/api/v0.1/countries/cities", data)
-    .then((res) => {
-      dispatch(setListCities(res.data.data));
-    })
-    .catch((err) => {
-      dispatch(setListCities([]));
-      console.log("No se encontraron ciudades asociadas a este país");
-      // console.log(err.toJSON());
-    });
+  if (countryName !== undefined) {
+    const data = {
+      country: `${countryName}`,
+    };
+    axios
+      .post("https://countriesnow.space/api/v0.1/countries/cities", data)
+      .then((res) => {
+        dispatch(setListCities(res.data.data));
+      })
+      .catch((err) => {
+        // Allow display alert when the intern request was not update correctly
+        dispatch(setTypeAlert("1"));
+        dispatch(setShowAlert(true));
+        dispatch(
+          setAlert({
+            alertTitle:
+              "No se encontraron ciudades asociadas a este país: " +
+              countryName,
+            alertSeverity: "warning",
+          })
+        );
+      });
+  }
 };
 
 //Export the action to reducer of City

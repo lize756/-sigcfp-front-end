@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import {
@@ -14,6 +14,19 @@ import { green } from "@mui/material/colors";
 import PersonIcon from "@mui/icons-material/PersonPin";
 import Autocomplete from "@mui/material/Autocomplete";
 import SaveIcon from "@mui/icons-material/Save";
+/**
+ * -------------------------------------------------
+ * ------------------REDUX -------------------------
+ * -------------------------------------------------
+ */
+import { useDispatch, useSelector } from "react-redux";
+import { updateperson } from "../../../store/slices/PersonSlice";
+import CorrectUpdateOrDelete from "../../alert/CorrectUpdateOrDelete";
+import {
+  getCitiesAssociatedToCountry,
+  getCountries,
+} from "../../../store/slices/CountrySlice";
+import CorrectUpdateOrDeletejs from "../../alert/CorrectUpdateOrDelete";
 
 const validationSchema = yup.object({
   persFirstName: yup.string("Ingresa tu nombre ").required("Campo obligatorio"),
@@ -32,40 +45,101 @@ const validationSchema = yup.object({
     .required("Campo obligatorio"),
 });
 const ProfileGeneral = () => {
+  /**
+   * ----------------------------------
+   * -------------- REDUX -------------
+   * ----------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+  // Verified if the user to deploy a alert.
+  const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
+  // Correspond to type of alert
+  const typeAlert = useSelector((state) => state.AlertSlice.typeAlert);
+  //Correspond of list of countries saved in the store.
+  const listCountries = useSelector(
+    (state) => state.CountrySlice.listCountries
+  );
+  //Correspond of list of cities saved in the store.
+  const listCities = useSelector((state) => state.CountrySlice.listCities);
+
+  // Get person id of the store
+  const personStore = useSelector((state) => state.PersonSlice.person);
+
   const listGender = ["MASCULINO", "FEMENINO", "OTRO"];
-  const listCities = ["Bogota", "Cali", "Medellin"];
-  const listCountries = [
-    { id: 1, name: "Colombia" },
-    { id: 2, name: "Paraguay" },
-    { id: 3, name: "Argentina" },
-  ];
 
   const [getPersGenre, setPersGenre] = useState("MASCULINO");
-  const [getPersonCountry, setPersonCountry] = useState({
-    id: 1,
-    name: "Colombia",
-  });
-  const [getPersonCity, setPersonCity] = useState("Cali");
+  const [getPersonCountry, setPersonCountry] = useState({});
+  const [getPersonCity, setPersonCity] = useState("");
   const formik = useFormik({
     initialValues: {
-      persFirstName: "Oscar",
-      persLastName: "Riascos",
-      persDocument: "1234556",
-      persEmail: "riascos@gmail.com",
-      persAddress: "norte 1234",
+      persId: personStore.persId,
+      persFirstName: personStore.persFirstName,
+      persLastName: personStore.persLastName,
+      persDocument: personStore.persDocument,
+      persEmail: personStore.persEmail,
+      persAddress: personStore.persAddress,
+      persGenre: personStore.persGenre,
+      persCountryName: personStore.persCountryName,
+      persCityName: personStore.persCityName,
     },
 
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
-      values.persGenre = getPersGenre;
-      values.persCityName = getPersonCity;
-      values.persCountryName = getPersonCountry;
-      alert(JSON.stringify(values, null, 2));
+      const personProfile = values;
+      personProfile.persGenre= getPersGenre === "" ? personStore.persGenre : getPersGenre;
+      personProfile.persCountryName =
+        Object.keys(getPersonCountry).length === 0
+          ? personStore.persCountryName
+          : getPersonCountry.name;
+      personProfile.persCityName =
+        getPersonCity === undefined ? personStore.persCityName : getPersonCity;
+
+      dispatch(updateperson(ACCESS_TOKEN, personProfile.persId, personProfile));
     },
   });
+  /**
+   * This used effect allow display the list of countries associated a country particular
+   */
+  useEffect(() => {
+    if (listCountries.length > 0) {
+      dispatch(getCitiesAssociatedToCountry(getPersonCountry.name));
+    }
+  }, [getPersonCountry]);
+
+  /**
+   * This used effect allow load the default list of countries and cities
+   */
+  useEffect(() => {
+    console.log(personStore)
+    dispatch(getCountries());
+    dispatch(getCitiesAssociatedToCountry(personStore.persCountryName));
+    setPersonCity(personStore.compCityName);
+  }, [personStore !== undefined]);
+
+  /**
+   * This method allows an alert to be displayed on the screen according to the type of alert specified.
+   * If the alert is to accept or reach, the type is '0',
+   * otherwise it is just a notification message, the type is '1'
+   * @returns
+   */
+  const displayAlert = () => {
+    let componentToDisplay = <></>;
+    if (isShowAlert) {
+      //Display alert dialog or snackbark
+      componentToDisplay =
+        typeAlert === "1" ? <CorrectUpdateOrDeletejs /> : <></>;
+    }
+    return componentToDisplay;
+  };
+
   return (
     <div>
+      {displayAlert()}
       <Paper sx={{ mt: 2, ml: 5, mr: 5 }}>
         <Stack direction="row" spacing={2}>
           <PersonIcon
@@ -166,7 +240,7 @@ const ProfileGeneral = () => {
                 sx={{ width: "85%" }}
                 id="combo-box-persGenre"
                 disablePortal
-                value={getPersGenre}
+                defaultValue={formik.values.persGenre}
                 options={listGender}
                 onChange={(event, value) => setPersGenre(value)}
                 renderInput={(params) => (
@@ -188,8 +262,8 @@ const ProfileGeneral = () => {
                 sx={{ width: "85%" }}
                 freeSolo
                 disableClearable
-                id="free-solo-2-demo"
-                defaultValue={{ name: getPersonCountry.name }}
+                id="autocomplete-persCountry"
+                defaultValue={{ name: formik.values.persCountryName }}
                 // List of countries
                 options={listCountries}
                 /**
@@ -217,10 +291,10 @@ const ProfileGeneral = () => {
                 sx={{ width: "85%" }}
                 freeSolo
                 disableClearable
-                id="free-solo-2-demo"
+                id="autocomplete-persCity"
                 //List of cities
                 options={listCities}
-                value={getPersonCity}
+                defaultValue={formik.values.persCityName}
                 /**
                  * This property allows to show in the user's view the property that we want to take from the object.
                  * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
