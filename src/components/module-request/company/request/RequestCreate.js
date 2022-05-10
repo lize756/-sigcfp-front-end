@@ -19,17 +19,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
 
     "& .MuiTextField-root": {
       margin: theme.spacing(2),
-      width: "90%",
-    },
-    "& .MuiAutocomplete-root": {
-      justifyContent: "center",
-      alignItems: "center",
-      margin: theme.spacing(1),
-      width: "105%",
     },
 
     "& .MuiButtonBase-root": {
@@ -171,26 +164,22 @@ const RequestCreate = () => {
     <Container maxWidth="lg">
       <Box sx={{ bgcolor: "#F2F6FE" }}>
         <form className={classes.root} onSubmit={onSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
+          <Grid container spacing={2} mr={4}>
+            <Grid item xs={12}>
               <TextField
                 required
+                fullWidth
                 name="inteRequName"
                 placeholder="Smith-Lynch"
                 label="Nombre de la solicitud"
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                required
-                placeholder="Smith-Lynch"
-                label="Nombre del creador"
-              />
-            </Grid>
+
             <Grid item xs={12}>
               <Autocomplete
                 multiple
+                fullWidth
                 options={list_carreers}
                 getOptionLabel={(option) => option.careName}
                 name="careers"
@@ -209,6 +198,7 @@ const RequestCreate = () => {
             <Grid item xs={12}>
               <TextField
                 required
+                fullWidth
                 name="inteRequDepartment"
                 placeholder="Recursos humanos\n"
                 label="Area o Departamento"
@@ -218,6 +208,7 @@ const RequestCreate = () => {
             <Grid item xs={6}>
               <TextField
                 required
+                fullWidth
                 name="inteRequNumber"
                 placeholder="5"
                 label="Número de Estudiantes"
@@ -228,6 +219,7 @@ const RequestCreate = () => {
             <Grid item xs={6}>
               <TextField
                 required
+                fullWidth
                 name="inteRequStDate"
                 label="Fecha de Inicio"
                 InputLabelProps={{ shrink: true, required: true }}
@@ -238,6 +230,7 @@ const RequestCreate = () => {
             <Grid item xs={12}>
               <Autocomplete
                 multiple
+                fullWidth
                 options={[]}
                 rows={4}
                 freeSolo
@@ -264,6 +257,7 @@ const RequestCreate = () => {
             <Grid item xs={12}>
               <Autocomplete
                 multiple
+                fullWidth
                 options={[]}
                 rows={4}
                 freeSolo
@@ -290,6 +284,7 @@ const RequestCreate = () => {
             <Grid item xs={6}>
               <TextField
                 multiline
+                fullWidth
                 required
                 name="inteRequDuration"
                 label="Duración de la Practica"
@@ -299,6 +294,7 @@ const RequestCreate = () => {
             <Grid item xs={6}>
               <TextField
                 required
+                fullWidth
                 name="inteRequSalary"
                 label="Valor de Bonificación"
                 type="number"
@@ -309,6 +305,7 @@ const RequestCreate = () => {
               <TextField
                 multiline
                 required
+                fullWidth
                 name="inteRequBondingType"
                 label="Tipo de Vinculación"
                 onChange={handleChange}
@@ -318,6 +315,7 @@ const RequestCreate = () => {
               <TextField
                 multiline
                 required
+                fullWidth
                 name="inteRequOtherBenefits"
                 label="Otros Beneficios"
                 onChange={handleChange}
