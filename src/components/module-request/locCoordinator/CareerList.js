@@ -26,7 +26,7 @@ const CareerList = () => {
             ? ListCareers.map((career, index) => {
                 return (
                   <Grid item xs={3}>
-                    <Careers key={career.id} career={career} index={index} />
+                    <Careers key={career.careId} career={career} index={index} />
                   </Grid>
                 );
               })
