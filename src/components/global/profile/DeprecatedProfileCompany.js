@@ -26,7 +26,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useDispatch, useSelector } from "react-redux";
 import {updateCompany } from "../../store/slices/CompanySlice";
 import {
-  getCitiesAssociatedToCountry,
+  ,
   getCountries,
 } from "../../store/slices/CountrySlice";
 
@@ -91,6 +91,8 @@ const ProfileCompany = () => {
     }
   }, [getCompCountry]);
 
+
+ 
   /**
    * --------------------------------
    * ---------Function---------------

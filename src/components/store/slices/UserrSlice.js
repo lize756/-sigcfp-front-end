@@ -1,19 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
 
+/**
+ * Initial state of UserrSlice
+ * @returns
+ */
+const initialState = () => ({
+    // List the userr of the database
+    listuserrs: [],
+    // userr
+    userr: {},
+});
+
 let headers;
 /**
  * This slice containt all related to the requests of the one userr.
  */
 export const userrSlice = createSlice({
   name: "userr",
-  initialState: {
-    // List the userr of the database
-    listuserrs: [],
-    // userr
-    userr: {},
-  },
+  initialState: initialState(),
   reducers: {
+    resetUserrSliceState: (state) => initialState(),
+
     /**
      * Allows you to get data from a userr
      * @param {*} state Corresponds to the initial or current state of the slice
@@ -46,16 +54,14 @@ export const userrSlice = createSlice({
  * @param {*} userr Correspond of element to add.
  * @returns
  */
- export const registerUser = (data) => async (dispatch) => {
+export const registerUser = (data) => async (dispatch) => {
   await axios
     .post("/api/auth/register", data)
-    .then((response) => {
-    })
+    .then((response) => {})
     .catch((err) => {
       console.log(err.toJSON());
     });
 };
-
 
 /**
  *  Allow update a one userr
@@ -72,7 +78,7 @@ export const updateuserr = (ACCESS_TOKEN, usrId, userr) => (dispatch) => {
     .put("api/userrs/update/" + usrId, { headers }, userr)
     .then((res) => {
       dispatch(setuserr(res.data));
-      console.log("Se actulizo correctamente el usuario")
+      console.log("Se actulizo correctamente el usuario");
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -141,5 +147,5 @@ export const getuserrs = (ACCESS_TOKEN) => (dispatch) => {
 };
 
 //Export the action to reducer of userr
-export const { setuserr, setListuserrs } = userrSlice.actions;
+export const { setuserr, setListuserrs, resetUserrSliceState} = userrSlice.actions;
 export default userrSlice.reducer;

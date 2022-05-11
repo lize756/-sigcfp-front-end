@@ -31,6 +31,7 @@ import CardProfile from "../layout/CardProfile";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { logOut } from "../components/store/slices/SignIn/LoginSlice";
+import { useDispatch } from "react-redux";
 
 const drawerWidth = 270;
 
@@ -83,6 +84,8 @@ const AppBar = styled(MuiAppBar, {
 
 const CompanyApp = () => {
   const theme = useTheme();
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
   let navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -103,11 +106,11 @@ const CompanyApp = () => {
     setAnchorElUser(null);
   };
 
-  const handleCloseSection = () => {
+  async function handleCloseSection() {
     setAnchorElUser(null);
-    logOut();
+    dispatch(logOut());
     navigate("/SignIn");
-  };
+  }
 
   return (
     <div>

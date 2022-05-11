@@ -1,24 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../../config/axios";
+import { resetAlertSliceState } from "../AlertSlice";
+import { resetCareerSliceState } from "../CareerSlice";
+import { resetCompanySliceState } from "../CompanySlice";
+import { resetContactSliceState } from "../ContactSlice";
+import { resetCountrySliceState } from "../CountrySlice";
+import { resetInternRequestSliceState } from "../InternRequestSlice";
+import { resetPersonSliceState } from "../PersonSlice";
+import { resetUserrSliceState } from "../UserrSlice";
 //AUTHORIZATION
 const initialAuthState = {
   isAuthenticated: true,
 };
+/**
+ * Initial state of loginSlice
+ * @returns
+ */
+const initialState = () => ({
+  initialAuthState,
+  user: {
+    userEmail: "",
+    userName: "",
+  },
+  responseUserLogin: {},
+  isLogin: false,
+  rolee: "",
+  userCompanyId: "",
+  userPersonId: "",
+});
+
 export const LoginSlice = createSlice({
   name: "userlogin",
-  initialState: {
-    initialAuthState,
-    user: {
-      userEmail: "",
-      userName: "",
-    },
-    responseUserLogin: {},
-    isLogin: false,
-    rolee: "",
-    userCompanyId: "",
-    userPersonId: "",
-  },
+  initialState: initialState(),
   reducers: {
+    resetLoginState: (state) => initialState(),
     login(state) {
       state.isAuthenticated = true;
     },
@@ -72,10 +87,37 @@ export const reHydrateStore = () => {
   }
 };
 
-export const logOut = () => {
+export const logOut = () => async (dispatch) => {
   if (localStorage.getItem("applicationState") !== null) {
-    localStorage.clear();
+    try {
+      localStorage.clear();
+      resetAllState(dispatch);
+    } catch (e) {
+      console.log(
+        "removeStorage: Error removing key [aplicationSate] from localStorage: " +
+          JSON.stringify(e)
+      );
+      return false;
+    }
   }
+  if (localStorage.getItem("applicationState") !== null) {
+    console.log("Existe");
+  } else {
+    console.log("No existe");
+  }
+  return true;
+};
+
+const resetAllState = (dispatch) => {
+  dispatch(resetLoginState());
+  dispatch(resetAlertSliceState());
+  dispatch(resetCareerSliceState());
+  dispatch(resetCompanySliceState());
+  dispatch(resetContactSliceState());
+  dispatch(resetCountrySliceState());
+  dispatch(resetInternRequestSliceState());
+  dispatch(resetPersonSliceState());
+  dispatch(resetUserrSliceState());
 };
 
 /**
@@ -105,6 +147,8 @@ export const sendToken = (data) => async (dispatch) => {
 export const {
   logout,
   setUserr,
+  resetLoginState,
+  reset,
   setResponseUserLogin,
   setIsLogin,
   setRolee,

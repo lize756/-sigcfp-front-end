@@ -11,7 +11,15 @@ import {
   createTheme,
 } from "@mui/material";
 
-import { DataGrid, esES, GridToolbar, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  esES,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+} from "@mui/x-data-grid";
 import { Link as RouterLink } from "react-router-dom";
 /**
  * Icons
@@ -20,6 +28,7 @@ import { IconButton, Typography } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteAlert from "../../../global/alert/DeleteAlert";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -30,13 +39,28 @@ import {
   setIsRenderContact,
 } from "../../../store/slices/ContactSlice";
 import { useNavigate } from "react-router";
+import {
+  setAcceptedAlert,
+  setAlert,
+  setShowAlert,
+  setTypeAlert,
+} from "../../../store/slices/AlertSlice";
+import CorrectUpdateOrDeletejs from "../../../global/alert/CorrectUpdateOrDelete";
 
 const ListUser = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
+  let navigate = useNavigate();
 
   /**
-   * REDUX
+   * Const
+   */
+  const [getContactDelete, setContactDelete] = useState({});
+
+  /**
+   * -----------------------------------------------------------
+   * --------------------------REDUX ---------------------------
+   * -----------------------------------------------------------
    */
   //Get list of company saved in the store
   const listContactOfCompany = useSelector(
@@ -53,6 +77,14 @@ const ListUser = () => {
   const isRenderContact = useSelector(
     (state) => state.ContactSlice.isRenderContact
   );
+  // Verified if the user to accept the conditions to change this state, if isAcceptedAlert, the user agree on the contrary disagree
+  const isAcceptedAlert = useSelector(
+    (state) => state.AlertSlice.isAcceptedAlert
+  );
+  // Verified if the user to deploy a alert.
+  const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
+  // Correspond to type of alert to display
+  const typeAlert = useSelector((state) => state.AlertSlice.typeAlert);
 
   useEffect(() => {
     // Added to store the company that user login
@@ -61,10 +93,15 @@ const ListUser = () => {
     setTimeout(() => {
       dispatch(setIsRenderContact(false));
     }, "1000");
-    console.log("Tamaño ", listContactOfCompany.length);
   }, [isRenderContact]);
 
-  let navigate = useNavigate();
+  /**
+   * This useEffect allow update the state the element that allow delete a the current contact.
+   *    */
+  useEffect(() => {
+    auxiliarHandleDelete(getContactDelete);
+  }, [isAcceptedAlert]);
+
   /**
    * ------------------------------------------------------------------------------------
    * ----------------Method relationated with the crud action of contact-----------------
@@ -83,13 +120,66 @@ const ListUser = () => {
   };
 
   /**
+   * -----------------------------------------------------------------------------------------------
+   * ----------------------------------Delete functions---------------------------------------------
+   * -----------------------------------------------------------------------------------------------
+   */
+  /**
    * Allow delete a contact
    * @param {} event
    * @param {*} cellValues correspond the cell that you want delete
    */
   const handleDelete = (event, cellValues) => {
-    const currentUserToDelete = cellValues.row;
-    dispatch(deleteContact(ACCESS_TOKEN, currentUserToDelete.contId));
+    const currentContactToDelete = cellValues.row;
+    setContactDelete(currentContactToDelete);
+    dispatch(setShowAlert(true));
+    dispatch(setTypeAlert("0"));
+    const alert = {
+      alertTitle: "¿Está usted seguro de que desea elimnar este contacto?",
+      alertMaxWidth: "xs",
+      alertDescription: "",
+      alertOtherInfo: "",
+    };
+    dispatch(setAlert(alert));
+  };
+
+  /**
+   * This function allow delete a one contact after the that user accept delele the current contact
+   * @param {*} currentReqToDelete
+   */
+  const auxiliarHandleDelete = (currentContactToDelete) => {
+    if (isAcceptedAlert) {
+      dispatch(
+        deleteContact(
+          ACCESS_TOKEN,
+          currentContactToDelete.contId,
+          currentContactToDelete
+        )
+      );
+      dispatch(setAcceptedAlert(false));
+    }
+  };
+
+  /**
+   * This method allows an alert to be displayed on the screen according to the type of alert specified.
+   * If the alert is to accept or reach, the type is '0',
+   * otherwise it is just a notification message, the type is '1'
+   * @returns
+   */
+  const displayAlert = () => {
+    let componentToDisplay = <></>;
+    if (isShowAlert) {
+      //Display alert dialog or snackbark
+      componentToDisplay =
+        typeAlert === "0" ? (
+          <DeleteAlert />
+        ) : typeAlert === "1" ? (
+          <CorrectUpdateOrDeletejs />
+        ) : (
+          <></>
+        );
+    }
+    return componentToDisplay;
   };
 
   /**
@@ -207,7 +297,7 @@ const ListUser = () => {
         <GridToolbarFilterButton />
         <GridToolbarExport
           csvOptions={{
-            fileName: "Mis solicitudes",
+            fileName: "Mis contactos",
             delimiter: ";",
             utf8WithBom: true,
           }}
@@ -221,6 +311,7 @@ const ListUser = () => {
 
   return (
     <div>
+      {displayAlert()}
       <Container>
         <Stack
           direction="row"
@@ -246,21 +337,21 @@ const ListUser = () => {
         <TableContainer
           sx={{ maxHeight: 400, mt: 5, mb: 5, height: 500, width: "100%" }}
         >
-        <ThemeProvider theme={customLanguageDataGrid}>
-          <DataGrid
-            rowHeight={50}
-            loading={isRenderContact}
-            getRowId={(row) => row.contId}
-            rows={isRenderContact ? [] : listContactOfCompany}
-            columns={columns}
-            pageSize={5}
-            onCellClick={handleCellClick}
-            onRowClick={handleRowClick}
-            components={{
-              Toolbar: GridToolbarOptionsOfDatagrid,
-            }}
-          />
-        </ThemeProvider>
+          <ThemeProvider theme={customLanguageDataGrid}>
+            <DataGrid
+              rowHeight={50}
+              loading={isRenderContact}
+              getRowId={(row) => row.contId}
+              rows={isRenderContact ? [] : listContactOfCompany}
+              columns={columns}
+              pageSize={5}
+              onCellClick={handleCellClick}
+              onRowClick={handleRowClick}
+              components={{
+                Toolbar: GridToolbarOptionsOfDatagrid,
+              }}
+            />
+          </ThemeProvider>
         </TableContainer>
       </Card>
 

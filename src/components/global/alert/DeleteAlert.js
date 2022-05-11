@@ -5,11 +5,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { setAcceptedAlert, setShowAlert } from "../../store/slices/AlertSlice";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
+import { setAcceptedAlert, setShowAlert } from "../../store/slices/AlertSlice";
 
-const EditAlert = () => {
+const DeleteAlert = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [getInfoAlert, setInfoAlert] = React.useState({});
   /**
@@ -45,10 +45,11 @@ const EditAlert = () => {
     <div>
       <Dialog
         open={isOpen}
+        maxWidth={getInfoAlert.alertMaxWidth}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{getInfoAlert.alertTitle}</DialogTitle>
+        <DialogTitle align= "center" id="alert-dialog-title">{getInfoAlert.alertTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             { getInfoAlert.alertDescription}
@@ -64,4 +65,4 @@ const EditAlert = () => {
     </div>
   );
 };
-export default EditAlert;
+export default DeleteAlert;

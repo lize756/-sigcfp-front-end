@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { Container, Stack, Card, TableContainer, Button } from "@mui/material";
-import EditAlert from "../../../global/alert/EditAlert";
+import DeleteAlert from "../../../global/alert/DeleteAlert";
 
 //Data Grid
 import {
@@ -40,8 +40,10 @@ import {
   setAcceptedAlert,
   setShowAlert,
   setAlert,
+  setTypeAlert,
 } from "../../../store/slices/AlertSlice";
 import { render } from "react-dom";
+import CorrectUpdateOrDeletejs from "../../../global/alert/CorrectUpdateOrDelete";
 const themeLanguageDataGrid = createTheme(esES, coreeEsEs);
 const RequestList = () => {
   // Allow to send the elements of store
@@ -52,8 +54,11 @@ const RequestList = () => {
   // Const
   const [getIntReqAssocCompany, setIntReqAssocCompany] = useState([]);
   const [getRequestDelete, setRequestDelete] = useState({});
+
   /**
-   * REDUX
+   * -----------------------------------------------------------
+   * --------------------------REDUX ---------------------------
+   * -----------------------------------------------------------
    */
   const list_interRequestsOfCompany = useSelector(
     (state) => state.InternRequestSlice.listIntReqsOfCompany
@@ -73,6 +78,8 @@ const RequestList = () => {
   );
   // Verified if the user to deploy a alert.
   const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
+  // Correspond to type of alert
+  const typeAlert = useSelector((state) => state.AlertSlice.typeAlert);
   /**
    * This useEffect allow render the DOM when the list is update
    */
@@ -93,16 +100,20 @@ const RequestList = () => {
   }, [isAcceptedAlert]);
 
   const customInternRequestEstructure = () => {
-    return list_interRequestsOfCompany.map((element, index) => {
-      const [faculties, careers] = renderFacultiesAndCareers(index);
-      const customFaculties = faculties;
-      const customCareers = careers;
-      return {
-        ...element,
-        customFaculties,
-        customCareers,
-      };
-    });
+    if (list_interRequestsOfCompany.length > 0) {
+      return list_interRequestsOfCompany.map((element, index) => {
+        const [faculties, careers] = renderFacultiesAndCareers(index);
+        const customFaculties = faculties;
+        const customCareers = careers;
+        return {
+          ...element,
+          customFaculties,
+          customCareers,
+        };
+      });
+    }else{
+      return []
+    }
   };
   /**
    * This method allow show data relationated with the careers and
@@ -157,15 +168,21 @@ const RequestList = () => {
     const currentReqToDelete = cellValues.row;
     setRequestDelete(currentReqToDelete);
     dispatch(setShowAlert(true));
+    dispatch(setTypeAlert("0"));
+
     const alert = {
       alertTitle: "¿Está usted seguro de que desea elimnar esta solicitud?",
-      alertDescription:
-        "Nombre de solicitud: " + currentReqToDelete.inteRequName,
+      alertMaxWidth: "xs",
+      alertDescription: "",
       alertOtherInfo: "",
     };
     dispatch(setAlert(alert));
   };
 
+  /**
+   * This function allow delete a one contact after the that user accept delele the current contact
+   * @param {} currentReqToDelete
+   */
   const auxiliarHandleDelete = (currentReqToDelete) => {
     if (isAcceptedAlert) {
       dispatch(
@@ -179,6 +196,27 @@ const RequestList = () => {
     }
   };
 
+  /**
+   * This method allows an alert to be displayed on the screen according to the type of alert specified.
+   * If the alert is to accept or reach, the type is '0',
+   * otherwise it is just a notification message, the type is '1'
+   * @returns
+   */
+  const displayAlert = () => {
+    let componentToDisplay = <></>;
+    if (isShowAlert) {
+      //Display alert dialog or snackbark
+      componentToDisplay =
+        typeAlert === "0" ? (
+          <DeleteAlert />
+        ) : typeAlert === "1" ? (
+          <CorrectUpdateOrDeletejs />
+        ) : (
+          <></>
+        );
+    }
+    return componentToDisplay;
+  };
   /**
    * Allow view of info tha have a company
    * @param {*} event
@@ -205,10 +243,6 @@ const RequestList = () => {
     event.stopPropagation();
   };
   // End to method of datagrid
-
-  const displayAlert = () => {
-    return isShowAlert ? <EditAlert /> : <></>;
-  };
 
   /**
    * -----------------------------------------------------------------------------

@@ -6,9 +6,11 @@ import {
   Stack,
   Card,
   TableContainer,
+  ThemeProvider,
+  createTheme,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, esES, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
 /**
  * Icons
  */
@@ -192,6 +194,46 @@ const CompaniesList = () => {
     },
   ];
 
+  /**
+   * ------------------------------------------------------------------------------------
+   * ------------------------------------Custom config of datagrid-----------------------------
+   * ------------------------------------------------------------------------------------
+   */
+
+  /**
+   *This constant allows to establish the theme that the datagrid will have,
+   *this includes: the colors, the size of the cells, the language, among others....
+   *In this case we use it to establish the language of the datagrid
+   *More info: https://v4.mui.com/components/data-grid/localization/
+   */
+  const customLanguageDataGrid = createTheme({}, esES);
+
+  /**
+   * This function allows establishing which header buttons the datagrid will have (filtering button, column density...),
+   * as well as establishing the format to export the information to a csv file
+   * more info: https://mui.com/x/react-data-grid/components/
+   * @returns the custom Grid Toolbar Options Of Datagrid
+   */
+  function GridToolbarOptionsOfDatagrid() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarFilterButton />
+        <GridToolbarExport
+          csvOptions={{
+            fileName: "Mis solicitudes",
+            delimiter: ";",
+            utf8WithBom: true,
+          }}
+        ></GridToolbarExport>
+      </GridToolbarContainer>
+    );
+  }
+  /**
+   * --------------------------End custom config datagrid--------------------------------
+   */
+
   return (
     <div>
       <Container>
@@ -209,18 +251,20 @@ const CompaniesList = () => {
 
       <Card sx={{ borderRadius: 8, padding: "0px 20px 0px 20px" }}>
         <TableContainer sx={{ mt: 5, mb: 5, height: 500, width: "100%" }}>
-          <DataGrid
-            rowHeight={50}
-            getRowId={(row) => row.compId}
-            rows={listCompanies}
-            columns={columns}
-            pageSize={10}
-            onCellClick={handleCellClick}
-            onRowClick={handleRowClick}
-            components={{
-              Toolbar: GridToolbar,
-            }}
-          />
+          <ThemeProvider theme={customLanguageDataGrid}>
+            <DataGrid
+              rowHeight={50}
+              getRowId={(row) => row.compId}
+              rows={listCompanies}
+              columns={columns}
+              pageSize={10}
+              onCellClick={handleCellClick}
+              onRowClick={handleRowClick}
+              components={{
+                Toolbar: GridToolbarOptionsOfDatagrid,
+              }}
+            />
+          </ThemeProvider>
         </TableContainer>
       </Card>
 

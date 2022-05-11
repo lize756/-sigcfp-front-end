@@ -1,23 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
+import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
 
 let headers;
+/**
+ * Initial state of ContactSlice
+ * @returns
+ */
+const initialState = () => ({
+  // List the contact of the database
+  listContacts: [],
+  // Inter request
+  contact: {},
+  // List the intern rquests z a one company
+  listContactsOfCompany: [],
+  // Allow verified if a one element in the store in update
+  isRenderContact: false,
+});
 /**
  * This slice containt all related to the requests of the contact.
  */
 export const contactSlice = createSlice({
   name: "contact",
-  initialState: {
-    // List the contact of the database
-    listContacts: [],
-    // Inter request
-    contact: {},
-    // List the intern rquests z a one company
-    listContactsOfCompany: [],
-    // Allow verified if a one element in the store in update
-    isRenderContact: false,
-  },
+  initialState: initialState(),
   reducers: {
+    resetContactSliceState: (state) => initialState(),
+
     /**
      * Allows you to get data from a contact
      * @param {*} state Corresponds to the initial or current state of the slice
@@ -65,9 +73,27 @@ export const addContact = (ACCESS_TOKEN, contact) => async (dispatch) => {
     .then((res) => {
       dispatch(setContact(res.data));
       dispatch(setIsRenderContact(true));
+      // Allow display alert when is create a contact
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se creo correctamente el contacto",
+          alertSeverity: "success",
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      // Allow display alert when the contact was not created correctly
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo crear el contacto",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 
@@ -99,13 +125,31 @@ export const updateContact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("/api/contacts/update/" + contId,contact,{ headers })
+    .put("/api/contacts/update/" + contId, contact, { headers })
     .then((res) => {
       dispatch(setContact(res.data));
       dispatch(setIsRenderContact(true));
+      // Allow display alert when is update a contact
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se actualizo correctamente el contacto",
+          alertSeverity: "info",
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      // Allow display alert when the contact was not update correctly
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo actualizar el contacto",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 
@@ -123,12 +167,28 @@ export const deleteContact = (ACCESS_TOKEN, contId) => async (dispatch) => {
   axios
     .delete("/api/contacts/" + contId, { headers })
     .then((res) => {
-      console.log("Se elimino correctamente el contacto");
       dispatch(setContact(res.data));
       dispatch(setIsRenderContact(true));
+      // Allow display alert when is delete a contact
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se elimino correctamente el contacto",
+          alertSeverity: "info",
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo eliminar el contacto",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 
@@ -197,6 +257,7 @@ export const getContactsAssociatedCompany = (ACCESS_TOKEN, companyId) => (
 export const {
   setContact,
   setIsRenderContact,
+  resetContactSliceState,
   setListcontacts,
   setListContactsOfCompany,
 } = contactSlice.actions;

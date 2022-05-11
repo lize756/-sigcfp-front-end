@@ -21,11 +21,11 @@ const MainLocation = () => {
         </Route>
 
         <Route path="/location" element={<HomeLocation />}>
-          <Route path="view" element={<Request />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
 
         <Route path="/location" element={<HomeLocation />}>
-          <Route path="profile" element={<Profile />} />
+          <Route path="internrequest/show" element={<Request />} />
         </Route>
       </Routes>
     </>

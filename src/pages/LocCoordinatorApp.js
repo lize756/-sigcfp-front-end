@@ -35,6 +35,7 @@ import { useNavigate } from "react-router";
 
 import { Outlet } from "react-router-dom";
 import { logOut } from "../components/store/slices/SignIn/LoginSlice";
+import { useDispatch } from "react-redux";
 
 const drawerWidth = 260;
 
@@ -86,6 +87,8 @@ const AppBar = styled(MuiAppBar, {
 
 const LocCoordinatorApp = () => {
   const theme = useTheme();
+   // Allow to send the elements of store
+   const dispatch = useDispatch();
   let navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -101,12 +104,11 @@ const LocCoordinatorApp = () => {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-  const handleCloseSection = () => {
+  async function handleCloseSection() {
     setAnchorElUser(null);
-    logOut();
+    dispatch(logOut());
     navigate("/SignIn");
-  };
-
+  }
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -261,7 +263,7 @@ const LocCoordinatorApp = () => {
             </ListItem>
 
             <ListItem button key="Profile"  onClick={() => {
-                    navigate("/company/profile");
+                    navigate("/location/profile");
                   }}>
               <ListItemIcon>
                 <PersonPinIcon color="primary" />

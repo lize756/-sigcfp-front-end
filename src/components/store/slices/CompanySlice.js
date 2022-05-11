@@ -1,22 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
+import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
 
+/**
+ * Initial state of CompanySlice
+ * @returns
+ */
+const initialState = () => ({
+  // List the company of the database
+  listCompanies: [],
+  // Company
+  company: {},
+
+  //AccordeonChangeValue
+  accordinRegisterPanel: "panel1",
+});
 let headers;
 /**
  * This slice containt all related to the requests of the company.
  */
 export const companySlice = createSlice({
   name: "company",
-  initialState: {
-    // List the company of the database
-    listCompanies: [],
-    // Company
-    company: {},
-
-    //AccordeonChangeValue
-    accordinRegisterPanel: "panel1",
-  },
+  initialState: initialState(),
   reducers: {
+    resetCompanySliceState: (state) => initialState(),
+
     /**
      * Allows you to get data from a company
      * @param {*} state Corresponds to the initial or current state of the slice
@@ -74,13 +82,31 @@ export const updateCompany = (ACCESS_TOKEN, compId, Company) => (dispatch) => {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("api/companies/update/" + compId,Company,{ headers })
+    .put("api/companies/update/" + compId, Company, { headers })
     .then((res) => {
       dispatch(setCompany(res.data));
-      console.log("Se actualizo correctamente la compañia")
+      console.log("Se actualizo correctamente la compañia");
+      // Allow display alert when is update the intern request
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se actualizo correctamente el perfil",
+          alertSeverity: "info",
+        })
+      );
     })
     .catch((err) => {
       console.log(err.toJSON());
+      // Allow display alert when the perfil was not update correctly
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo actualizar el perfil",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 
@@ -146,5 +172,10 @@ export const getCompanies = (ACCESS_TOKEN) => (dispatch) => {
 };
 
 //Export the action to reducer of Company
-export const { setCompany, setListCompanies,setAccordinRegisterPanelValue } = companySlice.actions;
+export const {
+  setCompany,
+  resetCompanySliceState,
+  setListCompanies,
+  setAccordinRegisterPanelValue,
+} = companySlice.actions;
 export default companySlice.reducer;

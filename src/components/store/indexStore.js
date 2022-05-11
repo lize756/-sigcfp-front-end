@@ -4,7 +4,10 @@
 // Represent the index to store of all application
 import { configureStore } from "@reduxjs/toolkit";
 // Login
-import userLogin, { localStorageMiddleware, reHydrateStore } from "./slices/SignIn/LoginSlice";
+import userLogin, {
+  localStorageMiddleware,
+  reHydrateStore,
+} from "./slices/SignIn/LoginSlice";
 
 //Other slice
 import CareerSlice from "./slices/CareerSlice";
@@ -14,7 +17,8 @@ import InternRequestSlice from "./slices/InternRequestSlice";
 import PersonSlice from "./slices/PersonSlice";
 import CountrySlice from "./slices/CountrySlice";
 import UserrSlice from "./slices/UserrSlice";
-import AlertSlice from "./slices/AlertSlice"
+import AlertSlice from "./slices/AlertSlice";
+
 /**
  * Store of all application
  */
