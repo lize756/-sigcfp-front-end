@@ -49,6 +49,7 @@ const RequestList = () => {
   // Verified if change the list of intern requests associated to company
   const isRender = useSelector((state) => state.InternRequestSlice.isRender);
 
+  // Correspond to rol login in the system
   const rolUserLogin = useSelector((state) => state.userLogin.rolee);
   //se guarda en requestlist la informacion de las solicitudes
   //Axios

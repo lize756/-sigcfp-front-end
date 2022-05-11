@@ -24,14 +24,14 @@ const MainDirector = () => {
         <Route path="/director" element={<HomeDirector />}>
           <Route path="request" element={<RequestList />} />
         </Route>
-        <Route path="/company" element={<HomeDirector />}>
-          <Route path="contacts" element={<Contacts />} />
-        </Route>
         <Route path="/director" element={<HomeDirector />}>
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="/director" element={<HomeDirector />}>
-          <Route path="company" element={<Company />} />
+          <Route path="companies/company/info" element={<Company />} />
+        </Route>
+        <Route path="/director" element={<HomeDirector />}>
+          <Route path="companies/company/contacts" element={<Contacts />} />
         </Route>
         <Route path="/director" element={<HomeDirector />}>
           <Route path="internrequest/show" element={<Request />} />

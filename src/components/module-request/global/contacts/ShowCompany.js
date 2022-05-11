@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Paper, Stack, Box, Typography, Grid } from "@mui/material";
+import { Paper, Stack, Avatar, Box, Typography, Grid } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
@@ -8,178 +8,310 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import MoneyIcon from "@mui/icons-material/AttachMoney";
 import BusinessIcon from "@mui/icons-material/BusinessCenter";
 import SchoolIcon from "@mui/icons-material/School";
+import { red, orange, pink } from "@mui/material/colors";
+//redux
+import { useDispatch, useSelector } from "react-redux";
 
 const ShowCompany = () => {
+  /**
+   * ----------------------------------------
+   * ---------------- REDUX -----------------
+   * ----------------------------------------
+   */
+  const currentCompany = useSelector((state) => state.CompanySlice.company);
+
+
   const [company, setCompany] = useState({
-    compName: "Rempel, Hackett and Macejkovic",
-    compNit: "3566461110394479",
-    compAddress: "2328 Cascade Pass",
-    city: "Cali",
-    compEmail: "dbitterton0@accuweather.com",
-    compTelephone: "549-176-8430",
-    compIcesiStud: "X",
-    compEcoActiv: "Capital Goods",
-    compType:
-      "praesent id massa id nisl venenatis lacinia aenean sit amet justo morbi ut",
-    compUrlAddress:
-      "https://sfgate.com/aliquam/convallis/nunc/proin/at/turpis.html",
+    compName: currentCompany.compName,
+    compNit: currentCompany.compNit,
+    compAddress: currentCompany.compAddress,
+    city: currentCompany.compCityName,
+    compEmail: currentCompany.compEmail,
+    compTelephone: currentCompany.compTelephone,
+    compIcesiStud: currentCompany.compIcesiStud,
+    compEcoActiv: currentCompany.compEcoActiv,
+    compType: currentCompany.compType,
+    compUrlAddress: currentCompany.compUrlAddress
   });
   return (
     <div>
-      <Paper sx={{ mt: 3, ml: 5, mr: 5 }}>
-        <Grid container spacing={2} mt={2} mx={1}>
-          <Grid item xs={12}>
-            <Stack direction="row" spacing={2}>
-              {" "}
-              <AccountCircleIcon
-                sx={{ width: 65, height: 65, ml: 5, mt: 1, color: "#072079" }}
-              />
-              <Box>
-                <Typography
-                  mt={2}
-                  variant="h4"
-                  component="h5"
-                  sx={{ fontWeight: "medium", color: "#072079" }}
-                >
-                  {company.compName}
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  sx={{ fontWeight: "medium", color: "#072079" }}
-                >
-                  {company.compNit}
-                </Typography>
-              </Box>
-            </Stack>
-          </Grid>
-        </Grid>
+      <Paper sx={{ mt: 2, ml: 5, mr: 5 }}>
+        <Stack direction="row" spacing={2}>
+          <Avatar
+            sx={{
+              mt: 2,
+              ml: 7,
+              mb: 2,
+              bgcolor: "#072079",
+              width: 65,
+              height: 65,
+            }}
+          >
+            {" "}
+            <AccountCircleIcon sx={{ width: 65, height: 65 }} />
+          </Avatar>
+          <Box>
+            <Typography
+              mt={2}
+              variant="h4"
+              component="h5"
+              sx={{ fontWeight: "medium", color: "#072079" }}
+            >
+              {company.compName}
+            </Typography>
+            <Typography
+              mb={2}
+              variant="subtitle2"
+              sx={{ fontWeight: "medium", color: "#072079" }}
+            >
+              {company.compNit}
+            </Typography>
+          </Box>
+        </Stack>
       </Paper>
 
-      <Paper sx={{ mt: 3, ml: 5, mr: 5 }}>
-        <Grid container spacing={2} mt={2} mx={1}>
-          <Grid item xs={6}>
-            <Stack direction="row" spacing={2}>
-              <EmailIcon color="warning" sx={{ width: 45, height: 45 }} />
+      <Stack direction="row" spacing={3} sx={{ mt: 2, ml: 5, mr: 5 }}>
+        <Paper sx={{ width: "50%" }}>
+          <Stack direction="row" spacing={2}>
+            <Avatar
+              sx={{
+                ml: 8,
+                mt: 1,
+                mb: 1,
+                bgcolor: "#FFFFFF",
+                width: 45,
+                height: 45,
+              }}
+            >
+              <EmailIcon sx={{ color: red[200], width: 45, height: 45 }} />
+            </Avatar>
+            <Box>
+              <Typography
+                mt={1}
+                variant="subtitle2"
+                sx={{ fontWeight: "medium", color: red[200] }}
+              >
+                Email
+              </Typography>
 
-              <Box>
-                <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
-                  Email
-                </Typography>
+              <Typography
+                mb={1}
+                mr={1}
+                variant="body1"
+                sx={{ fontWeight: "medium", color: red[400] }}
+              >
+                {company.compEmail}
+              </Typography>
+            </Box>
+          </Stack>
+        </Paper>
 
-                <Typography variant="body1" sx={{ fontWeight: "medium" }}>
-                  {company.compEmail}
-                </Typography>
-              </Box>
-            </Stack>
-          </Grid>
+        <Paper sx={{ width: "50%" }}>
+          <Stack direction="row" spacing={2}>
+            <Avatar
+              sx={{
+                ml: 8,
+                mt: 1,
+                mb: 1,
+                bgcolor: "#FFFFFF",
+                width: 45,
+                height: 45,
+              }}
+            >
+              <LocalPhoneIcon sx={{ color: red[200], width: 45, height: 45 }} />
+            </Avatar>
+            <Box>
+              <Typography
+                mt={1}
+                variant="subtitle2"
+                sx={{ fontWeight: "medium", color: red[200] }}
+              >
+                Teléfono
+              </Typography>
 
-          <Grid item xs={6}>
-            <Stack direction="row" spacing={2}>
-              <LocalPhoneIcon color="warning" sx={{ width: 45, height: 45 }} />
+              <Typography
+                mb={1}
+                mr={1}
+                variant="body1"
+                sx={{ fontWeight: "medium", color: red[500] }}
+              >
+                {company.compTelephone}
+              </Typography>
+            </Box>
+          </Stack>
+        </Paper>
+      </Stack>
 
-              <Box>
-                <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
-                  Teléfono
-                </Typography>
+      <Stack direction="row" spacing={3} sx={{ mt: 2, ml: 5, mr: 5 }}>
+        <Paper sx={{ width: "50%" }}>
+          <Stack direction="row" spacing={2}>
+            <Avatar
+              sx={{
+                ml: 8,
+                mt: 1,
+                mb: 1,
+                bgcolor: "#FFFFFF",
+                width: 45,
+                height: 45,
+              }}
+            >
+              <FmdGoodIcon sx={{ color: orange[300], width: 45, height: 45 }} />
+            </Avatar>
+            <Box>
+              <Typography
+                mt={1}
+                variant="subtitle2"
+                sx={{ fontWeight: "medium", color: orange[300] }}
+              >
+                Dirección
+              </Typography>
 
-                <Typography variant="body1" sx={{ fontWeight: "medium" }}>
-                  {company.compTelephone}
-                </Typography>
-              </Box>
-            </Stack>
-          </Grid>
+              <Typography
+                mb={1}
+                mr={1}
+                variant="body1"
+                sx={{ fontWeight: "medium", color: orange[400] }}
+              >
+                {company.compAddress}
+              </Typography>
+            </Box>
+          </Stack>
+        </Paper>
 
-          <Grid item xs={6}>
-            <Stack direction="row" spacing={2}>
-              <FmdGoodIcon color="success" sx={{ width: 45, height: 45 }} />
-
-              <Box>
-                <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
-                  Dirección
-                </Typography>
-
-                <Typography variant="body1" sx={{ fontWeight: "medium" }}>
-                  {company.compAddress}
-                </Typography>
-              </Box>
-            </Stack>
-          </Grid>
-
-          <Grid item xs={6}>
-            <Stack direction="row" spacing={2}>
+        <Paper sx={{ width: "50%" }}>
+          <Stack direction="row" spacing={2}>
+            <Avatar
+              sx={{
+                ml: 8,
+                mt: 1,
+                mb: 1,
+                bgcolor: "#FFFFFF",
+                width: 45,
+                height: 45,
+              }}
+            >
               <LocationCityIcon
-                color="success"
-                sx={{ width: 45, height: 45 }}
+                sx={{ color: orange[300], width: 45, height: 45 }}
               />
-
-              <Box>
-                <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
-                  Ciudad
-                </Typography>
-
-                <Typography variant="body1" sx={{ fontWeight: "medium" }}>
-                  {company.city}
-                </Typography>
-              </Box>
-            </Stack>
-          </Grid>
-
-          <Grid item xs={6}>
-            <Stack direction="row" spacing={2}>
-              <MoneyIcon color="warning" sx={{ width: 45, height: 45 }} />
-
-              <Box>
-                <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
-                  Actividad económica
-                </Typography>
-
-                <Typography
-                  variant="body1"
-                  mr={1}
-                  sx={{ fontWeight: "medium" }}
-                >
-                  {company.compEcoActiv}
-                </Typography>
-              </Box>
-            </Stack>
-          </Grid>
-
-          <Grid item xs={5}>
-            <Stack direction="row" spacing={2}>
-              <BusinessIcon color="warning" sx={{ width: 45, height: 45 }} />
-
-              <Box>
-                <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
-                  Tipo de empresa
-                </Typography>
-
-                <Typography
-                  variant="body1"
-                  mr={1}
-                  sx={{ fontWeight: "medium" }}
-                >
-                  {company.compType}
-                </Typography>
-              </Box>
-            </Stack>
-          </Grid>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={12}>
-            <Stack direction="row" spacing={2}>
-              <SchoolIcon sx={{ color: "#072079", width: 45, height: 45 }} />
+            </Avatar>
+            <Box>
+              <Typography
+                mt={1}
+                variant="subtitle2"
+                sx={{ fontWeight: "medium", color: orange[300] }}
+              >
+                Ciudad
+              </Typography>
 
               <Typography
                 variant="body1"
-                mt={2}
-                sx={{ fontWeight: "medium", color: "#072079" }}
+                mb={1}
+                mr={1}
+                sx={{ fontWeight: "medium", color: orange[500] }}
               >
-                {company.compIcesiStud === "X"
-                  ? "LA EMPRESA HA SOLICITADO PRACTICANTES DE LA UNIVERSIDAD ICESI"
-                  : "LA EMPRESA NO HA SOLICITADO PRACTICANTES DE LA UNIVERSIDAD ICESI"}
+                {company.city}
               </Typography>
-            </Stack>
-          </Grid>
-        </Grid>
+            </Box>
+          </Stack>
+        </Paper>
+      </Stack>
+
+      <Stack direction="row" spacing={3} sx={{ mt: 2, ml: 5, mr: 5 }}>
+        <Paper sx={{ width: "50%" }}>
+          <Stack direction="row" spacing={2}>
+            <Avatar
+              sx={{
+                ml: 8,
+                mt: 1,
+                mb: 1,
+                bgcolor: "#FFFFFF",
+                width: 45,
+                height: 45,
+              }}
+            >
+              <MoneyIcon sx={{ color: pink[200], width: 45, height: 45 }} />
+            </Avatar>
+            <Box>
+              <Typography
+                mt={1}
+                variant="subtitle2"
+                sx={{ fontWeight: "medium", color: pink[200] }}
+              >
+                Actividad económica
+              </Typography>
+
+              <Typography
+                mb={1}
+                mr={1}
+                variant="body1"
+                sx={{ fontWeight: "medium", color: pink[400] }}
+              >
+                {company.compEcoActiv}
+              </Typography>
+            </Box>
+          </Stack>
+        </Paper>
+
+        <Paper sx={{ width: "50%" }}>
+          <Stack direction="row" spacing={2}>
+            <Avatar
+              sx={{
+                ml: 8,
+                mt: 1,
+                mb: 1,
+                bgcolor: "#FFFFFF",
+                width: 45,
+                height: 45,
+              }}
+            >
+              <BusinessIcon sx={{ color: pink[200], width: 45, height: 45 }} />
+            </Avatar>
+            <Box>
+              <Typography
+                mt={1}
+                variant="subtitle2"
+                sx={{ fontWeight: "medium", color: pink[200] }}
+              >
+                Tipo de empresa
+              </Typography>
+
+              <Typography
+                variant="body1"
+                mb={1}
+                mr={1}
+                sx={{ fontWeight: "medium", color: pink[400] }}
+              >
+                {company.compType}
+              </Typography>
+            </Box>
+          </Stack>
+        </Paper>
+      </Stack>
+
+      <Paper sx={{ mt: 2, ml: 5, mr: 5 }}>
+        <Stack direction="row" spacing={2}>
+          <Avatar
+            sx={{
+              ml: 8,
+              mt: 1,
+              mb: 1,
+              bgcolor: "#FFFFFF",
+              width: 45,
+              height: 45,
+            }}
+          >
+            <SchoolIcon sx={{ color: "#072079", width: 45, height: 45 }} />
+          </Avatar>
+          <Typography
+            mt={2}
+            variant="body1"
+            sx={{ fontWeight: "medium", color: "#072079" }}
+          >
+            {company.compIcesiStud === "X"
+              ? "LA EMPRESA HA SOLICITADO PRACTICANTES DE LA UNIVERSIDAD ICESI"
+              : "LA EMPRESA NO HA SOLICITADO PRACTICANTES DE LA UNIVERSIDAD ICESI"}
+          </Typography>
+        </Stack>
       </Paper>
     </div>
   );

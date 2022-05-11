@@ -8,6 +8,7 @@ import RequestList from "../../components/module-request/promotion-director/requ
 import Profile from "../../components/global/profile/person/ProfilePerson";
 import Company from "../../components/module-request/global/contacts/ShowCompany";
 import Request from "../../components/module-request/global/GeneralRequest";
+import Contacts from "../../components/module-request/global/contacts/UserList";
 
 const MainPromotion = () => {
   return (
@@ -17,7 +18,7 @@ const MainPromotion = () => {
           <Route path="home" element={<ContentPromotion />} />
         </Route>
         <Route path="/promotion" element={<HomePromotion />}>
-          <Route path="companies" element={<Companies />} />
+          <Route path="companies" element={<Companies />}/>
         </Route>
         <Route path="/promotion" element={<HomePromotion />}>
           <Route path="request" element={<RequestList />} />
@@ -26,7 +27,10 @@ const MainPromotion = () => {
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="/promotion" element={<HomePromotion />}>
-          <Route path="company" element={<Company />} />
+          <Route path="companies/company/info" element={<Company />} />
+        </Route>
+        <Route path="/promotion" element={<HomePromotion />}>
+          <Route path="companies/company/contacts" element={<Contacts />} />
         </Route>
         <Route path="/promotion" element={<HomePromotion />}>
           <Route path="internrequest/show" element={<Request />} />

@@ -10,7 +10,15 @@ import {
   createTheme,
   Typography,
 } from "@mui/material";
-import { DataGrid, esES, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  esES,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+} from "@mui/x-data-grid";
 /**
  * Icons
  */
@@ -35,7 +43,8 @@ const CompaniesList = () => {
   //Get acces_token of the user that start section
   const ACCESS_TOKEN =
     "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
-
+  // Correspond to rol login in the system
+  const rolUserLogin = useSelector((state) => state.userLogin.rolee);
   //navigate
   let navigate = useNavigate();
 
@@ -57,8 +66,9 @@ const CompaniesList = () => {
    */
   const handleViewCompanyInfo = (event, cellValues) => {
     const currentContact = cellValues.row;
-    navigate("/promotion/company");
+    // navigate("/promotion/company");
     dispatch(setCompany(currentContact));
+    selectPathShowCompany(rolUserLogin);
   };
 
   /**
@@ -70,7 +80,57 @@ const CompaniesList = () => {
     const currentCompany = cellValues.row;
     console.log(cellValues.row);
     dispatch(getContactsAssociatedCompany(ACCESS_TOKEN, currentCompany.compId));
-    navigate("/company/contacts");
+    selectPathShowCompanyContacts(rolUserLogin);
+  };
+
+  /**
+   * This function is responsible for choosing the route that corresponds to the person logged in
+   * @param {*} ROLEE Role of the person or company who logged in to the application
+   */
+  const selectPathShowCompany = (ROLEE) => {
+    switch (ROLEE) {
+      case "ROLEE_PROMOTION_COORDINATOR":
+        navigate("/promotion/companies/company/info");
+
+        break;
+      case "ROLEE_LOCATION_COORDINATOR":
+        navigate("/location/companies/company/info");
+        break;
+
+      case "ROLEE_COMPANY":
+        break;
+
+      case "ROLEE_DIRECTOR":
+        navigate("/director/companies/company/info");
+        break;
+      case "ROLEE_GRADUATE":
+        break;
+    }
+  };
+
+  /**
+   * This function is responsible for choosing the route that corresponds to the person logged in
+   * @param {*} ROLEE Role of the person or company who logged in to the application
+   */
+  const selectPathShowCompanyContacts = (ROLEE) => {
+    switch (ROLEE) {
+      case "ROLEE_PROMOTION_COORDINATOR":
+        navigate("/promotion/companies/company/contacts");
+
+        break;
+      case "ROLEE_LOCATION_COORDINATOR":
+        navigate("/location/companies/company/contacts");
+        break;
+
+      case "ROLEE_COMPANY":
+        break;
+
+      case "ROLEE_DIRECTOR":
+        navigate("/director/companies/company/contacts");
+        break;
+      case "ROLEE_GRADUATE":
+        break;
+    }
   };
 
   /**
