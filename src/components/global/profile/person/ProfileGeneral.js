@@ -20,8 +20,7 @@ import SaveIcon from "@mui/icons-material/Save";
  * -------------------------------------------------
  */
 import { useDispatch, useSelector } from "react-redux";
-import { updateperson } from "../../../store/slices/PersonSlice";
-import CorrectUpdateOrDelete from "../../alert/CorrectUpdateOrDelete";
+import { updatePartiallyPerson} from "../../../store/slices/PersonSlice";
 import {
   getCitiesAssociatedToCountry,
   getCountries,
@@ -99,7 +98,7 @@ const ProfileGeneral = () => {
       personProfile.persCityName =
         getPersonCity === undefined ? personStore.persCityName : getPersonCity;
 
-      dispatch(updateperson(ACCESS_TOKEN, personProfile.persId, personProfile));
+      dispatch(updatePartiallyPerson(ACCESS_TOKEN, personProfile.persId, personProfile));
     },
   });
   /**

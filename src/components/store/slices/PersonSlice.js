@@ -123,10 +123,28 @@ export const updatePartiallyPerson = (ACCESS_TOKEN, persId, person) => (
     .put("api/persons/partiallyUpdate/" + persId, person, { headers })
     .then((res) => {
       dispatch(setPerson(res.data));
+      // Allow display alert when is update a one person
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se actualizo correctamente el perfil",
+          alertSeverity: "info",
+        })
+      );
     })
     .catch((err) => {
       console.log("Se actualizo correctamente la persona");
       console.log(err.toJSON());
+      // Allow display alert when the intern request was not update correctly
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo actualizar el perfil",
+          alertSeverity: "error",
+        })
+      );
     });
 };
 

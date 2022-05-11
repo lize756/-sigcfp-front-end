@@ -23,7 +23,7 @@ const CardsCareers = ({ index, career }) => {
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {career.name}
+              {career.careName}
             </Typography>
           </CardContent>
         </CardActionArea>
