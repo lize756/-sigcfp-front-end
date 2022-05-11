@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { Container, Stack, Card, TableContainer, Button } from "@mui/material";
-import DeleteAlert from "../../../global/alert/DeleteAlert";
-
 //Data Grid
 import {
   DataGrid,
@@ -12,119 +9,77 @@ import {
   GridToolbarColumnsButton,
   GridToolbarDensitySelector,
   GridToolbarFilterButton,
-} from "@mui/x-data-grid";
-import { esES as coreeEsEs } from "@mui/material/locale";
-//Icon
-import { IconButton, Typography } from "@mui/material";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
+} from "@mui/x-data-grid"; //Icon
+import { IconButton } from "@mui/material";
 import PreviewIcon from "@mui/icons-material/Preview";
-
-import { Link as RouterLink } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
+import { Typography } from "@mui/material";
 import { useNavigate } from "react-router";
-import "../StylesCompany.css";
-
-//Config lenguage of default.
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Paper, Container, Stack, Card, TableContainer } from "@mui/material";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteInternRequest,
-  getInternRequestsAssociatedCompany,
-  setIsRender,
   setIntReq,
+  setIsRender,
 } from "../../../store/slices/InternRequestSlice";
-import {
-  setAcceptedAlert,
-  setShowAlert,
-  setAlert,
-  setTypeAlert,
-} from "../../../store/slices/AlertSlice";
-import { render } from "react-dom";
-import CorrectUpdateOrDeletejs from "../../../global/alert/CorrectUpdateOrDelete";
-const themeLanguageDataGrid = createTheme(esES, coreeEsEs);
-const RequestList = () => {
+//Config lenguage of default.
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+const RequestListByCareer = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
-
   //navigate
   let navigate = useNavigate();
-  // Const
-  const [getIntReqAssocCompany, setIntReqAssocCompany] = useState([]);
-  const [getRequestDelete, setRequestDelete] = useState({});
 
-  /**
-   * -----------------------------------------------------------
-   * --------------------------REDUX ---------------------------
-   * -----------------------------------------------------------
-   */
-  const list_interRequestsOfCompany = useSelector(
-    (state) => state.InternRequestSlice.listIntReqsOfCompany
+  const [getInternRequests, setInternRequests] = useState([]);
+  //List of intern requests
+  const list_interRequestsByCareer = useSelector(
+    (state) => state.InternRequestSlice.listInteReqs
   );
 
   //Get acces_token of the user that start section
   const ACCESS_TOKEN =
     "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
-  // Get company id of the store
-  const userCompanyId = useSelector((state) => state.userLogin.userCompanyId);
 
   // Verified if change the list of intern requests associated to company
   const isRender = useSelector((state) => state.InternRequestSlice.isRender);
-  // Verified if the user to accept the conditions to change this state, if isAcceptedAlert, the user agree on the contrary disagree
-  const isAcceptedAlert = useSelector(
-    (state) => state.AlertSlice.isAcceptedAlert
-  );
-  // Verified if the user to deploy a alert.
-  const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
-  // Correspond to type of alert
-  const typeAlert = useSelector((state) => state.AlertSlice.typeAlert);
-  /**
-   * This useEffect allow render the DOM when the list is update
-   */
+
+  // Correspond to rol login in the system
+  const rolUserLogin = useSelector((state) => state.userLogin.rolee);
+  //se guarda en RequestListByCareer la informacion de las solicitudes
+  //Axios
+
   useEffect(() => {
-    dispatch(getInternRequestsAssociatedCompany(ACCESS_TOKEN, userCompanyId));
-    let listReqOfCompany = customInternRequestEstructure();
-    setIntReqAssocCompany(listReqOfCompany);
+    let listReq = customInternRequestEstructure();
+    setInternRequests(listReq);
     setTimeout(() => {
       dispatch(setIsRender(false));
     }, "1000");
-  }, [isRender]);
-
-  /**
-   * This useEffect allow update the state the element that allow delete a one request.
-   *    */
-  useEffect(() => {
-    auxiliarHandleDelete(getRequestDelete);
-  }, [isAcceptedAlert]);
+  }, [list_interRequestsByCareer]);
 
   const customInternRequestEstructure = () => {
-    if (list_interRequestsOfCompany.length > 0) {
-      return list_interRequestsOfCompany.map((element, index) => {
-        const [faculties, careers] = renderFacultiesAndCareers(index);
-        const customFaculties = faculties;
-        const customCareers = careers;
-        return {
-          ...element,
-          customFaculties,
-          customCareers,
-        };
-      });
-    }else{
-      return []
-    }
+    return list_interRequestsByCareer.map((element, index) => {
+      const [faculties, careers] = renderFacultiesAndCareers(index);
+      const customFaculties = faculties;
+      const customCareers = careers;
+      const customCompName = element.company.compName;
+      return {
+        ...element,
+        customFaculties,
+        customCareers,
+        customCompName,
+      };
+    });
   };
+
   /**
    * This method allow show data relationated with the careers and
    * faculties associated of intern request
    */
 
-  const renderFacultiesAndCareers = (index) => {
+  const renderFacultiesAndCareers = (inteRequIdCurrent) => {
     let concatCareers = "";
     let concatFaculty = "";
-    //console.log(index)
-    const array = list_interRequestsOfCompany[index].careers;
+    const array = list_interRequestsByCareer[inteRequIdCurrent].careers;
     for (let i = 0; i < array.length; i++) {
       if (i === array.length - 1) {
         concatCareers += array[i].careName;
@@ -137,6 +92,7 @@ const RequestList = () => {
 
     return [concatFaculty, concatCareers];
   };
+
   /**
    * ------------------------------------------------------------------------------------
    * ----------------Method relationated with the crud action of contact-----------------
@@ -144,88 +100,40 @@ const RequestList = () => {
    */
 
   /**
-   * Allow edit an intern request
+   * Allow view of intern request
    * @param {*} event
    * @param {*} cellValues correspond the cell that you want edit
    */
-  const handleEdit = (event, cellValues) => {
+  const handleViewRequest = (event, cellValues) => {
     const currentReq = cellValues.row;
     dispatch(setIntReq(currentReq));
-    navigate("/company/update");
+    selectPath(rolUserLogin);
   };
 
   /**
-   * -----------------------------------------------------------------------------------------------
-   * ----------------------------------Delete functions---------------------------------------------
-   * -----------------------------------------------------------------------------------------------
+   * This function is responsible for choosing the route that corresponds to the person logged in
+   * @param {*} ROLEE Role of the person who logged in to the application
    */
-  /**
-   * Allow delete an intern request
-   * @param {} event
-   * @param {*} cellValues correspond the cell that you want delete
-   */
-  const handleDelete = (event, cellValues) => {
-    const currentReqToDelete = cellValues.row;
-    setRequestDelete(currentReqToDelete);
-    dispatch(setShowAlert(true));
-    dispatch(setTypeAlert("0"));
+  const selectPath = (ROLEE) => {
+    switch (ROLEE) {
+      case "ROLEE_PROMOTION_COORDINATOR":
+        navigate("/promotion/internrequest/show");
 
-    const alert = {
-      alertTitle: "¿Está usted seguro de que desea elimnar esta solicitud?",
-      alertMaxWidth: "xs",
-      alertDescription: "",
-      alertOtherInfo: "",
-    };
-    dispatch(setAlert(alert));
-  };
+        break;
+      case "ROLEE_LOCATION_COORDINATOR":
+        navigate("/location/internrequest/show");
+        break;
 
-  /**
-   * This function allow delete a one contact after the that user accept delele the current contact
-   * @param {} currentReqToDelete
-   */
-  const auxiliarHandleDelete = (currentReqToDelete) => {
-    if (isAcceptedAlert) {
-      dispatch(
-        deleteInternRequest(
-          ACCESS_TOKEN,
-          currentReqToDelete.inteRequId,
-          currentReqToDelete
-        )
-      );
-      dispatch(setAcceptedAlert(false));
+      case "ROLEE_COMPANY":
+        navigate("/company/internrequest/show");
+        break;
+
+      case "ROLEE_DIRECTOR":
+        navigate("/director/internrequest/show");
+        break;
+      case "ROLEE_GRADUATE":
+        break;
     }
-  };
-
-  /**
-   * This method allows an alert to be displayed on the screen according to the type of alert specified.
-   * If the alert is to accept or reach, the type is '0',
-   * otherwise it is just a notification message, the type is '1'
-   * @returns
-   */
-  const displayAlert = () => {
-    let componentToDisplay = <></>;
-    if (isShowAlert) {
-      //Display alert dialog or snackbark
-      componentToDisplay =
-        typeAlert === "0" ? (
-          <DeleteAlert />
-        ) : typeAlert === "1" ? (
-          <CorrectUpdateOrDeletejs />
-        ) : (
-          <></>
-        );
-    }
-    return componentToDisplay;
-  };
-  /**
-   * Allow view of info tha have a company
-   * @param {*} event
-   * @param {*} cellValues correspond the select company that you want view
-   */
-  const handleViewInterReqInfo = (event, cellValues) => {
-    const currentIntReq = cellValues.row;
-    dispatch(setIntReq(currentIntReq));
-    navigate("/company/internrequest/show");
   };
 
   /// End to method of crud intern request
@@ -253,12 +161,20 @@ const RequestList = () => {
 
   const columns = [
     {
-      field: "inteRequName",
-      headerName: "Nombre",
+      field: "customCompName",
+      headerName: "Nombre de la compañia",
       headerAlign: "center",
       align: "center",
       flex: 1,
     },
+    {
+      field: "inteRequName",
+      headerName: "Nombre de la solicitud",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+
     {
       field: "customFaculties",
       headerName: "Facultad",
@@ -286,7 +202,7 @@ const RequestList = () => {
       headerName: "Número de Estudiantes",
       headerAlign: "center",
       align: "center",
-      flex: 1,
+      flex: "10px",
     },
     {
       field: "Opciones",
@@ -295,31 +211,14 @@ const RequestList = () => {
       flex: 1,
 
       renderCell: (cellValues) => {
+        const current = cellValues;
         return (
           <>
             <IconButton
               size="large"
-              aria-label="edit"
-              onClick={(event) => {
-                handleEdit(event, cellValues);
-              }}
-            >
-              <ModeEditIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="delete"
-              onClick={(event) => {
-                handleDelete(event, cellValues);
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
-            <IconButton
-              size="large"
               aria-label="viewCompany"
               onClick={(event) => {
-                handleViewInterReqInfo(event, cellValues);
+                handleViewRequest(event, cellValues);
               }}
             >
               <PreviewIcon />
@@ -329,7 +228,6 @@ const RequestList = () => {
       },
     },
   ];
-
   /**
    * ------------------------------------------------------------------------------------
    * ------------------------------------Custom config of datagrid-----------------------------
@@ -372,7 +270,6 @@ const RequestList = () => {
 
   return (
     <div>
-      {displayAlert()}
       <Container>
         <Stack
           direction="row"
@@ -381,19 +278,12 @@ const RequestList = () => {
           mb={5}
         >
           <Typography variant="h5" gutterBottom color="#072079">
-            Mis Solicitudes
+            Todas las solicitudes
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="/company/create"
-            startIcon={<AddIcon />}
-          >
-            Crear Solicitud
-          </Button>
         </Stack>
       </Container>
-      <Card sx={{ borderRadius: 8, padding: "0px 20px 0px 20px" }}>
+
+      <Card sx={{ borderRadius: 8 }}>
         <TableContainer
           sx={{
             maxHeight: 400,
@@ -409,7 +299,7 @@ const RequestList = () => {
               loading={isRender}
               autoHeight
               getRowId={(row) => row.inteRequId}
-              rows={isRender ? [] : getIntReqAssocCompany}
+              rows={isRender ? [] : getInternRequests}
               columns={columns}
               pageSize={5}
               onCellClick={handleCellClick}
@@ -421,8 +311,10 @@ const RequestList = () => {
           </ThemeProvider>
         </TableContainer>
       </Card>
+
+      <Paper sx={{ width: "100%", overflow: "hidden" }}></Paper>
     </div>
   );
 };
 
-export default RequestList;
+export default RequestListByCareer;

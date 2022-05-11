@@ -213,6 +213,33 @@ export const getInternRequest = (ACCESS_TOKEN, inteRequId) => async (
     });
 };
 
+
+
+/**
+ * Allows to obtain a intern requests that it have associate one career with its id.
+ * @param {*} ACCESS_TOKEN Token of the user that login to the system
+ * @param {*} careId career id to search the intern requests associate its
+ * @returns
+ */
+ export const getInternRequestByCareer = (ACCESS_TOKEN, careId) => async (
+  dispatch
+) => {
+  headers = {
+    Authorization: `${ACCESS_TOKEN}`,
+  };
+
+  axios
+    .get("/api/internRequests/internRequestByCareer/" + careId, { headers })
+    .then((res) => {
+      dispatch(setListIntReqs(res.data));
+      dispatch(setIsRender(true));
+
+    })
+    .catch((err) => {
+      console.log(err.toJSON());
+    });
+};
+
 /**
  * Allows to obtain the list of intern requests saved in the database.
  * @param {*} ACCESS_TOKEN Token of the user that login to the system
