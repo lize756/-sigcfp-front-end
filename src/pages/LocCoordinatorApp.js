@@ -263,7 +263,7 @@ const LocCoordinatorApp = () => {
             </ListItem>
 
             <ListItem button key="Profile"  onClick={() => {
-                    navigate("/company/profile");
+                    navigate("/location/profile");
                   }}>
               <ListItemIcon>
                 <PersonPinIcon color="primary" />
