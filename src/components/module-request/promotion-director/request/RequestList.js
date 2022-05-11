@@ -121,19 +121,19 @@ const RequestList = () => {
   const selectPath = (ROLEE) => {
     switch (ROLEE) {
       case "ROLEE_PROMOTION_COORDINATOR":
-        navigate("/promotion/show");
+        navigate("/promotion/internrequest/show");
 
         break;
       case "ROLEE_LOCATION_COORDINATOR":
-        navigate("/location/show");
+        navigate("/location/internrequest/show");
         break;
 
       case "ROLEE_COMPANY":
-        navigate("/company/show");
+        navigate("/company/internrequest/show");
         break;
 
       case "ROLEE_DIRECTOR":
-        navigate("/director/show");
+        navigate("/director/internrequest/show");
         break;
       case "ROLEE_GRADUATE":
         break;

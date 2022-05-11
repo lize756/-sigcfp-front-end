@@ -36,7 +36,7 @@ const MainCompany = () => {
         </Route>
 
         <Route path="/company" element={<HomeCompany />}>
-          <Route path="show" element={<Request />} />
+          <Route path="internrequest/show" element={<Request />} />
         </Route>
 
         {/** ====================================Contacts===================================== */}

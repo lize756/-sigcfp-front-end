@@ -100,16 +100,20 @@ const RequestList = () => {
   }, [isAcceptedAlert]);
 
   const customInternRequestEstructure = () => {
-    return list_interRequestsOfCompany.map((element, index) => {
-      const [faculties, careers] = renderFacultiesAndCareers(index);
-      const customFaculties = faculties;
-      const customCareers = careers;
-      return {
-        ...element,
-        customFaculties,
-        customCareers,
-      };
-    });
+    if (list_interRequestsOfCompany.length > 0) {
+      return list_interRequestsOfCompany.map((element, index) => {
+        const [faculties, careers] = renderFacultiesAndCareers(index);
+        const customFaculties = faculties;
+        const customCareers = careers;
+        return {
+          ...element,
+          customFaculties,
+          customCareers,
+        };
+      });
+    }else{
+      return []
+    }
   };
   /**
    * This method allow show data relationated with the careers and

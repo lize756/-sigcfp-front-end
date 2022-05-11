@@ -34,7 +34,7 @@ const MainDirector = () => {
           <Route path="company" element={<Company />} />
         </Route>
         <Route path="/director" element={<HomeDirector />}>
-          <Route path="show" element={<Request />} />
+          <Route path="internrequest/show" element={<Request />} />
         </Route>
       </Routes>
     </>
