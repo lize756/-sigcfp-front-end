@@ -72,33 +72,49 @@ const RegistrationUserCompany = () => {
 
   // Use to styles of the view
   const classes = useStyles();
-
-  const formik = useFormik({
-    initialValues: {
-      userEmail: " ",
-      userEmailR: "",
-      userPassword: "",
-      userPasswordR: "",
-    },
-
-    validationSchema: validationSchema,
-
-    onSubmit: (values) => {
-      const user = {
-        userName: values.userEmail,
-        userPassword: values.userPassword,
-        company: getCompany,
-        isEnable: true,
-        rolee: {
-          roleId: 5,
-        },
-      };
-      //alert(JSON.stringify(user, null, 2));
-
-      dispatch(registerUser(user));
-      dispatch(setAccordinRegisterPanelValue("panel3"));
-    },
+  /**-------------------------------------------------------------
+   * Handling the states of the attributes that make up a register
+   * -------------------------------------------------------------
+   */
+  const [data, setData] = useState({
+    userEmail: " ",
+    userEmailR: "",
+    userPassword: "",
+    userPasswordR: "",
   });
+
+  /*
+   * ***************************************************
+   * **********************Function*********************
+   * ***************************************************
+  /**
+   * This function assigns the information completed by the user with its respective attribute.
+   * attributes like: persName, persDocument, persEmail, persPhone,persPassword and persRPassword
+   * @param {*} e
+   */
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  /**
+   * This method allow print to console the result of the form
+   * @param {*} e
+   */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const user = {
+      userName: data.userEmail,
+      userPassword: data.userPassword,
+      company: getCompany,
+      isEnable: true,
+      rolee: {
+        roleId: 5,
+      },
+    };
+    dispatch(registerUser(user));
+    dispatch(setAccordinRegisterPanelValue("panel3"));
+  };
 
   return (
     <>
@@ -106,64 +122,42 @@ const RegistrationUserCompany = () => {
         <CssBaseline />
         <Container maxWidth="sm">
           <Box sx={{ bgcolor: "#F2F6FE" }} />
-          <form className={classes.root} onSubmit={formik.handleSubmit}>
+          <form className={classes.root} onSubmit={handleSubmit}>
             <TextField
               defaultValue={getCompany.compEmail}
               label="Correo electrónico de inicio de sesión"
               variant="outlined"
+              required
               type="email"
               name="userEmail"
-              value={formik.values.userEmail}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.userEmail && Boolean(formik.errors.userEmail)
-              }
-              helperText={formik.touched.userEmail && formik.errors.userEmail}
+              onChange={handleChange}
             />
             <TextField
               label="Repetir correo electrónico"
               variant="outlined"
               type="email"
               name="userEmailR"
-              value={formik.values.userEmailR}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.userEmailR && Boolean(formik.errors.userEmailR)
-              }
-              helperText={formik.touched.userEmailR && formik.errors.userEmailR}
+              required
+              onChange={handleChange}
             />
 
             <TextField
               variant="outlined"
+              required
               fullWidth
               name="userPassword"
               label="Contraseña"
               type="password"
-              value={formik.values.userPassword}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.userPassword &&
-                Boolean(formik.errors.userPassword)
-              }
-              helperText={
-                formik.touched.userPassword && formik.errors.userPassword
-              }
+              onChange={handleChange}
             />
             <TextField
               variant="outlined"
+              required
               fullWidth
               name="userPasswordR"
               label="Confirmar contraseña"
               type="password"
-              value={formik.values.userPasswordR}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.userPasswordR &&
-                Boolean(formik.errors.userPasswordR)
-              }
-              helperText={
-                formik.touched.userPasswordR && formik.errors.userPasswordR
-              }
+              onChange={handleChange}
             />
 
             <div>

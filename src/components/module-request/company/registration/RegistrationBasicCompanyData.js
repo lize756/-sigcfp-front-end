@@ -48,14 +48,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-/**
- 
- compIcesiStud: getCompIcesiStud,
- 
-      compCountryName: getCompCountry.name,
-      compCityName: getCompCity,
- */
-
 const validationSchema = yup.object({
   compName: yup
     .string("Ingresa el nombre de la compañía")
