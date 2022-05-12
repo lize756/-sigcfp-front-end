@@ -101,9 +101,21 @@ const CoordBasicRegister = () => {
   //Correspond of list of cities saved in the store.
   const listCities = useSelector((state) => state.CountrySlice.listCities);
 
+  /**-------------------------------------------------------------
+   * Handling the states of the attributes that make up a register
+   * -------------------------------------------------------------
+   */
+  const [data, setData] = useState({
+    persFirstName: "",
+    persLastName: "",
+    persGenre: "",
+    persDocument: "",
+    persEmail: "",
+    persAddress: "",
+  });
+
   const [getPersonCountry, setPersonCountry] = useState({});
   const [getPersonCity, setPersonCity] = useState("");
-  const [getPersGenre, setPersGenre] = useState("");
   //Correspond to list of gender that a person
   const listGender = ["MASCULINO", "FEMENINO", "OTRO"];
 
@@ -116,7 +128,38 @@ const CoordBasicRegister = () => {
     }
   }, [getPersonCountry]);
 
-  //=================================================FORMIK===================================================
+  //=================================================Functions===================================================
+
+  /*
+   * ***************************************************
+   * **********************Functions*********************
+   * ***************************************************
+  /**
+   * This function assigns the information completed by the user with its respective attribute.
+   * attributes like: persName, persDocument, persEmail, persPhone,persPassword and persRPassword
+   * @param {*} e
+   */
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+  //On Action of the button
+  const submit = (e) => {
+    e.preventDefault();
+    //Correspond to information of the promotion coodinator
+    const persontoAdd = {
+      persFirstName: data.persFirstName,
+      persLastName: data.persLastName,
+      persGenre: data.persGenre,
+      persDocument: data.persDocument,
+      persEmail: data.persEmail,
+      persAddress: data.persAddress,
+      persCountryName: getPersonCountry.name,
+      persCityName: getPersonCity,
+    };
+    console.log(persontoAdd);
+    dispatch(addperson(persontoAdd));
+    navigate("/cedep/register/user_register");
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -134,9 +177,6 @@ const CoordBasicRegister = () => {
       values.persCityName = getPersonCity;
       values.persCountryName = getPersonCountry.name;
       alert(JSON.stringify(values, null, 2));
-      console.log(values);
-      //dispatch(addperson(values));
-      //navigate("/cedep/register/user_register");
     },
   });
 
@@ -208,25 +248,19 @@ const CoordBasicRegister = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Autocomplete
-                id="combo-box-persGenre"
-                disablePortal
-                value={getPersGenre}
-                options={listGender}
-                onChange={(event, value) => setPersGenre(value)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Género"
-                    variant="outlined"
-                    required
-                    error={getPersGenre === null}
-                    helperText={
-                      getPersGenre === null ? "Elemento requerido" : ""
-                    }
-                  />
-                )}
-              />
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Género</InputLabel>
+                <Select
+                  value={data.persGenre}
+                  label="Género"
+                  name="persGenre"
+                  onChange={handleChange}
+                >
+                  {listGender.map((value) => (
+                    <MenuItem value={value}>{value}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -261,7 +295,6 @@ const CoordBasicRegister = () => {
                     {...params}
                     label="Seleccione su país"
                     variant="outlined"
-                    required
                     InputProps={{
                       ...params.InputProps,
                       type: "search",
@@ -291,7 +324,6 @@ const CoordBasicRegister = () => {
                     {...params}
                     label="Seleccione su ciudad"
                     variant="outlined"
-                    required
                     InputProps={{
                       ...params.InputProps,
                       type: "search",
@@ -307,6 +339,7 @@ const CoordBasicRegister = () => {
                 fullWidth
                 label="Dirección"
                 name="persAddress"
+                helperText="Dirección: Calle Da Vinci # 7 - 41092"
                 value={formik.values.persAddress}
                 onChange={formik.handleChange}
                 error={
