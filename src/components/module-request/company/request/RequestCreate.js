@@ -154,7 +154,7 @@ const RequestCreate = () => {
       careers: careers,
       company: company,
     };
-    console.log(request);
+    //console.log(request);
 
     dispatch(addInternRequest(ACCESS_TOKEN, request));
     navigate("/company/request");
@@ -189,7 +189,7 @@ const RequestCreate = () => {
                   <TextField
                     {...params}
                     label="Carreras de Interés"
-                    required
+                    required={careers.length === 0}
                     placeholder="Carreras de Interés"
                   />
                 )}
@@ -248,8 +248,12 @@ const RequestCreate = () => {
                   <TextField
                     {...params}
                     variant="outlined"
-                    required
                     label="Funciones Principales"
+                    required={
+                      inteRequFunctions !== undefined
+                        ? inteRequFunctions.length === 0
+                        : true
+                    }
                   />
                 )}
               />
@@ -275,8 +279,12 @@ const RequestCreate = () => {
                   <TextField
                     {...params}
                     variant="outlined"
-                    required
                     label="Competencias Claves del Éxito"
+                    required={
+                      inteRequCompetencies !== undefined
+                        ? inteRequCompetencies.length === 0
+                        : true
+                    }
                   />
                 )}
               />

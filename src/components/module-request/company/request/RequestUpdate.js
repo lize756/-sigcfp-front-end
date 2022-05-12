@@ -276,7 +276,7 @@ const RequestUpdate = () => {
                       {...params}
                       label="Carreras de Interés"
                       placeholder="Carreras de Interés"
-                      required
+                      required={careers.length === 0 & defaultCareers.length === 0}
                     />
                   )}
                 />
@@ -328,7 +328,11 @@ const RequestUpdate = () => {
                       {...params}
                       variant="outlined"
                       label="Funciones Principales"
-                      required
+                      required={
+                        inteRequFunctions !== undefined
+                          ? inteRequFunctions.length === 0
+                          : true
+                      }
                     />
                   )}
                 />
@@ -348,7 +352,11 @@ const RequestUpdate = () => {
                       {...params}
                       variant="outlined"
                       label="Competencias Claves del Éxito"
-                      required
+                      required={
+                        inteRequCompetencies !== undefined
+                          ? inteRequCompetencies.length === 0
+                          : true
+                      }
                     />
                   )}
                 />
