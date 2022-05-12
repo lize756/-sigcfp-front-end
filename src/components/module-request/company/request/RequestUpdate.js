@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Autocomplete, TextField, Button, Chip, Checkbox } from "@mui/material";
 import { useNavigate } from "react-router";
-import { makeStyles, Box, Container } from "@material-ui/core";
+import { makeStyles, Box, Container, Grid } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -204,7 +204,8 @@ const RequestUpdate = () => {
      */
     const formattedFunctions = inteRequFunctions.toString();
     const formattedCompetencies = inteRequCompetencies.toString();
-    const formattedCareers =  careers.length > 0 ? [...new Set([...careers])]: defaultCareers;
+    const formattedCareers =
+      careers.length > 0 ? [...new Set([...careers])] : defaultCareers;
 
     const requesUpdate = {
       inteRequId: editRequest.inteRequId,
@@ -225,7 +226,7 @@ const RequestUpdate = () => {
     console.log(JSON.stringify(requesUpdate));
 
     dispatch(
-     updateInternRequest(ACCESS_TOKEN, requesUpdate.inteRequId, requesUpdate)
+      updateInternRequest(ACCESS_TOKEN, requesUpdate.inteRequId, requesUpdate)
     );
     navigate("/company/request");
   };
@@ -244,122 +245,160 @@ const RequestUpdate = () => {
       <Container maxWidth="lg">
         <Box sx={{ bgcolor: "#F2F6FE" }}>
           <form className={classes.root} onSubmit={putRequest}>
-            <TextField
-              name="inteRequName"
-              value={editRequest.inteRequName}
-              label="Nombre de la solicitud"
-              onChange={handleChange}
-            />
-            <Autocomplete
-              multiple
-              fullWidth
-              defaultValue={defaultCareers}
-              options={list_carreers}
-              freeSolo
-              getOptionLabel={(option) => option.careName}
-              getOptionSelected={(option, value) =>
-                option.careId === value.careId
-              }
-              name="careers"
-              onChange={(e, value) => handleSelect(value)}
-              filterSelectedOptions
-              renderInput={(params) => (
+            <Grid container spacing={2} mr={4}>
+              <Grid item xs={12}>
                 <TextField
-                  {...params}
-                  label="Carreras de Interés"
-                  placeholder="Carreras de Interés"
+                  required
+                  fullWidth
+                  name="inteRequName"
+                  value={editRequest.inteRequName}
+                  label="Nombre de la solicitud"
+                  onChange={handleChange}
                 />
-              )}
-            />
+              </Grid>
 
-            <TextField
-              id="outlined-textarea"
-              name="inteRequDepartment"
-              value={editRequest.inteRequDepartment}
-              label="Area o Departamento"
-              onChange={handleChange}
-            />
-
-            <TextField
-              name="inteRequNumber"
-              value={editRequest.inteRequNumber}
-              label="Número de Estudiantes"
-              type="number"
-              onChange={handleChange}
-            />
-
-            <TextField
-              name="inteRequStDate"
-              label="Fecha de Inicio"
-              InputLabelProps={{ shrink: true, required: true }}
-              type="date"
-              defaultValue={getDate()}
-              onChange={handleChange}
-            />
-
-            <Autocomplete
-              multiple
-              fullWidth
-              defaultValue={defaultInteRequFunctions}
-              options={inteRequFunctions}
-              freeSolo
-              getOptionLabel={(option) => option}
-              getOptionSelected={(option, value) => option === value}
-              onChange={(e, value) => handleFunctions(value)}
-              renderInput={(params) => (
+              <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  fullWidth
+                  defaultValue={defaultCareers}
+                  options={list_carreers}
+                  freeSolo
+                  getOptionLabel={(option) => option.careName}
+                  getOptionSelected={(option, value) =>
+                    option.careId === value.careId
+                  }
+                  name="careers"
+                  onChange={(e, value) => handleSelect(value)}
+                  filterSelectedOptions
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Carreras de Interés"
+                      placeholder="Carreras de Interés"
+                      required
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
-                  {...params}
-                  variant="outlined"
-                  label="Funciones Principales"
+                  required
+                  fullWidth
+                  name="inteRequDepartment"
+                  value={editRequest.inteRequDepartment}
+                  label="Area o Departamento"
+                  onChange={handleChange}
                 />
-              )}
-            />
-            <Autocomplete
-              multiple
-              fullWidth
-              defaultValue={defaultInteRequCompetencies}
-              options={inteRequCompetencies}
-              freeSolo
-              getOptionLabel={(option) => option}
-              getOptionSelected={(option, value) => option === value}
-              onChange={(e, value) => handleCompetencies(value)}
-              renderInput={(params) => (
+              </Grid>
+              <Grid item xs={6}>
                 <TextField
-                  {...params}
-                  variant="outlined"
-                  label="Competencias Claves del Éxito"
+                  fullWidth
+                  name="inteRequNumber"
+                  value={editRequest.inteRequNumber}
+                  label="Número de Estudiantes"
+                  type="number"
+                  onChange={handleChange}
                 />
-              )}
-            />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  fullWidth
+                  name="inteRequStDate"
+                  label="Fecha de Inicio"
+                  InputLabelProps={{ shrink: true, required: true }}
+                  type="date"
+                  defaultValue={getDate()}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  fullWidth
+                  defaultValue={defaultInteRequFunctions}
+                  options={inteRequFunctions}
+                  freeSolo
+                  getOptionLabel={(option) => option}
+                  getOptionSelected={(option, value) => option === value}
+                  onChange={(e, value) => handleFunctions(value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="Funciones Principales"
+                      required
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  fullWidth
+                  defaultValue={defaultInteRequCompetencies}
+                  options={inteRequCompetencies}
+                  freeSolo
+                  getOptionLabel={(option) => option}
+                  getOptionSelected={(option, value) => option === value}
+                  onChange={(e, value) => handleCompetencies(value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="Competencias Claves del Éxito"
+                      required
+                    />
+                  )}
+                />
+              </Grid>
 
-            <TextField
-              name="inteRequBondingType"
-              multiline
-              value={editRequest.inteRequBondingType}
-              label="Tipo de Vinculación"
-              onChange={handleChange}
-            />
-            <TextField
-              name="inteRequDuration"
-              label="Duración de la Practica"
-              multiline
-              value={editRequest.inteRequDuration}
-              onChange={handleChange}
-            />
-            <TextField
-              name="inteRequSalary"
-              label="Valor de Bonificación"
-              type="number"
-              value={editRequest.inteRequSalary}
-              onChange={handleChange}
-            />
-            <TextField
-              name="inteRequOtherBenefits"
-              label="Otros Beneficios"
-              value={editRequest.inteRequOtherBenefits}
-              multiline
-              onChange={handleChange}
-            />
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  fullWidth
+                  name="inteRequDuration"
+                  label="Duración de la Practica"
+                  multiline
+                  value={editRequest.inteRequDuration}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  required
+                  name="inteRequSalary"
+                  label="Valor de Bonificación"
+                  type="number"
+                  value={editRequest.inteRequSalary}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="inteRequBondingType"
+                  multiline
+                  value={editRequest.inteRequBondingType}
+                  label="Tipo de Vinculación"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="inteRequOtherBenefits"
+                  label="Otros Beneficios"
+                  value={editRequest.inteRequOtherBenefits}
+                  multiline
+                  onChange={handleChange}
+                />
+              </Grid>
+            </Grid>
 
             <Button sx={{ mt: 5, pr: 3 }} variant="contained" type="submit">
               Editar Solicitud

@@ -25,7 +25,6 @@ const GeneralRequest = () => {
   const request = {
     inteRequName: currentIntReq.inteRequName,
     companyName: currentIntReq.company.compName,
-    contactName: "",
     inteRequNumber: currentIntReq.inteRequNumber,
     inteRequStDate: currentIntReq.inteRequStDate,
     inteRequDuration: currentIntReq.inteRequDuration,
@@ -58,14 +57,6 @@ const GeneralRequest = () => {
                 <HomeIcon />
                 <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
                   {request.companyName}
-                </Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={6}>
-              <Stack direction="row" spacing={2}>
-                <PersonIcon />
-                <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
-                  {request.contactName}
                 </Typography>
               </Stack>
             </Grid>

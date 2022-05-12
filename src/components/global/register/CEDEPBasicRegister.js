@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -61,6 +63,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const validationSchema = yup.object({
+  persFirstName: yup.string("Ingresa tu nombre ").required("Campo obligatorio"),
+  persLastName: yup
+    .string("Ingresa tus apellidos ")
+    .required("Campo obligatorio"),
+  persDocument: yup
+    .string("Ingresa tu número documento de identidad ")
+    .required("Campo obligatorio"),
+  persEmail: yup
+    .string("Ingresa tu correo electrónico")
+    .email("Ingresa un correo electrónico válido")
+    .required("Campo obligatorio"),
+  persAddress: yup
+    .string("Ingresa tu dirección ")
+    .required("Campo obligatorio"),
+});
+
 const CoordBasicRegister = () => {
   const classes = useStyles();
   // Allow navigate between roots
@@ -82,21 +101,9 @@ const CoordBasicRegister = () => {
   //Correspond of list of cities saved in the store.
   const listCities = useSelector((state) => state.CountrySlice.listCities);
 
-  /**-------------------------------------------------------------
-   * Handling the states of the attributes that make up a register
-   * -------------------------------------------------------------
-   */
-  const [data, setData] = useState({
-    persFirstName: "",
-    persLastName: "",
-    persGenre: "",
-    persDocument: "",
-    persEmail: "",
-    persAddress: "",
-  });
-
   const [getPersonCountry, setPersonCountry] = useState({});
   const [getPersonCity, setPersonCity] = useState("");
+  const [getPersGenre, setPersGenre] = useState("");
   //Correspond to list of gender that a person
   const listGender = ["MASCULINO", "FEMENINO", "OTRO"];
 
@@ -109,38 +116,29 @@ const CoordBasicRegister = () => {
     }
   }, [getPersonCountry]);
 
-  //=================================================Functions===================================================
+  //=================================================FORMIK===================================================
 
-  /*
-   * ***************************************************
-   * **********************Functions*********************
-   * ***************************************************
-  /**
-   * This function assigns the information completed by the user with its respective attribute.
-   * attributes like: persName, persDocument, persEmail, persPhone,persPassword and persRPassword
-   * @param {*} e
-   */
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
-  //On Action of the button
-  const submit = (e) => {
-    e.preventDefault();
-    //Correspond to information of the promotion coodinator
-    const persontoAdd = {
-      persFirstName: data.persFirstName,
-      persLastName: data.persLastName,
-      persGenre: data.persGenre,
-      persDocument: data.persDocument,
-      persEmail: data.persEmail,
-      persAddress: data.persAddress,
-      persCountryName: getPersonCountry.name,
-      persCityName: getPersonCity,
-    };
-    console.log(persontoAdd)
-    dispatch(addperson(persontoAdd))
-    navigate("/cedep/register/user_register");
-  };
+  const formik = useFormik({
+    initialValues: {
+      persFirstName: "",
+      persLastName: "",
+      persDocument: "",
+      persEmail: "",
+      persAddress: "",
+    },
+
+    validationSchema: validationSchema,
+
+    onSubmit: (values) => {
+      values.persGenre = getPersGenre;
+      values.persCityName = getPersonCity;
+      values.persCountryName = getPersonCountry.name;
+      alert(JSON.stringify(values, null, 2));
+      console.log(values);
+      //dispatch(addperson(values));
+      //navigate("/cedep/register/user_register");
+    },
+  });
 
   return (
     <Container component="main" maxWidth="sm">
@@ -151,63 +149,98 @@ const CoordBasicRegister = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={submit}>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={formik.handleSubmit}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 name="persFirstName"
                 variant="outlined"
-                required
                 fullWidth
                 label="Nombres"
                 autoFocus
-                onChange={handleChange}
+                value={formik.values.persFirstName}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.persFirstName &&
+                  Boolean(formik.errors.persFirstName)
+                }
+                helperText={
+                  formik.touched.persFirstName && formik.errors.persFirstName
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
-                required
                 fullWidth
                 label="Apellidos"
                 name="persLastName"
-                onChange={handleChange}
+                value={formik.values.persLastName}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.persLastName &&
+                  Boolean(formik.errors.persLastName)
+                }
+                helperText={
+                  formik.touched.persLastName && formik.errors.persLastName
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
-                required
                 fullWidth
                 label="Cédula"
                 name="persDocument"
-                onChange={handleChange}
+                value={formik.values.persDocument}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.persDocument &&
+                  Boolean(formik.errors.persDocument)
+                }
+                helperText={
+                  formik.touched.persDocument && formik.errors.persDocument
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Género</InputLabel>
-                <Select
-                  value={data.persGenre}
-                  label="Género"
-                  name="persGenre"
-                  onChange={handleChange}
-                >
-                  {listGender.map((value) => (
-                    <MenuItem value={value}>{value}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <Autocomplete
+                id="combo-box-persGenre"
+                disablePortal
+                value={getPersGenre}
+                options={listGender}
+                onChange={(event, value) => setPersGenre(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Género"
+                    variant="outlined"
+                    required
+                    error={getPersGenre === null}
+                    helperText={
+                      getPersGenre === null ? "Elemento requerido" : ""
+                    }
+                  />
+                )}
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                required
                 fullWidth
                 type="email"
                 label="Correo electrónico"
                 name="persEmail"
-                onChange={handleChange}
+                value={formik.values.persEmail}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.persEmail && Boolean(formik.errors.persEmail)
+                }
+                helperText={formik.touched.persEmail && formik.errors.persEmail}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -228,6 +261,7 @@ const CoordBasicRegister = () => {
                     {...params}
                     label="Seleccione su país"
                     variant="outlined"
+                    required
                     InputProps={{
                       ...params.InputProps,
                       type: "search",
@@ -257,6 +291,7 @@ const CoordBasicRegister = () => {
                     {...params}
                     label="Seleccione su ciudad"
                     variant="outlined"
+                    required
                     InputProps={{
                       ...params.InputProps,
                       type: "search",
@@ -269,12 +304,18 @@ const CoordBasicRegister = () => {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                required
                 fullWidth
                 label="Dirección"
                 name="persAddress"
-                onChange={handleChange}
-                helperText="Dirección: Calle Da Vinci # 7 - 41092"
+                value={formik.values.persAddress}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.persAddress &&
+                  Boolean(formik.errors.persAddress)
+                }
+                helperText={
+                  formik.touched.persAddress && formik.errors.persAddress
+                }
               />
             </Grid>
           </Grid>
