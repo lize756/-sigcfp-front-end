@@ -111,11 +111,17 @@ const RegistrationBasicCompanyData = () => {
    */
   const classes = useStyles();
   // create state variables for each input
-
+  const [getCompName, setCompName] = useState("");
+  const [getCompNit, setCompNit] = useState("");
+  const [getCompAddress, setCompAddress] = useState("");
   const [getCompCountry, setCompCountry] = useState("");
   const [getCompCity, setCompCity] = useState("");
+  const [getCompEcoActiv, setCompEcoActiv] = useState("");
+  const [getCompType, setCompType] = useState("");
+  const [getCompUrlAddress, setCompUrlAddress] = useState("");
   const [getCompIcesiStud, setCompIcesiStud] = useState("F");
-
+  const [getCompEmail, setCompEmail] = useState("");
+  const [getCompTelephone, setCompTelephone] = useState("");
   /**
    * ----------------------------------------------------------
    * --------------------------Functions-----------------------
@@ -141,32 +147,30 @@ const RegistrationBasicCompanyData = () => {
     }
   }, [getCompCountry]);
 
-  const formik = useFormik({
-    initialValues: {
-      compAddress: "",
-      compEcoActiv: "",
-      compEmail: "",
-      compName: "",
-      compNit: "",
-      compTelephone: "",
-      compType: "",
-      compUrlAddress: "",
-    },
+  /**
+   * Send information of the front-end until back-end
+   * @param {*} e event of the button
+   */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const company = {
+      compAddress: getCompAddress,
+      compEcoActiv: getCompEcoActiv,
+      compIcesiStud: getCompIcesiStud,
+      compEmail: getCompEmail,
+      compName: getCompName,
+      compNit: getCompNit,
+      compTelephone: getCompTelephone,
+      compType: getCompType,
+      compUrlAddress: getCompUrlAddress,
+      compCountryName: getCompCountry.name,
+      compCityName: getCompCity,
+    };
+    console.log(company);
 
-    validationSchema: validationSchema,
-
-    onSubmit: (values) => {
-      values.compIcesiStud = getCompIcesiStud;
-      values.compCountryName = getCompCountry.name;
-      values.compCityName = getCompCity;
-
-      console.log(values);
-
-      //alert(JSON.stringify(values, null, 2));
-      dispatch(addCompany(values));
-      dispatch(setAccordinRegisterPanelValue("panel2"));
-    },
-  });
+    dispatch(addCompany(company));
+    dispatch(setAccordinRegisterPanelValue("panel2"));
+  };
 
   /**
    * -----------------------------------------------------
@@ -175,95 +179,66 @@ const RegistrationBasicCompanyData = () => {
    */
   return (
     <>
-      <form className={classes.root} onSubmit={formik.handleSubmit}>
+      <form className={classes.root} onSubmit={handleSubmit}>
         <TextField
           label="Nombre de la Empresa"
           variant="outlined"
-          name="compName"
-          value={formik.values.compName}
-          onChange={formik.handleChange}
-          error={formik.touched.compName && Boolean(formik.errors.compName)}
-          helperText={formik.touched.compName && formik.errors.compName}
+          required
+          value={getCompName}
+          onChange={(e) => setCompName(e.target.value)}
         />
         <TextField
           label="NIT"
           variant="outlined"
-          name="compNit"
-          value={formik.values.compNit}
-          onChange={formik.handleChange}
-          error={formik.touched.compNit && Boolean(formik.errors.compNit)}
-          helperText={formik.touched.compNit && formik.errors.compNit}
+          required
+          value={getCompNit}
+          onChange={(e) => setCompNit(e.target.value)}
         />
         <TextField
           label="Dirección de la Empresa"
           variant="outlined"
-          name="compAddress"
-          value={formik.values.compAddress}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.compAddress && Boolean(formik.errors.compAddress)
-          }
-          helperText={formik.touched.compAddress && formik.errors.compAddress}
+          required
+          value={getCompAddress}
+          onChange={(e) => setCompAddress(e.target.value)}
         />
 
         <TextField
           label="Actividad Económica"
           variant="outlined"
-          name="compEcoActiv"
-          value={formik.values.compEcoActiv}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.compEcoActiv && Boolean(formik.errors.compEcoActiv)
-          }
-          helperText={formik.touched.compEcoActiv && formik.errors.compEcoActiv}
+          required
+          value={getCompEcoActiv}
+          onChange={(e) => setCompEcoActiv(e.target.value)}
         />
 
         <TextField
           label="Email"
           variant="outlined"
-          name="compEmail"
-          value={formik.values.compEmail}
-          onChange={formik.handleChange}
-          error={formik.touched.compEmail && Boolean(formik.errors.compEmail)}
-          helperText={formik.touched.compEmail && formik.errors.compEmail}
+          required
+          value={getCompEmail}
+          onChange={(e) => setCompEmail(e.target.value)}
         />
 
         <TextField
           label="Tipo de Empresa"
           variant="outlined"
-          name="compType"
-          value={formik.values.compType}
-          onChange={formik.handleChange}
-          error={formik.touched.compType && Boolean(formik.errors.compType)}
-          helperText={formik.touched.compType && formik.errors.compType}
+          required
+          value={getCompType}
+          onChange={(e) => setCompType(e.target.value)}
         />
 
         <TextField
           label="Número telefonico"
           variant="outlined"
-          name="compTelephone"
-          value={formik.values.compTelephone}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.compTelephone && Boolean(formik.errors.compTelephone)
-          }
-          helperText={
-            formik.touched.compTelephone && formik.errors.compTelephone
-          }
+          required
+          value={getCompTelephone}
+          onChange={(e) => setCompTelephone(e.target.value)}
         />
         <TextField
           label="Dirección URL de pagina Web"
           variant="outlined"
-          name="compUrlAddress"
-          value={formik.values.compUrlAddress}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.compUrlAddress &&
-            Boolean(formik.errors.compUrlAddress)
-          }
-          helperText={
-            formik.touched.compUrlAddress && formik.errors.compUrlAddress
-          }
+          required
+          value={getCompUrlAddress}
+          onChange={(e) => setCompUrlAddress(e.target.value)}
         />
         <Autocomplete
           freeSolo
@@ -287,7 +262,6 @@ const RegistrationBasicCompanyData = () => {
               {...params}
               label="Seleccione su país"
               variant="outlined"
-              required
               InputProps={{
                 ...params.InputProps,
                 type: "search",
@@ -318,7 +292,6 @@ const RegistrationBasicCompanyData = () => {
               {...params}
               label="Seleccione la ciudad"
               variant="outlined"
-              required
               InputProps={{
                 ...params.InputProps,
                 type: "search",
