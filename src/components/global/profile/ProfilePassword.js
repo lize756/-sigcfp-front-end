@@ -3,6 +3,13 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { Paper, TextField, Button, Grid, Box, Typography } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
+/**
+ * -------------------------------------------------
+ * ------------------REDUX -------------------------
+ * -------------------------------------------------
+ */
+import { useDispatch, useSelector } from "react-redux";
+import { changePassword } from "../../store/slices/SignIn/LoginSlice";
 
 const validationSchema = yup.object().shape({
   oldPassword: yup.string().required("Campo requerido"),
@@ -16,6 +23,15 @@ const validationSchema = yup.object().shape({
 });
 
 const ProfilePassword = () => {
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+  // Get userName of user that login
+   const userName = useSelector((state) => state.userLogin.userName);
+
+
   const formik = useFormik({
     initialValues: {
       oldPassword: "",
@@ -26,7 +42,16 @@ const ProfilePassword = () => {
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      //alert(JSON.stringify(values, null, 2));
+      const data = values;
+      const dataPasswordChange = {
+        userName: userName,
+        oldUserPassword: data.oldPassword,
+        newUserPassword: data.password,
+        confirmPassword: data.changePassword,
+      };
+
+      dispatch(changePassword(dataPasswordChange));
     },
   });
   return (

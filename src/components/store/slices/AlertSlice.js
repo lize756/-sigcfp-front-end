@@ -12,6 +12,7 @@ const initialState = () => ({
     alertOtherInfo: "",
     alertMaxWidth: "",
     alertSeverity: "",
+    alertPositionH: "left",
   },
   typeAlert: 1, // Option: 0: Dialog Alert 1: Snackbar
   isShowAlert: false,

@@ -5,7 +5,12 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
-import { setAcceptedAlert, setAlert, setShowAlert } from "../../store/slices/AlertSlice";
+import {
+  setAcceptedAlert,
+  setAlert,
+  setShowAlert,
+} from "../../store/slices/AlertSlice";
+import { AlertTitle } from "@mui/material";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -37,7 +42,7 @@ export default function CorrectUpdateOrDeletejs() {
     if (reason === "clickaway") {
       return;
     }
-    dispatch(setAlert({}))
+    dispatch(setAlert({}));
     dispatch(setShowAlert(false));
   };
 
@@ -47,9 +52,11 @@ export default function CorrectUpdateOrDeletejs() {
         open={isOpen}
         autoHideDuration={2500}
         onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: `${getInfoAlert.alertPositionH}`}}
       >
         <Alert severity={getInfoAlert.alertSeverity} sx={{ width: "100%" }}>
-          {getInfoAlert.alertTitle}
+          <AlertTitle>{getInfoAlert.alertTitle}</AlertTitle>
+          {getInfoAlert.alertDescription}
         </Alert>
       </Snackbar>
     </Stack>

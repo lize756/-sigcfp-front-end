@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../../config/axios";
-import { resetAlertSliceState } from "../AlertSlice";
+import {
+  resetAlertSliceState,
+  setAlert,
+  setShowAlert,
+  setTypeAlert,
+} from "../AlertSlice";
 import { resetCareerSliceState } from "../CareerSlice";
 import { resetCompanySliceState } from "../CompanySlice";
 import { resetContactSliceState } from "../ContactSlice";
@@ -18,10 +23,7 @@ const initialAuthState = {
  */
 const initialState = () => ({
   initialAuthState,
-  user: {
-    userEmail: "",
-    userName: "",
-  },
+  userName: "",
   responseUserLogin: {},
   isLogin: false,
   rolee: "",
@@ -40,11 +42,8 @@ export const LoginSlice = createSlice({
     logout(state) {
       state.isAuthenticated = false;
     },
-    setUserr: (state, action) => {
-      state.user = {
-        userEmail: action.payload.userEmail,
-        userName: action.payload.userName,
-      };
+    setUserName: (state, action) => {
+      state.userName = action.payload;
     },
     setResponseUserLogin: (state, action) => {
       state.responseUserLogin = action.payload;
@@ -135,6 +134,7 @@ export const sendToken = (data) => async (dispatch) => {
       dispatch(setIsLogin(true));
       dispatch(setUserCompanyId(response.data.userCompanyId));
       dispatch(setUserPersonId(response.data.userPersonId));
+      dispatch(setUserName(response.data.user.username));
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -143,10 +143,47 @@ export const sendToken = (data) => async (dispatch) => {
     });
 };
 
+/**
+ * Allow the user change your curren password
+ * @param {*} data Represent of data that it will send of request.
+ * @returns
+ */
+export const changePassword = (data) => async (dispatch) => {
+  await axios
+    .post("api/auth/changePassword", data)
+    .then(() => {
+      // Allow display alert when is change the password of one user.
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Se actualizó correctamente la contraseña",
+          alertSeverity: "info",
+          alertPositionH: "right",
+        })
+      );
+    })
+    .catch((err) => {
+      console.log(err.toJSON());
+      // Allow display alert when not change correctly the password.
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "No se pudo actualizar la contraseña",
+          alertSeverity: "error",
+          alertPositionH: "right",
+          alertDescription:
+            "La contraseña actual es incorrecta. Por favor, vuelva a intentar.",
+        })
+      );
+    });
+};
+
 //Export the action to reducer of userLogin
 export const {
   logout,
-  setUserr,
+  setUserName,
   resetLoginState,
   reset,
   setResponseUserLogin,

@@ -130,6 +130,7 @@ export const updatePartiallyPerson = (ACCESS_TOKEN, persId, person) => (
         setAlert({
           alertTitle: "Se actualizo correctamente el perfil",
           alertSeverity: "info",
+          alertPositionH: "right",
         })
       );
     })
@@ -143,6 +144,7 @@ export const updatePartiallyPerson = (ACCESS_TOKEN, persId, person) => (
         setAlert({
           alertTitle: "No se pudo actualizar el perfil",
           alertSeverity: "error",
+          alertPositionH: "right",
         })
       );
     });

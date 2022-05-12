@@ -80,6 +80,7 @@ export const addContact = (ACCESS_TOKEN, contact) => async (dispatch) => {
         setAlert({
           alertTitle: "Se creo correctamente el contacto",
           alertSeverity: "success",
+          alertPositionH: "left",
         })
       );
     })
@@ -92,6 +93,7 @@ export const addContact = (ACCESS_TOKEN, contact) => async (dispatch) => {
         setAlert({
           alertTitle: "No se pudo crear el contacto",
           alertSeverity: "error",
+          alertPositionH: "left",
         })
       );
     });
@@ -136,6 +138,7 @@ export const updateContact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
         setAlert({
           alertTitle: "Se actualizo correctamente el contacto",
           alertSeverity: "info",
+          alertPositionH: "left",
         })
       );
     })
@@ -148,6 +151,7 @@ export const updateContact = (ACCESS_TOKEN, contId, contact) => (dispatch) => {
         setAlert({
           alertTitle: "No se pudo actualizar el contacto",
           alertSeverity: "error",
+          alertPositionH: "left",
         })
       );
     });
@@ -176,6 +180,7 @@ export const deleteContact = (ACCESS_TOKEN, contId) => async (dispatch) => {
         setAlert({
           alertTitle: "Se elimino correctamente el contacto",
           alertSeverity: "info",
+          alertPositionH: "left",
         })
       );
     })
@@ -187,6 +192,7 @@ export const deleteContact = (ACCESS_TOKEN, contId) => async (dispatch) => {
         setAlert({
           alertTitle: "No se pudo eliminar el contacto",
           alertSeverity: "error",
+          alertPositionH: "left",
         })
       );
     });

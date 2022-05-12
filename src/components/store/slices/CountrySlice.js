@@ -98,6 +98,7 @@ export const getCitiesAssociatedToCountry = (countryName) => async (
               "No se encontraron ciudades asociadas a este país: " +
               countryName,
             alertSeverity: "warning",
+            alertPositionH: "left",
           })
         );
       });

@@ -87,6 +87,7 @@ export const addInternRequest = (ACCESS_TOKEN, internRequest) => async (
         setAlert({
           alertTitle: "Se creo correctamente la solicitud",
           alertSeverity: "success",
+          alertPositionH: "left",
         })
       );
     })
@@ -99,6 +100,7 @@ export const addInternRequest = (ACCESS_TOKEN, internRequest) => async (
         setAlert({
           alertTitle: "No se pudo crear la solicitud",
           alertSeverity: "error",
+          alertPositionH: "left",
         })
       );
     });
@@ -132,6 +134,7 @@ export const updateInternRequest = (
         setAlert({
           alertTitle: "Se actualizo correctamente la solicitud",
           alertSeverity: "info",
+          alertPositionH: "left",
         })
       );
     })
@@ -144,6 +147,7 @@ export const updateInternRequest = (
         setAlert({
           alertTitle: "No se pudo actualizar la solicitud",
           alertSeverity: "error",
+          alertPositionH: "left",
         })
       );
     });
@@ -174,6 +178,7 @@ export const deleteInternRequest = (ACCESS_TOKEN, inteRequId) => async (
         setAlert({
           alertTitle: "Se elimino correctamente la solicitud",
           alertSeverity: "info",
+          alertPositionH: "left",
         })
       );
     })
@@ -185,6 +190,7 @@ export const deleteInternRequest = (ACCESS_TOKEN, inteRequId) => async (
         setAlert({
           alertTitle: "No se pudo eliminar la solicitud",
           alertSeverity: "error",
+          alertPositionH: "left",
         })
       );
     });
