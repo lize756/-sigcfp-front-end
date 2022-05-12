@@ -64,6 +64,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.17.9"
+    "@babel/core": "^7.17.9",
+    "@faker-js/faker": "^6.3.1"
   }
 }

@@ -5,23 +5,20 @@ import {
   CardContent,
   CardMedia,
   Typography,
-  ButtonBase,
 } from "@mui/material";
 import imgCareer1 from "../../../assets/img_card_careers.png";
 import imgCareer2 from "../../../assets/img_card_careers_2.png";
-import {
-  getInternRequestByCareer,
-  setIsRender,
-} from "../../store/slices/InternRequestSlice";
+import { getInternRequestByCareer } from "../../store/slices/InternRequestSlice";
 import { useNavigate } from "react-router";
 /**
  * Redux
  */
 import { useDispatch, useSelector } from "react-redux";
-// component="img"
+// component="video"
 // height="140"
-// image={index % 2 === 0 ? imgCareer1 : imgCareer2}
-// alt="career"
+// style={{
+//   backgroundColor: randomColor(),
+// }}
 const CardsCareers = ({ index, career }) => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
@@ -47,11 +44,10 @@ const CardsCareers = ({ index, career }) => {
       <Card sx={{ maxWidth: 310 }}>
         <CardActionArea onClick={handleChange}>
           <CardMedia
-            component="video"
+            component="img"
             height="140"
-            style={{
-              backgroundColor: randomColor(),
-            }}
+            image={index % 2 === 0 ? imgCareer1 : imgCareer2}
+            alt="career"
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
