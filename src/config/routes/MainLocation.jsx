@@ -8,6 +8,7 @@ import Request from "../../components/module-request/global/GeneralRequest";
 import Profile from "../../components/global/profile/person/ProfilePerson";
 import Contacts from "../../components/module-request/global/contacts/UserList";
 import Companies from "../../components/module-request/global/contacts/CompaniesList";
+import RequestListByCareer from "../../components/module-request/locCoordinator/inRequestByCareer/RequestListByCareer";
 
 const MainLocation = () => {
   return (
@@ -26,6 +27,9 @@ const MainLocation = () => {
         </Route>
         <Route path="/location" element={<HomeLocation />}>
           <Route path="companies" element={<Companies />} />
+        </Route>
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="requests" element={<RequestListByCareer />} />
         </Route>
         <Route path="/location" element={<HomeLocation />}>
           <Route path="companies/company/info" element={<Company />} />
