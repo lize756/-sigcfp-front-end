@@ -9,6 +9,7 @@ import Profile from "../../components/global/profile/person/ProfilePerson";
 import Contacts from "../../components/module-request/global/contacts/UserList";
 import Companies from "../../components/module-request/global/contacts/CompaniesList";
 import RequestListByCareer from "../../components/module-request/locCoordinator/inRequestByCareer/RequestListByCareer";
+import Report from "../../components/module-request/global/report/reportLocCoordinator/ReportLocCoordinator";
 
 const MainLocation = () => {
   return (
@@ -39,6 +40,11 @@ const MainLocation = () => {
         </Route>
         <Route path="/location" element={<HomeLocation />}>
           <Route path="internrequest/show" element={<Request />} />
+        </Route>
+
+        {/**===========================================REPORT============================================== */}
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="report" element={<Report />} />
         </Route>
       </Routes>
     </>
