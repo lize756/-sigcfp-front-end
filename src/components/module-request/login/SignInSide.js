@@ -77,8 +77,8 @@ export default function SignInSide() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const user = values;
-      dispatch(sendToken(user));
       dispatch(setIsLogin(true));
+      dispatch(sendToken(user));
     },
   });
 
@@ -88,7 +88,7 @@ export default function SignInSide() {
     } else {
       setTimeout(() => {
         setIsChangeViewLoading(false);
-      }, [3000]);
+      }, [2000]);
     }
   }, [isLogin]);
 

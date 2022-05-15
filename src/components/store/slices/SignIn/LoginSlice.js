@@ -131,7 +131,6 @@ export const sendToken = (data) => async (dispatch) => {
       dispatch(setResponseUserLogin(response.data));
       //Update this rol in the initial state
       dispatch(setRolee(response.data.user.authorities[0].authority));
-      dispatch(setIsLogin(true));
       dispatch(setUserCompanyId(response.data.userCompanyId));
       dispatch(setUserPersonId(response.data.userPersonId));
       dispatch(setUserName(response.data.user.username));
