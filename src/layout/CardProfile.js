@@ -6,22 +6,13 @@ import { blue } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 //in need send the name, props?
 const CardProfile = () => {
-  const compName = useSelector((state) => state.CompanySlice.company.compName);
-  const personName = useSelector((state) => state.PersonSlice.person.persName);
+  // Correspond the name of rol that login in the system
+  const loginPersOrCompName = useSelector(
+    (state) => state.userLogin.loginPersOrCompName
+  );
 
-  // Correspond to rol login in the system
-  const rolUserLogin = useSelector((state) => state.userLogin.rolee);
-
-  const [getName, setName] = useState();
-  const [getLetterFirst, setLetterFirst] = useState();
-
-  useEffect(() => {
-      const name = "";
-      const letterFirst = "";
-      setName(name);
-      setLetterFirst(letterFirst);
-  }, [rolUserLogin]);
-
+  const letterFirst = loginPersOrCompName[0];
+  const name = loginPersOrCompName;
   return (
     <div>
       {" "}
@@ -29,10 +20,10 @@ const CardProfile = () => {
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "#072079" }} aria-label="recipe">
-              {getLetterFirst}
+              {letterFirst}
             </Avatar>
           }
-          title={getName}
+          title={name}
         />
       </Card>
     </div>

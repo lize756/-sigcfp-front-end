@@ -77,7 +77,6 @@ export default function SignInSide() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const user = values;
-      dispatch(setIsLogin(true));
       dispatch(sendToken(user));
     },
   });

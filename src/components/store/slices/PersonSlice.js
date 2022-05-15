@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
 import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
+import { setLoginPersOrCompName } from "./SignIn/LoginSlice";
 
 /**
  * Initial state of PersonSlice
@@ -186,6 +187,7 @@ export const getperson = (ACCESS_TOKEN, persId) => async (dispatch) => {
     .get("/api/persons/" + persId, { headers })
     .then((res) => {
       dispatch(setPerson(res.data));
+      dispatch(setLoginPersOrCompName(res.data.persFirstName));
     })
     .catch((err) => {
       console.log(err.toJSON());

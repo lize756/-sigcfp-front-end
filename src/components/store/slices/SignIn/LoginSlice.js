@@ -24,6 +24,7 @@ const initialAuthState = {
 const initialState = () => ({
   initialAuthState,
   userName: "",
+  loginPersOrCompName: "",
   responseUserLogin: {},
   isLogin: false,
   rolee: "",
@@ -36,14 +37,12 @@ export const LoginSlice = createSlice({
   initialState: initialState(),
   reducers: {
     resetLoginState: (state) => initialState(),
-    login(state) {
-      state.isAuthenticated = true;
-    },
-    logout(state) {
-      state.isAuthenticated = false;
-    },
+
     setUserName: (state, action) => {
       state.userName = action.payload;
+    },
+    setLoginPersOrCompName: (state, action) => {
+      state.loginPersOrCompName = action.payload;
     },
     setResponseUserLogin: (state, action) => {
       state.responseUserLogin = action.payload;
@@ -90,6 +89,7 @@ export const logOut = () => async (dispatch) => {
   if (localStorage.getItem("applicationState") !== null) {
     try {
       localStorage.clear();
+      dispatch(setIsLogin(false))
       resetAllState(dispatch);
     } catch (e) {
       console.log(
@@ -128,13 +128,14 @@ export const sendToken = (data) => async (dispatch) => {
   await axios
     .post("api/auth/login", data)
     .then((response) => {
+      dispatch(setIsLogin(true));
+
       dispatch(setResponseUserLogin(response.data));
       //Update this rol in the initial state
       dispatch(setRolee(response.data.user.authorities[0].authority));
       dispatch(setUserCompanyId(response.data.userCompanyId));
       dispatch(setUserPersonId(response.data.userPersonId));
       dispatch(setUserName(response.data.user.username));
-      
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -185,6 +186,7 @@ export const {
   logout,
   setUserName,
   resetLoginState,
+  setLoginPersOrCompName,
   reset,
   setResponseUserLogin,
   setIsLogin,

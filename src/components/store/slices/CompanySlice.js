@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../../config/axios";
 import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
+import { setLoginPersOrCompName } from "./SignIn/LoginSlice";
 
 /**
  * Initial state of CompanySlice
@@ -146,6 +147,7 @@ export const getCompany = (ACCESS_TOKEN, compId) => async (dispatch) => {
     .get("/api/companies/" + compId, { headers })
     .then((res) => {
       dispatch(setCompany(res.data));
+      dispatch(setLoginPersOrCompName(res.data.compName))
     })
     .catch((err) => {
       console.log(err.toJSON());
