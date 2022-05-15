@@ -264,7 +264,13 @@ const PromotionApp = () => {
               <ListItemText primary="Contactos Empresariales" />
             </ListItem>
 
-            <ListItem button key="Report">
+            <ListItem
+              button
+              key="Report"
+              onClick={() => {
+                navigate("/promotion/report");
+              }}
+            >
               <ListItemIcon>
                 <ReportIcon color="primary" />
               </ListItemIcon>

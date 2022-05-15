@@ -32,6 +32,11 @@ const ReportByCompany = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    const report = {
+      compId: getCompany.id,
+      type: "PDF",
+    };
     console.log(getCompany);
   };
 

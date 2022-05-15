@@ -87,8 +87,8 @@ const AppBar = styled(MuiAppBar, {
 
 const LocCoordinatorApp = () => {
   const theme = useTheme();
-   // Allow to send the elements of store
-   const dispatch = useDispatch();
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
   let navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -255,16 +255,26 @@ const LocCoordinatorApp = () => {
               <ListItemText primary="Contactos Empresariales" />
             </ListItem>
 
-            <ListItem button key="Report">
+            <ListItem
+              button
+              key="Report"
+              onClick={() => {
+                navigate("/location/report");
+              }}
+            >
               <ListItemIcon>
                 <ReportIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary="Reportes " />
             </ListItem>
 
-            <ListItem button key="Profile"  onClick={() => {
-                    navigate("/location/profile");
-                  }}>
+            <ListItem
+              button
+              key="Profile"
+              onClick={() => {
+                navigate("/location/profile");
+              }}
+            >
               <ListItemIcon>
                 <PersonPinIcon color="primary" />
               </ListItemIcon>

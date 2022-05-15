@@ -4,11 +4,9 @@ import { Typography, Grid, Card, CardActionArea } from "@mui/material";
 
 import { lightBlue } from "@mui/material/colors";
 import { purple } from "@mui/material/colors";
-import { pink } from "@mui/material/colors";
 
 import ContactsIcon from "@mui/icons-material/Contacts";
 import RequestIcon from "@mui/icons-material/Feed";
-import FolderSpecialIcon from "@mui/icons-material/FolderSpecial";
 
 const IconWrapperStyle = styled("div")(({ theme }) => ({
   margin: "auto",
@@ -29,6 +27,7 @@ const ReportCards = () => {
     };
     console.log("PRESIONE CONTACTOS");
   };
+
   const reportOfInternsRequests = (e) => {
     e.preventDefault();
 
@@ -36,14 +35,6 @@ const ReportCards = () => {
       type: "PDF",
     };
     console.log("PRESIONE TODAS LAS SOLICITUDES");
-  };
-  const reportByCareers = (e) => {
-    e.preventDefault();
-
-    const report = {
-      type: "PDF",
-    };
-    console.log("PRESIONE CARRERAS");
   };
 
   return (
@@ -99,48 +90,10 @@ const ReportCards = () => {
               textAlign: "center",
               py: 5,
               boxShadow: 2,
-              bgcolor: pink[50],
-            }}
-          >
-            <CardActionArea onClick={reportOfInternsRequests}>
-              <IconWrapperStyle
-                sx={{
-                  color: (theme) => theme.palette["error"].dark,
-                  backgroundImage: (theme) =>
-                    `linear-gradient(135deg, ${alpha(
-                      theme.palette["error"].dark,
-                      0
-                    )} 0%, ${alpha(theme.palette["error"].dark, 0.24)} 100%)`,
-                }}
-              >
-                <RequestIcon color="error" />
-              </IconWrapperStyle>
-
-              <Typography
-                variant="subtitle1"
-                sx={{ opacity: 0.72, color: "#ab003c" }}
-              >
-                Todas las
-              </Typography>
-
-              <Typography variant="h5" sx={{ color: "#ab003c", opacity: 1 }}>
-                Solicitudes de Practicantes
-              </Typography>
-            </CardActionArea>
-          </Card>
-        </Grid>
-        <Grid item xs="auto">
-          <Card
-            sx={{
-              width: 230,
-              height: 240,
-              textAlign: "center",
-              py: 5,
-              boxShadow: 2,
               bgcolor: purple[50],
             }}
           >
-            <CardActionArea onClick={reportByCareers}>
+            <CardActionArea onClick={reportOfInternsRequests}>
               <IconWrapperStyle
                 sx={{
                   color: (theme) => theme.palette["secondary"].dark,
@@ -154,18 +107,18 @@ const ReportCards = () => {
                     )} 100%)`,
                 }}
               >
-                <FolderSpecialIcon color="secondary" />
+                <RequestIcon color="secondary" />
               </IconWrapperStyle>
 
               <Typography
                 variant="subtitle1"
                 sx={{ opacity: 0.72, color: "#072079" }}
               >
-                Solicitudes
+                Todas las
               </Typography>
 
               <Typography variant="h5" sx={{ color: "#072079", opacity: 1 }}>
-                Relacionadas por Carreras
+                Solicitudes de Practicantes
               </Typography>
             </CardActionArea>
           </Card>
