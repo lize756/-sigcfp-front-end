@@ -9,6 +9,12 @@ import Profile from "../../components/global/profile/person/ProfilePerson";
 import Company from "../../components/module-request/global/contacts/ShowCompany";
 import Request from "../../components/module-request/global/GeneralRequest";
 import Contacts from "../../components/module-request/global/contacts/UserList";
+import Report from "../../components/module-request/global/report/reportPromotion/ReportPromotion";
+import Notifications from "../../components/global/notifications/notificationPromotion/NotificationContents";
+import MessageStart from "../../components/global/notifications/notificationPromotion/notificationsMsg/MessageStart";
+import MessageEnd from "../../components/global/notifications/notificationPromotion/notificationsMsg/MessageEnd";
+import MessageByOne from "../../components/global/notifications/notificationPromotion/notificationsMsg/MessageByOne";
+import MessageMany from "../../components/global/notifications/notificationPromotion/notificationsMsg/MessageByMany";
 
 const MainPromotion = () => {
   return (
@@ -18,7 +24,7 @@ const MainPromotion = () => {
           <Route path="home" element={<ContentPromotion />} />
         </Route>
         <Route path="/promotion" element={<HomePromotion />}>
-          <Route path="companies" element={<Companies />}/>
+          <Route path="companies" element={<Companies />} />
         </Route>
         <Route path="/promotion" element={<HomePromotion />}>
           <Route path="request" element={<RequestList />} />
@@ -34,6 +40,30 @@ const MainPromotion = () => {
         </Route>
         <Route path="/promotion" element={<HomePromotion />}>
           <Route path="internrequest/show" element={<Request />} />
+        </Route>
+
+        <Route path="/promotion" element={<HomePromotion />}>
+          <Route path="report" element={<Report />} />
+        </Route>
+
+        {/**===========================================ALERTS============================================== */}
+        <Route path="/promotion" element={<HomePromotion />}>
+          <Route path="notifications" element={<Notifications />} />
+        </Route>
+        <Route path="/promotion" element={<HomePromotion />}>
+          <Route path="messagest" element={<MessageStart />} />
+        </Route>
+
+        <Route path="/promotion" element={<HomePromotion />}>
+          <Route path="messageend" element={<MessageEnd />} />
+        </Route>
+
+        <Route path="/promotion" element={<HomePromotion />}>
+          <Route path="messagemany" element={<MessageMany />} />
+        </Route>
+
+        <Route path="/promotion" element={<HomePromotion />}>
+          <Route path="messageone" element={<MessageByOne />} />
         </Route>
       </Routes>
     </>

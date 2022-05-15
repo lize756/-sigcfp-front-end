@@ -9,6 +9,12 @@ import Profile from "../../components/global/profile/person/ProfilePerson";
 import Contacts from "../../components/module-request/global/contacts/UserList";
 import Companies from "../../components/module-request/global/contacts/CompaniesList";
 import RequestListByCareer from "../../components/module-request/locCoordinator/inRequestByCareer/RequestListByCareer";
+import Report from "../../components/module-request/global/report/reportLocCoordinator/ReportLocCoordinator";
+import Notifications from "../../components/global/notifications/notificationLocCoordinator/NotificationContents";
+import MessageStart from "../../components/global/notifications/notificationLocCoordinator/notificationsMsg/MessageStart";
+import MessageEnd from "../../components/global/notifications/notificationLocCoordinator/notificationsMsg/MessageEnd";
+import MessageByOne from "../../components/global/notifications/notificationLocCoordinator/notificationsMsg/MessageByOne";
+import MessageMany from "../../components/global/notifications/notificationLocCoordinator/notificationsMsg/MessageByMany";
 
 const MainLocation = () => {
   return (
@@ -39,6 +45,31 @@ const MainLocation = () => {
         </Route>
         <Route path="/location" element={<HomeLocation />}>
           <Route path="internrequest/show" element={<Request />} />
+        </Route>
+
+        {/**===========================================REPORT============================================== */}
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="report" element={<Report />} />
+        </Route>
+
+        {/**===========================================ALERTS============================================== */}
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="notifications" element={<Notifications />} />
+        </Route>
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="messagest" element={<MessageStart />} />
+        </Route>
+
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="messageend" element={<MessageEnd />} />
+        </Route>
+
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="messagemany" element={<MessageMany />} />
+        </Route>
+
+        <Route path="/location" element={<HomeLocation />}>
+          <Route path="messageone" element={<MessageByOne />} />
         </Route>
       </Routes>
     </>

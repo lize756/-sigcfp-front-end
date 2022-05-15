@@ -217,13 +217,9 @@ const CoordBasicRegister = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
+                    required
                     label="Género"
                     variant="outlined"
-                    required
-                    error={getPersGenre === null}
-                    helperText={
-                      getPersGenre === null ? "Elemento requerido" : ""
-                    }
                   />
                 )}
               />
@@ -261,10 +257,11 @@ const CoordBasicRegister = () => {
                     {...params}
                     label="Seleccione su país"
                     variant="outlined"
-                    required
                     InputProps={{
                       ...params.InputProps,
                       type: "search",
+
+                      required: getPersonCountry === {},
                     }}
                   />
                 )}
