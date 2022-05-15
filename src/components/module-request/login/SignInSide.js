@@ -16,9 +16,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import { sendToken } from "../../../components/store/slices/SignIn/LoginSlice";
-import { LoadingLogin} from "./LoadingLogin";
-
+import {
+  sendToken,
+  setIsLogin,
+} from "../../../components/store/slices/SignIn/LoginSlice";
+import { LoadingLogin } from "./LoadingLogin";
+// Formik
+import { useFormik } from "formik";
+import * as yup from "yup";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -32,6 +37,20 @@ function Copyright() {
   );
 }
 
+const validationSchema = yup.object({
+  userName: yup
+    .string("Digita tu correo electrónico")
+    .email("Ingresa un correo electrónico válido")
+    .required("El correo electrónico es requerido"),
+  userPassword: yup
+    .string("Por favor ingresé su contraseña")
+    .required("La contraseña es requerida")
+    // .matches(
+    //   /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+    //   "Debe contener al menos 8 caracteres, una mayúscula, una minúscula, y un número"
+    // ),
+});
+
 const theme = createTheme();
 
 export default function SignInSide() {
@@ -41,37 +60,53 @@ export default function SignInSide() {
   // This element allow change between the original component of login to the circular progress
   const [isChangeViewLoading, setIsChangeViewLoading] = React.useState(false);
 
+  const isLogin = useSelector((state) => state.userLogin.isLogin);
+
   // Allow navigate between roots
   let navigate = useNavigate();
 
-  /***
-   * Handle Submit
-   * Get the form data.
-   */
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setIsChangeViewLoading(true);
-    const data = new FormData(event.currentTarget);
-    //UserToLogin
-    const user = {
-      userName: data.get("userName"),
-      userPassword: data.get("userPassword"),
-    };
-    dispatch(sendToken(user));
+  const loginUser = {
+    userName: "",
+    userPassword: "",
   };
+
+  //------------Handlechange functions-------------------------------
+
+  const formik = useFormik({
+    initialValues: loginUser,
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      const user = values;
+      dispatch(sendToken(user));
+      dispatch(setIsLogin(true));
+    },
+  });
+
+  React.useEffect(() => {
+    if (isLogin) {
+      setIsChangeViewLoading(true);
+    } else {
+      setTimeout(() => {
+        setIsChangeViewLoading(false);
+      }, [3000]);
+    }
+  }, [isLogin]);
 
   function viewLogin() {
     return (
       <>
         <TextField
+          autoFocus
           margin="normal"
           required
           fullWidth
           id="userName"
+          type="email"
           label="Dirección de correo electrónico"
-          name="userName"
-          autoComplete="email"
-          autoFocus
+          value={formik.values.userName}
+          onChange={formik.handleChange}
+          error={formik.touched.userName && Boolean(formik.errors.userName)}
+          helperText={formik.touched.userName && formik.errors.userName}
         />
         <TextField
           margin="normal"
@@ -82,6 +117,12 @@ export default function SignInSide() {
           type="password"
           id="userPassword"
           autoComplete="current-password"
+          value={formik.values.userPassword}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.userPassword && Boolean(formik.errors.userPassword)
+          }
+          helperText={formik.touched.userPassword && formik.errors.userPassword}
         />
         <Button
           type="submit"
@@ -94,18 +135,6 @@ export default function SignInSide() {
       </>
     );
   }
-
-  function viewLoading() {
-    return (
-      <Box sx={{ display: "flex" }} alignItems="center" justifyContent="center">
-        <CircularProgress
-          size={"100px"}
-          sx={{ marginTop: "10%", marginBottom: "10%" }}
-        />
-      </Box>
-    );
-  }
-
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -154,7 +183,7 @@ export default function SignInSide() {
               <Box
                 component="form"
                 noValidate
-                onSubmit={handleSubmit}
+                onSubmit={formik.handleSubmit}
                 sx={{ mt: 1 }}
               >
                 {/**isChangeViewLoading ? viewLoading() : viewLogin()*/}

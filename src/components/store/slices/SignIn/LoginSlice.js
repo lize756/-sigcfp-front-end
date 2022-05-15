@@ -135,6 +135,7 @@ export const sendToken = (data) => async (dispatch) => {
       dispatch(setUserCompanyId(response.data.userCompanyId));
       dispatch(setUserPersonId(response.data.userPersonId));
       dispatch(setUserName(response.data.user.username));
+      
     })
     .catch((err) => {
       console.log(err.toJSON());

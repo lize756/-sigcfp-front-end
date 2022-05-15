@@ -25,7 +25,13 @@ const validationSchema = yup.object({
       .oneOf([yup.ref("userEmail")], "Los correos electrónicos no coinciden"),
   }),
 
-  userPassword: yup.string().required("Campo requerido"),
+  userPassword: yup
+    .string()
+    .required("Campo requerido")
+    .matches(
+      /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+      "Debe contener al menos 8 caracteres, una mayúscula, una minúscula, y un número"
+    ),
 
   userPasswordR: yup.string().when("userPassword", {
     is: (val) => (val && val.length > 0 ? true : false),

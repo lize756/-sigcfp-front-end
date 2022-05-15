@@ -55,7 +55,6 @@ const CreateUser = () => {
     },
   });
 
-  const update = () => {};
   return (
     <div>
       <Typography variant="h5" gutterBottom color="#072079" mt={3} ml={5}>
