@@ -7,6 +7,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import RequestIcon from "@mui/icons-material/PostAdd";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import ReportIcon from "@mui/icons-material/Assessment";
+import EmailIcon from "@mui/icons-material/Email";
 import CompaniesIcon from "@mui/icons-material/ContactPhone";
 import {
   Box,
@@ -275,6 +276,19 @@ const PromotionApp = () => {
                 <ReportIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary="Reportes " />
+            </ListItem>
+
+            <ListItem
+              button
+              key="Notifications"
+              onClick={() => {
+                navigate("/promotion/notifications");
+              }}
+            >
+              <ListItemIcon>
+                <EmailIcon color="primary" />
+              </ListItemIcon>
+              <ListItemText primary="Notificaciones  " />
             </ListItem>
 
             <ListItem
