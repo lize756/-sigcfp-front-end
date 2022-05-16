@@ -8,26 +8,19 @@ import {
   Card,
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
-
-const companies = [
-  {
-    id: 1,
-    name: "Carvajal",
-    nit: "12486768",
-  },
-  {
-    id: 2,
-    name: "Mayaguez",
-    nit: "12486768",
-  },
-  {
-    id: 3,
-    name: "Deloitte",
-    nit: "12486768",
-  },
-];
+/**
+ * REDUX
+ */
+import { useSelector, useDispatch } from "react-redux";
+import { downloadCompanyInternRequestsReport } from "../../../store/slices/ReportSlice";
 
 const ReportByCompany = () => {
+
+  // This line allow dispatch a one element to store
+  const dispatch = useDispatch();
+  // Obtain all companies saved in the database
+  const companies = useSelector((state) => state.CompanySlice.listCompanies);
+
   const [getCompany, setCompany] = useState({});
 
   const onSubmit = (e) => {
@@ -37,7 +30,8 @@ const ReportByCompany = () => {
       compId: getCompany.id,
       type: "PDF",
     };
-    console.log(getCompany);
+    //console.log(getCompany);
+    dispatch(downloadCompanyInternRequestsReport(getCompany.compId))
   };
 
   return (
@@ -79,7 +73,7 @@ const ReportByCompany = () => {
                     disableClearable
                     id="free-solo-2-demo"
                     options={companies}
-                    getOptionLabel={(option) => option.name}
+                    getOptionLabel={(option) => option.compName}
                     onChange={(event, value) => setCompany(value)}
                     renderInput={(params) => (
                       <TextField

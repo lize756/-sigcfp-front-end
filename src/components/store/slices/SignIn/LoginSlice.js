@@ -89,7 +89,7 @@ export const logOut = () => async (dispatch) => {
   if (localStorage.getItem("applicationState") !== null) {
     try {
       localStorage.clear();
-      dispatch(setIsLogin(false))
+      dispatch(setIsLogin(false));
       resetAllState(dispatch);
     } catch (e) {
       console.log(
@@ -125,11 +125,10 @@ const resetAllState = (dispatch) => {
  * @returns
  */
 export const sendToken = (data) => async (dispatch) => {
+  dispatch(setIsLogin(true));
   await axios
     .post("api/auth/login", data)
     .then((response) => {
-      dispatch(setIsLogin(true));
-
       dispatch(setResponseUserLogin(response.data));
       //Update this rol in the initial state
       dispatch(setRolee(response.data.user.authorities[0].authority));
@@ -141,6 +140,18 @@ export const sendToken = (data) => async (dispatch) => {
       console.log(err.toJSON());
       dispatch(setResponseUserLogin({}));
       dispatch(setIsLogin(false));
+      // Allow display alert when not change correctly the password.
+      dispatch(setTypeAlert("1"));
+      dispatch(setShowAlert(true));
+      dispatch(
+        setAlert({
+          alertTitle: "Error en el inicio de sesión",
+          alertSeverity: "error",
+          alertPositionH: "right",
+          alertDescription:
+            "El correo electrónico o contraseña no son correctos",
+        })
+      );
     });
 };
 

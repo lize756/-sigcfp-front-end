@@ -9,6 +9,15 @@ import { pink } from "@mui/material/colors";
 import ContactsIcon from "@mui/icons-material/Contacts";
 import RequestIcon from "@mui/icons-material/Feed";
 import FolderSpecialIcon from "@mui/icons-material/FolderSpecial";
+/**
+ * Redux
+ */
+import { useDispatch, useSelector } from "react-redux";
+import {
+  downloadAllCompaniesReport,
+  downloadCompanyContactsReport,
+  downloadInternRequestsPersonGroupingByCareerReport,
+} from "../../../../store/slices/ReportSlice";
 
 const IconWrapperStyle = styled("div")(({ theme }) => ({
   margin: "auto",
@@ -22,20 +31,24 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
 }));
 
 const ReportCards = () => {
+  // This line allow dispatch a one element to store
+  const dispatch = useDispatch();
+  const persId = useSelector((state) => state.PersonSlice.person.persId);
   const reportOfContacts = (e) => {
     e.preventDefault();
     const report = {
       type: "PDF",
     };
-    console.log("PRESIONE CONTACTOS");
+    dispatch(downloadCompanyContactsReport());
   };
-  const reportOfInternsRequests = (e) => {
+
+  const reportAllDetailsOfCompanies = (e) => {
     e.preventDefault();
 
     const report = {
       type: "PDF",
     };
-    console.log("PRESIONE TODAS LAS SOLICITUDES");
+    dispatch(downloadAllCompaniesReport());
   };
   const reportByCareers = (e) => {
     e.preventDefault();
@@ -43,7 +56,7 @@ const ReportCards = () => {
     const report = {
       type: "PDF",
     };
-    console.log("PRESIONE CARRERAS");
+    dispatch(downloadInternRequestsPersonGroupingByCareerReport(persId));
   };
 
   return (
@@ -102,7 +115,7 @@ const ReportCards = () => {
               bgcolor: pink[50],
             }}
           >
-            <CardActionArea onClick={reportOfInternsRequests}>
+            <CardActionArea onClick={reportAllDetailsOfCompanies}>
               <IconWrapperStyle
                 sx={{
                   color: (theme) => theme.palette["error"].dark,
@@ -124,7 +137,7 @@ const ReportCards = () => {
               </Typography>
 
               <Typography variant="h5" sx={{ color: "#ab003c", opacity: 1 }}>
-                Solicitudes de Practicantes
+                Detalles de las compañías
               </Typography>
             </CardActionArea>
           </Card>

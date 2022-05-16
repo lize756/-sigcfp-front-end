@@ -7,6 +7,14 @@ import { purple } from "@mui/material/colors";
 
 import ContactsIcon from "@mui/icons-material/Contacts";
 import RequestIcon from "@mui/icons-material/Feed";
+/**
+ * Redux
+ */
+import { useDispatch, useSelector } from "react-redux";
+import {
+  downloadAllCompaniesReport,
+  downloadCompanyContactsReport,
+} from "../../../../store/slices/ReportSlice";
 
 const IconWrapperStyle = styled("div")(({ theme }) => ({
   margin: "auto",
@@ -20,21 +28,23 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
 }));
 
 const ReportCards = () => {
+  // This line allow dispatch a one element to store
+  const dispatch = useDispatch();
   const reportOfContacts = (e) => {
     e.preventDefault();
     const report = {
       type: "PDF",
     };
-    console.log("PRESIONE CONTACTOS");
+    dispatch(downloadCompanyContactsReport());
   };
 
-  const reportOfInternsRequests = (e) => {
+  const reportAllDetailsOfCompanies = (e) => {
     e.preventDefault();
 
     const report = {
       type: "PDF",
     };
-    console.log("PRESIONE TODAS LAS SOLICITUDES");
+    dispatch(downloadAllCompaniesReport());
   };
 
   return (
@@ -93,7 +103,7 @@ const ReportCards = () => {
               bgcolor: purple[50],
             }}
           >
-            <CardActionArea onClick={reportOfInternsRequests}>
+            <CardActionArea onClick={reportAllDetailsOfCompanies}>
               <IconWrapperStyle
                 sx={{
                   color: (theme) => theme.palette["secondary"].dark,

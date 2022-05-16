@@ -10,6 +10,8 @@ import {
   addInternRequest,
   getInternRequests,
 } from "../../../store/slices/InternRequestSlice";
+import { IMaskInput } from 'react-imask';
+
 /**
  * Styles of the visual part of the component
  */

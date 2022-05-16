@@ -24,6 +24,9 @@ import { LoadingLogin } from "./LoadingLogin";
 // Formik
 import { useFormik } from "formik";
 import * as yup from "yup";
+import DeleteAlert from "../../global/alert/DeleteAlert";
+import CorrectUpdateOrDeletejs from "../../global/alert/CorrectUpdateOrDelete";
+import { setShowAlert } from "../../store/slices/AlertSlice";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -44,11 +47,11 @@ const validationSchema = yup.object({
     .required("El correo electrónico es requerido"),
   userPassword: yup
     .string("Por favor ingresé su contraseña")
-    .required("La contraseña es requerida")
-    // .matches(
-    //   /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-    //   "Debe contener al menos 8 caracteres, una mayúscula, una minúscula, y un número"
-    // ),
+    .required("La contraseña es requerida"),
+  // .matches(
+  //   /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+  //   "Debe contener al menos 8 caracteres, una mayúscula, una minúscula, y un número"
+  // ),
 });
 
 const theme = createTheme();
@@ -62,8 +65,10 @@ export default function SignInSide() {
 
   const isLogin = useSelector((state) => state.userLogin.isLogin);
 
-  // Allow navigate between roots
-  let navigate = useNavigate();
+  // Verified if the user to deploy a alert.
+  const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
+  // Correspond to type of alert
+  const typeAlert = useSelector((state) => state.AlertSlice.typeAlert);
 
   const loginUser = {
     userName: "",
@@ -80,6 +85,12 @@ export default function SignInSide() {
       dispatch(sendToken(user));
     },
   });
+
+  React.useEffect(() => {
+    if (isShowAlert) {
+      
+    }
+  }, [isShowAlert]);
 
   React.useEffect(() => {
     if (isLogin) {
@@ -100,6 +111,8 @@ export default function SignInSide() {
           required
           fullWidth
           id="userName"
+          name="userName"
+          autocomplete
           type="email"
           label="Dirección de correo electrónico"
           value={formik.values.userName}
@@ -134,8 +147,32 @@ export default function SignInSide() {
       </>
     );
   }
+
+  /**
+   * This method allows an alert to be displayed on the screen according to the type of alert specified.
+   * If the alert is to accept or reach, the type is '0',
+   * otherwise it is just a notification message, the type is '1'
+   * @returns
+   */
+  const displayAlert = () => {
+    let componentToDisplay = <></>;
+    if (isShowAlert) {
+      //Display alert dialog or snackbark
+      componentToDisplay =
+        typeAlert === "0" ? (
+          <DeleteAlert />
+        ) : typeAlert === "1" ? (
+          <CorrectUpdateOrDeletejs />
+        ) : (
+          <></>
+        );
+    }
+    return componentToDisplay;
+  };
+
   return (
     <>
+      {displayAlert()}
       <ThemeProvider theme={theme}>
         <Grid container component="main" sx={{ height: "100vh" }}>
           <CssBaseline />
