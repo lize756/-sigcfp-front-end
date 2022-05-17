@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import { Autocomplete, TextField, Button, Chip, Grid } from "@mui/material";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
+import NumberFormat from "react-number-format";
 /**
  * Redux
  */
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addInternRequest,
-  getInternRequests,
-} from "../../../store/slices/InternRequestSlice";
-import { IMaskInput } from 'react-imask';
+import { addInternRequest } from "../../../store/slices/InternRequestSlice";
 
 /**
  * Styles of the visual part of the component
@@ -32,7 +29,31 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+/**
+ * This method allow change the custom format a element of texfield
+ * @param {} props
+ * @returns
+ */
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
 
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      // isNumericString
+    />
+  );
+}
 /**
  * This component is responsible for the creation of a new request for interns by a company
  * @returns
@@ -54,7 +75,6 @@ const RequestCreate = () => {
     inteRequDepartment: "",
     inteRequNumber: 0,
     inteRequStDate: "",
-    inteRequBondingType: "",
     inteRequDuration: "",
     inteRequSalary: "",
     inteRequOtherBenefits: "",
@@ -63,6 +83,30 @@ const RequestCreate = () => {
   const [careers, setCareers] = useState("");
   const [inteRequFunctions, setInteRequFunctions] = useState();
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
+  const [intRequLocation, setIntRequLocation] = useState();
+  const [inteRequBondingType, setInteRequBondingType] = useState();
+  /**
+   * ---------------------------------------------------------------------------
+   * ----------------------------------Lists------------------------------------
+   * ---------------------------------------------------------------------------
+   */
+  //Its represents the type of practice.
+  const listIntRequLocation = ["Nacional", "Internacional"];
+  // Its represents the different bonding types that one company has.
+  const listInteRequBondingType = [
+    "Contrato a Término Fijo",
+    "Contrato a Término Indefinido",
+    "Contrato de Obra o Labor",
+    "Contrato civil por prestación de servicios",
+    "Contrato de Aprendizaje",
+    "Contrato ocasional de trabajo",
+  ];
+
+  /**
+   * ---------------------------------------------------------------------------
+   * ----------------------------------End lists--------------------------------
+   * ---------------------------------------------------------------------------
+   */
 
   /**
    * Redux
@@ -99,6 +143,7 @@ const RequestCreate = () => {
       setCareers(listCrs);
     }
   };
+  const [values, setValues] = React.useState(1320);
 
   /**
    * This function is responsible for saving the functionalities entered by the user in the attribute inteRequFunctions
@@ -151,17 +196,17 @@ const RequestCreate = () => {
       inteRequStDate: stDate,
       inteRequFunctions: functions,
       inteRequCompetencies: competencies,
-      inteRequBondingType: data.inteRequBondingType,
+      inteRequBondingType: inteRequBondingType,
       inteRequOtherBenefits: data.inteRequOtherBenefits,
       careers: careers,
       company: company,
+      inteRequLocation: intRequLocation,
+      inteRequStatus: "Nuevo",
     };
-    //console.log(request);
 
     dispatch(addInternRequest(ACCESS_TOKEN, request));
     navigate("/company/request");
   };
-
   return (
     <Container maxWidth="lg">
       <Box sx={{ bgcolor: "#F2F6FE" }}>
@@ -172,7 +217,7 @@ const RequestCreate = () => {
                 required
                 fullWidth
                 name="inteRequName"
-                placeholder="Smith-Lynch"
+                placeholder="Solicitud de practicantes de ingeniería"
                 label="Nombre de la solicitud"
                 onChange={handleChange}
               />
@@ -303,22 +348,55 @@ const RequestCreate = () => {
             </Grid>
             <Grid item xs={6}>
               <TextField
+                multiline
                 required
                 fullWidth
                 name="inteRequSalary"
                 label="Valor de Bonificación"
-                type="number"
+                InputProps={{
+                  inputComponent: NumberFormatCustom,
+                }}
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                multiline
-                required
-                fullWidth
-                name="inteRequBondingType"
-                label="Tipo de Vinculación"
-                onChange={handleChange}
+            <Grid item xs={6}>
+              <Autocomplete
+                id="combo-box-inteRequBondingType"
+                disablePortal
+                options={listInteRequBondingType}
+                onChange={(event, value) => setInteRequBondingType(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    required
+                    label="Tipo de vinculación"
+                    error={inteRequBondingType === null}
+                    helperText={
+                      inteRequBondingType === null ? "Elemento requerido" : ""
+                    }
+                    onChange={(event, value) => setInteRequBondingType(value)}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Autocomplete
+                id="combo-box-intRequLocation"
+                disablePortal
+                options={listIntRequLocation}
+                onChange={(event, value) => setIntRequLocation(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    required
+                    label="Tipo de solicitud"
+                    error={intRequLocation === null}
+                    helperText={
+                      intRequLocation === null ? "Elemento requerido" : ""
+                    }
+                    onChange={(event, value) => setIntRequLocation(value)}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>

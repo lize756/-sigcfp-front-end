@@ -3,7 +3,10 @@ import { Autocomplete, TextField, Button, Chip, Checkbox } from "@mui/material";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container, Grid } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
-import moment from "moment";
+import NumberFormat from "react-number-format";
+/**
+ * Redux
+ */
 import { useDispatch, useSelector } from "react-redux";
 import { updateInternRequest } from "../../../store/slices/InternRequestSlice";
 /**
@@ -30,6 +33,26 @@ const useStyles = makeStyles((theme) => ({
 const ListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      // isNumericString
+    />
+  );
+}
 
 //forma de enviar: 1. el nombre del objeto que se recibe = {el nombre que se envia}
 /**
@@ -88,8 +111,12 @@ const RequestUpdate = () => {
     inteRequDuration: "",
     inteRequSalary: "",
     inteRequOtherBenefits: "",
+    inteRequLocation: "",
+    inteRequStatus: "",
   });
   const [isRender, setIsRender] = useState(false);
+  const [intRequLocation, setIntRequLocation] = useState();
+  const [inteRequBondingType, setInteRequBondingType] = useState();
 
   useEffect(() => {
     setEditRequest(request);
@@ -218,9 +245,11 @@ const RequestUpdate = () => {
       inteRequCreate: request.inteRequCreate,
       inteRequFunctions: formattedFunctions,
       inteRequCompetencies: formattedCompetencies,
-      inteRequBondingType: editRequest.inteRequBondingType,
+      inteRequBondingType: inteRequBondingType === undefined? editRequest.inteRequBondingType: inteRequBondingType,
+      inteRequLocation: intRequLocation === undefined? editRequest.inteRequLocation: intRequLocation,
       inteRequOtherBenefits: editRequest.inteRequOtherBenefits,
       company: editRequest.company,
+      inteRequStatus: editRequest.inteRequStatus,
       careers: formattedCareers,
     };
     console.log(JSON.stringify(requesUpdate));
@@ -230,16 +259,28 @@ const RequestUpdate = () => {
     );
     navigate("/company/request");
   };
-  const options = [
-    { id: "10", text: "One" },
-    { id: "20", text: "Two" },
-    { id: "30", text: "Three" },
+  /**
+   * ---------------------------------------------------------------------------
+   * ----------------------------------Lists------------------------------------
+   * ---------------------------------------------------------------------------
+   */
+  //Its represents the type of practice.
+  const listIntRequLocation = ["Nacional", "Internacional"];
+  // Its represents the different bonding types that one company has.
+  const listInteRequBondingType = [
+    "Contrato a Término Fijo",
+    "Contrato a Término Indefinido",
+    "Contrato de Obra o Labor",
+    "Contrato civil por prestación de servicios",
+    "Contrato de Aprendizaje",
+    "Contrato ocasional de trabajo",
   ];
-  const [value, setValue] = useState([
-    { id: "10", text: "One" },
-    { id: "20", text: "Two" },
-    { id: "30", text: "Three" },
-  ]);
+  /**
+   * ---------------------------------------------------------------------------
+   * ----------------------------------End lists--------------------------------
+   * ---------------------------------------------------------------------------
+   */
+
   if (isRender) {
     return (
       <Container maxWidth="lg">
@@ -256,7 +297,6 @@ const RequestUpdate = () => {
                   onChange={handleChange}
                 />
               </Grid>
-
               <Grid item xs={12}>
                 <Autocomplete
                   multiple
@@ -276,7 +316,9 @@ const RequestUpdate = () => {
                       {...params}
                       label="Carreras de Interés"
                       placeholder="Carreras de Interés"
-                      required={careers.length === 0 & defaultCareers.length === 0}
+                      required={
+                        (careers.length === 0) & (defaultCareers.length === 0)
+                      }
                     />
                   )}
                 />
@@ -361,7 +403,6 @@ const RequestUpdate = () => {
                   )}
                 />
               </Grid>
-
               <Grid item xs={6}>
                 <TextField
                   required
@@ -379,22 +420,55 @@ const RequestUpdate = () => {
                   required
                   name="inteRequSalary"
                   label="Valor de Bonificación"
-                  type="number"
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                  }}
                   value={editRequest.inteRequSalary}
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="inteRequBondingType"
-                  multiline
-                  value={editRequest.inteRequBondingType}
-                  label="Tipo de Vinculación"
-                  onChange={handleChange}
+              <Grid item xs={6}>
+                <Autocomplete
+                  id="combo-box-inteRequBondingType"
+                  disablePortal
+                  defaultValue={editRequest.inteRequBondingType}
+                  options={listInteRequBondingType}
+                  onChange={(event, value) => setInteRequBondingType(value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      required
+                      label="Tipo de vinculación"
+                      error={inteRequBondingType === null}
+                      helperText={
+                        inteRequBondingType === null ? "Elemento requerido" : ""
+                      }
+                      onChange={(event, value) => setInteRequBondingType(value)}
+                    />
+                  )}
                 />
               </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  id="combo-box-inteRequLocation"
+                  disablePortal
+                  defaultValue={editRequest.inteRequLocation}
+                  options={listIntRequLocation}
+                  onChange={(event, value) => setIntRequLocation(value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      required
+                      label="Tipo de solicitud"
+                      error={intRequLocation === null}
+                      helperText={
+                        intRequLocation === null ? "Elemento requerido" : ""
+                      }
+                      onChange={(event, value) => setIntRequLocation(value)}
+                    />
+                  )}
+                />
+              </Grid>{" "}
               <Grid item xs={12}>
                 <TextField
                   required
