@@ -14,13 +14,7 @@ import { IconButton } from "@mui/material";
 import PreviewIcon from "@mui/icons-material/Preview";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router";
-import {
-  Paper,
-  Container,
-  Stack,
-  Card,
-  TableContainer,
-} from "@mui/material";
+import { Paper, Container, Stack, Card, TableContainer } from "@mui/material";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -208,6 +202,21 @@ const RequestList = () => {
       headerAlign: "center",
       align: "center",
       flex: "10px",
+    },
+    {
+      field: "inteRequLocation",
+      headerName: "Tipo práctica",
+      headerAlign: "center",
+      align: "center",
+      flex: "10px",
+    },
+    {
+      field: "inteRequStatus",
+      headerName: "Estado de la solicitud",
+      headerAlign: "center",
+      align: "center",
+      flex: "10px",
+      hide: true
     },
     {
       field: "Opciones",

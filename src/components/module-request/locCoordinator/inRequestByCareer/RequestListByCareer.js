@@ -205,6 +205,22 @@ const RequestListByCareer = () => {
       flex: "10px",
     },
     {
+      field: "inteRequLocation",
+      headerName: "Tipo práctica",
+      headerAlign: "center",
+      align: "center",
+      flex: "10px",
+      hide: true,
+    },
+    {
+      field: "inteRequStatus",
+      headerName: "Estado de la solicitud",
+      headerAlign: "center",
+      align: "center",
+      flex: "10px",
+      hide: true,
+    },
+    {
       field: "Opciones",
       headerAlign: "center",
       align: "center",
