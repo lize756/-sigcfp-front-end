@@ -39,6 +39,10 @@ const GeneralRequest = () => {
   const ACCESS_TOKEN =
     "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
 
+  const currentRol = useSelector((state) => state.userLogin.rolee);
+
+  const isDisable = (currentRol !== 'ROLEE_LOCATION_COORDINATOR')?true:false
+
   // Current request
   const currentIntReq = useSelector((state) => state.InternRequestSlice.intReq);
   //Correspond to info that it have the current intern request.
@@ -66,7 +70,7 @@ const GeneralRequest = () => {
   //Obtein the event of the button
   const handleChangeRadioButton = (value) => {
     request.inteRequStatus = value;
-   dispatch(updateInternRequest(ACCESS_TOKEN, request.inteRequId, request));
+    dispatch(updateInternRequest(ACCESS_TOKEN, request.inteRequId, request));
   };
 
   return (
@@ -145,6 +149,7 @@ const GeneralRequest = () => {
                       value={option}
                       control={<Radio />}
                       label={option}
+                      disabled={isDisable}
                     />
                   ))}
                 </RadioGroup>

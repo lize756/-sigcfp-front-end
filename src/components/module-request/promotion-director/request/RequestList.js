@@ -226,7 +226,7 @@ const RequestList = () => {
       headerAlign: "center",
       align: "center",
       flex: "10px",
-      hide:true
+      hide: true,
     },
     {
       field: "Opciones",

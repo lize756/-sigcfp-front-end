@@ -14,6 +14,7 @@ import { useNavigate } from "react-router";
  * Redux
  */
 import { useDispatch, useSelector } from "react-redux";
+import { setCareer } from "../../store/slices/CareerSlice";
 // component="video"
 // height="140"
 // style={{
@@ -35,6 +36,7 @@ const CardsCareers = ({ index, career }) => {
   };
   const handleChange = () => {
     console.log(career.careId);
+    dispatch(setCareer(career));
     dispatch(getInternRequestByCareer(ACCESS_TOKEN, career.careId));
     navigate("/location/requests");
   };
