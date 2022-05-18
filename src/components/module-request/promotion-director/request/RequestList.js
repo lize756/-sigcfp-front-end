@@ -20,17 +20,20 @@ import { Paper, Container, Stack, Card, TableContainer } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setIntReq,
+  getInternRequests,
   setIsRender,
 } from "../../../store/slices/InternRequestSlice";
 //Config lenguage of default.
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import DeleteAlert from "../../../global/alert/DeleteAlert";
+import CorrectUpdateOrDeletejs from "../../../global/alert/CorrectUpdateOrDelete";
 const RequestList = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
   //navigate
   let navigate = useNavigate();
 
-  const [getInternRequests, setInternRequests] = useState([]);
+  const [getListInternRequests, setListInternRequests] = useState([]);
   //List of intern requests
   const list_interRequests = useSelector(
     (state) => state.InternRequestSlice.listInteReqs
@@ -46,10 +49,17 @@ const RequestList = () => {
   // Correspond to rol login in the system
   const rolUserLogin = useSelector((state) => state.userLogin.rolee);
   //se guarda en requestlist la informacion de las solicitudes
+  // Verified if the user to deploy a alert.
+  const isShowAlert = useSelector((state) => state.AlertSlice.isShowAlert);
+  // Correspond to type of alert
+  const typeAlert = useSelector((state) => state.AlertSlice.typeAlert);
+
   //Axios
   useEffect(() => {
+    // Added to store of list of intern requests inside in database
+    dispatch(getInternRequests(ACCESS_TOKEN));
     let listReq = customInternRequestEstructure();
-    setInternRequests(listReq);
+    setListInternRequests(listReq);
     setTimeout(() => {
       dispatch(setIsRender(false));
     }, "1000");
@@ -216,7 +226,7 @@ const RequestList = () => {
       headerAlign: "center",
       align: "center",
       flex: "10px",
-      hide: true
+      hide:true
     },
     {
       field: "Opciones",
@@ -282,8 +292,31 @@ const RequestList = () => {
    * --------------------------End custom config datagrid--------------------------------
    */
 
+  /**
+   * This method allows an alert to be displayed on the screen according to the type of alert specified.
+   * If the alert is to accept or reach, the type is '0',
+   * otherwise it is just a notification message, the type is '1'
+   * @returns
+   */
+  const displayAlert = () => {
+    let componentToDisplay = <></>;
+    if (isShowAlert) {
+      //Display alert dialog or snackbark
+      componentToDisplay =
+        typeAlert === "0" ? (
+          <DeleteAlert />
+        ) : typeAlert === "1" ? (
+          <CorrectUpdateOrDeletejs />
+        ) : (
+          <></>
+        );
+    }
+    return componentToDisplay;
+  };
+
   return (
     <div>
+      {displayAlert()}
       <Container>
         <Stack
           direction="row"
@@ -313,7 +346,7 @@ const RequestList = () => {
               loading={isRender}
               autoHeight
               getRowId={(row) => row.inteRequId}
-              rows={isRender ? [] : getInternRequests}
+              rows={isRender ? [] : getListInternRequests}
               columns={columns}
               pageSize={5}
               onCellClick={handleCellClick}

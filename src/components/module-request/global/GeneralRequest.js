@@ -8,6 +8,14 @@ import {
   Chip,
   ListItem,
   Button,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Select,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  FormLabel,
 } from "@mui/material";
 import MoneyIcon from "@mui/icons-material/AttachMoney";
 import EventIcon from "@mui/icons-material/Event";
@@ -17,12 +25,25 @@ import TimeIcon from "@mui/icons-material/AccessTimeFilled";
 import SchoolIcon from "@mui/icons-material/School";
 //redux
 import { useDispatch, useSelector } from "react-redux";
+import { updateInternRequest } from "../../store/slices/InternRequestSlice";
 
 const GeneralRequest = () => {
-  //Redux
+  /**
+   * ------------------------------------------
+   * ------------------REDUX-------------------
+   * ------------------------------------------
+   */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+
+  // Current request
   const currentIntReq = useSelector((state) => state.InternRequestSlice.intReq);
   //Correspond to info that it have the current intern request.
   const request = {
+    inteRequId: currentIntReq.inteRequId,
     inteRequName: currentIntReq.inteRequName,
     companyName: currentIntReq.company.compName,
     inteRequNumber: currentIntReq.inteRequNumber,
@@ -34,7 +55,18 @@ const GeneralRequest = () => {
     inteRequFunctions: currentIntReq.inteRequFunctions,
     inteRequCompetencies: currentIntReq.inteRequCompetencies,
     inteRequOtherBenefits: currentIntReq.inteRequOtherBenefits,
+    inteRequStatus: currentIntReq.inteRequStatus,
+    company: currentIntReq.company,
     careers: currentIntReq.careers,
+  };
+
+  // Its represents the list of status that intern request could have.
+  const listStatus = ["Nuevo", "Visto", "En proceso", "Terminado"];
+
+  //Obtein the event of the button
+  const handleChangeRadioButton = (value) => {
+    request.inteRequStatus = value;
+   dispatch(updateInternRequest(ACCESS_TOKEN, request.inteRequId, request));
   };
 
   return (
@@ -50,7 +82,7 @@ const GeneralRequest = () => {
           {request.inteRequName}
         </Typography>
 
-        <Box sx={{ mx: 4, mt: 2 }}>
+        <Box sx={{ mx: 4, mt: 2, pb: 2 }}>
           <Grid container spacing={3} mt={2}>
             <Grid item xs={6}>
               <Stack direction="row" spacing={2}>
@@ -76,7 +108,7 @@ const GeneralRequest = () => {
                 </Typography>
               </Stack>
             </Grid>
-            <Grid item xs={6} mb={2}>
+            <Grid item xs={6} mb={0}>
               <Stack direction="row" spacing={2}>
                 <TimeIcon />
                 <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
@@ -93,6 +125,30 @@ const GeneralRequest = () => {
                     : request.inteRequNumber + " Estudiantes"}
                 </Typography>
               </Stack>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl>
+                <FormLabel id="demo-row-radio-buttons-group-label">
+                  Estado de la solicitud
+                </FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  defaultValue={request.inteRequStatus}
+                  onChange={(e, value) => {
+                    handleChangeRadioButton(value);
+                  }}
+                >
+                  {listStatus.map((option) => (
+                    <FormControlLabel
+                      value={option}
+                      control={<Radio />}
+                      label={option}
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
             </Grid>
           </Grid>
         </Box>
