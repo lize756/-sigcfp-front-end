@@ -4,6 +4,8 @@ import MainCompany from "./config/routes/MainCompany";
 import MainLocation from "./config/routes/MainLocation";
 import MainDirector from "./config/routes/MainDirector";
 import MainPromotion from "./config/routes/MainPromotion";
+import MainTalentsA1 from "./config/routes/MainTalentsA1";
+import MainGraduated from "./config/routes/MainGraduated";
 
 //import router to control the router of all aplication
 import { BrowserRouter as Router } from "react-router-dom";
@@ -27,6 +29,8 @@ function App() {
           <MainLocation />
           <MainDirector />
           <MainPromotion />
+          <MainTalentsA1 />
+          <MainGraduated />
         </div>
       </Router>
     </Provider>
