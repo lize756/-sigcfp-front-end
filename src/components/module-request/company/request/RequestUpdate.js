@@ -9,6 +9,10 @@ import NumberFormat from "react-number-format";
  */
 import { useDispatch, useSelector } from "react-redux";
 import { updateInternRequest } from "../../../store/slices/InternRequestSlice";
+import {
+  getCitiesAssociatedToCountry,
+  getCountries,
+} from "../../../store/slices/CountrySlice";
 /**
  * Styles of the visual part of the component
  */
@@ -18,11 +22,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    maxWidth: "95%",
     padding: theme.spacing(2),
 
     "& .MuiTextField-root": {
       margin: theme.spacing(2),
-      width: "90%",
     },
     "& .MuiButtonBase-root": {
       margin: theme.spacing(2),
@@ -62,11 +66,16 @@ function NumberFormatCustom(props) {
  */
 const RequestUpdate = () => {
   /**
-   * Redux
+   * ---------------------------------------------------------
+   * -------------------------REDUX---------------------------
+   * ---------------------------------------------------------
    */
   const list_carreers = useSelector((state) => state.CareerSlice.listCareers);
   const request = useSelector((state) => state.InternRequestSlice.intReq);
-
+  const listCountries = useSelector(
+    (state) => state.CountrySlice.listCountries
+  );
+  const listCities = useSelector((state) => state.CountrySlice.listCities);
   // Allow to send the elements of store
   const dispatch = useDispatch();
 
@@ -111,12 +120,32 @@ const RequestUpdate = () => {
     inteRequDuration: "",
     inteRequSalary: "",
     inteRequOtherBenefits: "",
-    inteRequLocation: "",
     inteRequStatus: "",
+    inteRequPracticeModality: "",
+    inteRequCountryName: "",
+    inteRequCityName: "",
   });
   const [isRender, setIsRender] = useState(false);
-  const [intRequLocation, setIntRequLocation] = useState();
   const [inteRequBondingType, setInteRequBondingType] = useState();
+  const [inteRequPracticeModality, setInteRequPracticeModality] = useState();
+  //List of countries and cities
+  const [getCountry, setCountry] = useState("");
+  const [getCity, setCity] = useState("");
+  //================================================= UseEffect ===================================================
+  // GET request using axios inside useEffect React hook
+  useEffect(() => {
+    dispatch(getCountries());
+    if (listCountries.length > 0) {
+      dispatch(getCitiesAssociatedToCountry(getCountry.name));
+    }
+  }, [getCountry]);
+  // GET request using axios inside useEffect React hook
+  useEffect(() => {
+    dispatch(getCountries());
+    if (listCountries.length > 0) {
+      dispatch(getCitiesAssociatedToCountry(getCountry.name));
+    }
+  }, [getCountry]);
 
   useEffect(() => {
     setEditRequest(request);
@@ -145,6 +174,8 @@ const RequestUpdate = () => {
       setInteRequCompetencies(arrayDefaults);
     }
   }, [request]);
+
+  //================================================= End useEffect ===================================================
 
   /**
    * This function is responsible for converting the
@@ -189,27 +220,6 @@ const RequestUpdate = () => {
     setInteRequCompetencies(competencies);
   };
 
-  const handleDelete = (chipToDelete) => () => {
-    setDefaultCareers((chipCrs) =>
-      chipCrs.filter((chip) => chip.careId !== chipToDelete.careId)
-    );
-  };
-
-  /**
-   * This function allow delete the duplicate elements in the result of concat both array of objects
-   * @param {Array} arrayA Array of object to concat
-   * @param {Array} arrayB Array of object to concat
-   * @returns
-   */
-  const removeDuplicateItems = (arrayA, arrayB) => {
-    const arrayC = arrayA.concat(arrayB);
-    return arrayC.filter((element, index, array) => {
-      if (array.filter((v) => v.careId === element.careId).length > 1) {
-        array.splice(index, 1);
-      }
-      return array;
-    });
-  };
   //Metodo put aacomodar toda esta clase
   const putRequest = (e) => {
     e.preventDefault();
@@ -245,14 +255,27 @@ const RequestUpdate = () => {
       inteRequCreate: request.inteRequCreate,
       inteRequFunctions: formattedFunctions,
       inteRequCompetencies: formattedCompetencies,
-      inteRequBondingType: inteRequBondingType === undefined? editRequest.inteRequBondingType: inteRequBondingType,
-      inteRequLocation: intRequLocation === undefined? editRequest.inteRequLocation: intRequLocation,
+      inteRequBondingType:
+        inteRequBondingType === undefined
+          ? editRequest.inteRequBondingType
+          : inteRequBondingType,
+      inteRequPracticeModality:
+        inteRequPracticeModality === undefined
+          ? editRequest.inteRequPracticeModality
+          : inteRequPracticeModality,
+      inteRequCountryName:
+        getCountry === undefined
+          ? editRequest.inteRequCountryName
+          : getCountry.name,
+      inteRequCityName:
+        getCity === undefined ? editRequest.inteRequCityName : getCity,
       inteRequOtherBenefits: editRequest.inteRequOtherBenefits,
       company: editRequest.company,
-      inteRequStatus: editRequest.inteRequStatus,
       careers: formattedCareers,
+      inteRequStatus: editRequest.inteRequStatus,
     };
-    console.log(JSON.stringify(requesUpdate));
+
+    //console.log(requesUpdate);
 
     dispatch(
       updateInternRequest(ACCESS_TOKEN, requesUpdate.inteRequId, requesUpdate)
@@ -264,8 +287,6 @@ const RequestUpdate = () => {
    * ----------------------------------Lists------------------------------------
    * ---------------------------------------------------------------------------
    */
-  //Its represents the type of practice.
-  const listIntRequLocation = ["Nacional", "Internacional"];
   // Its represents the different bonding types that one company has.
   const listInteRequBondingType = [
     "Contrato a Término Fijo",
@@ -275,6 +296,10 @@ const RequestUpdate = () => {
     "Contrato de Aprendizaje",
     "Contrato ocasional de trabajo",
   ];
+
+  // Its represents the practice modality that offers a company
+  const listPracticeModality = ["Presencial", "Virtual", "Mixta"];
+
   /**
    * ---------------------------------------------------------------------------
    * ----------------------------------End lists--------------------------------
@@ -335,6 +360,7 @@ const RequestUpdate = () => {
               </Grid>
               <Grid item xs={6}>
                 <TextField
+                  required
                   fullWidth
                   name="inteRequNumber"
                   value={editRequest.inteRequNumber}
@@ -450,25 +476,93 @@ const RequestUpdate = () => {
               </Grid>
               <Grid item xs={6}>
                 <Autocomplete
-                  id="combo-box-inteRequLocation"
+                  freeSolo
+                  id="combo-box-InteRequPracticeModality"
+                  defaultValue={editRequest.inteRequPracticeModality}
                   disablePortal
-                  defaultValue={editRequest.inteRequLocation}
-                  options={listIntRequLocation}
-                  onChange={(event, value) => setIntRequLocation(value)}
+                  options={listPracticeModality}
+                  onChange={(event, value) =>
+                    setInteRequPracticeModality(value)
+                  }
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       required
-                      label="Tipo de solicitud"
-                      error={intRequLocation === null}
+                      label="Modalidad de práctica"
+                      error={inteRequPracticeModality === null}
                       helperText={
-                        intRequLocation === null ? "Elemento requerido" : ""
+                        inteRequPracticeModality === null
+                          ? "Elemento requerido"
+                          : ""
                       }
-                      onChange={(event, value) => setIntRequLocation(value)}
+                      onChange={(event, value) =>
+                        setInteRequPracticeModality(value)
+                      }
                     />
                   )}
                 />
-              </Grid>{" "}
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  freeSolo
+                  disableClearable
+                  id="free-solo-countries"
+                  defaultValue={{ name: editRequest.inteRequCountryName }}
+                  // List of countries
+                  options={listCountries}
+                  /**
+                   * This property allows to show in the user's view the property that we want to take from the object.
+                   * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+                   */
+                  getOptionLabel={(option) => option.name}
+                  onChange={(event, value) => setCountry(value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Seleccione su país"
+                      variant="outlined"
+                      InputProps={{
+                        ...params.InputProps,
+                        type: "search",
+
+                        required: getCountry === {},
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  freeSolo
+                  disableClearable
+                  id="free-solo-cities"
+                  defaultValue={editRequest.inteRequCityName}
+                  //List of cities
+                  options={listCities}
+                  /**
+                   * This property allows to show in the user's view the property that we want to take from the object.
+                   * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+                   */
+                  getOptionLabel={(option) => option}
+                  /**
+                   * Allows send the select object to variable CompCity that correspond the element select
+                   */
+                  onChange={(event, value) => setCity(value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Seleccione su ciudad"
+                      variant="outlined"
+                      required
+                      InputProps={{
+                        ...params.InputProps,
+                        type: "search",
+                      }}
+                      onChange={(e) => setCity(e.target.value)}
+                    />
+                  )}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required

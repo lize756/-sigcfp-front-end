@@ -7,11 +7,7 @@ import {
   Grid,
   Chip,
   ListItem,
-  Button,
-  MenuItem,
-  InputLabel,
   FormControl,
-  Select,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -20,7 +16,8 @@ import {
 import MoneyIcon from "@mui/icons-material/AttachMoney";
 import EventIcon from "@mui/icons-material/Event";
 import HomeIcon from "@mui/icons-material/Home";
-import PersonIcon from "@mui/icons-material/Person";
+import FlagIcon from "@mui/icons-material/Flag";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
 import TimeIcon from "@mui/icons-material/AccessTimeFilled";
 import SchoolIcon from "@mui/icons-material/School";
 //redux
@@ -41,7 +38,7 @@ const GeneralRequest = () => {
 
   const currentRol = useSelector((state) => state.userLogin.rolee);
 
-  const isDisable = (currentRol !== 'ROLEE_LOCATION_COORDINATOR')?true:false
+  const isDisable = currentRol !== "ROLEE_LOCATION_COORDINATOR" ? true : false;
 
   // Current request
   const currentIntReq = useSelector((state) => state.InternRequestSlice.intReq);
@@ -60,6 +57,9 @@ const GeneralRequest = () => {
     inteRequCompetencies: currentIntReq.inteRequCompetencies,
     inteRequOtherBenefits: currentIntReq.inteRequOtherBenefits,
     inteRequStatus: currentIntReq.inteRequStatus,
+    inteRequPracticeModality: currentIntReq.inteRequPracticeModality,
+    inteRequCountryName: currentIntReq.inteRequCountryName,
+    inteRequCityName: currentIntReq.inteRequCityName,
     company: currentIntReq.company,
     careers: currentIntReq.careers,
   };
@@ -112,15 +112,15 @@ const GeneralRequest = () => {
                 </Typography>
               </Stack>
             </Grid>
-            <Grid item xs={6} mb={0}>
+            <Grid item xs={6}>
               <Stack direction="row" spacing={2}>
-                <TimeIcon />
+                <FlagIcon />
                 <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
-                  {request.inteRequDuration}
+                  {request.inteRequCountryName}
                 </Typography>
               </Stack>
             </Grid>
-            <Grid item xs={6} mb={2}>
+            <Grid item xs={6}>
               <Stack direction="row" spacing={2}>
                 <SchoolIcon />
                 <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
@@ -130,6 +130,24 @@ const GeneralRequest = () => {
                 </Typography>
               </Stack>
             </Grid>
+
+            <Grid item xs={6} mb={2}>
+              <Stack direction="row" spacing={2}>
+                <LocationCityIcon />
+                <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
+                  {request.inteRequCityName}
+                </Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={6} mb={0}>
+              <Stack direction="row" spacing={2}>
+                <TimeIcon />
+                <Typography variant="subtitle2" sx={{ fontWeight: "medium" }}>
+                  {request.inteRequDuration}
+                </Typography>
+              </Stack>
+            </Grid>
+
             <Grid item xs={6}>
               <FormControl>
                 <FormLabel id="demo-row-radio-buttons-group-label">
@@ -301,6 +319,19 @@ const GeneralRequest = () => {
             sx={{ fontWeight: "medium" }}
           >
             {request.inteRequBondingType}
+          </Typography>
+        </Box>
+        <Box ml={3} mt={1}>
+          <Typography variant="p" sx={{ fontWeight: "bold" }}>
+            Modalidad de práctica:
+          </Typography>
+          <Typography
+            variant="subtitle2"
+            ml={2}
+            mt={1}
+            sx={{ fontWeight: "medium" }}
+          >
+            {request.inteRequPracticeModality}
           </Typography>
         </Box>
 

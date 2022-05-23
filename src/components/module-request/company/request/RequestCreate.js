@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     padding: theme.spacing(2),
+    maxWidth: "95%",
 
     "& .MuiTextField-root": {
       margin: theme.spacing(2),
@@ -67,7 +68,7 @@ const RequestCreate = () => {
 
   /**
    * ---------------------------------------------------------
-   * -------------------------REDUX-----------------------
+   * -------------------------REDUX---------------------------
    * ---------------------------------------------------------
    */
   // Allow to send the elements of store
@@ -102,13 +103,13 @@ const RequestCreate = () => {
   const [inteRequFunctions, setInteRequFunctions] = useState();
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
   const [inteRequBondingType, setInteRequBondingType] = useState();
+  const [inteRequPracticeModality, setInteRequPracticeModality] = useState();
   /**
    * ---------------------------------------------------------------------------
    * ----------------------------------Lists------------------------------------
    * ---------------------------------------------------------------------------
    */
-  //Its represents the type of practice.
-  const listIntRequLocation = ["Nacional", "Internacional"];
+
   // Its represents the different bonding types that one company has.
   const listInteRequBondingType = [
     "Contrato a Término Fijo",
@@ -118,6 +119,9 @@ const RequestCreate = () => {
     "Contrato de Aprendizaje",
     "Contrato ocasional de trabajo",
   ];
+
+  // Its represents the practice modality that offers a company
+  const listPracticeModality = ["Presencial", "Virtual", "Mixta"];
 
   /**
    * ---------------------------------------------------------------------------
@@ -222,6 +226,7 @@ const RequestCreate = () => {
       inteRequFunctions: functions,
       inteRequCompetencies: competencies,
       inteRequBondingType: inteRequBondingType,
+      inteRequPracticeModality: inteRequPracticeModality,
       inteRequOtherBenefits: data.inteRequOtherBenefits,
       careers: careers,
       company: company,
@@ -321,6 +326,7 @@ const RequestCreate = () => {
                     {...params}
                     variant="outlined"
                     label="Funciones Principales"
+                    placeholder="Escriba una o varias funciones y luego presione la tecla Enter"
                     required={
                       inteRequFunctions !== undefined
                         ? inteRequFunctions.length === 0
@@ -351,6 +357,7 @@ const RequestCreate = () => {
                   <TextField
                     {...params}
                     variant="outlined"
+                    placeholder="Escriba una o varias competencias y luego presione la tecla Enter"
                     label="Competencias Claves del Éxito"
                     required={
                       inteRequCompetencies !== undefined
@@ -366,6 +373,7 @@ const RequestCreate = () => {
                 multiline
                 fullWidth
                 required
+                placeholder="6 MESES"
                 name="inteRequDuration"
                 label="Duración de la Practica"
                 onChange={handleChange}
@@ -376,6 +384,7 @@ const RequestCreate = () => {
                 multiline
                 required
                 fullWidth
+                placeholder="2,000,000"
                 name="inteRequSalary"
                 label="Valor de Bonificación"
                 InputProps={{
@@ -384,7 +393,7 @@ const RequestCreate = () => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <Autocomplete
                 id="combo-box-inteRequBondingType"
                 disablePortal
@@ -404,6 +413,32 @@ const RequestCreate = () => {
                 )}
               />
             </Grid>
+            <Grid item xs={6}>
+              <Autocomplete
+                freeSolo
+                id="combo-box-InteRequPracticeModality"
+                disablePortal
+                options={listPracticeModality}
+                onChange={(event, value) => setInteRequPracticeModality(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    required
+                    label="Modalidad de práctica"
+                    error={inteRequPracticeModality === null}
+                    helperText={
+                      inteRequPracticeModality === null
+                        ? "Elemento requerido"
+                        : ""
+                    }
+                    onChange={(event, value) =>
+                      setInteRequPracticeModality(value)
+                    }
+                  />
+                )}
+              />
+            </Grid>
+
             <Grid item xs={6}>
               <Autocomplete
                 freeSolo
