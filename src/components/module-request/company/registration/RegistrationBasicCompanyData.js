@@ -125,6 +125,8 @@ const RegistrationBasicCompanyData = () => {
    * @param {*} compType Type of company
    * @param {*} compIcesiStud Verify if the company recuitred colleged students
    */
+  //================================================= UseEffect ===================================================
+
   // GET request using axios inside useEffect React hook
   useEffect(() => {
     dispatch(getCountries());

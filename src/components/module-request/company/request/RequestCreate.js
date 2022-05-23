@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Autocomplete, TextField, Button, Chip, Grid } from "@mui/material";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container } from "@material-ui/core";
@@ -8,6 +8,10 @@ import NumberFormat from "react-number-format";
  */
 import { useDispatch, useSelector } from "react-redux";
 import { addInternRequest } from "../../../store/slices/InternRequestSlice";
+import {
+  getCitiesAssociatedToCountry,
+  getCountries,
+} from "../../../store/slices/CountrySlice";
 
 /**
  * Styles of the visual part of the component
@@ -61,8 +65,18 @@ function NumberFormatCustom(props) {
 const RequestCreate = () => {
   const classes = useStyles();
 
+  /**
+   * ---------------------------------------------------------
+   * -------------------------REDUX-----------------------
+   * ---------------------------------------------------------
+   */
   // Allow to send the elements of store
   const dispatch = useDispatch();
+
+  const listCountries = useSelector(
+    (state) => state.CountrySlice.listCountries
+  );
+  const listCities = useSelector((state) => state.CountrySlice.listCities);
 
   let navigate = useNavigate();
 
@@ -80,10 +94,13 @@ const RequestCreate = () => {
     inteRequOtherBenefits: "",
   });
 
+  //List of countries and cities
+  const [getCountry, setCountry] = useState("");
+  const [getCity, setCity] = useState("");
+
   const [careers, setCareers] = useState("");
   const [inteRequFunctions, setInteRequFunctions] = useState();
   const [inteRequCompetencies, setInteRequCompetencies] = useState();
-  const [intRequLocation, setIntRequLocation] = useState();
   const [inteRequBondingType, setInteRequBondingType] = useState();
   /**
    * ---------------------------------------------------------------------------
@@ -107,7 +124,6 @@ const RequestCreate = () => {
    * ----------------------------------End lists--------------------------------
    * ---------------------------------------------------------------------------
    */
-
   /**
    * Redux
    */
@@ -119,6 +135,16 @@ const RequestCreate = () => {
   const ACCESS_TOKEN =
     "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
   //------------Handlechange functions-------------------------------
+
+  //================================================= UseEffect ===================================================
+
+  // GET request using axios inside useEffect React hook
+  useEffect(() => {
+    dispatch(getCountries());
+    if (listCountries.length > 0) {
+      dispatch(getCitiesAssociatedToCountry(getCountry.name));
+    }
+  }, [getCountry]);
 
   /**
    * This function assigns the information completed by the user with its respective attribute.
@@ -143,7 +169,6 @@ const RequestCreate = () => {
       setCareers(listCrs);
     }
   };
-  const [values, setValues] = React.useState(1320);
 
   /**
    * This function is responsible for saving the functionalities entered by the user in the attribute inteRequFunctions
@@ -200,10 +225,10 @@ const RequestCreate = () => {
       inteRequOtherBenefits: data.inteRequOtherBenefits,
       careers: careers,
       company: company,
-      inteRequLocation: intRequLocation,
+      inteRequCountryName: getCountry.name,
+      inteRequCityName: getCity,
       inteRequStatus: "Nuevo",
     };
-
     dispatch(addInternRequest(ACCESS_TOKEN, request));
     navigate("/company/request");
   };
@@ -359,7 +384,7 @@ const RequestCreate = () => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Autocomplete
                 id="combo-box-inteRequBondingType"
                 disablePortal
@@ -381,20 +406,59 @@ const RequestCreate = () => {
             </Grid>
             <Grid item xs={6}>
               <Autocomplete
-                id="combo-box-intRequLocation"
-                disablePortal
-                options={listIntRequLocation}
-                onChange={(event, value) => setIntRequLocation(value)}
+                freeSolo
+                disableClearable
+                id="free-solo-2-demo"
+                // List of countries
+                options={listCountries}
+                /**
+                 * This property allows to show in the user's view the property that we want to take from the object.
+                 * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+                 */
+                getOptionLabel={(option) => option.name}
+                onChange={(event, value) => setCountry(value)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
+                    label="Seleccione su país"
+                    variant="outlined"
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+
+                      required: getCountry === {},
+                    }}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Autocomplete
+                freeSolo
+                disableClearable
+                id="free-solo-2-demo"
+                //List of cities
+                options={listCities}
+                /**
+                 * This property allows to show in the user's view the property that we want to take from the object.
+                 * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+                 */
+                getOptionLabel={(option) => option}
+                /**
+                 * Allows send the select object to variable CompCity that correspond the element select
+                 */
+                onChange={(event, value) => setCity(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Seleccione su ciudad"
+                    variant="outlined"
                     required
-                    label="Tipo de solicitud"
-                    error={intRequLocation === null}
-                    helperText={
-                      intRequLocation === null ? "Elemento requerido" : ""
-                    }
-                    onChange={(event, value) => setIntRequLocation(value)}
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                    }}
+                    onChange={(e) => setCity(e.target.value)}
                   />
                 )}
               />

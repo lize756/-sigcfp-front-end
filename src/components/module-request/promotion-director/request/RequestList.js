@@ -214,8 +214,15 @@ const RequestList = () => {
       flex: "10px",
     },
     {
-      field: "inteRequLocation",
-      headerName: "Tipo práctica",
+      field: "inteRequCountryName",
+      headerName: "País",
+      headerAlign: "center",
+      align: "center",
+      flex: "10px",
+    },
+    {
+      field: "inteRequCityName",
+      headerName: "Ciudad",
       headerAlign: "center",
       align: "center",
       flex: "10px",
