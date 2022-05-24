@@ -28,23 +28,11 @@ const useStyles = makeStyles((theme) => ({
 
 const validationSchema = yup.object({
   curriculumName: yup.string("Escribe tu nombre").required("Campo requerido"),
-  curriculumSurname: yup
-    .string("Escribe tu primer apellido")
-    .required("Campo requerido"),
-  curriculumSecondSurname: yup
-    .string("Escribe tu segundo apellido")
+  curriculumLastName: yup
+    .string("Escribe tus apellidos")
     .required("Campo requerido"),
   curriculumID: yup
     .string("Escribe tu número de identificación")
-    .required("Campo requerido"),
-  curriculumDayBirth: yup
-    .number("Escribe tu día de nacimiento")
-    .required("Campo requerido"),
-  curriculumYearBirth: yup
-    .number("Escribe tu año de nacimiento")
-    .required("Campo requerido"),
-  curriculumAddress: yup
-    .string("Escribe tu dirección de residencia")
     .required("Campo requerido"),
   curriculumPhone: yup
     .string("Escribe tu teléfono principal")
@@ -91,6 +79,7 @@ const listCities = ["Cali", "Buenos Aires", "Bogota", "Madrid"];
 const PersonalInfoGR = () => {
   const classes = useStyles();
   const [getTypeDocument, setTypeDocument] = useState("");
+  const [getDate, setDate] = useState(new Date());
 
   const [getGenre, setGenre] = useState("");
   const [getCivilStatus, setCivilStatus] = useState("");
@@ -100,11 +89,8 @@ const PersonalInfoGR = () => {
   const formik = useFormik({
     initialValues: {
       curriculumName: "",
-      curriculumSurname: "",
-      curriculumSecondSurname: "",
+      curriculumLastName: "",
       curriculumID: "",
-      curriculumBirth: new Date(),
-      curriculumAddress: "",
       curriculumPhone: "",
       curriculumEmail: "",
     },
@@ -112,12 +98,13 @@ const PersonalInfoGR = () => {
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
-      values.curriculumCountryName = getCountry.name;
-      values.curriculumCityName = getCity;
+      console.log(values);
       values.curriculumTypeDocument = getTypeDocument;
+      values.curriculumBirth = getDate;
       values.curriculumGenre = getGenre;
       values.curriculumCivilStatus = getCivilStatus;
-      console.log(values);
+      values.curriculumCountry = getCountry.name;
+      values.curriculumCity = getCity;
 
       alert(JSON.stringify(values, null, 2));
     },
@@ -127,7 +114,7 @@ const PersonalInfoGR = () => {
     <div>
       <form className={classes.root} onSubmit={formik.handleSubmit}>
         <Grid container spacing={2} mr={4}>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <TextField
               fullWidth
               name="curriculumName"
@@ -146,37 +133,21 @@ const PersonalInfoGR = () => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              name="curriculumSurname"
-              label="Primer Apellido"
-              value={formik.values.curriculumSurname}
+              name="curriculumLastName"
+              label="Apellidos"
+              value={formik.values.curriculumLastName}
               onChange={formik.handleChange}
               error={
-                formik.touched.curriculumSurname &&
-                Boolean(formik.errors.curriculumSurname)
+                formik.touched.curriculumLastName &&
+                Boolean(formik.errors.curriculumLastName)
               }
               helperText={
-                formik.touched.curriculumSurname &&
-                formik.errors.curriculumSurname
+                formik.touched.curriculumLastName &&
+                formik.errors.curriculumLastName
               }
             />
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              name="curriculumSecondSurname"
-              label="Segundo Apellido"
-              value={formik.values.curriculumSecondSurname}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.curriculumSecondSurname &&
-                Boolean(formik.errors.curriculumSecondSurname)
-              }
-              helperText={
-                formik.touched.curriculumSecondSurname &&
-                formik.errors.curriculumSecondSurname
-              }
-            />
-          </Grid>
+
           <Grid item xs={6}>
             <Autocomplete
               fullWidth
@@ -210,18 +181,12 @@ const PersonalInfoGR = () => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              name="curriculumBirth"
+              required
               type="date"
               label="Fecha de nacimiento"
-              value={formik.values.curriculumBirth}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.curriculumBirth &&
-                Boolean(formik.errors.curriculumBirth)
-              }
-              helperText={
-                formik.touched.curriculumBirth && formik.errors.curriculumBirth
-              }
+              onChange={(event) => {
+                setDate(event.target.value);
+              }}
             />
           </Grid>
 
@@ -237,6 +202,7 @@ const PersonalInfoGR = () => {
               )}
             />
           </Grid>
+
           <Grid item xs={6}>
             <Autocomplete
               fullWidth
@@ -249,6 +215,7 @@ const PersonalInfoGR = () => {
               )}
             />
           </Grid>
+
           <Grid item xs={6}>
             <Autocomplete
               freeSolo
@@ -281,6 +248,7 @@ const PersonalInfoGR = () => {
               )}
             />
           </Grid>
+
           <Grid item xs={6}>
             <Autocomplete
               freeSolo
@@ -314,6 +282,7 @@ const PersonalInfoGR = () => {
               )}
             />
           </Grid>
+
           <Grid item xs={6}>
             <TextField
               fullWidth
@@ -330,7 +299,8 @@ const PersonalInfoGR = () => {
               }
             />
           </Grid>
-          <Grid item xs={6}>
+
+          <Grid item xs={12}>
             <TextField
               fullWidth
               name="curriculumEmail"
