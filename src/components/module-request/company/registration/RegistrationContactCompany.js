@@ -63,20 +63,13 @@ const RegistrationContactCompany = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    /**const contact = {
-      contEmail: contEmail,
-      contName: contName,
-      contPhone: contPhone,
-      contPosition: contPosition,
-    };
-    console.log(contact);*/
     contacts.map((c) => {
       delete c.id;
       c["company"] = company;
     });
     console.log(contacts);
     dispatch(addContacts(contacts));
-    navigate("/SignIn")
+    navigate("/SignIn");
   };
 
   /**

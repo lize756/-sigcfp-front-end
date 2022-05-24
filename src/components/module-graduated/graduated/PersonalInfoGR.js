@@ -66,21 +66,6 @@ const typeDocument = [
   "Sin definir",
 ];
 
-const month = [
-  "Enero",
-  "Febrero",
-  "Marzo",
-  "Abril",
-  "Mayo",
-  "Junio",
-  "Julio",
-  "Agosto",
-  "Septiembre",
-  "Octubre",
-  "Noviembre",
-  "Diciembre",
-];
-
 const genre = ["Femenino", "Masculino", "No Binario", "Otro"];
 const civilStatus = [
   "Casado(a)",
@@ -106,7 +91,7 @@ const listCities = ["Cali", "Buenos Aires", "Bogota", "Madrid"];
 const PersonalInfoGR = () => {
   const classes = useStyles();
   const [getTypeDocument, setTypeDocument] = useState("");
-  const [getMonth, setMonth] = useState("");
+
   const [getGenre, setGenre] = useState("");
   const [getCivilStatus, setCivilStatus] = useState("");
   const [getCountry, setCountry] = useState("");
@@ -118,8 +103,7 @@ const PersonalInfoGR = () => {
       curriculumSurname: "",
       curriculumSecondSurname: "",
       curriculumID: "",
-      curriculumDayBirth: 0,
-      curriculumYearBirth: 2000,
+      curriculumBirth: new Date(),
       curriculumAddress: "",
       curriculumPhone: "",
       curriculumEmail: "",
@@ -131,7 +115,6 @@ const PersonalInfoGR = () => {
       values.curriculumCountryName = getCountry.name;
       values.curriculumCityName = getCity;
       values.curriculumTypeDocument = getTypeDocument;
-      values.curriculumMonth = getMonth;
       values.curriculumGenre = getGenre;
       values.curriculumCivilStatus = getCivilStatus;
       console.log(values);
@@ -211,7 +194,7 @@ const PersonalInfoGR = () => {
             <TextField
               fullWidth
               name="curriculumID"
-              label="Número ducumento"
+              label="Número documento"
               value={formik.values.curriculumID}
               onChange={formik.handleChange}
               error={
@@ -224,54 +207,24 @@ const PersonalInfoGR = () => {
             />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <TextField
               fullWidth
-              name="curriculumDayBirth"
-              type="number"
-              label="Día de nacimiento"
-              value={formik.values.curriculumDayBirth}
+              name="curriculumBirth"
+              type="date"
+              label="Fecha de nacimiento"
+              value={formik.values.curriculumBirth}
               onChange={formik.handleChange}
               error={
-                formik.touched.curriculumDayBirth &&
-                Boolean(formik.errors.curriculumDayBirth)
+                formik.touched.curriculumBirth &&
+                Boolean(formik.errors.curriculumBirth)
               }
               helperText={
-                formik.touched.curriculumDayBirth &&
-                formik.errors.curriculumDayBirth
+                formik.touched.curriculumBirth && formik.errors.curriculumBirth
               }
             />
           </Grid>
-          <Grid item xs={4}>
-            <Autocomplete
-              fullWidth
-              disablePortal
-              id="combo-box-demo"
-              options={month}
-              onChange={(e, value) => setMonth(value)}
-              renderInput={(params) => (
-                <TextField {...params} label="Mes de Nacimiento" required />
-              )}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <TextField
-              fullWidth
-              name="curriculumYearBirth"
-              type="number"
-              label="Año de nacimiento"
-              value={formik.values.curriculumYearBirth}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.curriculumYearBirth &&
-                Boolean(formik.errors.curriculumYearBirth)
-              }
-              helperText={
-                formik.touched.curriculumYearBirth &&
-                formik.errors.curriculumYearBirth
-              }
-            />
-          </Grid>
+
           <Grid item xs={6}>
             <Autocomplete
               fullWidth

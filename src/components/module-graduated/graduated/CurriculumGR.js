@@ -7,6 +7,8 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonalInfoGR from "./PersonalInfoGR";
+import JobProfileGR from "./JobProfileGR";
+import AcademicTrainingGR from "./AcademicTrainingGR";
 
 const CurriculumGR = () => {
   return (
@@ -32,10 +34,7 @@ const CurriculumGR = () => {
           <Typography>Perfil laboral</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <JobProfileGR />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -46,6 +45,10 @@ const CurriculumGR = () => {
         >
           <Typography>Formación académica</Typography>
         </AccordionSummary>
+
+        <AccordionDetails>
+          <AcademicTrainingGR />
+        </AccordionDetails>
       </Accordion>
     </div>
   );

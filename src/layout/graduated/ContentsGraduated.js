@@ -87,7 +87,13 @@ const ContentsGraduated = () => {
               </Typography>
 
               <CardActions sx={{ mx: 6 }}>
-                <IconButton aria-label="editar" color="primary">
+                <IconButton
+                  aria-label="editar"
+                  color="primary"
+                  onClick={() => {
+                    navigate("/graduated/curriculum");
+                  }}
+                >
                   <EditIcon />
                 </IconButton>
                 <IconButton aria-label="eliminar" color="error">
