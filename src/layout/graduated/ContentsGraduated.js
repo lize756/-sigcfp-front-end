@@ -15,7 +15,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FeedIcon from "@mui/icons-material/Feed";
 
-import { lightBlue } from "@mui/material/colors";
 import { purple } from "@mui/material/colors";
 
 import { useNavigate } from "react-router";
@@ -61,37 +60,31 @@ const ContentsGraduated = () => {
                 bgcolor: purple[50],
               }}
             >
-              <CardActionArea
-                onClick={() => {
-                  navigate("/graduated/update");
+              <IconWrapperStyle
+                sx={{
+                  color: (theme) => theme.palette["secondary"].dark,
+                  backgroundImage: (theme) =>
+                    `linear-gradient(135deg, ${alpha(
+                      theme.palette["secondary"].dark,
+                      0
+                    )} 0%, ${alpha(
+                      theme.palette["secondary"].dark,
+                      0.24
+                    )} 100%)`,
                 }}
               >
-                <IconWrapperStyle
-                  sx={{
-                    color: (theme) => theme.palette["secondary"].dark,
-                    backgroundImage: (theme) =>
-                      `linear-gradient(135deg, ${alpha(
-                        theme.palette["secondary"].dark,
-                        0
-                      )} 0%, ${alpha(
-                        theme.palette["secondary"].dark,
-                        0.24
-                      )} 100%)`,
-                  }}
-                >
-                  <FeedIcon color="secondary" />
-                </IconWrapperStyle>
-                <Typography
-                  variant="subtitle2"
-                  sx={{ opacity: 0.72, color: "#072079" }}
-                >
-                  Hoja de
-                </Typography>
+                <FeedIcon color="secondary" />
+              </IconWrapperStyle>
+              <Typography
+                variant="subtitle2"
+                sx={{ opacity: 0.72, color: "#072079" }}
+              >
+                Hoja de
+              </Typography>
 
-                <Typography variant="h5" sx={{ color: "#072079" }}>
-                  Vida
-                </Typography>
-              </CardActionArea>
+              <Typography variant="h5" sx={{ color: "#072079" }}>
+                Vida
+              </Typography>
 
               <CardActions sx={{ mx: 6 }}>
                 <IconButton aria-label="editar" color="primary">
