@@ -321,7 +321,7 @@ const PersonalInfoGR = () => {
 
         <div>
           <Button type="submit" variant="contained" color="primary">
-            Guardar información.
+            Siguiente.
           </Button>
         </div>
       </form>
