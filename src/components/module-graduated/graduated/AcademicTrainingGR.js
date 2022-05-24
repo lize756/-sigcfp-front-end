@@ -6,6 +6,7 @@ import {
   IconButton,
   Box,
   CssBaseline,
+  Stack,
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/AddCircle";
@@ -178,15 +179,17 @@ const AcademicTrainingGR = () => {
               />
 
               <div>
-                <IconButton onClick={handleAddStudy}>
-                  <AddIcon color="primary" />
-                </IconButton>
-                <IconButton
-                  disabled={studies.length === 1}
-                  onClick={() => handleRemoveStudy(study.id)}
-                >
-                  <RemoveIcon color="error" />
-                </IconButton>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <IconButton onClick={handleAddStudy}>
+                    <AddIcon color="primary" />
+                  </IconButton>
+                  <IconButton
+                    disabled={studies.length === 1}
+                    onClick={() => handleRemoveStudy(study.id)}
+                  >
+                    <RemoveIcon color="error" />
+                  </IconButton>
+                </Stack>
               </div>
             </div>
           ))}

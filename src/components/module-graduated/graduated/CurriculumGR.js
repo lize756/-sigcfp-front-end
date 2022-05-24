@@ -4,11 +4,18 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
+  Button,
+  Stack,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonalInfoGR from "./PersonalInfoGR";
 import JobProfileGR from "./JobProfileGR";
 import AcademicTrainingGR from "./AcademicTrainingGR";
+import { styled } from "@mui/material/styles";
+
+const Input = styled("input")({
+  display: "none",
+});
 
 const CurriculumGR = () => {
   return (
@@ -50,6 +57,20 @@ const CurriculumGR = () => {
           <AcademicTrainingGR />
         </AccordionDetails>
       </Accordion>
+
+      <Stack mt={5} alignItems="center">
+        <label htmlFor="contained-button-file">
+          <Input
+            accept="pdf/*"
+            id="contained-button-file"
+            multiple
+            type="file"
+          />
+          <Button variant="contained" component="span">
+            Subir Hoja de Vida
+          </Button>
+        </label>
+      </Stack>
     </div>
   );
 };
