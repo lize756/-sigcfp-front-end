@@ -12,7 +12,6 @@ import {
 import AddIcon from "@mui/icons-material/AddCircle";
 import RemoveIcon from "@mui/icons-material/RemoveCircle";
 
-import { useNavigate } from "react-router";
 import { makeStyles } from "@material-ui/core";
 
 import { v4 as uuidv4 } from "uuid";

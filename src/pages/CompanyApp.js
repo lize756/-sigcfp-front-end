@@ -242,7 +242,13 @@ const CompanyApp = () => {
               <ListItemText primary="Solicitudes Practicantes" />
             </ListItem>
 
-            <ListItem button key="Graduated">
+            <ListItem
+              button
+              key="Graduated"
+              onClick={() => {
+                navigate("/company/graduated");
+              }}
+            >
               <ListItemIcon>
                 <GraduatedIcon color="primary" />
               </ListItemIcon>

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import HomeCompany from "../../pages/CompanyApp";
 import ContentCompany from "../../layout/company/ContentsCompany";
-//import UserList from "../../components/module-request/company/user/ListUser";
+
 import UserList from "../../components/module-request/company/user/ListUser";
 import RequestList from "../../components/module-request/company/request/RequestList";
 import Create from "../../components/module-request/company/request/RequestCreate";
@@ -12,6 +12,8 @@ import Profile from "../../components/global/profile/company/ProfileCompany";
 import UpdateUser from "../../components/module-request/company/user/UpdateUser";
 import CreateUser from "../../components/module-request/company/user/CreateUser";
 import Request from "../../components/module-request/global/GeneralRequest";
+
+import Graduated from "../../components/module-graduated/company/GraduateProfiles";
 
 const MainCompany = () => {
   return (
@@ -57,6 +59,12 @@ const MainCompany = () => {
 
         <Route path="/company" element={<HomeCompany />}>
           <Route path="profile" element={<Profile />} />
+        </Route>
+
+        {/** ====================================Graduated==================================== */}
+
+        <Route path="/company" element={<HomeCompany />}>
+          <Route path="graduated" element={<Graduated />} />
         </Route>
       </Routes>
     </>
