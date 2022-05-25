@@ -11,7 +11,7 @@ const CardProfile = () => {
     (state) => state.userLogin.loginPersOrCompName
   );
 
-  //const letterFirst = loginPersOrCompName[0];
+  const letterFirst = loginPersOrCompName[0];
   const name = loginPersOrCompName;
   return (
     <div>
@@ -20,7 +20,7 @@ const CardProfile = () => {
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: "#072079" }} aria-label="recipe">
-              {/** letterFirst*/}
+              {letterFirst}
             </Avatar>
           }
           title={name}
