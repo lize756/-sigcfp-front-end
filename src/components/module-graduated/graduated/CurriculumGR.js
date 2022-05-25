@@ -6,11 +6,14 @@ import {
   Typography,
   Button,
   Stack,
+  Divider,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonalInfoGR from "./PersonalInfoGR";
 import JobProfileGR from "./JobProfileGR";
 import AcademicTrainingGR from "./AcademicTrainingGR";
+import LanguagesGR from "./LanguagesGR";
+
 import { styled } from "@mui/material/styles";
 
 const Input = styled("input")({
@@ -55,6 +58,8 @@ const CurriculumGR = () => {
 
         <AccordionDetails>
           <AcademicTrainingGR />
+          <Divider>IDIOMAS</Divider>
+          <LanguagesGR />
         </AccordionDetails>
       </Accordion>
 
