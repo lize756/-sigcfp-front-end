@@ -18,7 +18,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch, useSelector } from "react-redux";
 import {
   sendToken,
-  setIsLogin,
 } from "../../../components/store/slices/SignIn/LoginSlice";
 import { LoadingLogin } from "./LoadingLogin";
 // Formik

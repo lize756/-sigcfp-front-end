@@ -41,8 +41,6 @@ import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   logOut,
-  logout,
-  reHydrateStore,
 } from "../components/store/slices/SignIn/LoginSlice";
 
 const drawerWidth = 260;

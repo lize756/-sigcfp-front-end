@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Typography,
   Paper,
   Card,
   Grid,
-  CardActionArea,
   CardActions,
   IconButton,
 } from "@mui/material";
@@ -18,6 +17,10 @@ import FeedIcon from "@mui/icons-material/Feed";
 import { purple } from "@mui/material/colors";
 
 import { useNavigate } from "react-router";
+
+//Redux
+import { useDispatch, useSelector } from "react-redux";
+import { getperson } from "../../components/store/slices/PersonSlice";
 
 const IconWrapperStyle = styled("div")(({ theme }) => ({
   margin: "auto",
@@ -33,6 +36,20 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
 const ContentsGraduated = () => {
   let navigate = useNavigate();
 
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+  //Redux
+  // Get person id of the store
+  const userPersonId = useSelector((state) => state.userLogin.userPersonId);
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+
+  //Axios
+  useEffect(() => {
+    //Adde to store the person that user login
+    dispatch(getperson(ACCESS_TOKEN, userPersonId));
+  }, []);
   return (
     <div>
       <Paper sx={{ mt: 5, mb: 5 }}>

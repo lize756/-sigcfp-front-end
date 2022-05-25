@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Autocomplete, TextField, Button, Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+//Redux
+import { useDispatch, useSelector } from "react-redux";
+import { getCitiesAssociatedToCountry } from "../../store/slices/CountrySlice";
 /**
  * Styles of the visual part of the component
  */
@@ -83,14 +86,35 @@ const PersonalInfoGR = () => {
 
   const [getGenre, setGenre] = useState("");
   const [getCivilStatus, setCivilStatus] = useState("");
-  const [getCountry, setCountry] = useState("");
+  const [getCountry, setCountry] = useState({});
   const [getCity, setCity] = useState("");
 
+  /**
+   * ----------------------------------
+   * -------------- REDUX -------------
+   * ----------------------------------
+   */
+
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+
+  // Get person saved of the store
+  const currentPerson = useSelector((state) => state.PersonSlice.person);
+
+  //Correspond of list of countries saved in the store.
+  const listCountries = useSelector(
+    (state) => state.CountrySlice.listCountries
+  );
+  //Correspond of list of cities saved in the store.
+  const listCities = useSelector((state) => state.CountrySlice.listCities);
   const formik = useFormik({
     initialValues: {
-      curriculumName: "",
-      curriculumLastName: "",
-      curriculumID: "",
+      curriculumName: currentPerson.persFirstName,
+      curriculumLastName: currentPerson.persLastName,
+      curriculumID: currentPerson.persDocument,
+      curriculumGenre: currentPerson.persGenre,
+      curriculumCountry: currentPerson.persCountryName,
+      curriculumCity: currentPerson.persCityName,
       curriculumPhone: "",
       curriculumEmail: "",
     },
@@ -98,18 +122,33 @@ const PersonalInfoGR = () => {
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
-      console.log(values);
-      values.curriculumTypeDocument = getTypeDocument;
-      values.curriculumBirth = getDate;
-      values.curriculumGenre = getGenre;
-      values.curriculumCivilStatus = getCivilStatus;
-      values.curriculumCountry = getCountry.name;
-      values.curriculumCity = getCity;
+      const curriculum = values;
+      curriculum.curriculumTypeDocument = getTypeDocument;
+      curriculum.curriculumBirth = getDate;
+      curriculum.curriculumGenre = (curriculum.curriculumGenre !== "")?curriculum.curriculumGenre:getGenre;
+      curriculum.curriculumCivilStatus = getCivilStatus;
+      curriculum.curriculumCountry = (curriculum.curriculumCountry !== "")?curriculum.curriculumCountry:getCountry.name;
+      curriculum.curriculumCity = (curriculum.curriculumCity !== "")?curriculum.curriculumCity:getCity;
 
       alert(JSON.stringify(values, null, 2));
     },
   });
 
+  /**
+   * ---------------------------useEffect-----------------------------
+   */
+  /**
+   * This used effect allow display the list of countries associated a country particular
+   */
+  useEffect(() => {
+    if (listCountries.length > 0) {
+      dispatch(getCitiesAssociatedToCountry(getCountry.name));
+    }
+  }, [getCountry]);
+
+  /**
+   * ---------------------------End useEffect-----------------------------
+   */
   return (
     <div>
       <form className={classes.root} onSubmit={formik.handleSubmit}>
@@ -194,6 +233,7 @@ const PersonalInfoGR = () => {
             <Autocomplete
               fullWidth
               disablePortal
+              defaultValue={formik.values.curriculumGenre}
               id="combo-box-demo"
               options={genre}
               onChange={(e, value) => setGenre(value)}
@@ -219,8 +259,9 @@ const PersonalInfoGR = () => {
           <Grid item xs={6}>
             <Autocomplete
               freeSolo
-              id="free-solo-2-demo"
+              id="free-solo-curriculumCountry"
               disableClearable
+              defaultValue={{ name: formik.values.curriculumCountry }}
               /**
                * List of cities
                */
@@ -252,7 +293,8 @@ const PersonalInfoGR = () => {
           <Grid item xs={6}>
             <Autocomplete
               freeSolo
-              id="free-solo-2-demo"
+              id="free-solo-curriculumCity"
+              defaultValue={formik.values.curriculumCity}
               disableClearable
               /**
                * List of cities

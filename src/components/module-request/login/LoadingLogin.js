@@ -41,6 +41,7 @@ export const LoadingLogin = () => {
         navigate("/director/home");
         break;
       case "ROLEE_GRADUATE":
+        navigate("/graduated/home")
         break;
     }
   };
