@@ -133,10 +133,10 @@ const CoordBasicRegister = () => {
       values.persGenre = getPersGenre;
       values.persCityName = getPersonCity;
       values.persCountryName = getPersonCountry.name;
-      alert(JSON.stringify(values, null, 2));
-      console.log(values);
-      //dispatch(addperson(values));
-      //navigate("/cedep/register/user_register");
+      //alert(JSON.stringify(values, null, 2));
+      //console.log(values);
+      dispatch(addperson(values));
+      navigate("/cedep/register/user_register");
     },
   });
 
