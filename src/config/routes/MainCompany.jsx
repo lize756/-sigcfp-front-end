@@ -13,7 +13,7 @@ import UpdateUser from "../../components/module-request/company/user/UpdateUser"
 import CreateUser from "../../components/module-request/company/user/CreateUser";
 import Request from "../../components/module-request/global/GeneralRequest";
 
-import Graduated from "../../components/module-graduated/company/GraduateProfiles";
+import Graduated from "../../components/module-graduated/company/GraduatedFilters";
 
 const MainCompany = () => {
   return (
