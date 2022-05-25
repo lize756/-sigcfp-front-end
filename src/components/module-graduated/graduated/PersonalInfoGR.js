@@ -82,7 +82,6 @@ const listCities = ["Cali", "Buenos Aires", "Bogota", "Madrid"];
 const PersonalInfoGR = () => {
   const classes = useStyles();
   const [getTypeDocument, setTypeDocument] = useState("");
-  const [getDate, setDate] = useState(new Date());
 
   const [getGenre, setGenre] = useState("");
   const [getCivilStatus, setCivilStatus] = useState("");
@@ -115,20 +114,53 @@ const PersonalInfoGR = () => {
       curriculumGenre: currentPerson.persGenre,
       curriculumCountry: currentPerson.persCountryName,
       curriculumCity: currentPerson.persCityName,
-      curriculumPhone: "",
-      curriculumEmail: "",
+      curriculumTypeDocument: currentPerson.persDocumentType,
+      curriculumCivilStatus: currentPerson.persMaritalStatus,
+      curriculumPhone: currentPerson.persPhone,
+      curriculumEmail: currentPerson.persEmail,
+      curriculumBirth: "",
     },
 
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
       const curriculum = values;
-      curriculum.curriculumTypeDocument = getTypeDocument;
       curriculum.curriculumBirth = getDate;
-      curriculum.curriculumGenre = (curriculum.curriculumGenre !== "")?curriculum.curriculumGenre:getGenre;
-      curriculum.curriculumCivilStatus = getCivilStatus;
-      curriculum.curriculumCountry = (curriculum.curriculumCountry !== "")?curriculum.curriculumCountry:getCountry.name;
-      curriculum.curriculumCity = (curriculum.curriculumCity !== "")?curriculum.curriculumCity:getCity;
+      console.log(curriculum)
+
+      /**
+       * This line allow formatter of elements that the user write in the user interface
+       * for the format to be accepted by the database
+       */
+      /**
+       * Formatted dates
+       */
+      const [year, month, day] = curriculum.curriculumBirth.split("-");
+      // Verified that date have the size of default
+      const formattedStDate =
+        curriculum.curriculumBirth.length !== currentPerson.persDateOfBirth.length
+          ? currentPerson.persDateOfBirth
+          : day + "/" + month + "/" + year;
+
+      curriculum.curriculumTypeDocument =
+        curriculum.curriculumTypeDocument !== ""
+          ? curriculum.curriculumTypeDocument
+          : getTypeDocument;
+      curriculum.curriculumBirth = formattedStDate;
+      curriculum.curriculumGenre =
+        curriculum.curriculumGenre !== ""
+          ? curriculum.curriculumGenre
+          : getGenre;
+      curriculum.curriculumCivilStatus =
+        curriculum.curriculumCivilStatus !== ""
+          ? curriculum.curriculumCivilStatus
+          : getCivilStatus;
+      curriculum.curriculumCountry =
+        curriculum.curriculumCountry !== ""
+          ? curriculum.curriculumCountry
+          : getCountry.name;
+      curriculum.curriculumCity =
+        curriculum.curriculumCity !== "" ? curriculum.curriculumCity : getCity;
 
       alert(JSON.stringify(values, null, 2));
     },
@@ -149,6 +181,16 @@ const PersonalInfoGR = () => {
   /**
    * ---------------------------End useEffect-----------------------------
    */
+  /**
+   * This function is responsible for converting the
+   * date loaded from the database to the format needed by textfield date
+   * @returns  date in correct format
+   */
+  const getDefaultDate = () => {
+    const [day, month, year] = currentPerson.persDateOfBirth.split("/");
+    return year + "-" + month + "-" + day;
+  };
+
   return (
     <div>
       <form className={classes.root} onSubmit={formik.handleSubmit}>
@@ -192,6 +234,7 @@ const PersonalInfoGR = () => {
               fullWidth
               disablePortal
               id="combo-box-demo"
+              defaultValue={formik.values.curriculumTypeDocument}
               options={typeDocument}
               onChange={(e, value) => setTypeDocument(value)}
               renderInput={(params) => (
@@ -221,11 +264,11 @@ const PersonalInfoGR = () => {
             <TextField
               fullWidth
               required
+              name="curriculumBirth"
               type="date"
               label="Fecha de nacimiento"
-              onChange={(event) => {
-                setDate(event.target.value);
-              }}
+              defaultValue={getDefaultDate()}
+              onChange={formik.handleChange}
             />
           </Grid>
 
@@ -246,6 +289,7 @@ const PersonalInfoGR = () => {
           <Grid item xs={6}>
             <Autocomplete
               fullWidth
+              defaultValue={formik.values.curriculumCivilStatus}
               disablePortal
               id="combo-box-demo"
               options={civilStatus}
