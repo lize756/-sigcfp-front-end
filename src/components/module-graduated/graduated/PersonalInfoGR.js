@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Autocomplete, TextField, Button, Grid } from "@mui/material";
+import {
+  Autocomplete,
+  TextField,
+  Button,
+  Grid,
+  FormControlLabel,
+  Checkbox,
+} from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 
 import { useFormik } from "formik";
@@ -44,6 +51,7 @@ const validationSchema = yup.object({
     .string("Escribe tu correo electrónico")
     .email("Ingresa un correo electrónico valido")
     .required("Campo requerido"),
+  curriculumAge: yup.number("Escribe tu Edad").required("Campo requerido"),
 });
 
 /**
@@ -75,6 +83,15 @@ const listCountries = [
 
 const listCities = ["Cali", "Buenos Aires", "Bogota", "Madrid"];
 
+const ethnicGroup = [
+  "Sin pertenencia étnica",
+  "Afrocolombiano",
+  "Indígena",
+  "Raizal",
+  "Palenquero",
+  "Gitano",
+];
+
 /**
  * =============================================== End lists===========================================
  * */
@@ -87,6 +104,9 @@ const PersonalInfoGR = () => {
   const [getCivilStatus, setCivilStatus] = useState("");
   const [getCountry, setCountry] = useState({});
   const [getCity, setCity] = useState("");
+
+  const [getDisability, setDisability] = useState(false);
+  const [getEthnicGroup, setEthnicGroup] = useState("");
 
   /**
    * ----------------------------------
@@ -119,6 +139,7 @@ const PersonalInfoGR = () => {
       curriculumPhone: currentPerson.persPhone,
       curriculumEmail: currentPerson.persEmail,
       curriculumBirth: "",
+      curriculumAge: 0,
     },
 
     validationSchema: validationSchema,
@@ -160,9 +181,13 @@ const PersonalInfoGR = () => {
           : getCountry.name;
       curriculum.curriculumCity =
         curriculum.curriculumCity !== "" ? curriculum.curriculumCity : getCity;
+      curriculum.curriculumDisability = getDisability;
+      curriculum.curriculumEthnicGroup = getEthnicGroup;
 
       alert(JSON.stringify(curriculum, null, 2));
       curriculum.curriculumBirth = "";
+
+      alert(JSON.stringify(values, null, 2));
     },
   });
 
@@ -386,6 +411,36 @@ const PersonalInfoGR = () => {
             />
           </Grid>
 
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              name="curriculumAge"
+              label="Edad"
+              value={formik.values.curriculumAge}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.curriculumAge &&
+                Boolean(formik.errors.curriculumAge)
+              }
+              helperText={
+                formik.touched.curriculumAge && formik.errors.curriculumAge
+              }
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <Autocomplete
+              fullWidth
+              disablePortal
+              id="combo-box-demo"
+              options={ethnicGroup}
+              onChange={(e, value) => setEthnicGroup(value)}
+              renderInput={(params) => (
+                <TextField {...params} label="Grupo étnico" required />
+              )}
+            />
+          </Grid>
+
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -401,6 +456,20 @@ const PersonalInfoGR = () => {
               helperText={
                 formik.touched.curriculumEmail && formik.errors.curriculumEmail
               }
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={getDisability}
+                  onChange={(event) => {
+                    setDisability(event.target.checked);
+                  }}
+                />
+              }
+              label="¿Presenta situación de discapacidad?"
             />
           </Grid>
         </Grid>

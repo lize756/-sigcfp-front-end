@@ -42,31 +42,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const status = ["Culminado", "En curso", "Abandonado", "Aplazado"];
-const level = [
-  "Preescolar",
-  "Básica Primaria (1° - 5°)",
-  "Básica Secundaria (6° - 9°)",
-  "Media (10° - 13°)",
-  "Técnico Laboral",
-  "Formación Técnica Profesional",
-  "Tecnológica",
-  "Universitaria",
-  "Especialización",
-  "Maestría",
-  "Doctorado",
+const language = [
+  "Mandarin",
+  "Frances",
+  "Portugues",
+  "Japones",
+  "Italiano",
+  "Griego",
+  "Romano",
 ];
 
-const AcademicTrainingGR = () => {
+const level = ["Basico", "Intermedio", "Avanzado"];
+
+const LanguagesGR = () => {
   const classes = useStyles();
   const [studies, setStudies] = useState([
     {
       id: uuidv4(),
+      languageStudy: "",
       levelStudy: "",
-      studyStatus: "",
-      startDate: "",
       endDate: "",
-      degree: "",
       institutionName: "",
     },
   ]);
@@ -89,11 +84,9 @@ const AcademicTrainingGR = () => {
       ...studies,
       {
         id: uuidv4(),
+        languageStudy: "",
         levelStudy: "",
-        studyStatus: "",
-        startDate: "",
         endDate: "",
-        degree: "",
         institutionName: "",
       },
     ]);
@@ -121,13 +114,13 @@ const AcademicTrainingGR = () => {
     const newStudy = studies.map((i) => {
       if (id === i.id) {
         i[e.target.name] = e.target.value;
+        console.log(e.target.name);
       }
       return i;
     });
 
     setStudies(newStudy);
   };
-
   return (
     <div>
       <CssBaseline />
@@ -140,6 +133,22 @@ const AcademicTrainingGR = () => {
               <Autocomplete
                 fullWidth
                 disablePortal
+                name="languageStudy"
+                id="combo-box-demo"
+                options={language}
+                onChange={(e, value) => {
+                  handleChange(study.id, {
+                    target: { value: value, name: "languageStudy" },
+                  });
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} required label="Idioma Estudiado" />
+                )}
+              />
+
+              <Autocomplete
+                fullWidth
+                disablePortal
                 id="combo-box-demo"
                 options={level}
                 onChange={(e, value) => {
@@ -148,34 +157,14 @@ const AcademicTrainingGR = () => {
                   });
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} required label="Nivel del estudio" />
+                  <TextField
+                    {...params}
+                    required
+                    label="Nivel del idioma estudiado"
+                  />
                 )}
               />
 
-              <Autocomplete
-                fullWidth
-                disablePortal
-                id="combo-box-demo"
-                options={status}
-                onChange={(e, value) => {
-                  handleChange(study.id, {
-                    target: { value: value, name: "studyStatus" },
-                  });
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} required label="Estado del estudio" />
-                )}
-              />
-
-              <TextField
-                name="startDate"
-                label="Fecha de inicio del estudio"
-                variant="outlined"
-                required
-                value={study.startDate}
-                placeholder="MM/AAAA"
-                onChange={(e) => handleChange(study.id, e)}
-              />
               <TextField
                 name="endDate"
                 label="Fecha de finalización"
@@ -186,20 +175,9 @@ const AcademicTrainingGR = () => {
               />
 
               <TextField
-                name="degree"
-                label="Título otorgado"
-                variant="outlined"
-                required
-                value={study.degree}
-                placeholder="Ingeniero de sistemas"
-                onChange={(e) => handleChange(study.id, e)}
-              />
-
-              <TextField
                 name="institutionName"
                 label="Institución en la que estudio"
                 variant="outlined"
-                required
                 value={study.institutionName}
                 placeholder="Universidad ICESI"
                 onChange={(e) => handleChange(study.id, e)}
@@ -231,4 +209,4 @@ const AcademicTrainingGR = () => {
   );
 };
 
-export default AcademicTrainingGR;
+export default LanguagesGR;
