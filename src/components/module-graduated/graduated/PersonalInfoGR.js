@@ -125,8 +125,6 @@ const PersonalInfoGR = () => {
 
     onSubmit: (values) => {
       const curriculum = values;
-      curriculum.curriculumBirth = getDate;
-      console.log(curriculum)
 
       /**
        * This line allow formatter of elements that the user write in the user interface
