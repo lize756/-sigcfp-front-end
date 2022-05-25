@@ -4,9 +4,6 @@ import MuiAppBar from "@mui/material/AppBar";
 import { styled, useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
-import RequestIcon from "@mui/icons-material/PostAdd";
-import GraduatedIcon from "@mui/icons-material/School";
-import ContactsIcon from "@mui/icons-material/Groups";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import {
   Box,
@@ -82,7 +79,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const CompanyApp = () => {
+const GraduatedApp = () => {
   const theme = useTheme();
   // Allow to send the elements of store
   const dispatch = useDispatch();
@@ -160,7 +157,7 @@ const CompanyApp = () => {
                 <MenuItem
                   key="Home"
                   onClick={() => {
-                    navigate("/company/home");
+                    navigate("/graduated/home");
                   }}
                 >
                   <Typography textAlign="center">Inicio</Typography>
@@ -168,8 +165,7 @@ const CompanyApp = () => {
                 <MenuItem
                   key="Perfil"
                   onClick={() => {
-                    navigate("/company/profile");
-                    setAnchorElUser(null);
+                    navigate("/graduated/profile");
                   }}
                 >
                   <Typography textAlign="center">Perfil</Typography>
@@ -220,7 +216,7 @@ const CompanyApp = () => {
               button
               key="Home"
               onClick={() => {
-                navigate("/company/home");
+                navigate("/graduated/home");
               }}
             >
               <ListItemIcon>
@@ -231,49 +227,9 @@ const CompanyApp = () => {
 
             <ListItem
               button
-              key="Request"
-              onClick={() => {
-                navigate("/company/request");
-              }}
-            >
-              <ListItemIcon>
-                <RequestIcon color="primary" />
-              </ListItemIcon>
-              <ListItemText primary="Solicitudes Practicantes" />
-            </ListItem>
-
-            <ListItem
-              button
-              key="Graduated"
-              onClick={() => {
-                navigate("/company/graduated");
-              }}
-            >
-              <ListItemIcon>
-                <GraduatedIcon color="primary" />
-              </ListItemIcon>
-              <ListItemText primary="Perfiles Egresados" />
-            </ListItem>
-
-            <ListItem
-              button
-              key="Contacts"
-              onClick={() => {
-                navigate("/company/users");
-              }}
-            >
-              <ListItemIcon>
-                <ContactsIcon color="primary" />
-              </ListItemIcon>
-              <ListItemText primary="Contactos " />
-            </ListItem>
-
-            <ListItem
-              button
               key="Profile"
               onClick={() => {
-                navigate("/company/profile");
-                setAnchorElUser(null);
+                navigate("/graduated/profile");
               }}
             >
               <ListItemIcon>
@@ -295,4 +251,4 @@ const CompanyApp = () => {
   );
 };
 
-export default CompanyApp;
+export default GraduatedApp;

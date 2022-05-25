@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Autocomplete, TextField, Button, Chip, Checkbox } from "@mui/material";
+import { Autocomplete, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router";
 import { makeStyles, Box, Container, Grid } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
@@ -107,10 +107,8 @@ const RequestUpdate = () => {
    * Inter request competencies states.
    */
   const [inteRequCompetencies, setInteRequCompetencies] = useState([]);
-  const [
-    defaultInteRequCompetencies,
-    setDefaultInteRequCompetencies,
-  ] = useState([]);
+  const [defaultInteRequCompetencies, setDefaultInteRequCompetencies] =
+    useState([]);
   const [editRequest, setEditRequest] = useState({
     inteRequName: " ",
     inteRequDepartment: "",
