@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Paper,
   FormControlLabel,
@@ -65,7 +65,7 @@ const wageCount = [
 ];
 
 const SalaryFilters = () => {
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     first: false,
     second: false,
     third: false,
@@ -147,14 +147,14 @@ const SalaryFilters = () => {
   ].filter((salary) => salary.value === true);
 
   /**
-   * This function takes care of sending the filtered list to the backend
+   *This function takes care of sending the filtered list to the backend
    */
   const handleClick = () => {
     alert(JSON.stringify(filterSalary, null, 2));
   };
   return (
     <>
-      <Paper sx={{ width: 280, p: 2 }}>
+      <Paper sx={{ p: 2 }}>
         <Typography
           variant="p"
           gutterBottom
