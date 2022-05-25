@@ -136,7 +136,8 @@ const PersonalInfoGR = () => {
       const [year, month, day] = curriculum.curriculumBirth.split("-");
       // Verified that date have the size of default
       const formattedStDate =
-        curriculum.curriculumBirth.length !== currentPerson.persDateOfBirth.length
+        curriculum.curriculumBirth.length !==
+        currentPerson.persDateOfBirth.length
           ? currentPerson.persDateOfBirth
           : day + "/" + month + "/" + year;
 
@@ -160,7 +161,8 @@ const PersonalInfoGR = () => {
       curriculum.curriculumCity =
         curriculum.curriculumCity !== "" ? curriculum.curriculumCity : getCity;
 
-      alert(JSON.stringify(values, null, 2));
+      alert(JSON.stringify(curriculum, null, 2));
+      curriculum.curriculumBirth = "";
     },
   });
 
