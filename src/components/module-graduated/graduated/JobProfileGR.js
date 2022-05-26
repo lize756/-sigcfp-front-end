@@ -114,7 +114,6 @@ const JobProfileGR = () => {
   };
   const formik = useFormik({
     initialValues: {
-      curriculumCareers: [],
       curriculumDescription: "",
     },
     
@@ -145,7 +144,6 @@ const JobProfileGR = () => {
               fullWidth
               options={list_carreers}
               getOptionLabel={(option) => option.careName}
-              name="curriculumCareers"
               onChange={(e, value) => handleSelect(value)}
               filterSelectedOptions
               renderInput={(params) => (
