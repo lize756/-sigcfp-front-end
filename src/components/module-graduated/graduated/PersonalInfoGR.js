@@ -74,15 +74,6 @@ const civilStatus = [
   "Viudo(a)",
 ];
 
-const listCountries = [
-  { id: 1, name: "Colombia" },
-  { id: 2, name: "Argentina" },
-  { id: 3, name: "Brasil" },
-  { id: 4, name: "España" },
-];
-
-const listCities = ["Cali", "Buenos Aires", "Bogota", "Madrid"];
-
 const ethnicGroup = [
   "Sin pertenencia étnica",
   "Afrocolombiano",

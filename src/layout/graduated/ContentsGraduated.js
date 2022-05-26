@@ -21,6 +21,7 @@ import { useNavigate } from "react-router";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import { getperson } from "../../components/store/slices/PersonSlice";
+import { getcareers } from "../../components/store/slices/CareerSlice";
 
 const IconWrapperStyle = styled("div")(({ theme }) => ({
   margin: "auto",
@@ -49,6 +50,8 @@ const ContentsGraduated = () => {
   useEffect(() => {
     //Adde to store the person that user login
     dispatch(getperson(ACCESS_TOKEN, userPersonId));
+    //Added to store of list of carreers.
+    dispatch(getcareers(ACCESS_TOKEN));
   }, []);
   return (
     <div>

@@ -129,7 +129,9 @@ const RequestCreate = () => {
    * ---------------------------------------------------------------------------
    */
   /**
-   * Redux
+   * -----------------------------------------------------------------
+   * ------------------------Redux------------------------------------
+   * -----------------------------------------------------------------
    */
   const list_carreers = useSelector((state) => state.CareerSlice.listCareers);
 
@@ -150,6 +152,8 @@ const RequestCreate = () => {
     }
   }, [getCountry]);
 
+  //================================================= Functions ===================================================
+
   /**
    * This function assigns the information completed by the user with its respective attribute.
    * attributes like: inteRequName, inteRequDepartment, inteRequNumber, inteRequStDate,
@@ -165,7 +169,6 @@ const RequestCreate = () => {
    * @param {*} value
    */
   const handleSelect = (value) => {
-    const myJSON = JSON.stringify(value);
     setCareers(value);
     const listCrs = [];
     for (let i = 0; i < value.length; i++) {
@@ -237,6 +240,9 @@ const RequestCreate = () => {
     dispatch(addInternRequest(ACCESS_TOKEN, request));
     navigate("/company/request");
   };
+
+  //================================================= end functions ===================================================
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ bgcolor: "#F2F6FE" }}>

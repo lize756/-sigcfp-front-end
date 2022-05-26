@@ -11,7 +11,10 @@ import { makeStyles } from "@material-ui/core";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-
+/**
+ * Redux
+ */
+import { useDispatch, useSelector } from "react-redux";
 /**
  * Styles of the visual part of the component
  */
@@ -43,7 +46,26 @@ const validationSchema = yup.object({
 });
 
 const experience = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
 ];
 
 const wage = [
@@ -67,43 +89,73 @@ const JobProfileGR = () => {
   const [getYearsExperience, setYearsExperience] = useState("");
   const [getWage, setWage] = useState("");
   const [getLaborMobility, setLaborMobility] = useState(false);
+  const [careers, setCareers] = useState("");
 
+  /**
+   * -----------------------------------------------------------------
+   * ------------------------Redux------------------------------------
+   * -----------------------------------------------------------------
+   */
+  const list_carreers = useSelector((state) => state.CareerSlice.listCareers);
+
+  //================================================= Functions ===================================================
+
+  /**
+   * This function is responsible for storing the careers selected by the user in the careers list
+   * @param {*} value
+   */
+  const handleSelect = (value) => {
+    setCareers(value);
+    const listCrs = [];
+    for (let i = 0; i < value.length; i++) {
+      listCrs.push(value[i]);
+      setCareers(listCrs);
+    }
+  };
   const formik = useFormik({
     initialValues: {
-      curriculumProfession: "",
+      curriculumCareers: [],
       curriculumDescription: "",
     },
-
+    
     validationSchema: validationSchema,
-
+    
     onSubmit: (values) => {
-      values.curriculumWage = getWage;
-      values.curriculumYearExperience = getYearsExperience;
-      values.curriculumLaborMobility = getLaborMobility;
+      const jobProfileGraduated = values;
+      jobProfileGraduated.curriculumWage = getWage;
+      jobProfileGraduated.curriculumCareers = careers;
+      jobProfileGraduated.curriculumYearExperience = getYearsExperience;
+      jobProfileGraduated.curriculumLaborMobility = getLaborMobility;
 
-      alert(JSON.stringify(values, null, 2));
+      alert(JSON.stringify(jobProfileGraduated, null, 2));
+      console.log(jobProfileGraduated)
     },
   });
+
+  //================================================= end functions ===================================================
 
   return (
     <div>
       <form className={classes.root} onSubmit={formik.handleSubmit}>
         <Grid container spacing={2} mr={4}>
+        
           <Grid item xs={12}>
-            <TextField
+            <Autocomplete
+              multiple
               fullWidth
-              name="curriculumProfession"
-              label="Profesión"
-              value={formik.values.curriculumProfession}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.curriculumProfession &&
-                Boolean(formik.errors.curriculumProfession)
-              }
-              helperText={
-                formik.touched.curriculumProfession &&
-                formik.errors.curriculumProfession
-              }
+              options={list_carreers}
+              getOptionLabel={(option) => option.careName}
+              name="curriculumCareers"
+              onChange={(e, value) => handleSelect(value)}
+              filterSelectedOptions
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Carreras de Interés"
+                  required={careers.length === 0}
+                  placeholder="Carreras de Interés"
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
