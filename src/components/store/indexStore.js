@@ -19,6 +19,7 @@ import CountrySlice from "./slices/CountrySlice";
 import UserrSlice from "./slices/UserrSlice";
 import AlertSlice from "./slices/AlertSlice";
 import ReportSlice from "./slices/ReportSlice";
+import CurriculumSlice from "./slices/CurriculumSlice";
 /**
  * Store of all application
  */
@@ -36,6 +37,7 @@ export default configureStore({
     InternRequestSlice,
     PersonSlice,
     ReportSlice,
+    CurriculumSlice,
   },
   // This line allow preload the state the application when the window is reload it
   preloadedState: reHydrateStore(),

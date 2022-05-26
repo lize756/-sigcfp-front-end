@@ -15,6 +15,7 @@ import * as yup from "yup";
  * Redux
  */
 import { useDispatch, useSelector } from "react-redux";
+import { setCurriculum } from "../../store/slices/CurriculumSlice";
 /**
  * Styles of the visual part of the component
  */
@@ -93,6 +94,8 @@ const JobProfileGR = () => {
    * ------------------------Redux------------------------------------
    * -----------------------------------------------------------------
    */
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
   const list_carreers = useSelector((state) => state.CareerSlice.listCareers);
 
   //================================================= Functions ===================================================
@@ -118,13 +121,15 @@ const JobProfileGR = () => {
 
     onSubmit: (values) => {
       const jobProfileGraduated = values;
+      jobProfileGraduated.currCreateDate = new Date().toLocaleDateString();
       jobProfileGraduated.currSalary = getWage;
-      jobProfileGraduated.careers = careers;
       jobProfileGraduated.currExperience = getYearsExperience;
+      jobProfileGraduated.careers = careers;
       jobProfileGraduated.currIsLaborMobility = getLaborMobility;
 
       alert(JSON.stringify(jobProfileGraduated, null, 2));
       console.log(jobProfileGraduated);
+      dispatch(setCurriculum(jobProfileGraduated));
     },
   });
 
@@ -166,8 +171,7 @@ const JobProfileGR = () => {
                 Boolean(formik.errors.currDescription)
               }
               helperText={
-                formik.touched.currDescription &&
-                formik.errors.currDescription
+                formik.touched.currDescription && formik.errors.currDescription
               }
             />
           </Grid>

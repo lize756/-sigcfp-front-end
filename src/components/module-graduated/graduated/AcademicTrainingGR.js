@@ -62,12 +62,14 @@ const AcademicTrainingGR = () => {
   const [studies, setStudies] = useState([
     {
       id: uuidv4(),
-      levelStudy: "",
-      studyStatus: "",
-      startDate: "",
-      endDate: "",
-      degree: "",
-      institutionName: "",
+      acadStudLevel: "",
+      acadStudStatus: "",
+      acadStudStartDate: "",
+      acadStudEndDate: "",
+      acadStudTitule: "",
+      acadStudInsti: "",
+      acadCountryName: "",
+      acadCityName: "",
     },
   ]);
 
@@ -89,12 +91,12 @@ const AcademicTrainingGR = () => {
       ...studies,
       {
         id: uuidv4(),
-        levelStudy: "",
+        acadStudLevel: "",
         studyStatus: "",
-        startDate: "",
-        endDate: "",
-        degree: "",
-        institutionName: "",
+        acadStudStartDate: "",
+        acadStudEndDate: "",
+        acadStudTitule: "",
+        acadStudInsti: "",
       },
     ]);
   };
@@ -144,7 +146,7 @@ const AcademicTrainingGR = () => {
                 options={level}
                 onChange={(e, value) => {
                   handleChange(study.id, {
-                    target: { value: value, name: "levelStudy" },
+                    target: { value: value, name: "acadStudLevel" },
                   });
                 }}
                 renderInput={(params) => (
@@ -168,42 +170,110 @@ const AcademicTrainingGR = () => {
               />
 
               <TextField
-                name="startDate"
+                name="acadStudStartDate"
                 label="Fecha de inicio del estudio"
                 variant="outlined"
                 required
-                value={study.startDate}
+                value={study.acadStudStartDate}
                 placeholder="MM/AAAA"
                 onChange={(e) => handleChange(study.id, e)}
               />
               <TextField
-                name="endDate"
+                name="acadStudEndDate"
                 label="Fecha de finalización"
                 variant="outlined"
-                value={study.endDate}
+                value={study.acadStudEndDate}
                 placeholder="MM/AAAA"
                 onChange={(e) => handleChange(study.id, e)}
               />
 
               <TextField
-                name="degree"
+                name="acadStudTitule"
                 label="Título otorgado"
                 variant="outlined"
                 required
-                value={study.degree}
+                value={study.acadStudTitule}
                 placeholder="Ingeniero de sistemas"
                 onChange={(e) => handleChange(study.id, e)}
               />
 
               <TextField
-                name="institutionName"
+                name="acadStudInsti"
                 label="Institución en la que estudio"
                 variant="outlined"
                 required
-                value={study.institutionName}
+                value={study.acadStudInsti}
                 placeholder="Universidad ICESI"
                 onChange={(e) => handleChange(study.id, e)}
               />
+              <Grid item xs={6}>
+                <Autocomplete
+                  freeSolo
+                  id="free-solo-persCountryName"
+                  disableClearable
+                  defaultValue={{ name: formik.values.persCountryName }}
+                  /**
+                   * List of cities
+                   */
+                  options={listCountries}
+                  /**
+                   * This property allows to show in the user's view the property that we want to take from the object.
+                   * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
+                   */
+                  getOptionLabel={(option) => option.name}
+                  /**
+                   * Allows send the select object to variable CompCity that correspond the element select
+                   */
+                  onChange={(event, value) => setCountry(value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Seleccione su país"
+                      variant="outlined"
+                      required
+                      InputProps={{
+                        ...params.InputProps,
+                        type: "search",
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <Autocomplete
+                  freeSolo
+                  id="free-solo-persCityName"
+                  defaultValue={formik.values.persCityName}
+                  disableClearable
+                  /**
+                   * List of cities
+                   */
+                  options={listCities}
+                  /**
+                   * This property allows to show in the user's view the property that we want to take from the object.
+                   * Such as: If we need show the name of the city then we ask the property of the object that correspond the name
+                   */
+                  getOptionLabel={(option) => option}
+                  /**
+                   * Allows send the select object to variable City that correspond the element select
+                   */
+                  onChange={(event, value) => setCity(value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Seleccione la ciudad"
+                      variant="outlined"
+                      required
+                      InputProps={{
+                        ...params.InputProps,
+                        type: "search",
+                      }}
+                      onChange={(e) => setCity(e.target.value)}
+                    />
+                  )}
+                />
+              </Grid>
 
               <div>
                 <Stack direction="row" alignItems="center" spacing={2}>
