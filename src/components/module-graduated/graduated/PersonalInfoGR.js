@@ -117,6 +117,25 @@ const PersonalInfoGR = () => {
   );
   //Correspond of list of cities saved in the store.
   const listCities = useSelector((state) => state.CountrySlice.listCities);
+
+  /**
+   * ==================================================================
+   * ===========================useEffect===============================
+   * ==================================================================
+   */
+
+  useEffect(() => {
+    if (currentPerson) {
+      setDisability(currentPerson.persIsDisability);
+    }
+  }, []);
+
+  /**
+   * ==================================================================
+   * =========================== Formik ===============================
+   * ==================================================================
+   */
+
   const formik = useFormik({
     initialValues: {
       curriculumName: currentPerson.persFirstName,
@@ -130,7 +149,8 @@ const PersonalInfoGR = () => {
       curriculumPhone: currentPerson.persPhone,
       curriculumEmail: currentPerson.persEmail,
       curriculumBirth: "",
-      curriculumAge: 0,
+      curriculumAge: currentPerson.persAge,
+      curriculumEthnicGroup: currentPerson.persEthnicGroup,
     },
 
     validationSchema: validationSchema,
@@ -173,12 +193,12 @@ const PersonalInfoGR = () => {
       curriculum.curriculumCity =
         curriculum.curriculumCity !== "" ? curriculum.curriculumCity : getCity;
       curriculum.curriculumDisability = getDisability;
-      curriculum.curriculumEthnicGroup = getEthnicGroup;
-
+      curriculum.curriculumEthnicGroup =
+        getEthnicGroup !== ""
+          ? getEthnicGroup
+          : curriculum.curriculumEthnicGroup;
       alert(JSON.stringify(curriculum, null, 2));
       curriculum.curriculumBirth = "";
-
-      alert(JSON.stringify(values, null, 2));
     },
   });
 
@@ -425,6 +445,7 @@ const PersonalInfoGR = () => {
               disablePortal
               id="combo-box-demo"
               options={ethnicGroup}
+              defaultValue={formik.values.curriculumEthnicGroup}
               onChange={(e, value) => setEthnicGroup(value)}
               renderInput={(params) => (
                 <TextField {...params} label="Grupo étnico" required />
@@ -454,6 +475,7 @@ const PersonalInfoGR = () => {
             <FormControlLabel
               control={
                 <Checkbox
+                  defaultValue={true}
                   checked={getDisability}
                   onChange={(event) => {
                     setDisability(event.target.checked);
