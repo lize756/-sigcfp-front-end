@@ -37,35 +37,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const validationSchema = yup.object({
-  curriculumProfession: yup
-    .string("Escribe tu profesión")
-    .required("Campo requerido"),
   curriculumDescription: yup
     .string("Escribe una descripción de tu perfil")
     .required("Campo requerido"),
 });
 
 const experience = [
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  '11',
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-  '20',
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
+  "13",
+  "14",
+  "15",
+  "16",
+  "17",
+  "18",
+  "19",
+  "20",
 ];
 
 const wage = [
@@ -116,9 +113,9 @@ const JobProfileGR = () => {
     initialValues: {
       curriculumDescription: "",
     },
-    
+
     validationSchema: validationSchema,
-    
+
     onSubmit: (values) => {
       const jobProfileGraduated = values;
       jobProfileGraduated.curriculumWage = getWage;
@@ -127,7 +124,7 @@ const JobProfileGR = () => {
       jobProfileGraduated.curriculumLaborMobility = getLaborMobility;
 
       alert(JSON.stringify(jobProfileGraduated, null, 2));
-      console.log(jobProfileGraduated)
+      console.log(jobProfileGraduated);
     },
   });
 
@@ -137,7 +134,6 @@ const JobProfileGR = () => {
     <div>
       <form className={classes.root} onSubmit={formik.handleSubmit}>
         <Grid container spacing={2} mr={4}>
-        
           <Grid item xs={12}>
             <Autocomplete
               multiple
@@ -149,8 +145,8 @@ const JobProfileGR = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Carreras de Interés"
                   required={careers.length === 0}
+                  label="Carreras de Interés"
                   placeholder="Carreras de Interés"
                 />
               )}
