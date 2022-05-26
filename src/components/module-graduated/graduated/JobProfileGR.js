@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const validationSchema = yup.object({
-  curriculumDescription: yup
+  currDescription: yup
     .string("Escribe una descripción de tu perfil")
     .required("Campo requerido"),
 });
@@ -111,17 +111,17 @@ const JobProfileGR = () => {
   };
   const formik = useFormik({
     initialValues: {
-      curriculumDescription: "",
+      currDescription: "",
     },
 
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
       const jobProfileGraduated = values;
-      jobProfileGraduated.curriculumWage = getWage;
-      jobProfileGraduated.curriculumCareers = careers;
-      jobProfileGraduated.curriculumYearExperience = getYearsExperience;
-      jobProfileGraduated.curriculumLaborMobility = getLaborMobility;
+      jobProfileGraduated.currSalary = getWage;
+      jobProfileGraduated.careers = careers;
+      jobProfileGraduated.currExperience = getYearsExperience;
+      jobProfileGraduated.currIsLaborMobility = getLaborMobility;
 
       alert(JSON.stringify(jobProfileGraduated, null, 2));
       console.log(jobProfileGraduated);
@@ -146,8 +146,8 @@ const JobProfileGR = () => {
                 <TextField
                   {...params}
                   required={careers.length === 0}
-                  label="Carreras de Interés"
-                  placeholder="Carreras de Interés"
+                  label="Carrera(s)"
+                  placeholder="Seleccione la carrera o carreras que estudio"
                 />
               )}
             />
@@ -157,17 +157,17 @@ const JobProfileGR = () => {
               fullWidth
               multiline
               rows={4}
-              name="curriculumDescription"
+              name="currDescription"
               label="Descripción de tu perfil"
-              value={formik.values.curriculumDescription}
+              value={formik.values.currDescription}
               onChange={formik.handleChange}
               error={
-                formik.touched.curriculumDescription &&
-                Boolean(formik.errors.curriculumDescription)
+                formik.touched.currDescription &&
+                Boolean(formik.errors.currDescription)
               }
               helperText={
-                formik.touched.curriculumDescription &&
-                formik.errors.curriculumDescription
+                formik.touched.currDescription &&
+                formik.errors.currDescription
               }
             />
           </Grid>

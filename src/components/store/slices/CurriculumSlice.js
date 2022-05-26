@@ -4,37 +4,37 @@ import { setAlert, setShowAlert, setTypeAlert } from "./AlertSlice";
 import { setLoginPersOrCompName } from "./SignIn/LoginSlice";
 
 /**
- * Initial state of PersonSlice
+ * Initial state of CurriculumSlice
  * @returns
  */
 const initialState = () => ({
-  // List the person of the database
-  listPersons: [],
-  // person
-  person: {},
+  // List the Curriculum of the database
+  listCurriculum: [],
+  // Curriculum
+  Curriculum: {},
 });
 
 let headers;
 /**
- * This slice containt all related to the requests of the one person.
+ * This slice containt all related to the requests of the one Curriculum.
  */
-export const personSlice = createSlice({
-  name: "person",
+export const CurriculumSlice = createSlice({
+  name: "Curriculum",
   initialState: initialState(),
   reducers: {
-    resetPersonSliceState: (state) => initialState(),
+    resetCurriculumSliceState: (state) => initialState(),
 
     /**
-     * Allows you to get data from a person
+     * Allows you to get data from a Curriculum
      * @param {*} state Corresponds to the initial or current state of the slice
      * @param {*} action Corresponds to the action to be performed on the state of the slice
      */
-    setPerson: (state, action) => {
-      state.person = action.payload;
+    setCurriculum: (state, action) => {
+      state.Curriculum = action.payload;
     },
 
-    setListPersons: (state, action) => {
-      state.listPersons = action.payload;
+    setlistCurriculum: (state, action) => {
+      state.listCurriculum = action.payload;
     },
 
     extraReducers: {
@@ -51,16 +51,16 @@ export const personSlice = createSlice({
  */
 
 /**
- *  Allow us add new person to the database
+ *  Allow us add new Curriculum to the database
  * @param {*} ACCESS_TOKEN Token of the user that login to the system
- * @param {*} person Correspond of element to add.
+ * @param {*} Curriculum Correspond of element to add.
  * @returns
  */
-export const addperson = (person) => async (dispatch) => {
+export const addCurriculum = (Curriculum) => async (dispatch) => {
   axios
-    .post("/api/persons/add", person)
+    .post("/api/curriculums/add", Curriculum)
     .then((res) => {
-      dispatch(setPerson(res.data));
+      dispatch(setCurriculum(res.data));
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -68,39 +68,39 @@ export const addperson = (person) => async (dispatch) => {
 };
 
 /**
- *  Allow update a one person
+ *  Allow update a one Curriculum
  * @param {*} ACCESS_TOKEN Token of the user that login to the system
- * @param {*} persId persId id of the person to update.
- * @param {*} person new person to update.
+ * @param {*} currId currId id of the Curriculum to update.
+ * @param {*} Curriculum new Curriculum to update.
  * @returns
  */
-export const updateperson = (ACCESS_TOKEN, persId, person) => (dispatch) => {
+export const updateCurriculum = (ACCESS_TOKEN, currId, Curriculum) => (dispatch) => {
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("api/persons/update/" + persId, person, { headers })
+    .put("api/curriculums/update/" + currId, Curriculum, { headers })
     .then((res) => {
-      dispatch(setPerson(res.data));
-      // Allow display alert when is update a one person
+      dispatch(setCurriculum(res.data));
+      // Allow display alert when is update a one Curriculum
       dispatch(setTypeAlert("1"));
       dispatch(setShowAlert(true));
       dispatch(
         setAlert({
-          alertTitle: "Se actualizo correctamente el perfil",
+          alertTitle: "Se actualizo correctamente el curriculum",
           alertSeverity: "info",
         })
       );
     })
     .catch((err) => {
       console.log(err.toJSON());
-      // Allow display alert when the person was not update correctly
+      // Allow display alert when the curriculum was not update correctly
 
       dispatch(setTypeAlert("1"));
       dispatch(setShowAlert(true));
       dispatch(
         setAlert({
-          alertTitle: "No se pudo actualizar el perfil",
+          alertTitle: "No se pudo actualizar el curriculum",
           alertSeverity: "error",
         })
       );
@@ -108,42 +108,42 @@ export const updateperson = (ACCESS_TOKEN, persId, person) => (dispatch) => {
 };
 
 /**
- * Allow update a one person
+ * Allow update a one Curriculum
  * @param {*} ACCESS_TOKEN Token of the user that login to the system
- * @param {*} persId persId id of the person to update.
- * @param {*} person new person to update.
+ * @param {*} currId currId id of the Curriculum to update.
+ * @param {*} Curriculum new Curriculum to update.
  * @returns
  */
-export const updatePartiallyPerson = (ACCESS_TOKEN, persId, person) => (
+export const updatePartiallyCurriculum = (ACCESS_TOKEN, currId, Curriculum) => (
   dispatch
 ) => {
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .put("api/persons/partiallyUpdate/" + persId, person, { headers })
+    .put("api/curriculums/partiallyUpdate/" + currId, Curriculum, { headers })
     .then((res) => {
-      dispatch(setPerson(res.data));
-      // Allow display alert when is update a one person
+      dispatch(setCurriculum(res.data));
+      // Allow display alert when is update a one Curriculum
       dispatch(setTypeAlert("1"));
       dispatch(setShowAlert(true));
       dispatch(
         setAlert({
-          alertTitle: "Se actualizo correctamente el perfil",
+          alertTitle: "Se actualizo correctamente el curriculum",
           alertSeverity: "info",
           alertPositionH: "right",
         })
       );
     })
     .catch((err) => {
-      console.log("Se actualizo correctamente la persona");
+      console.log("Se actualizo correctamente la Curriculuma");
       console.log(err.toJSON());
-      // Allow display alert when the person was not update correctly
+      // Allow display alert when the curriculum was not update correctly
       dispatch(setTypeAlert("1"));
       dispatch(setShowAlert(true));
       dispatch(
         setAlert({
-          alertTitle: "No se pudo actualizar el perfil",
+          alertTitle: "No se pudo actualizar el curriculum",
           alertSeverity: "error",
           alertPositionH: "right",
         })
@@ -152,20 +152,20 @@ export const updatePartiallyPerson = (ACCESS_TOKEN, persId, person) => (
 };
 
 /**
- * Allows delete a person through you id
+ * Allows delete a Curriculum through you id
  * @param {*} ACCESS_TOKEN Token of the user that login to the system
- * @param {*} persId id of the person that you want to delete
+ * @param {*} currId id of the Curriculum that you want to delete
  * @returns
  */
-export const deleteperson = (ACCESS_TOKEN, persId) => async (dispatch) => {
+export const deleteCurriculum = (ACCESS_TOKEN, currId) => async (dispatch) => {
   headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
 
   axios
-    .delete("/api/persons/" + persId, { headers })
+    .delete("/api/curriculums/" + currId, { headers })
     .then((res) => {
-      dispatch(setPerson(res.data));
+      dispatch(setCurriculum(res.data));
     })
     .catch((err) => {
       console.log(err.toJSON());
@@ -173,20 +173,20 @@ export const deleteperson = (ACCESS_TOKEN, persId) => async (dispatch) => {
 };
 
 /**
- * Allows to obtain a person with its id.
+ * Allows to obtain a Curriculum with its id.
  * @param {*} ACCESS_TOKEN Token of the user that login to the system
- * @param {*} persId persId id to search a one person
+ * @param {*} currId currId id to search a one Curriculum
  * @returns
  */
-export const getperson = (ACCESS_TOKEN, persId) => async (dispatch) => {
+export const getCurriculum = (ACCESS_TOKEN, currId) => async (dispatch) => {
   headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
 
   axios
-    .get("/api/persons/" + persId, { headers })
+    .get("/api/curriculums/" + currId, { headers })
     .then((res) => {
-      dispatch(setPerson(res.data));
+      dispatch(setCurriculum(res.data));
       dispatch(setLoginPersOrCompName(res.data.persFirstName));
     })
     .catch((err) => {
@@ -195,28 +195,28 @@ export const getperson = (ACCESS_TOKEN, persId) => async (dispatch) => {
 };
 
 /**
- * Allows to obtain the list of persons saved in the database.
+ * Allows to obtain the list of curriculums saved in the database.
  * @param {*} ACCESS_TOKEN Token of the user that login to the system
  * @returns
  */
-export const getpersons = (ACCESS_TOKEN) => (dispatch) => {
+export const getcurriculums = (ACCESS_TOKEN) => (dispatch) => {
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
   axios
-    .get("api/persons", { headers })
+    .get("api/curriculums", { headers })
     .then((res) => {
-      dispatch(setListPersons(res.data));
+      dispatch(setlistCurriculum(res.data));
     })
     .catch((err) => {
       console.log(err.toJSON());
     });
 };
 
-//Export the action to reducer of person
+//Export the action to reducer of Curriculum
 export const {
-  setPerson,
-  setListPersons,
-  resetPersonSliceState,
-} = personSlice.actions;
-export default personSlice.reducer;
+  setCurriculum,
+  setlistCurriculum,
+  resetCurriculumSliceState,
+} = CurriculumSlice.actions;
+export default CurriculumSlice.reducer;
