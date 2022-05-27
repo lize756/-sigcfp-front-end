@@ -15,7 +15,7 @@ import * as yup from "yup";
  * Redux
  */
 import { useDispatch, useSelector } from "react-redux";
-import { setCurriculum } from "../../store/slices/CurriculumSlice";
+import { addCurriculum, setCurriculum } from "../../store/slices/CurriculumSlice";
 /**
  * Styles of the visual part of the component
  */
@@ -97,7 +97,9 @@ const JobProfileGR = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
   const list_carreers = useSelector((state) => state.CareerSlice.listCareers);
-
+//Get acces_token of the user that start section
+const ACCESS_TOKEN =
+"Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
   //================================================= Functions ===================================================
 
   /**
@@ -127,8 +129,9 @@ const JobProfileGR = () => {
       jobProfileGraduated.careers = careers;
       jobProfileGraduated.currIsLaborMobility = getLaborMobility;
 
-      alert(JSON.stringify(jobProfileGraduated, null, 2));
+     // alert(JSON.stringify(jobProfileGraduated, null, 2));
       console.log(jobProfileGraduated);
+      //Send info of the curriculum to the store
       dispatch(setCurriculum(jobProfileGraduated));
     },
   });

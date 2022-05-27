@@ -7,6 +7,8 @@ import {
   Button,
   Stack,
   Divider,
+  TextField,
+  Grid,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonalInfoGR from "./PersonalInfoGR";
@@ -15,12 +17,51 @@ import AcademicTrainingGR from "./AcademicTrainingGR";
 import LanguagesGR from "./LanguagesGR";
 
 import { styled } from "@mui/material/styles";
-
+//Redux
+import { useDispatch, useSelector } from "react-redux";
+import { addLanguages, addAcademicStudies } from "../../store/slices/CurriculumSlice";
 const Input = styled("input")({
   display: "none",
 });
 
 const CurriculumGR = () => {
+  /**
+   * ----------------------------------
+   * -------------- REDUX -------------
+   * ----------------------------------
+   */
+
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+
+  const currentAcademicStudies = useSelector(
+    (state) => state.CurriculumSlice.academicStudies
+  );
+  const currentLanguages = useSelector( (state) => state.CurriculumSlice.languageStudies);
+
+
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+
+  const [fileName, setFileName] = React.useState("");
+
+  const handleChange = (event) => {
+    console.log(event.target.files[0].name);
+    setFileName(event.target.files[0].name);
+  };
+
+  const sendData = (event) => {
+    event.preventDefault();
+    // And this functions sends the data to the server
+    // and then to the redux store
+    //Send the data to the store
+
+    //dispatch(addLanguages(ACCESS_TOKEN, temporalLanguage));
+    //dispatch(addAcademicStudies(ACCESS_TOKEN, currentAcademicStudies));
+    console.log("sendData");
+  };
+
   return (
     <div>
       <Accordion>
@@ -62,20 +103,42 @@ const CurriculumGR = () => {
           <LanguagesGR />
         </AccordionDetails>
       </Accordion>
-
-      <Stack mt={5} alignItems="center">
-        <label htmlFor="contained-button-file">
-          <Input
-            accept="pdf/*"
-            id="contained-button-file"
-            multiple
-            type="file"
+      <Grid container spacing={2} mt={3}>
+        <Grid item xs={2}>
+          <label htmlFor="contained-button-file">
+            <Input
+              accept="pdf/*"
+              id="contained-button-file"
+              multiple
+              type="file"
+              onChange={handleChange}
+            />
+            <Button variant="contained" component="span">
+              Subir Hoja de Vida
+            </Button>
+          </label>
+        </Grid>
+        <Grid item xs={4}>
+          <TextField
+            fullWidth
+            id="outlined-read-only-input"
+            value={`${fileName}`}
+            InputProps={{
+              readOnly: true,
+            }}
           />
-          <Button variant="contained" component="span">
-            Subir Hoja de Vida
-          </Button>
-        </label>
-      </Stack>
+        </Grid>
+      </Grid>
+      <div>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={sendData}
+        >
+          Enviar.
+        </Button>
+      </div>
     </div>
   );
 };

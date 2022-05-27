@@ -101,9 +101,6 @@ const AcademicTrainingGR = () => {
     (state) => state.CurriculumSlice.curriculum
   );
 
-  //Get acces_token of the user that start section
-  const ACCESS_TOKEN =
-    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
 
   /**
    * ==================================================================
@@ -132,6 +129,7 @@ const AcademicTrainingGR = () => {
       delete study.acadStudId;
     });
 
+    console.log(temporalStudiesArray);
     //Send the data to the store
     dispatch(setAcademicStudies(temporalStudiesArray));
   };

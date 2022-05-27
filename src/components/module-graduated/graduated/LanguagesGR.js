@@ -18,7 +18,12 @@ import { makeStyles } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
-import { setLanguageStudies } from "../../store/slices/CurriculumSlice";
+import {
+  addAcademicStudies,
+  addLanguages,
+  setAcademicStudies,
+  setLanguageStudies,
+} from "../../store/slices/CurriculumSlice";
 
 /**
  * Styles of the visual part of the component
@@ -67,6 +72,11 @@ const LanguagesGR = () => {
   // Allow to send the elements of store
   const dispatch = useDispatch();
 
+  const currentAcademicStudies = useSelector(
+    (state) => state.CurriculumSlice.academicStudies
+  );
+
+ 
   const classes = useStyles();
   const [studies, setStudies] = useState([
     {
@@ -92,10 +102,8 @@ const LanguagesGR = () => {
     temporalLanguage.map((study) => {
       delete study.languId;
     });
-
-    //Send the data to the store
+    console.log(temporalLanguage);
     dispatch(setLanguageStudies(temporalLanguage));
-    //console.log(temporalLanguage);
   };
 
   /**

@@ -67,9 +67,12 @@ export const CurriculumSlice = createSlice({
  * @param {*} Curriculum Correspond of element to add.
  * @returns
  */
-export const addCurriculum = (Curriculum) => async (dispatch) => {
+export const addCurriculum = (ACCESS_TOKEN,Curriculum) => async (dispatch) => {
+  const headers = {
+    Authorization: `${ACCESS_TOKEN}`,
+  };
   axios
-    .post("/api/curriculums/add", Curriculum)
+    .post("/api/curriculums/add", Curriculum,{headers})
     .then((res) => {
       dispatch(setCurriculum(res.data));
     })
@@ -225,6 +228,52 @@ export const getcurriculums = (ACCESS_TOKEN) => (dispatch) => {
       console.log(err.toJSON());
     });
 };
+
+/**
+ * ========================================================================
+ * ========Functions for academyStudy and language entities================
+ * ========================================================================
+ */
+
+/**
+ * Allows to added one list of academicStudies in the database
+ * @param {*} academicStudies academicStudies to add.
+ * @returns
+ */
+ export const addAcademicStudies = (ACCESS_TOKEN,academicStudies) => async (dispatch) => {
+  headers = {
+    Authorization: `${ACCESS_TOKEN}`,
+  };
+  axios
+    .post("/api/academicStudies/addAcademicStudies", academicStudies,{ headers })
+    .then((res) => {
+      dispatch(setAcademicStudies(res.data));
+    })
+    .catch((err) => {
+      console.log(err.toJSON());
+    });
+};
+
+
+/**
+ * Allows to added one list of languages in the database
+ * @param {*} languages languages to add.
+ * @returns
+ */
+ export const addLanguages = (ACCESS_TOKEN,languages) => async (dispatch) => {
+  headers = {
+    Authorization: `${ACCESS_TOKEN}`,
+  };
+  axios
+    .post("/api/languages/addLanguages",languages,{ headers })
+    .then((res) => {
+      dispatch(setLanguageStudies(res.data));
+    })
+    .catch((err) => {
+      console.log(err.toJSON());
+    });
+};
+
 
 //Export the action to reducer of Curriculum
 export const {

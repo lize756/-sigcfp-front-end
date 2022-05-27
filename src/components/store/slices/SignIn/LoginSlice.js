@@ -10,6 +10,7 @@ import { resetCareerSliceState } from "../CareerSlice";
 import { resetCompanySliceState } from "../CompanySlice";
 import { resetContactSliceState } from "../ContactSlice";
 import { resetCountrySliceState } from "../CountrySlice";
+import { resetCurriculumSliceState } from "../CurriculumSlice";
 import { resetInternRequestSliceState } from "../InternRequestSlice";
 import { resetPersonSliceState } from "../PersonSlice";
 import { resetUserrSliceState } from "../UserrSlice";
@@ -117,6 +118,7 @@ const resetAllState = (dispatch) => {
   dispatch(resetInternRequestSliceState());
   dispatch(resetPersonSliceState());
   dispatch(resetUserrSliceState());
+  dispatch(resetCurriculumSliceState());
 };
 
 /**
