@@ -59,10 +59,10 @@ const LanguagesGR = () => {
   const [studies, setStudies] = useState([
     {
       id: uuidv4(),
-      languageStudy: "",
-      levelStudy: "",
-      endDate: "",
-      institutionName: "",
+      languName: "",
+      languLevel: "",
+      languEndDate: "",
+      languInstitutionName: "",
     },
   ]);
 
@@ -83,23 +83,23 @@ const LanguagesGR = () => {
     setStudies([
       ...studies,
       {
-        id: uuidv4(),
-        languageStudy: "",
-        levelStudy: "",
-        endDate: "",
-        institutionName: "",
+        languId: uuidv4(),
+        languName: "",
+        languLevel: "",
+        languEndDate: "",
+        languInstitutionName: "",
       },
     ]);
   };
 
   /**
    * This function allows to delete a new form
-   * @param {*} id of study
+   * @param {*} languId of study
    */
-  const handleRemoveStudy = (id) => {
+  const handleRemoveStudy = (languId) => {
     const values = [...studies];
     values.splice(
-      values.findIndex((value) => value.id === id),
+      values.findIndex((value) => value.languId === languId),
       1
     );
     setStudies(values);
@@ -107,12 +107,12 @@ const LanguagesGR = () => {
 
   /**
    * This function allows you to save changes to studies details
-   * @param {*} id of studies
+   * @param {*} languId of studies
    * @param {*} e is a event
    */
-  const handleChange = (id, e) => {
+  const handleChange = (languId, e) => {
     const newStudy = studies.map((i) => {
-      if (id === i.id) {
+      if (languId === i.languId) {
         i[e.target.name] = e.target.value;
         console.log(e.target.name);
       }
@@ -129,16 +129,16 @@ const LanguagesGR = () => {
 
         <form className={classes.root} onSubmit={handleSubmit}>
           {studies.map((study) => (
-            <div key={study.id}>
+            <div key={study.languId}>
               <Autocomplete
                 fullWidth
                 disablePortal
-                name="languageStudy"
+                name="languName"
                 id="combo-box-demo"
                 options={language}
                 onChange={(e, value) => {
-                  handleChange(study.id, {
-                    target: { value: value, name: "languageStudy" },
+                  handleChange(study.languId, {
+                    target: { value: value, name: "languName" },
                   });
                 }}
                 renderInput={(params) => (
@@ -152,8 +152,8 @@ const LanguagesGR = () => {
                 id="combo-box-demo"
                 options={level}
                 onChange={(e, value) => {
-                  handleChange(study.id, {
-                    target: { value: value, name: "levelStudy" },
+                  handleChange(study.languId, {
+                    target: { value: value, name: "languLevel" },
                   });
                 }}
                 renderInput={(params) => (
@@ -166,21 +166,21 @@ const LanguagesGR = () => {
               />
 
               <TextField
-                name="endDate"
+                name="languEndDate"
                 label="Fecha de finalización"
                 variant="outlined"
-                value={study.endDate}
+                value={study.languEndDate}
                 placeholder="MM/AAAA"
-                onChange={(e) => handleChange(study.id, e)}
+                onChange={(e) => handleChange(study.languId, e)}
               />
 
               <TextField
-                name="institutionName"
+                name="languInstitutionName"
                 label="Institución en la que estudio"
                 variant="outlined"
-                value={study.institutionName}
+                value={study.languInstitutionName}
                 placeholder="Universidad ICESI"
-                onChange={(e) => handleChange(study.id, e)}
+                onChange={(e) => handleChange(study.languId, e)}
               />
 
               <div>
@@ -190,7 +190,7 @@ const LanguagesGR = () => {
                   </IconButton>
                   <IconButton
                     disabled={studies.length === 1}
-                    onClick={() => handleRemoveStudy(study.id)}
+                    onClick={() => handleRemoveStudy(study.languId)}
                   >
                     <RemoveIcon color="error" />
                   </IconButton>

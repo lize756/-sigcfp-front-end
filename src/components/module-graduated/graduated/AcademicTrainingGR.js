@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   TextField,
@@ -16,7 +16,9 @@ import RemoveIcon from "@mui/icons-material/RemoveCircle";
 import { makeStyles } from "@material-ui/core";
 
 import { v4 as uuidv4 } from "uuid";
-
+//Redux
+import { useDispatch, useSelector } from "react-redux";
+import {setAcademicStudies} from "../../store/slices/CurriculumSlice";
 /**
  * Styles of the visual part of the component
  */
@@ -42,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * =============================================================
+ * =========================== Lists ========================
+ * =============================================================
+ */
 const status = ["Culminado", "En curso", "Abandonado", "Aplazado"];
 const level = [
   "Preescolar",
@@ -56,22 +63,63 @@ const level = [
   "Maestría",
   "Doctorado",
 ];
+// =========================== End lists ========================
 
 const AcademicTrainingGR = () => {
+  /**
+   * =============================================================
+   * =========================== Constants ========================
+   * =============================================================
+   */
+
   const classes = useStyles();
   const [studies, setStudies] = useState([
     {
-      id: uuidv4(),
+      acadStudId: uuidv4(),
       acadStudLevel: "",
       acadStudStatus: "",
       acadStudStartDate: "",
       acadStudEndDate: "",
       acadStudTitule: "",
       acadStudInsti: "",
-      acadCountryName: "",
-      acadCityName: "",
     },
   ]);
+
+  //============================ End constants=============================
+
+  /**
+   * ----------------------------------
+   * -------------- REDUX -------------
+   * ----------------------------------
+   */
+
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+
+  // Get person saved of the store
+  const currentCurriculum = useSelector((state) => state.CurriculumSlice.curriculum);
+
+  //Correspond of list of countries saved in the store.
+  const listCountries = useSelector(
+    (state) => state.CountrySlice.listCountries
+  );
+  //Correspond of list of cities saved in the store.
+  const listCities = useSelector((state) => state.CountrySlice.listCities);
+  //Get acces_token of the user that start section
+  const ACCESS_TOKEN =
+    "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
+
+  /**
+   * ==================================================================
+   * ===========================useEffect===============================
+   * ==================================================================
+   */
+
+  /**
+   * ---------------------------End useEffect-----------------------------
+   */
+
+  //================================================= Functions ===================================================
 
   /**
    * This method allow print to console the result of the form
@@ -80,7 +128,17 @@ const AcademicTrainingGR = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(studies);
+    // Allows you to make a deep copy of the array
+    const temporalStudiesArray = JSON.parse(JSON.stringify(studies));
+
+    //Delete the id of the array
+    temporalStudiesArray.map((study) => {
+      delete study.acadStudId;
+    });
+
+  
+    //Send the data to the store
+    dispatch(setAcademicStudies(temporalStudiesArray));
   };
 
   /**
@@ -90,9 +148,9 @@ const AcademicTrainingGR = () => {
     setStudies([
       ...studies,
       {
-        id: uuidv4(),
+        acadStudId: uuidv4(),
         acadStudLevel: "",
-        studyStatus: "",
+        acadStudStatus: "",
         acadStudStartDate: "",
         acadStudEndDate: "",
         acadStudTitule: "",
@@ -103,12 +161,12 @@ const AcademicTrainingGR = () => {
 
   /**
    * This function allows to delete a new form
-   * @param {*} id of study
+   * @param {*} acadStudId of study
    */
-  const handleRemoveStudy = (id) => {
+  const handleRemoveStudy = (acadStudId) => {
     const values = [...studies];
     values.splice(
-      values.findIndex((value) => value.id === id),
+      values.findIndex((value) => value.acadStudId === acadStudId),
       1
     );
     setStudies(values);
@@ -116,17 +174,28 @@ const AcademicTrainingGR = () => {
 
   /**
    * This function allows you to save changes to studies details
-   * @param {*} id of studies
+   * @param {*} acadStudId of studies
    * @param {*} e is a event
    */
-  const handleChange = (id, e) => {
+  const handleChange = (acadStudId, e) => {
     const newStudy = studies.map((i) => {
-      if (id === i.id) {
+      if (acadStudId === i.acadStudId) {
         i[e.target.name] = e.target.value;
+
+        if (e.target.name === "acadStudStartDate") {
+          const [year, month, day] = i.acadStudStartDate.split("-");
+          const formattedStDate = day + "/" + month + "/" + year;
+          i.acadStudStartDate = formattedStDate;
+        }
+        if (e.target.name === "acadStudEndDate") {
+          const [year, month, day] = i.acadStudEndDate.split("-");
+          const formattedStDate = day + "/" + month + "/" + year;
+          i.acadStudEndDate = formattedStDate;
+        }
       }
       return i;
     });
-
+    //console.log(newStudy);
     setStudies(newStudy);
   };
 
@@ -138,14 +207,14 @@ const AcademicTrainingGR = () => {
 
         <form className={classes.root} onSubmit={handleSubmit}>
           {studies.map((study) => (
-            <div key={study.id}>
+            <div key={study.acadStudId}>
               <Autocomplete
                 fullWidth
                 disablePortal
                 id="combo-box-demo"
                 options={level}
                 onChange={(e, value) => {
-                  handleChange(study.id, {
+                  handleChange(study.acadStudId, {
                     target: { value: value, name: "acadStudLevel" },
                   });
                 }}
@@ -160,8 +229,8 @@ const AcademicTrainingGR = () => {
                 id="combo-box-demo"
                 options={status}
                 onChange={(e, value) => {
-                  handleChange(study.id, {
-                    target: { value: value, name: "studyStatus" },
+                  handleChange(study.acadStudId, {
+                    target: { value: value, name: "acadStudStatus" },
                   });
                 }}
                 renderInput={(params) => (
@@ -170,21 +239,24 @@ const AcademicTrainingGR = () => {
               />
 
               <TextField
+                required
+                fullWidth
                 name="acadStudStartDate"
                 label="Fecha de inicio del estudio"
                 variant="outlined"
-                required
-                value={study.acadStudStartDate}
-                placeholder="MM/AAAA"
-                onChange={(e) => handleChange(study.id, e)}
+                InputLabelProps={{ shrink: true, required: true }}
+                type="date"
+                onChange={(e) => handleChange(study.acadStudId, e)}
               />
               <TextField
+                required
+                fullWidth
                 name="acadStudEndDate"
                 label="Fecha de finalización"
                 variant="outlined"
-                value={study.acadStudEndDate}
-                placeholder="MM/AAAA"
-                onChange={(e) => handleChange(study.id, e)}
+                InputLabelProps={{ shrink: true, required: true }}
+                type="date"
+                onChange={(e) => handleChange(study.acadStudId, e)}
               />
 
               <TextField
@@ -194,7 +266,7 @@ const AcademicTrainingGR = () => {
                 required
                 value={study.acadStudTitule}
                 placeholder="Ingeniero de sistemas"
-                onChange={(e) => handleChange(study.id, e)}
+                onChange={(e) => handleChange(study.acadStudId, e)}
               />
 
               <TextField
@@ -204,76 +276,8 @@ const AcademicTrainingGR = () => {
                 required
                 value={study.acadStudInsti}
                 placeholder="Universidad ICESI"
-                onChange={(e) => handleChange(study.id, e)}
+                onChange={(e) => handleChange(study.acadStudId, e)}
               />
-              <Grid item xs={6}>
-                <Autocomplete
-                  freeSolo
-                  id="free-solo-persCountryName"
-                  disableClearable
-                  defaultValue={{ name: formik.values.persCountryName }}
-                  /**
-                   * List of cities
-                   */
-                  options={listCountries}
-                  /**
-                   * This property allows to show in the user's view the property that we want to take from the object.
-                   * Such as: If we need show the name of the country then we ask the property of the object that correspond the name
-                   */
-                  getOptionLabel={(option) => option.name}
-                  /**
-                   * Allows send the select object to variable CompCity that correspond the element select
-                   */
-                  onChange={(event, value) => setCountry(value)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Seleccione su país"
-                      variant="outlined"
-                      required
-                      InputProps={{
-                        ...params.InputProps,
-                        type: "search",
-                      }}
-                    />
-                  )}
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <Autocomplete
-                  freeSolo
-                  id="free-solo-persCityName"
-                  defaultValue={formik.values.persCityName}
-                  disableClearable
-                  /**
-                   * List of cities
-                   */
-                  options={listCities}
-                  /**
-                   * This property allows to show in the user's view the property that we want to take from the object.
-                   * Such as: If we need show the name of the city then we ask the property of the object that correspond the name
-                   */
-                  getOptionLabel={(option) => option}
-                  /**
-                   * Allows send the select object to variable City that correspond the element select
-                   */
-                  onChange={(event, value) => setCity(value)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Seleccione la ciudad"
-                      variant="outlined"
-                      required
-                      InputProps={{
-                        ...params.InputProps,
-                        type: "search",
-                      }}
-                      onChange={(e) => setCity(e.target.value)}
-                    />
-                  )}
-                />
-              </Grid>
 
               <div>
                 <Stack direction="row" alignItems="center" spacing={2}>
@@ -282,7 +286,7 @@ const AcademicTrainingGR = () => {
                   </IconButton>
                   <IconButton
                     disabled={studies.length === 1}
-                    onClick={() => handleRemoveStudy(study.id)}
+                    onClick={() => handleRemoveStudy(study.acadStudId)}
                   >
                     <RemoveIcon color="error" />
                   </IconButton>

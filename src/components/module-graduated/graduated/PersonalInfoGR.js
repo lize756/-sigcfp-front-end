@@ -15,7 +15,7 @@ import * as yup from "yup";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
 import { getCitiesAssociatedToCountry } from "../../store/slices/CountrySlice";
-import { addperson, updateperson } from "../../store/slices/PersonSlice";
+import { updateperson } from "../../store/slices/PersonSlice";
 /**
  * Styles of the visual part of the component
  */
@@ -132,6 +132,19 @@ const PersonalInfoGR = () => {
   }, []);
 
   /**
+   * This used effect allow display the list of countries associated a country particular
+   */
+   useEffect(() => {
+    if (listCountries.length > 0) {
+      dispatch(getCitiesAssociatedToCountry(getCountry.name));
+    }
+  }, [getCountry]);
+
+  /**
+   * ---------------------------End useEffect-----------------------------
+   */
+
+  /**
    * ==================================================================
    * =========================== Formik ===============================
    * ==================================================================
@@ -187,11 +200,9 @@ const PersonalInfoGR = () => {
           ? personalInfo.persMaritalStatus
           : getCivilStatus;
       personalInfo.persCountryName =
-        personalInfo.persCountryName !== ""
-          ? personalInfo.persCountryName
-          : getCountry.name;
+        getCountry.name !== "" ? getCountry.name : personalInfo.persCountryName;
       personalInfo.persCityName =
-        personalInfo.persCityName !== "" ? personalInfo.persCityName : getCity;
+        getCity !== "" ? getCity : personalInfo.persCityName;
       personalInfo.persIsDisability = getDisability;
       personalInfo.persEthnicGroup =
         getEthnicGroup !== "" ? getEthnicGroup : personalInfo.persEthnicGroup;
@@ -209,23 +220,7 @@ const PersonalInfoGR = () => {
    * =========================== end Formik ===========================
    */
 
-  /**
-   * ==================================================================
-   * =========================== useEffect ============================
-   * ==================================================================
-   */
-  /**
-   * This used effect allow display the list of countries associated a country particular
-   */
-  useEffect(() => {
-    if (listCountries.length > 0) {
-      dispatch(getCitiesAssociatedToCountry(getCountry.name));
-    }
-  }, [getCountry]);
-
-  /**
-   * ---------------------------End useEffect-----------------------------
-   */
+ 
 
   /**
    * ==================================================================

@@ -22,6 +22,7 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getperson } from "../../components/store/slices/PersonSlice";
 import { getcareers } from "../../components/store/slices/CareerSlice";
+import { setAcademicStudies, setCurriculum } from "../../components/store/slices/CurriculumSlice";
 
 const IconWrapperStyle = styled("div")(({ theme }) => ({
   margin: "auto",
@@ -46,12 +47,15 @@ const ContentsGraduated = () => {
   const ACCESS_TOKEN =
     "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
 
+  const currentPerson = useSelector((state) => state.PersonSlice.person);
   //Axios
   useEffect(() => {
     //Adde to store the person that user login
     dispatch(getperson(ACCESS_TOKEN, userPersonId));
     //Added to store of list of carreers.
     dispatch(getcareers(ACCESS_TOKEN));
+    //Added to store of curriculum of the person
+    dispatch(setCurriculum(currentPerson.curriculum));
   }, []);
   return (
     <div>

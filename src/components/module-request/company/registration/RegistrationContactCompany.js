@@ -63,6 +63,7 @@ const RegistrationContactCompany = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    //Delete contact id from the array
     contacts.map((c) => {
       delete c.id;
       c["company"] = company;

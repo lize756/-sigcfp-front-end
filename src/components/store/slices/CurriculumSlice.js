@@ -12,6 +12,8 @@ const initialState = () => ({
   listCurriculum: [],
   // Curriculum
   Curriculum: {},
+  // academicStudies
+  academicStudies: [],
 });
 
 let headers;
@@ -33,6 +35,9 @@ export const CurriculumSlice = createSlice({
       state.Curriculum = action.payload;
     },
 
+    setAcademicStudies: (state, action) => {
+      state.academicStudies = action.payload;
+    },
     setlistCurriculum: (state, action) => {
       state.listCurriculum = action.payload;
     },
@@ -74,7 +79,9 @@ export const addCurriculum = (Curriculum) => async (dispatch) => {
  * @param {*} Curriculum new Curriculum to update.
  * @returns
  */
-export const updateCurriculum = (ACCESS_TOKEN, currId, Curriculum) => (dispatch) => {
+export const updateCurriculum = (ACCESS_TOKEN, currId, Curriculum) => (
+  dispatch
+) => {
   const headers = {
     Authorization: `${ACCESS_TOKEN}`,
   };
@@ -216,6 +223,7 @@ export const getcurriculums = (ACCESS_TOKEN) => (dispatch) => {
 //Export the action to reducer of Curriculum
 export const {
   setCurriculum,
+  setAcademicStudies,
   setlistCurriculum,
   resetCurriculumSliceState,
 } = CurriculumSlice.actions;
