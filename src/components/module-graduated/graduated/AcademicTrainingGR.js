@@ -18,7 +18,7 @@ import { makeStyles } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
 //Redux
 import { useDispatch, useSelector } from "react-redux";
-import {setAcademicStudies} from "../../store/slices/CurriculumSlice";
+import { setAcademicStudies } from "../../store/slices/CurriculumSlice";
 /**
  * Styles of the visual part of the component
  */
@@ -97,14 +97,10 @@ const AcademicTrainingGR = () => {
   const dispatch = useDispatch();
 
   // Get person saved of the store
-  const currentCurriculum = useSelector((state) => state.CurriculumSlice.curriculum);
-
-  //Correspond of list of countries saved in the store.
-  const listCountries = useSelector(
-    (state) => state.CountrySlice.listCountries
+  const currentCurriculum = useSelector(
+    (state) => state.CurriculumSlice.curriculum
   );
-  //Correspond of list of cities saved in the store.
-  const listCities = useSelector((state) => state.CountrySlice.listCities);
+
   //Get acces_token of the user that start section
   const ACCESS_TOKEN =
     "Bearer " + useSelector((state) => state.userLogin).responseUserLogin.token;
@@ -136,7 +132,6 @@ const AcademicTrainingGR = () => {
       delete study.acadStudId;
     });
 
-  
     //Send the data to the store
     dispatch(setAcademicStudies(temporalStudiesArray));
   };

@@ -14,6 +14,8 @@ const initialState = () => ({
   Curriculum: {},
   // academicStudies
   academicStudies: [],
+  // languageStudies
+  languageStudies: [],
 });
 
 let headers;
@@ -38,6 +40,10 @@ export const CurriculumSlice = createSlice({
     setAcademicStudies: (state, action) => {
       state.academicStudies = action.payload;
     },
+    setLanguageStudies: (state, action) => {
+      state.languageStudies = action.payload;
+    },
+
     setlistCurriculum: (state, action) => {
       state.listCurriculum = action.payload;
     },
@@ -223,6 +229,7 @@ export const getcurriculums = (ACCESS_TOKEN) => (dispatch) => {
 //Export the action to reducer of Curriculum
 export const {
   setCurriculum,
+  setLanguageStudies,
   setAcademicStudies,
   setlistCurriculum,
   resetCurriculumSliceState,

@@ -16,6 +16,9 @@ import RemoveIcon from "@mui/icons-material/RemoveCircle";
 import { makeStyles } from "@material-ui/core";
 
 import { v4 as uuidv4 } from "uuid";
+//Redux
+import { useDispatch, useSelector } from "react-redux";
+import { setLanguageStudies } from "../../store/slices/CurriculumSlice";
 
 /**
  * Styles of the visual part of the component
@@ -55,10 +58,19 @@ const language = [
 const level = ["Basico", "Intermedio", "Avanzado"];
 
 const LanguagesGR = () => {
+  /**
+   * ----------------------------------
+   * -------------- REDUX -------------
+   * ----------------------------------
+   */
+
+  // Allow to send the elements of store
+  const dispatch = useDispatch();
+
   const classes = useStyles();
   const [studies, setStudies] = useState([
     {
-      id: uuidv4(),
+      languId: uuidv4(),
       languName: "",
       languLevel: "",
       languEndDate: "",
@@ -73,7 +85,17 @@ const LanguagesGR = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(studies);
+    // Allows you to make a deep copy of the array
+    const temporalLanguage = JSON.parse(JSON.stringify(studies));
+
+    //Delete the id of the array
+    temporalLanguage.map((study) => {
+      delete study.languId;
+    });
+
+    //Send the data to the store
+    dispatch(setLanguageStudies(temporalLanguage));
+    //console.log(temporalLanguage);
   };
 
   /**
@@ -114,7 +136,11 @@ const LanguagesGR = () => {
     const newStudy = studies.map((i) => {
       if (languId === i.languId) {
         i[e.target.name] = e.target.value;
-        console.log(e.target.name);
+        if (e.target.name === "languEndDate") {
+          const [year, month, day] = e.target.value.split("-");
+          const formattedStDate = `${day}/${month}/${year}`;
+          i[e.target.name] = formattedStDate;
+        }
       }
       return i;
     });
@@ -164,13 +190,14 @@ const LanguagesGR = () => {
                   />
                 )}
               />
-
               <TextField
+                required
+                fullWidth
                 name="languEndDate"
                 label="Fecha de finalización"
                 variant="outlined"
-                value={study.languEndDate}
-                placeholder="MM/AAAA"
+                InputLabelProps={{ shrink: true, required: true }}
+                type="date"
                 onChange={(e) => handleChange(study.languId, e)}
               />
 
