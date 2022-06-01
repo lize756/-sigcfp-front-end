@@ -1,8 +1,8 @@
 import {Pact} from '@pact-foundation/pact';
 import path from 'path';
 
-const consumerName = 'sigcfpFront';
-const providerName = 'sigcfpBack';
+const consumerName = 'SigcfpFront';
+const providerName = 'SigcfpBack';
 
 export const provider = new Pact({
     consumer: consumerName,
