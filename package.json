@@ -20,6 +20,7 @@
     "babel-preset-es2015": "^6.24.1",
     "bootstrap": "5.0.0-alpha1",
     "crypto-browserify": "^3.12.0",
+    "cypress-localstorage-commands": "^2.0.0",
     "formik": "^2.2.9",
     "install": "^0.13.0",
     "material-ui-colors": "^1.0.0",
@@ -73,5 +74,4 @@
     "@faker-js/faker": "^6.3.1",
     "cypress": "^9.7.0"
   }
-  
 }
