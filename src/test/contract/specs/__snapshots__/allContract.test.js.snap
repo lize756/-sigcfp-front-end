@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sigcfp when it want to create an inter request`] = `
+Object {
+  "inteRequId": 542,
+    "inteRequBondingType": "Contrato Indefinido",
+    "inteRequDetails": null,
+    "inteRequCompetencies": "Liderazgo,Responsabilidad,Compromiso,Respecto",
+    "inteRequCreate": "10/12/2020",
+    "inteRequDepartment": "Operaciones",
+    "inteRequDuration": "12 MESES",
+    "inteRequFunctions": "Verificación de material en bodega,Verificación de costos de fletes,Evaluación de urgencias, Planeación de flujos de producto en las bodegas de acuerdo a los requerimientos comerciales, teniendo en cuenta los ciclos de servicio, los pedidos a despachar según las diferentes observaciones de entrega, las rutas de distribución y restricciones de los clientes.,Logística y verificación de novedades al recepcionar los materiales y solicitud de material.",
+    "inteRequIsinprocess": "0",
+    "inteRequName": "Coordinador de operaciones",
+    "inteRequNumber": 2,
+    "inteRequOtherBenefits": " Otros servicios",
+    "inteRequStatus": null,
+    "inteRequLocation": null,
+    "inteRequSalary": 20000000,
+    "inteRequStDate": "10/12/2000",
+    "careers": [],
+    "company": null,
+    "inteRequCountryName": null,
+    "inteRequCityName": null,
+}
+`;
+
+exports[`Sigcfp when it want to delete an inter request`] = `""`;
+
+exports[`Sigcfp  when you want to edit an inter request`] = `
+Object {
+    "inteRequId": 542,
+    "inteRequBondingType": "Contrato Indefinido",
+    "inteRequDetails": null,
+    "inteRequCompetencies": "Liderazgo,Responsabilidad,Compromiso,Respecto",
+    "inteRequCreate": "10/12/2020",
+    "inteRequDepartment": "Operaciones",
+    "inteRequDuration": "12 MESES",
+    "inteRequFunctions": "Verificación de material en bodega,Verificación de costos de fletes,Evaluación de urgencias, Planeación de flujos de producto en las bodegas de acuerdo a los requerimientos comerciales, teniendo en cuenta los ciclos de servicio, los pedidos a despachar según las diferentes observaciones de entrega, las rutas de distribución y restricciones de los clientes.,Logística y verificación de novedades al recepcionar los materiales y solicitud de material.",
+    "inteRequIsinprocess": "0",
+    "inteRequName": "Coordinador de operaciones",
+    "inteRequNumber": 2,
+    "inteRequOtherBenefits": " Otros servicios",
+    "inteRequStatus": null,
+    "inteRequLocation": null,
+    "inteRequSalary": 20000000,
+    "inteRequStDate": "10/12/2000",
+    "careers": [],
+    "company": null,
+    "inteRequCountryName": null,
+    "inteRequCityName": null,
+  }
+`;
+
+exports[`Sigcfp  when it want to get aninter request`] = `
+Object {
+    "inteRequId": 542,
+    "inteRequBondingType": "Contrato Indefinido",
+    "inteRequDetails": null,
+    "inteRequCompetencies": "Liderazgo,Responsabilidad,Compromiso,Respecto",
+    "inteRequCreate": "10/12/2020",
+    "inteRequDepartment": "Operaciones",
+    "inteRequDuration": "12 MESES",
+    "inteRequFunctions": "Verificación de material en bodega,Verificación de costos de fletes,Evaluación de urgencias, Planeación de flujos de producto en las bodegas de acuerdo a los requerimientos comerciales, teniendo en cuenta los ciclos de servicio, los pedidos a despachar según las diferentes observaciones de entrega, las rutas de distribución y restricciones de los clientes.,Logística y verificación de novedades al recepcionar los materiales y solicitud de material.",
+    "inteRequIsinprocess": "0",
+    "inteRequName": "Coordinador de operaciones",
+    "inteRequNumber": 2,
+    "inteRequOtherBenefits": " Otros servicios",
+    "inteRequStatus": null,
+    "inteRequLocation": null,
+    "inteRequSalary": 20000000,
+    "inteRequStDate": "10/12/2000",
+    "careers": [],
+    "company": null,
+    "inteRequCountryName": null,
+    "inteRequCityName": null,
+  }
+`;
+
+exports[`Sigcfp when it want to obtain all list of inter request`] = `  
+Array [
+    Object {
+       "inteRequId": 542,
+    "inteRequBondingType": "Contrato Indefinido",
+    "inteRequDetails": null,
+    "inteRequCompetencies": "Liderazgo,Responsabilidad,Compromiso,Respecto",
+    "inteRequCreate": "10/12/2020",
+    "inteRequDepartment": "Operaciones",
+    "inteRequDuration": "12 MESES",
+    "inteRequFunctions": "Verificación de material en bodega,Verificación de costos de fletes,Evaluación de urgencias, Planeación de flujos de producto en las bodegas de acuerdo a los requerimientos comerciales, teniendo en cuenta los ciclos de servicio, los pedidos a despachar según las diferentes observaciones de entrega, las rutas de distribución y restricciones de los clientes.,Logística y verificación de novedades al recepcionar los materiales y solicitud de material.",
+    "inteRequIsinprocess": "0",
+    "inteRequName": "Coordinador de operaciones",
+    "inteRequNumber": 2,
+    "inteRequOtherBenefits": " Otros servicios",
+    "inteRequStatus": null,
+    "inteRequLocation": null,
+    "inteRequSalary": 20000000,
+    "inteRequStDate": "10/12/2000",
+    "careers": [],
+    "company": null,
+    "inteRequCountryName": null,
+    "inteRequCityName": null,
+      }
+]
+`;
