@@ -384,6 +384,7 @@ const RequestList = () => {
             Mis Solicitudes
           </Typography>
           <Button
+            id="btn-create-intern-request"
             variant="contained"
             component={RouterLink}
             to="/company/create"

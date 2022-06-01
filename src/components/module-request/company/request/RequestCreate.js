@@ -252,6 +252,7 @@ const RequestCreate = () => {
               <TextField
                 required
                 fullWidth
+                id="inteRequName-input"
                 name="inteRequName"
                 placeholder="Solicitud de practicantes de ingeniería"
                 label="Nombre de la solicitud"
@@ -263,6 +264,7 @@ const RequestCreate = () => {
               <Autocomplete
                 multiple
                 fullWidth
+                id="careers-input"
                 options={list_carreers}
                 getOptionLabel={(option) => option.careName}
                 name="careers"
@@ -281,6 +283,7 @@ const RequestCreate = () => {
             <Grid item xs={12}>
               <TextField
                 required
+                id="inteRequNumber-input"
                 fullWidth
                 name="inteRequDepartment"
                 placeholder="Recursos humanos\n"
@@ -292,6 +295,7 @@ const RequestCreate = () => {
               <TextField
                 required
                 fullWidth
+                id="inteRequStDate-input"
                 name="inteRequNumber"
                 placeholder="5"
                 label="Número de Estudiantes"
@@ -303,6 +307,7 @@ const RequestCreate = () => {
               <TextField
                 required
                 fullWidth
+                id="inteRequDuration-input"
                 name="inteRequStDate"
                 label="Fecha de Inicio"
                 InputLabelProps={{ shrink: true, required: true }}
@@ -314,6 +319,7 @@ const RequestCreate = () => {
               <Autocomplete
                 multiple
                 fullWidth
+                id="functions-input"
                 options={[]}
                 rows={4}
                 freeSolo
@@ -345,6 +351,7 @@ const RequestCreate = () => {
             <Grid item xs={12}>
               <Autocomplete
                 multiple
+                id="competencies-input"
                 fullWidth
                 options={[]}
                 rows={4}
@@ -377,6 +384,7 @@ const RequestCreate = () => {
             <Grid item xs={6}>
               <TextField
                 multiline
+                id="inteRequOtherBenefits-input"
                 fullWidth
                 required
                 placeholder="6 MESES"
@@ -389,6 +397,7 @@ const RequestCreate = () => {
               <TextField
                 multiline
                 required
+                id="inteRequSalary-input"
                 fullWidth
                 placeholder="2,000,000"
                 name="inteRequSalary"
@@ -401,8 +410,8 @@ const RequestCreate = () => {
             </Grid>
             <Grid item xs={6}>
               <Autocomplete
-                id="combo-box-inteRequBondingType"
                 disablePortal
+                id="inteRequBondingType-input"
                 options={listInteRequBondingType}
                 onChange={(event, value) => setInteRequBondingType(value)}
                 renderInput={(params) => (
@@ -422,7 +431,7 @@ const RequestCreate = () => {
             <Grid item xs={6}>
               <Autocomplete
                 freeSolo
-                id="combo-box-InteRequPracticeModality"
+                id="inteRequCityName-input"
                 disablePortal
                 options={listPracticeModality}
                 onChange={(event, value) => setInteRequPracticeModality(value)}
@@ -449,7 +458,7 @@ const RequestCreate = () => {
               <Autocomplete
                 freeSolo
                 disableClearable
-                id="free-solo-2-demo"
+                id="inteRequCountry-input"
                 // List of countries
                 options={listCountries}
                 /**
@@ -477,7 +486,7 @@ const RequestCreate = () => {
               <Autocomplete
                 freeSolo
                 disableClearable
-                id="free-solo-2-demo"
+                id="inteRequCityName-input"
                 //List of cities
                 options={listCities}
                 /**
@@ -506,6 +515,7 @@ const RequestCreate = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                id="inteRequDescription-input"
                 multiline
                 required
                 fullWidth

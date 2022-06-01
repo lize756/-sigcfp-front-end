@@ -40,6 +40,10 @@
     "yup": "^0.32.11"
   },
   "scripts": {
+    "dev": "next dev",
+    "test:component": "jest -c test/component/jest.config.component.js",
+    "test:contract": "jest -c test/contract/jest.config.contract.js",
+    "publish:contract": "node ./test/contract/publish.js",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "start": "react-scripts start",
     "start:dev": "react-scripts start --watch",
