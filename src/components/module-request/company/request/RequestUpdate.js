@@ -158,7 +158,10 @@ const RequestUpdate = () => {
      * Intern request functions
      */
     if (request.inteRequFunctions !== "") {
-      const arrayDefaults = request.inteRequFunctions.split(",");
+      const arrayDefaults =
+        request.inteRequFunctions !== undefined
+          ? request.inteRequFunctions.split(",")
+          : "";
       setDefaultInteRequFunctions(arrayDefaults);
       setInteRequFunctions(arrayDefaults);
     }
@@ -167,7 +170,10 @@ const RequestUpdate = () => {
      * Intern request competencies
      */
     if (request.inteRequCompetencies !== "") {
-      const arrayDefaults = request.inteRequCompetencies.split(",");
+      const arrayDefaults =
+        request.inteRequCompetencies !== undefined
+          ? request.inteRequCompetencies.split(",")
+          : "";
       setDefaultInteRequCompetencies(arrayDefaults);
       setInteRequCompetencies(arrayDefaults);
     }
@@ -181,7 +187,10 @@ const RequestUpdate = () => {
    * @returns  date in correct format
    */
   const getDate = () => {
-    const [day, month, year] = editRequest.inteRequStDate.split("/");
+    const [day, month, year] =
+      editRequest.inteRequStDate !== undefined
+        ? editRequest.inteRequStDate.split("/")
+        : " ";
     return year + "-" + month + "-" + day;
   };
   //------------Handlechange functions-----------------------------------
@@ -340,7 +349,10 @@ const RequestUpdate = () => {
                       label="Carreras de Interés"
                       placeholder="Carreras de Interés"
                       required={
-                        (careers.length === 0) & (defaultCareers.length === 0)
+                        (careers.length === 0) &
+                        (defaultCareers !== undefined
+                          ? defaultCareers.length === 0
+                          : [])
                       }
                     />
                   )}
