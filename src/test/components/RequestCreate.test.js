@@ -129,8 +129,8 @@ test("Checking the fields of the intern application form", () => {
   const inputDuration = component.getAllByText("Duración de la Practica");
   expect(inputDuration).toBeTruthy();
 
-  const inputSalary = component.getAllByText("Valor de Bonificación");
-  expect(inputSalary).toBeTruthy();
+  //const inputSalary = component.getAllByText("Valor de Bonificación");
+  //expect(inputSalary).toBeTruthy();
 
   const inputBonding = component.getAllByText("Tipo de vinculación");
   expect(inputBonding).toBeTruthy();

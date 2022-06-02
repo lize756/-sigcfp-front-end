@@ -1,6 +1,6 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 
@@ -57,7 +57,11 @@ test("render content", () => {
       </Router>
     </Provider>
   );
-  component.getByText("¡BIENVENIDOS/AS!");
+
+  expect(
+    screen.getByRole("heading", { name: /BIENVENIDOS/i })
+  ).toBeInTheDocument();
+  //component.getByText("¡BIENVENIDOS/AS!");
 
   const button = component.getByText("Practicantes");
   fireEvent.click(button);
