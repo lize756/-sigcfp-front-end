@@ -121,6 +121,7 @@ const CompanyApp = () => {
           <Toolbar>
             <IconButton
               color="inherit"
+              id="menu-drawer-company-button-open"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               edge="start"
@@ -197,7 +198,10 @@ const CompanyApp = () => {
           open={open}
         >
           <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton
+              id="menu-drawer-company-button-close"
+              onClick={handleDrawerClose}
+            >
               {theme.direction === "ltr" ? (
                 <ChevronLeftIcon />
               ) : (
@@ -232,6 +236,7 @@ const CompanyApp = () => {
             <ListItem
               button
               key="Request"
+              id="intReqMenuCompanyButton"
               onClick={() => {
                 navigate("/company/request");
               }}

@@ -54,8 +54,8 @@ export default function CorrectUpdateOrDeletejs() {
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: `${getInfoAlert.alertPositionH}`}}
       >
-        <Alert severity={getInfoAlert.alertSeverity} sx={{ width: "100%" }}>
-          <AlertTitle>{getInfoAlert.alertTitle}</AlertTitle>
+        <Alert id="alertCorrectUpdateOrDelete" severity={getInfoAlert.alertSeverity} sx={{ width: "100%" }}>
+          <AlertTitle id="alertTitle">{getInfoAlert.alertTitle}</AlertTitle>
           {getInfoAlert.alertDescription}
         </Alert>
       </Snackbar>
